@@ -267,7 +267,7 @@
 
 <div class="callout warning">
   <div class="callout-title">WARNING: Customer Wants Productivity Metrics Beyond Copilot?</div>
-  <p>If the customer&rsquo;s primary interest is <strong>meeting time, effort mapping, focus time, or collaboration patterns</strong> independent of Copilot usage, those are delivered through the <strong>Viva Insights Advanced Analysis</strong> workbench &mdash; not the Copilot Analytics tiers covered in this guide. The same Viva Insights licence (included with Copilot) and the same Insights Analyst role are used, but the queries, templates, and metrics are different.</p>
+  <p>If the primary interest is <strong>meeting time, effort mapping, focus time, or collaboration patterns</strong> independent of Copilot usage, those are delivered through the <strong>Viva Insights Advanced Analysis</strong> workbench &mdash; not the Copilot Analytics tiers covered in this guide. The same Viva Insights licence (included with Copilot) and the same Insights Analyst role are used, but the queries, templates, and metrics are different.</p>
   <p>Refer to the <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/setup-overview">Viva Insights setup checklist</a> and the <a href="https://learn.microsoft.com/viva/insights/advanced/introduction-to-advanced-insights">Advanced Analysis introduction</a> for that workstream. The org data upload and privacy settings configured in this guide carry over.</p>
 </div>
 
@@ -276,7 +276,7 @@
 <ul>
   <li>Level 200 familiarity with Microsoft 365 administration (Admin Center navigation, Entra ID basics, license assignment)</li>
   <li>No prior experience with Copilot-specific dashboards or Viva Insights</li>
-  <li>Access to a customer tenant with Microsoft 365 Copilot licenses</li>
+  <li>Access to a tenant with Microsoft 365 Copilot licenses</li>
 </ul>
 
 <div class="callout info">
@@ -569,7 +569,7 @@
     <tr><td><strong>Auto CxO Identification</strong> (Dashboard AutoEnablement)</td><td>On (recommended)</td><td>Senior leaders do not get automatic access — must be added manually</td></tr>
     <tr><td><strong>Copilot Advanced Analytics</strong></td><td>On (if planning Section 8)</td><td>Analysts cannot access the Advanced Analysis workbench</td></tr>
   </table>
-  <p>If any policy shows <strong>Off</strong> or is scoped to specific users instead of <strong>Everyone</strong>, discuss with the customer whether this was intentional. If not, select the policy → edit → set to <strong>On</strong> for <strong>Everyone</strong> (or the appropriate scope).</p>
+  <p>If any policy shows <strong>Off</strong> or is scoped to specific users instead of <strong>Everyone</strong>, verify whether this was intentional. If not, select the policy → edit → set to <strong>On</strong> for <strong>Everyone</strong> (or the appropriate scope).</p>
 </div>
 
 <div class="callout danger">
@@ -1144,7 +1144,7 @@
 
 <div class="callout warning">
   <div class="callout-title">WARNING: Plan Ahead</div>
-  Before/after analysis requires 4 weeks of pre-adoption baseline data. If the customer has already rolled out Copilot, this historical comparison may not be possible. Identify this early.
+  Before/after analysis requires 4 weeks of pre-adoption baseline data. If Copilot has already been rolled out, this historical comparison may not be possible. Identify this early.
 </div>
 
 <h2>8.3 Step-by-Step Implementation</h2>
@@ -1504,19 +1504,19 @@
 
 <ol>
   <li><strong>50-License Threshold Timing:</strong> Should licensing be expanded before deployment to unlock group-level analytics? The threshold can be met through a combination of Copilot + Viva Insights licences.</li>
-  <li><strong>Entra ID Hierarchy Completeness:</strong> Is the customer directory populated correctly? Criteria analysed weekly. If not, manual access assignment or org data upload is needed.</li>
-  <li><strong>AI Administrator Role Assignment:</strong> Has the customer assigned this role? Required for dashboard access management, privacy, and exclusion lists. AI Admins must add themselves to view.</li>
+  <li><strong>Entra ID Hierarchy Completeness:</strong> Is the directory populated correctly? Criteria analysed weekly. If not, manual access assignment or org data upload is needed.</li>
+  <li><strong>AI Administrator Role Assignment:</strong> Has this role been assigned? Required for dashboard access management, privacy, and exclusion lists. AI Admins must add themselves to view.</li>
   <li><strong>Manager Settings Enablement:</strong> Has the Insights Admin toggled on "Grant managers scoped access"? Without this, no managers can see team-level data even if they are licensed.</li>
   <li><strong>Organizational Data Upload:</strong> Is HR data available? Without it, only tenant-level views. Attribute names must match exactly. Include EffectiveDate.</li>
-  <li><strong>Hourly Rate Customisation:</strong> Default $72/hour. Should be adjusted based on customer's loaded labour rate.</li>
+  <li><strong>Hourly Rate Customisation:</strong> Default $72/hour. Should be adjusted based on your organisation's loaded labour rate.</li>
   <li><strong>Privacy Thresholds &amp; Small Groups:</strong> Default group size = 10. Small departments or pilot groups may see suppressed data. Consider when planning phased rollouts.</li>
   <li><strong>Baseline Data for Before/After:</strong> Needs 4 weeks pre-adoption data. If Copilot already deployed, comparison may not be possible.</li>
   <li><strong>Compliance Exclusion Requirements:</strong> Plan for 5-day processing time for exclusion list uploads.</li>
   <li><strong>Delegation Policy:</strong> Should delegation be allowed? If not, disable via <code>CopilotDashboardDelegation</code> VFAM policy.</li>
   <li><strong>Agent Dashboard Scope:</strong> If agents are being deployed, ensure company-level delegates are configured (not just group-level).</li>
-  <li><strong>Multi-Agency / Multi-BU Data Isolation:</strong> If the customer operates multiple independent agencies or business units within a single M365 tenant and requires that Agency A <em>cannot</em> see Agency B's Copilot usage data, the standard Copilot Dashboard does not provide hard data isolation. Senior leaders auto-identified via Entra ID hierarchy will see &ldquo;Your company&rdquo; data covering all agencies. The solution is a <strong>partition-based architecture</strong> using Viva Insights Advanced Analytics &mdash; create one partition per agency filtered by a custom &ldquo;Agency&rdquo; attribute in org data, assign agency-specific analysts, and deliver reports via isolated Power BI workspaces. The Copilot Dashboard itself should be restricted to Central IT only for tenant-wide licence management. See the <em>Multi-Agency Isolation Architecture</em> reference document for the validated solution, implementation runbook, and PowerShell lockdown steps.</li>
-  <li><strong>Copilot Agent Governance:</strong> If the customer is deploying Copilot Studio agents and needs DLP policies, connector governance, agent sharing controls, or publishing approval workflows, these are managed through the <strong>Power Platform Admin Center</strong> &mdash; not through Viva Insights. See the <a href="https://learn.microsoft.com/power-platform/admin/"><strong>Copilot &amp; Agent Governance</strong> project</a> for the full governance framework including tenant/environment/agent-level controls, DSPM for AI, and billing boundaries.</li>
-  <li><strong>Licence Lifecycle &amp; Billing:</strong> If the customer needs to understand what happens to analytics data when licences are assigned, removed, or reassigned &mdash; or needs to manage Copilot Credits billing, Pay-As-You-Go metering, or multi-agency chargeback &mdash; see the <em>Copilot Lifecycle &amp; Billing Playbook</em>.</li>
+  <li><strong>Multi-Agency / Multi-BU Data Isolation:</strong> If your organisation operates multiple independent agencies or business units within a single M365 tenant and requires that Agency A <em>cannot</em> see Agency B's Copilot usage data, the standard Copilot Dashboard does not provide hard data isolation. Senior leaders auto-identified via Entra ID hierarchy will see &ldquo;Your company&rdquo; data covering all agencies. The solution is a <strong>partition-based architecture</strong> using Viva Insights Advanced Analytics &mdash; create one partition per agency filtered by a custom &ldquo;Agency&rdquo; attribute in org data, assign agency-specific analysts, and deliver reports via isolated Power BI workspaces. The Copilot Dashboard itself should be restricted to Central IT only for tenant-wide licence management. See the <em>Multi-Agency Isolation Architecture</em> reference document for the validated solution, implementation runbook, and PowerShell lockdown steps.</li>
+  <li><strong>Copilot Agent Governance:</strong> If deploying Copilot Studio agents and needs DLP policies, connector governance, agent sharing controls, or publishing approval workflows, these are managed through the <strong>Power Platform Admin Center</strong> &mdash; not through Viva Insights. See the <a href="https://learn.microsoft.com/power-platform/admin/"><strong>Copilot &amp; Agent Governance</strong> project</a> for the full governance framework including tenant/environment/agent-level controls, DSPM for AI, and billing boundaries.</li>
+  <li><strong>Licence Lifecycle &amp; Billing:</strong> If you need to understand what happens to analytics data when licences are assigned, removed, or reassigned &mdash; or needs to manage Copilot Credits billing, Pay-As-You-Go metering, or multi-agency chargeback &mdash; see the <em>Copilot Lifecycle &amp; Billing Playbook</em>.</li>
   <li><strong>Broader Collaboration Analysis (Beyond Copilot):</strong> If the you want meeting time, focus time, after-hours, wellbeing, or manager effectiveness metrics independent of Copilot, these use the same Viva Insights analyst workbench and org data but different templates and metrics. See the <em>Advanced Viva Insights Collaboration Analysis Guide</em>. The 4-week baseline window (item 8 above) is best captured using these collaboration templates.</li>
 </ol>
 
