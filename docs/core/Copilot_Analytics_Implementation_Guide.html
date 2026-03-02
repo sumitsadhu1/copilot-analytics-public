@@ -1235,11 +1235,25 @@
 
 <div class="step">
   <div class="step-title">Step 2: Configure Partition Access (15 min)</div>
+  <p>A <strong>partition</strong> defines which employees an analyst can query. Most tenants have a default <strong>Global</strong> partition covering all employees. Multi-agency or multi-BU tenants may have separate partitions per agency.</p>
+  <p><strong>To assign an analyst to an existing partition:</strong></p>
   <ol>
-    <li>In Viva Insights Admin, navigate to <strong>Partitions</strong></li>
-    <li>Identify which partition contains relevant employees (usually Global)</li>
-    <li>Grant the Insights Analyst access to the appropriate partition(s)</li>
+    <li>Navigate to <code>https://insights.cloud.microsoft</code></li>
+    <li>Go to <strong>Admin</strong> &rarr; <strong>Privacy settings</strong> &rarr; <strong>Partitions</strong></li>
+    <li>Select the partition (usually <strong>Global</strong>) &rarr; click <strong>Edit</strong></li>
+    <li>Under the <strong>Analysts</strong> tab, select <strong>Add analysts</strong></li>
+    <li>Search for the Insights Analyst by name or email &rarr; select &rarr; <strong>Save</strong></li>
+    <li>The analyst can access this partition&rsquo;s data within 1&ndash;2 hours</li>
   </ol>
+  <p><strong>To create a new partition</strong> (for multi-agency isolation):</p>
+  <ol>
+    <li>On the Partitions page, select <strong>New partition</strong></li>
+    <li>Name the partition (e.g., &ldquo;Agency A&rdquo;)</li>
+    <li>Set the filter: choose an org data attribute (e.g., <code>Agency</code>) and value (e.g., &ldquo;Agency A&rdquo;)</li>
+    <li>Assign analysts &rarr; <strong>Save</strong></li>
+    <li>Repeat for each agency/BU</li>
+  </ol>
+  <p><strong>Reference:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/admin/partitions">Manage partitions in Viva Insights</a></p>
 </div>
 
 <div class="step">
