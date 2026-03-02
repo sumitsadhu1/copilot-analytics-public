@@ -551,6 +551,17 @@
   <tr><td>Insights Analyst</td><td>Global/Insights Admin</td><td>Run advanced queries; with global partition → automatic dashboard access</td></tr>
 </table>
 
+<h3>What Each Role Sees in the Viva Insights Web App</h3>
+<p>Use this table to verify your role is working correctly. If what you see doesn&rsquo;t match, check role assignment in Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights.</p>
+<table>
+  <tr><th>Role</th><th>Left Nav You&rsquo;ll See</th><th>What You Can Do</th><th>What You Can&rsquo;t Do</th><th>If You Need More</th></tr>
+  <tr><td><strong>AI Administrator</strong></td><td>Admin panel visible (General, Delegation, Manager settings, Privacy settings). <strong>No</strong> &ldquo;Create analysis&rdquo; button. May <strong>not</strong> see Copilot Dashboard.</td><td>Enable/disable VFAM features, manage user access, configure exclusion lists, set minimum group size</td><td>View the Copilot Dashboard (must add yourself explicitly). Create or run queries. Upload org data.</td><td>Add yourself to dashboard access: Admin Center &rarr; Viva &rarr; Manage user access for Copilot Dashboard</td></tr>
+  <tr><td><strong>Insights Admin</strong></td><td>Admin panel: Data quality, Data hub, Organisational data, Business data, Survey data, General, Delegation, Manager settings, Privacy settings. <strong>No</strong> &ldquo;Create analysis&rdquo; button.</td><td>Upload org data, configure privacy &amp; manager settings, create partitions, assign analysts to partitions</td><td>Create or run queries (requires Insights Analyst role). View Copilot Dashboard (requires separate access).</td><td>Request Insights Analyst role from Global Admin if you also need to run queries</td></tr>
+  <tr><td><strong>Insights Analyst</strong></td><td>Analysis section: Publish reports, Create analysis, Analysis results, Metric rules, Metric library. <strong>No</strong> Admin panel.</td><td>Create and run queries, connect Power BI, publish reports, access Copilot Dashboard (if on global partition)</td><td>Upload org data, change privacy settings, manage partitions, configure manager settings.</td><td>Request Insights Admin role if you also need to configure settings</td></tr>
+  <tr><td><strong>AI Admin + Insights Admin</strong></td><td>Full Admin panel (both sets of settings). No &ldquo;Create analysis&rdquo;.</td><td>All admin tasks: VFAM, access, org data, privacy, partitions, manager settings, exclusions</td><td>Create or run queries. Must still add yourself to dashboard access explicitly.</td><td>Add Insights Analyst role for query access</td></tr>
+  <tr><td><strong>AI Admin + Insights Admin + Insights Analyst</strong></td><td>Full Admin panel <strong>AND</strong> Analysis section with &ldquo;Create analysis&rdquo; button.</td><td>Everything: configure, query, publish, view dashboard</td><td>Nothing (full access within Viva Insights scope)</td><td>N/A &mdash; full access</td></tr>
+</table>
+
 <div class="callout warning">
   <div class="callout-title">WARNING: AI Administrator Access Gotcha</div>
   The AI Administrator role does <strong>NOT</strong> grant automatic access to view the Copilot Dashboard. AI Admins must explicitly add themselves via the access management settings. This is a common point of confusion during implementations.
