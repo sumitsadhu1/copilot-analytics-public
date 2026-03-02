@@ -1,0 +1,309 @@
+/*
+ * Copilot Analytics Documentation — Shared Style System
+ * Version: 1.0 | March 2026
+ *
+ * Apply to all documents via: <link rel="stylesheet" href="../../assets/docs-style.css">
+ * (adjust relative path based on document location)
+ *
+ * Design tokens, typography, layout, callouts, tables, steps, and print styles.
+ */
+
+/* ─── Design Tokens ─── */
+:root {
+  --primary: #1F4E79;
+  --secondary: #2E75B6;
+  --accent: #0078D4;
+  --success: #28A745;
+  --warning: #FFC107;
+  --danger: #DC3545;
+  --info: #17A2B8;
+  --text: #333;
+  --text-muted: #666;
+  --bg: #fff;
+  --bg-alt: #F8F9FA;
+  --border: #DEE2E6;
+}
+
+/* ─── Base ─── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  color: var(--text);
+  line-height: 1.6;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px;
+  background: var(--bg);
+}
+
+/* ─── Typography ─── */
+h1 {
+  color: var(--primary);
+  font-size: 1.8em;
+  font-weight: 700;
+  border-bottom: 3px solid var(--primary);
+  padding-bottom: 8px;
+  margin: 40px 0 16px;
+  page-break-before: always;
+}
+h1:first-of-type { page-break-before: avoid; }
+
+h2 {
+  color: var(--secondary);
+  font-size: 1.4em;
+  font-weight: 600;
+  margin: 28px 0 12px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+}
+
+h3 {
+  color: #404040;
+  font-size: 1.15em;
+  font-weight: 600;
+  margin: 20px 0 10px;
+}
+
+h4 {
+  color: var(--secondary);
+  font-size: 1.05em;
+  font-weight: 600;
+  margin: 16px 0 8px;
+}
+
+p { margin: 0 0 12px; }
+ul, ol { margin: 0 0 12px 24px; }
+li { margin-bottom: 6px; }
+a { color: var(--accent); }
+
+code {
+  background: #EEF2F7;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: 'Cascadia Code', 'Consolas', monospace;
+  font-size: 0.9em;
+}
+
+pre {
+  background: #282c34;
+  color: #abb2bf;
+  padding: 15px;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-family: 'Cascadia Code', 'Consolas', monospace;
+  font-size: 0.9em;
+  line-height: 1.4;
+  margin: 12px 0 20px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+
+/* ─── Tables ─── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0 20px;
+  font-size: 0.92em;
+}
+th {
+  background: var(--primary);
+  color: #fff;
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 600;
+}
+td {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  vertical-align: top;
+}
+tr:nth-child(even) td { background: #F8FBFF; }
+
+/* ─── Callout Boxes ─── */
+/* Rule: Max ONE callout per section. Reserve WARNING for data loss/security only. */
+.callout {
+  border-left: 4px solid;
+  border-radius: 4px;
+  padding: 14px 18px;
+  margin: 16px 0;
+}
+.callout-title { font-weight: 700; margin-bottom: 6px; }
+.callout.tip     { border-color: var(--success); background: #D4EDDA; }
+.callout.warning { border-color: var(--warning); background: #FFF3CD; }
+.callout.danger  { border-color: var(--danger);  background: #F8D7DA; }
+.callout.info    { border-color: var(--info);     background: #D1ECF1; }
+
+/* ─── Step Blocks ─── */
+.step {
+  margin: 16px 0;
+  padding: 12px 16px;
+  border-left: 3px solid var(--accent);
+  background: var(--bg-alt);
+  border-radius: 0 4px 4px 0;
+}
+.step-title {
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+
+/* ─── Checklists ─── */
+.checklist { list-style: none; margin-left: 0; padding-left: 0; }
+.checklist li {
+  padding: 6px 10px;
+  border: 1px solid var(--success);
+  border-radius: 4px;
+  margin-bottom: 4px;
+  background: #D4EDDA;
+}
+.checklist li::before { content: "☐ "; font-weight: 700; }
+
+/* ─── Cover Page ─── */
+.cover { text-align: center; padding: 60px 0; }
+.cover h1 {
+  border: none;
+  color: var(--primary);
+  font-size: 2.4em;
+  page-break-before: avoid;
+}
+.cover .subtitle {
+  color: var(--secondary);
+  font-size: 1.5em;
+  font-weight: 600;
+  margin: 8px 0 4px;
+}
+.cover .sub2 {
+  color: var(--text-muted);
+  font-size: 1em;
+}
+
+/* ─── Architecture Diagrams ─── */
+.arch-diagram { display: flex; gap: 12px; margin: 20px 0; flex-wrap: wrap; }
+.arch-box {
+  flex: 1; min-width: 140px;
+  border: 2px solid var(--primary);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  background: #F0F6FC;
+}
+.arch-box h4 { color: var(--primary); margin: 0 0 4px; font-size: 0.9em; }
+.arch-box p { font-size: 0.78em; margin: 0; color: var(--text-muted); }
+.arch-box.highlight { border-color: var(--accent); background: #E8F4FD; }
+.arch-arrow { display: flex; align-items: center; font-size: 1.4em; color: var(--secondary); }
+
+/* ─── RACI Matrix ─── */
+.raci-y { background: #D4EDDA; font-weight: 700; text-align: center; color: var(--success); }
+.raci-n { text-align: center; color: #ccc; }
+
+/* ─── Alert Box (for architecture docs) ─── */
+.alert {
+  padding: 15px 20px;
+  background: #FFF3CD;
+  border-left: 5px solid #d83b01;
+  margin: 20px 0;
+  border-radius: 0 4px 4px 0;
+}
+.alert strong { color: #d83b01; }
+
+.highlight-box {
+  background: #f0f6ff;
+  border: 1px solid #cce3ff;
+  padding: 20px;
+  border-radius: 6px;
+  margin: 20px 0;
+}
+
+/* ─── Status Badges ─── */
+.pass { color: var(--success); font-weight: bold; }
+.fail { color: var(--danger); font-weight: bold; }
+
+/* ─── Step Cards (for runbooks) ─── */
+.step-card {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background: var(--bg);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+.step-card h4 {
+  margin-top: 0;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.step-number {
+  background: var(--primary);
+  color: white;
+  width: 24px; height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 0.8em;
+}
+
+/* ─── TOC ─── */
+.toc a { color: var(--text); text-decoration: none; }
+.toc a:hover { color: var(--accent); text-decoration: underline; }
+.toc ul { list-style: none; }
+.toc > ul { padding-left: 0; }
+.toc > ul > li { margin-bottom: 4px; font-weight: 600; }
+.toc > ul > li > ul > li { font-weight: 400; margin-bottom: 2px; padding-left: 16px; }
+
+/* ─── Disclaimer ─── */
+.disclaimer {
+  text-align: center;
+  margin-top: 40px;
+  padding: 20px;
+  font-size: 0.88em;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+}
+.disclaimer a { color: var(--accent); }
+
+
+/* ─── Navigation Bar ─── */
+.doc-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: var(--primary, #1F4E79);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  height: 44px;
+  font-size: 0.88em;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+.doc-nav a { color: #fff; text-decoration: none; }
+.doc-nav a:hover { text-decoration: underline; opacity: 0.9; }
+.doc-nav-left { display: flex; align-items: center; gap: 12px; }
+.doc-nav-left .hub-link { font-weight: 600; }
+.doc-nav-left .separator { opacity: 0.5; }
+.doc-nav-left .breadcrumb { opacity: 0.85; font-weight: 400; }
+.doc-nav-right { display: flex; align-items: center; gap: 12px; }
+.doc-nav-right .pdf-btn {
+  padding: 4px 12px;
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 4px;
+  font-size: 0.9em;
+  transition: background 0.2s;
+}
+.doc-nav-right .pdf-btn:hover { background: rgba(255,255,255,0.15); }
+body.has-nav { padding-top: 56px; }
+
+/* ─── Print ─── */
+@media print {
+  body { max-width: 100%; padding: 0; }
+  h1 { page-break-before: always; }
+  .callout, table, .step, .step-card { break-inside: avoid; }
+  nav, .doc-nav { display: none; }
+  body.has-nav { padding-top: 0; }
+}

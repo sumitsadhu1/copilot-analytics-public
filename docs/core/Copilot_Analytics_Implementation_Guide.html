@@ -1,0 +1,1872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microsoft 365 Copilot Analytics Implementation Guide v3.1</title>
+<link rel="stylesheet" href="../../assets/docs-style.css">
+<style>
+  :root {
+    --primary: #1F4E79;
+    --secondary: #2E75B6;
+    --accent: #0078D4;
+    --success: #28A745;
+    --warning: #FFC107;
+    --danger: #DC3545;
+    --info: #17A2B8;
+    --light-bg: #F8F9FA;
+    --border: #DEE2E6;
+    --text: #333;
+    --text-muted: #666;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; color: var(--text); line-height: 1.6; max-width: 960px; margin: 0 auto; padding: 20px; background: #fff; }
+  h1 { color: var(--primary); font-size: 1.8em; border-bottom: 3px solid var(--primary); padding-bottom: 8px; margin: 40px 0 16px; page-break-before: always; }
+  h1:first-of-type { page-break-before: avoid; }
+  h2 { color: var(--secondary); font-size: 1.4em; margin: 28px 0 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+  h3 { color: #404040; font-size: 1.15em; margin: 20px 0 10px; }
+  h4 { color: var(--secondary); font-size: 1.05em; margin: 16px 0 8px; }
+  p { margin: 0 0 12px; }
+  ul, ol { margin: 0 0 12px 24px; }
+  li { margin-bottom: 6px; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 0.92em; }
+  th { background: var(--primary); color: #fff; padding: 10px 12px; text-align: left; font-weight: 600; }
+  td { padding: 8px 12px; border: 1px solid #ddd; vertical-align: top; }
+  tr:nth-child(even) td { background: #F8FBFF; }
+  code { background: #EEF2F7; padding: 2px 6px; border-radius: 3px; font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 0.9em; }
+
+  /* Callout boxes */
+  .callout { border-left: 4px solid; border-radius: 4px; padding: 14px 18px; margin: 16px 0; }
+  .callout-title { font-weight: 700; margin-bottom: 6px; }
+  .callout.tip { border-color: var(--success); background: #D4EDDA; }
+  .callout.warning { border-color: var(--warning); background: #FFF3CD; }
+  .callout.danger { border-color: var(--danger); background: #F8D7DA; }
+  .callout.info { border-color: var(--info); background: #D1ECF1; }
+  .callout.new { border-color: #6F42C1; background: #EDE7F6; }
+  .callout.new .callout-title { color: #6F42C1; }
+
+  /* Badges */
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.75em; font-weight: 700; vertical-align: middle; margin-left: 6px; }
+  .badge-new { background: #6F42C1; color: #fff; }
+  .badge-updated { background: var(--info); color: #fff; }
+  .badge-fixed { background: var(--success); color: #fff; }
+
+  /* Checklist */
+  .checklist { list-style: none; margin-left: 0; padding-left: 0; }
+  .checklist li { padding: 6px 10px; border: 1px solid var(--success); border-radius: 4px; margin-bottom: 4px; background: #D4EDDA; }
+  .checklist li::before { content: "☐ "; font-weight: 700; }
+
+  /* Cover page */
+  .cover { text-align: center; padding: 60px 0; }
+  .cover h1 { border: none; color: var(--primary); font-size: 2.4em; page-break-before: avoid; }
+  .cover .subtitle { color: var(--secondary); font-size: 1.6em; font-weight: 600; margin: 8px 0 4px; }
+  .cover .sub2 { color: var(--text-muted); font-size: 1.1em; }
+
+  /* Architecture diagram */
+  .arch-diagram { display: flex; gap: 12px; margin: 20px 0; flex-wrap: wrap; }
+  .arch-box { flex: 1; min-width: 160px; border: 2px solid var(--primary); border-radius: 8px; padding: 14px; text-align: center; background: #F0F6FC; }
+  .arch-box h4 { color: var(--primary); margin: 0 0 6px; font-size: 0.95em; }
+  .arch-box p { font-size: 0.82em; margin: 0; color: var(--text-muted); }
+  .arch-box.highlight { border-color: var(--accent); background: #E8F4FD; }
+  .arch-arrow { display: flex; align-items: center; font-size: 1.4em; color: var(--secondary); }
+
+  /* RACI */
+  .raci-y { background: #D4EDDA; font-weight: 700; text-align: center; color: var(--success); }
+  .raci-n { text-align: center; color: #ccc; }
+
+  /* Step blocks */
+  .step { margin: 16px 0; padding: 12px 16px; border-left: 3px solid var(--accent); background: var(--light-bg); border-radius: 0 4px 4px 0; }
+  .step-title { font-weight: 700; color: var(--primary); margin-bottom: 6px; }
+
+  /* Quick-start cheat sheet */
+  .cheatsheet { border: 2px solid var(--primary); border-radius: 8px; padding: 20px; background: #F0F6FC; margin: 20px 0; }
+  .cheatsheet h3 { color: var(--primary); margin-top: 0; }
+
+  /* LOE table */
+  .loe-table td:nth-child(3), .loe-table td:nth-child(4) { text-align: center; }
+
+  /* Print styles */
+  @media print {
+    body { max-width: 100%; padding: 0; }
+    h1 { page-break-before: always; }
+    .callout, table, .step { break-inside: avoid; }
+  }
+
+  /* TOC */
+  .toc a { color: var(--text); text-decoration: none; }
+  .toc a:hover { color: var(--accent); text-decoration: underline; }
+  .toc ul { list-style: none; }
+  .toc > ul { padding-left: 0; }
+  .toc > ul > li { margin-bottom: 4px; font-weight: 600; }
+  .toc > ul > li > ul > li { font-weight: 400; margin-bottom: 2px; padding-left: 16px; }
+  .toc > ul > li > ul > li > ul > li { font-weight: 300; font-size: 0.92em; padding-left: 16px; }
+</style>
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Implementation Guide</span>
+  </div>
+  <div class="doc-nav-right">
+    <a href="../../artifacts/pdfs/Copilot_Analytics_Implementation_Guide.pdf" class="pdf-btn" title="Download PDF">&#128196; PDF</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ COVER PAGE ═══════════════════════ -->
+<div class="cover">
+  <h1>Microsoft 365 Copilot</h1>
+  <div class="subtitle">Analytics Implementation Guide</div>
+  <div class="sub2">A Step-by-Step Procedural Guide</div>
+</div>
+
+<table>
+  <tr><th>Document Property</th><th>Value</th></tr>
+  <tr><td>Version</td><td>3.1</td></tr>
+  <tr><td>Effective Date</td><td>February 2026</td></tr>
+  <tr><td>Document Owner</td><td>Sumit Sadhu</td></tr>
+  <tr><td>Last Reviewed</td><td>February 2026</td></tr>
+  <tr><td>Next Review Due</td><td>August 2026</td></tr>
+  <tr><td>Classification</td><td>Internal Use</td></tr>
+</table>
+
+<h3>Change Log</h3>
+<table>
+  <tr><th>Version</th><th>Date</th><th>Author</th><th>Changes</th></tr>
+  <tr><td>1.0</td><td>Feb 2026</td><td>Sumit Sadhu</td><td>Initial release</td></tr>
+  <tr><td>2.0</td><td>Feb 2026</td><td>Sumit Sadhu</td><td>Added AI Admin role, exclusion lists, delegation details, configuration procedures</td></tr>
+  <tr>
+    <td>3.0</td><td>Feb 2026</td><td>Sumit Sadhu</td>
+    <td>Major update: Fixed dual-licensing inaccuracy, corrected Assisted Hours formula, added Copilot Analytics Reports, Agent Dashboard, discovery questions, architecture diagram, RACI matrices, LOE summary, FAQ, Quick-Start Cheat Sheet. Consolidated org data guidance.</td>
+  </tr>
+  <tr>
+    <td>3.1</td><td>Feb 2026</td><td>Sumit Sadhu</td>
+    <td>
+      <strong>Major update:</strong> Fixed dual-licensing inaccuracy (Sec 7), corrected Assisted Hours formula (Sec 5.4), 
+      added Copilot Analytics Reports section (Sec 6), added Agent Dashboard section (Sec 7), 
+      added Pre-engagement Discovery questions (Sec 2.4), added Architecture Diagram, RACI matrices, 
+      Expanded Section 6 (Copilot Analytics Reports): added complete report catalogue with OOB, shared, and advanced PBI templates; added prerequisites for viewing and creating reports; added 4-step guide (access → create → connect PBI → publish); added Publish Reports workflow.
+      Expanded Section 7 (Agent Dashboard): added key metrics table, unique insights, agent-specific filters, 3 practical scenarios (post-launch review, cost governance, shadow AI detection).
+      Expanded Section 8 (Advanced Analytics): added template catalogue (Copilot Impact, Business Impact, Studio Agents); expanded Steps 5-7 with detailed query creation walkthrough, PBI connection flow, and report settings configuration.
+    </td>
+  </tr>
+</table>
+
+<!-- ═══════════════════════ TABLE OF CONTENTS ═══════════════════════ -->
+<h1 id="toc">Table of Contents</h1>
+<div class="toc">
+<ul>
+  <li><a href="#s1">1. Executive Summary</a>
+    <ul>
+      <li><a href="#s1-arch">Architecture Diagram</a></li>
+      <li><a href="#s1-quick">Quick Reference: Which Dashboard Do You Need?</a></li>
+      <li><a href="#s1-loe">Level-of-Effort Summary</a></li>
+      <li><a href="#s1-timeline">Implementation Timeline Overview</a></li>
+    </ul>
+  </li>
+  <li><a href="#s2">2. Introduction</a>
+    <ul>
+      <li><a href="#s2-1">2.1 Purpose</a></li>
+      <li><a href="#s2-2">2.2 Scope</a></li>
+      <li><a href="#s2-3">2.3 Audience &amp; Prerequisites</a></li>
+      <li><a href="#s2-4">2.4 Pre-Configuration Discovery Questions</a></li>
+    </ul>
+  </li>
+  <li><a href="#s3">3. Dashboard Overview &amp; Selection Guide</a>
+    <ul>
+      <li><a href="#s3-1">3.1 Dashboard Comparison</a></li>
+      <li><a href="#s3-2">3.2 Decision Framework</a></li>
+      <li><a href="#s3-raci">3.3 RACI Matrix</a></li>
+      <li><a href="#s3-readiness">3.4 Global Admin Readiness Checklist</a></li>
+    </ul>
+  </li>
+  <li><a href="#s4">4. Dashboard 1: M365 Admin Center Reports</a></li>
+  <li><a href="#s5">5. Dashboard 2: Viva Insights Copilot Dashboard</a></li>
+  <li><a href="#s6">6. Dashboard 3: Copilot Analytics Reports</a></li>
+  <li><a href="#s7">7. Dashboard 4: Agent Dashboard</a></li>
+  <li><a href="#s8">8. Dashboard 5: Viva Insights Advanced Analytics (Power BI)</a></li>
+  <li><a href="#s9">9. Organizational Data Reference (Consolidated)</a></li>
+  <li><a href="#s10">10. Troubleshooting Common Issues</a></li>
+  <li><a href="#s11">11. Data Privacy &amp; Compliance</a></li>
+  <li><a href="#s12">12. Common Customer Questions (FAQ)</a></li>
+  <li><a href="#appA">Appendix A: Further Considerations</a></li>
+  <li><a href="#appB">Appendix B: Glossary</a></li>
+  <li><a href="#appC">Appendix C: Additional Resources</a></li>
+  <li><a href="#cheat">Quick-Start Cheat Sheet</a></li>
+</ul>
+</div>
+
+<!-- ═══════════════════════ 1. EXECUTIVE SUMMARY ═══════════════════════ -->
+<h1 id="s1">1. Executive Summary</h1>
+<p>This guide provides a complete procedural framework for implementing Microsoft 365 Copilot analytics and monitoring. It covers <strong>five</strong> distinct reporting tiers, each serving different stakeholders with varying prerequisites and capabilities.</p>
+
+<h3 id="s1-arch">Architecture Diagram</h3>
+<div class="arch-diagram">
+  <div class="arch-box">
+    <h4>Tier 1</h4>
+    <p><strong>M365 Admin Center Reports</strong></p>
+    <p>IT Admins<br>License &amp; usage tracking<br>No setup needed</p>
+  </div>
+  <div class="arch-arrow">&rarr;</div>
+  <div class="arch-box highlight">
+    <h4>Tier 2</h4>
+    <p><strong>Copilot Dashboard</strong></p>
+    <p>Leaders &amp; Managers<br>ROI, Adoption, Sentiment<br>50+ licenses</p>
+  </div>
+  <div class="arch-arrow">&rarr;</div>
+  <div class="arch-box">
+    <h4>Tier 3</h4>
+    <p><strong>Copilot Analytics Reports</strong></p>
+    <p>Leaders &amp; Analysts<br>Out-of-the-box reports<br>Dashboard access</p>
+  </div>
+  <div class="arch-arrow">&rarr;</div>
+  <div class="arch-box">
+    <h4>Tier 4</h4>
+    <p><strong>Agent Dashboard</strong></p>
+    <p>Leaders &amp; Analysts<br>Agent adoption &amp; usage<br>50+ licenses</p>
+  </div>
+  <div class="arch-arrow">&rarr;</div>
+  <div class="arch-box">
+    <h4>Tier 5</h4>
+    <p><strong>Advanced Analytics (Power BI)</strong></p>
+    <p>Analysts<br>Custom queries &amp; reports<br>Viva Insights license</p>
+  </div>
+</div>
+<p style="text-align:center;font-size:0.85em;color:var(--text-muted);">Progressive implementation: Each tier builds on the previous. All tiers share organizational data and privacy settings.</p>
+
+<h3 id="s1-quick">Quick Reference: Which Dashboard Do You Need?</h3>
+<table>
+  <tr><th>Dashboard</th><th>Best For</th><th>Setup Time</th><th>Key Capability</th></tr>
+  <tr><td>Admin Center Reports</td><td>IT Admins tracking license usage</td><td>None (built-in)</td><td>User-level license utilization</td></tr>
+  <tr><td>Copilot Dashboard</td><td>Business leaders measuring ROI</td><td>Up to 7 days</td><td>Copilot Assisted Hours &amp; Value</td></tr>
+  <tr><td>Copilot Analytics Reports</td><td>Leaders wanting targeted insights</td><td>Same as Dashboard</td><td>Out-of-the-box deep-dive reports</td></tr>
+  <tr><td>Agent Dashboard</td><td>Leaders tracking agent adoption</td><td>Same as Dashboard</td><td>Agent-specific usage &amp; trends</td></tr>
+  <tr><td>Advanced Analytics (Power BI)</td><td>Analysts doing deep-dive analysis</td><td>1–2 weeks</td><td>Before/after adoption comparison</td></tr>
+</table>
+
+<h3 id="s1-loe">Level-of-Effort Summary</h3>
+<table class="loe-table">
+  <tr><th>Tier</th><th>Active Config</th><th>Wait/Processing</th><th>Ongoing Maintenance</th><th>Personas Needed</th></tr>
+  <tr><td>Admin Center</td><td>15–30 min</td><td>72 hours</td><td>None</td><td>Global Admin or Reports Reader</td></tr>
+  <tr><td>Copilot Dashboard</td><td>2–4 hours</td><td>Up to 7 days</td><td>Monthly org data refresh</td><td>GA, AI Admin, Insights Admin</td></tr>
+  <tr><td>Copilot Analytics Reports</td><td>None (auto)</td><td>Same as Dashboard</td><td>None</td><td>Dashboard access holders</td></tr>
+  <tr><td>Agent Dashboard</td><td>10 min (verify)</td><td>Same as Dashboard</td><td>None</td><td>AI Admin, company-level delegates</td></tr>
+  <tr><td>Advanced Analytics</td><td>4–8 hours</td><td>Query-dependent</td><td>Monthly refresh + query re-runs</td><td>Insights Admin, Insights Analyst</td></tr>
+</table>
+
+<h3 id="s1-timeline">Implementation Timeline Overview</h3>
+<ul>
+  <li><strong>Day 1:</strong> Admin Center reports available (~72 hours after first Copilot usage)</li>
+  <li><strong>Day 7:</strong> Copilot Dashboard + Copilot Analytics Reports fully populated (if prerequisites met)</li>
+  <li><strong>Day 7:</strong> Agent Dashboard available (on by default as part of Viva Insights web app)</li>
+  <li><strong>Week 2+:</strong> Advanced Analytics operational (after org data upload and query setup)</li>
+</ul>
+
+<div class="callout tip">
+  <div class="callout-title">TIP: Start Simple</div>
+  Begin with Admin Center reports to establish baseline license tracking, then progressively enable Copilot Dashboard, Analytics Reports, and Advanced Analytics as organisational maturity increases.
+</div>
+
+<!-- ═══════════════════════ 2. INTRODUCTION ═══════════════════════ -->
+<h1 id="s2">2. Introduction</h1>
+
+<h2 id="s2-1">2.1 Purpose of This Guide</h2>
+<p>Use this guide when a you want to get started with Copilot Analytics. It provides step-by-step procedures to configure all five Microsoft Copilot monitoring dashboards, from basic license tracking to advanced ROI analysis.</p>
+
+<h2 id="s2-2">2.2 Scope</h2>
+<h3>In Scope</h3>
+<ul>
+  <li>Microsoft 365 Copilot applications: Word, Excel, PowerPoint, Outlook, Teams, Loop, OneNote, Edge, Copilot Chat</li>
+  <li>Five monitoring tiers: Admin Center, Copilot Dashboard, Copilot Analytics Reports, Agent Dashboard, Advanced Analytics</li>
+  <li>License utilization tracking, ROI measurement, sentiment analysis, and agent adoption</li>
+  <li>Privacy configuration, exclusion lists, and delegation management</li>
+</ul>
+<h3>Out of Scope</h3>
+<ul>
+  <li>Other Copilot products: Copilot for Sales, Copilot for Service, GitHub Copilot, Security Copilot</li>
+  <li>Custom Power BI report development beyond Microsoft-provided templates</li>
+  <li>Third-party analytics integrations</li>
+  <li>Broader Viva Insights productivity metrics independent of Copilot (meeting time, focus time, after-hours work, collaboration network analysis)</li>
+</ul>
+
+<div class="callout warning">
+  <div class="callout-title">WARNING: Customer Wants Productivity Metrics Beyond Copilot?</div>
+  <p>If the customer&rsquo;s primary interest is <strong>meeting time, effort mapping, focus time, or collaboration patterns</strong> independent of Copilot usage, those are delivered through the <strong>Viva Insights Advanced Analysis</strong> workbench &mdash; not the Copilot Analytics tiers covered in this guide. The same Viva Insights licence (included with Copilot) and the same Insights Analyst role are used, but the queries, templates, and metrics are different.</p>
+  <p>Refer to the <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/setup-overview">Viva Insights setup checklist</a> and the <a href="https://learn.microsoft.com/viva/insights/advanced/introduction-to-advanced-insights">Advanced Analysis introduction</a> for that workstream. The org data upload and privacy settings configured in this guide carry over.</p>
+</div>
+
+<h2 id="s2-3">2.3 Audience &amp; Prerequisites</h2>
+<p>This guide assumes:</p>
+<ul>
+  <li>Level 200 familiarity with Microsoft 365 administration (Admin Center navigation, Entra ID basics, license assignment)</li>
+  <li>No prior experience with Copilot-specific dashboards or Viva Insights</li>
+  <li>Access to a tenant with Microsoft 365 Copilot licenses</li>
+</ul>
+
+<div class="callout info">
+  <div class="callout-title">NOTE: Terminology</div>
+  Terms specific to Viva Insights (such as Assisted Hours, partitions, and organizational data) are defined on first use and compiled in <a href="#appB">Appendix B: Glossary</a>.
+</div>
+
+<h2 id="s2-4">2.4 Pre-Configuration Discovery Questions</h2>
+<p>Before touching any configuration, run through these qualifying questions:</p>
+
+<table>
+  <tr><th>#</th><th>Question</th><th>Why It Matters</th></tr>
+  <tr><td>1</td><td>How many M365 Copilot licenses are <strong>assigned</strong> (not purchased)?</td><td>Below 50 = limited dashboard features</td></tr>
+  <tr><td>2</td><td>Is the Entra ID manager hierarchy populated for most users?</td><td>Determines automatic vs. manual dashboard access. If &gt;20% of users lack a Manager attribute, auto-identification and Manager Settings will be unreliable. See <a href="#s9">Section 9.1</a> for impact details.</td></tr>
+  <tr><td>3</td><td>Do you have an HR data export available (department, function, location)?</td><td>Required for group-level filtering and BU-level rollups</td></tr>
+  <tr><td>4</td><td>Has anyone been assigned the AI Administrator role?</td><td>Required to manage dashboard access and privacy settings</td></tr>
+  <tr><td>5</td><td>Do you have compliance/legal requirements to exclude specific users?</td><td>Drives exclusion list configuration (5-day processing)</td></tr>
+  <tr><td>6</td><td>Has Copilot already been rolled out, or is it pre-deployment?</td><td>Before/after analysis needs 4 weeks of pre-adoption baseline</td></tr>
+  <tr><td>7</td><td>Do you use Viva Glint or Viva Pulse for employee surveys?</td><td>Enables sentiment page with filters &amp; heat maps</td></tr>
+  <tr><td>8</td><td>What is the primary reporting need: Copilot-only or broader productivity?</td><td>Determines whether standalone Viva Insights license is needed</td></tr>
+  <tr><td>9</td><td>Are you deploying Copilot agents / Copilot Studio agents?</td><td>Determines whether Agent Dashboard section is relevant</td></tr>
+  <tr><td>10</td><td>Who are the target report consumers (IT admins, BU leaders, analysts)?</td><td>Drives which tiers to prioritize</td></tr>
+</table>
+
+<!-- ═══════════════════════ 3. DASHBOARD OVERVIEW ═══════════════════════ -->
+<h1 id="s3">3. Dashboard Overview &amp; Selection Guide</h1>
+
+<h2 id="s3-1">3.1 Dashboard Comparison</h2>
+<table>
+  <tr><th>Capability</th><th>Admin Center</th><th>Copilot Dashboard</th><th>Analytics Reports</th><th>Agent Dashboard</th><th>Advanced Analytics</th></tr>
+  <tr><td>Primary Audience</td><td>IT Admins</td><td>Leaders, Managers</td><td>Leaders, Analysts</td><td>Leaders, Analysts</td><td>Analysts</td></tr>
+  <tr><td>Minimum Licenses</td><td>Any (1+)</td><td>50 Copilot OR Viva Insights</td><td>Same as Dashboard</td><td>50 Copilot OR Viva Insights</td><td>50 Viva Insights</td></tr>
+  <tr><td>Setup Complexity</td><td>None</td><td>Low–Medium</td><td>None (auto)</td><td>Low</td><td>High</td></tr>
+  <tr><td>Data Latency</td><td>~72 hours</td><td>Up to 6 days</td><td>Up to 6 days</td><td>Up to 6 days</td><td>Query-dependent</td></tr>
+  <tr><td>User-Level Tracking</td><td>Yes</td><td>No (group-level)</td><td>No (group-level)</td><td>No (group-level)</td><td>Custom segments</td></tr>
+  <tr><td>ROI Metrics</td><td>No</td><td>Assisted Hours/Value</td><td>Yes (targeted)</td><td>No</td><td>Enhanced</td></tr>
+  <tr><td>Sentiment Data</td><td>No</td><td>Yes</td><td>Yes</td><td>No</td><td>Yes</td></tr>
+  <tr><td>Agent Tracking</td><td>No</td><td>No</td><td>No</td><td>Yes</td><td>Yes (custom)</td></tr>
+  <tr><td>Before/After Analysis</td><td>No</td><td>No</td><td>No</td><td>No</td><td>Yes</td></tr>
+  <tr><td>Export Capabilities</td><td>CSV</td><td>Limited</td><td>Limited</td><td>Limited</td><td>Full Power BI</td></tr>
+</table>
+
+<h2 id="s3-2">3.2 Decision Framework</h2>
+<ol>
+  <li>Does the customer need user-level license utilization data? &rarr; Start with <strong>Admin Center Reports</strong></li>
+  <li>Does the customer have 50+ assigned licenses AND want ROI metrics? &rarr; Enable <strong>Copilot Dashboard</strong></li>
+  <li>Do leaders want ready-to-use targeted reports? &rarr; <strong>Copilot Analytics Reports</strong> (auto-available with Dashboard)</li>
+  <li>Is the customer deploying agents (Copilot Studio, etc.)? &rarr; Enable <strong>Agent Dashboard</strong></li>
+  <li>Does the customer need before/after adoption analysis or custom segmentation? &rarr; Configure <strong>Advanced Analytics</strong></li>
+</ol>
+
+<div class="callout tip">
+  <div class="callout-title">TIP: Progressive Implementation</div>
+  Most customers benefit from implementing all tiers progressively. Start with Admin Center (immediate), add Copilot Dashboard + Analytics Reports (week 1), then Advanced Analytics (week 2+) for comprehensive coverage.
+</div>
+
+<h2 id="s3-raci">3.3 RACI Matrix</h2>
+<table>
+  <tr>
+    <th>Activity</th><th>Global Admin</th><th>AI Admin</th><th>Insights Admin</th><th>Insights Analyst</th><th>Business Leader</th>
+  </tr>
+  <tr><td>Assign Copilot/Viva licences</td><td class="raci-y">R/A</td><td class="raci-n">–</td><td class="raci-n">–</td><td class="raci-n">–</td><td class="raci-n">C</td></tr>
+  <tr><td>Assign Insights Admin/Analyst roles</td><td class="raci-y">R/A</td><td class="raci-n">–</td><td class="raci-n">–</td><td class="raci-n">–</td><td class="raci-n">–</td></tr>
+  <tr><td>Enable/disable Advanced Analysis (VFAM)</td><td class="raci-n">–</td><td class="raci-y">R/A</td><td class="raci-n">–</td><td class="raci-n">–</td><td class="raci-n">–</td></tr>
+  <tr><td>Configure Manager Settings</td><td class="raci-n">–</td><td class="raci-n">C</td><td class="raci-y">R/A</td><td class="raci-n">–</td><td class="raci-n">I</td></tr>
+  <tr><td>Upload organizational data</td><td class="raci-n">C</td><td class="raci-n">–</td><td class="raci-y">R/A</td><td class="raci-n">–</td><td class="raci-n">I</td></tr>
+  <tr><td>Configure privacy / group size</td><td class="raci-n">–</td><td class="raci-y">C</td><td class="raci-y">R/A</td><td class="raci-n">–</td><td class="raci-n">I</td></tr>
+  <tr><td>Create exclusion lists</td><td class="raci-n">–</td><td class="raci-y">R/A</td><td class="raci-n">–</td><td class="raci-n">–</td><td class="raci-n">C</td></tr>
+  <tr><td>Run Advanced Analytics queries</td><td class="raci-n">–</td><td class="raci-n">–</td><td class="raci-n">C</td><td class="raci-y">R/A</td><td class="raci-n">I</td></tr>
+  <tr><td>Delegate dashboard access</td><td class="raci-n">–</td><td class="raci-n">–</td><td class="raci-n">–</td><td class="raci-n">–</td><td class="raci-y">R/A</td></tr>
+  <tr><td>View &amp; act on insights</td><td class="raci-n">I</td><td class="raci-n">–</td><td class="raci-n">–</td><td class="raci-y">C</td><td class="raci-y">R/A</td></tr>
+</table>
+<p style="font-size:0.85em;color:var(--text-muted);">R = Responsible, A = Accountable, C = Consulted, I = Informed</p>
+
+<h2 id="s3-readiness">3.4 Global Admin Readiness Checklist</h2>
+<p>When a Global Admin is asked <em>&ldquo;Is everything set up for the analyst?&rdquo;</em>, use this quick diagnostic. Each row can be verified in under 2 minutes.</p>
+<table>
+  <tr><th>#</th><th>Check</th><th>Where to Verify</th><th>Expected State</th></tr>
+  <tr><td>1</td><td>50+ licences assigned</td><td>Admin Center &rarr; Billing &rarr; Licenses &rarr; Microsoft 365 Copilot</td><td>&ge;50 in &ldquo;Assigned&rdquo; column</td></tr>
+  <tr><td>2</td><td>Insights Admin role assigned</td><td>Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Admins</td><td>At least one user listed</td></tr>
+  <tr><td>3</td><td>Insights Analyst role assigned</td><td>Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Add-on Plan &rarr; Insights Analyst</td><td>Analyst user(s) listed</td></tr>
+  <tr><td>4</td><td>VFAM &mdash; Copilot Dashboard ON</td><td>Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Turn Advanced Insights on or off</td><td>Copilot Dashboard = <strong>On</strong> for Everyone</td></tr>
+  <tr><td>5</td><td>VFAM &mdash; Advanced Analytics ON</td><td>Same screen as above</td><td>Copilot Advanced Analytics = <strong>On</strong> for Everyone</td></tr>
+  <tr><td>6</td><td>VFAM &mdash; Behavioral Experiences ON</td><td>Same screen as above</td><td>TenantPolicyForBehavioralExperiences = <strong>On</strong></td></tr>
+  <tr><td>7</td><td>Org data uploaded</td><td>Viva Insights web app &rarr; Admin &rarr; Organisational data</td><td>Upload status shows &ldquo;Complete&rdquo;</td></tr>
+  <tr><td>8</td><td>Partition configured &amp; analyst assigned</td><td>Viva Insights web app &rarr; Admin &rarr; Privacy settings &rarr; Partitions</td><td>Analyst listed on at least one partition (usually Global)</td></tr>
+</table>
+<p>If any row fails, follow the corresponding section in this guide: licences (Section 5.3 Step 1), roles (Section 8.3 Step 1), VFAM (Section 5.3 Step 3), org data (<a href="#s9">Section 9</a>), partitions (Section 8.3 Step 2).</p>
+
+<!-- ═══════════════════════ 4. ADMIN CENTER REPORTS ═══════════════════════ -->
+<h1 id="s4">4. Dashboard 1: Microsoft 365 Admin Center Reports</h1>
+
+<h2>4.1 When to Use This Dashboard</h2>
+<ul>
+  <li>Track which users have Copilot licenses assigned vs. actively using Copilot</li>
+  <li>Identify inactive licensed users for potential license reallocation</li>
+  <li>Monitor per-application usage (Word, Excel, Teams, etc.)</li>
+  <li>Export user-level activity data for custom analysis</li>
+  <li>Quick visibility without additional configuration</li>
+</ul>
+
+<h2>4.2 Prerequisites</h2>
+<table>
+  <tr><th>Requirement</th><th>Details</th></tr>
+  <tr><td>Copilot License</td><td>At least one license assigned; no minimum threshold</td></tr>
+  <tr><td>Subscription Tier</td><td>Any tier supporting Copilot: E3/E5, Business Standard/Premium</td></tr>
+</table>
+
+<h3>Required Admin Roles</h3>
+<table>
+  <tr><th>Role</th><th>Access Level</th><th>Can Export CSV?</th></tr>
+  <tr><td>Global Administrator</td><td>Full access to all reports and settings</td><td>Yes</td></tr>
+  <tr><td>Reports Reader</td><td>Full access to usage reports</td><td>Yes</td></tr>
+  <tr><td>Usage Summary Reports Reader</td><td>Aggregate data only; no user-level details</td><td>No</td></tr>
+  <tr><td>License Administrator</td><td>Manage license assignments only</td><td>No (no report access)</td></tr>
+</table>
+
+<div class="callout danger">
+  <div class="callout-title">IMPORTANT: Role Assignment</div>
+  request <strong>Reports Reader</strong> role. This provides full report access without Global Admin privileges.
+</div>
+
+<h2>4.3 Step-by-Step Implementation</h2>
+<p><em>Estimated Time: 15–30 minutes (plus 72 hours for data population)</em></p>
+
+<div class="step">
+  <div class="step-title">Step 1: Verify Admin Role Assignment (5 min)</div>
+  <ol>
+    <li>Navigate to <strong>Microsoft 365 Admin Center</strong>: <code>https://admin.microsoft.com</code></li>
+    <li>Go to <strong>Users → Active users → Select your account</strong></li>
+    <li>Click <strong>Manage roles</strong> and verify you have Reports Reader or higher</li>
+    <li>If not, request role assignment from Global Administrator</li>
+  </ol>
+</div>
+
+<div class="step">
+  <div class="step-title">Step 2: Access Copilot Usage Reports (5 min)</div>
+  <ol>
+    <li>In Admin Center, navigate to <strong>Reports → Usage</strong></li>
+    <li>Scroll to find <strong>Microsoft 365 Copilot</strong> or use the search function</li>
+    <li>Click to open the Copilot usage report</li>
+  </ol>
+</div>
+
+<div class="step">
+  <div class="step-title">Step 3: Configure Report Parameters (5 min)</div>
+  <ol>
+    <li>Select timeframe: 7, 30, 90, or 180 days</li>
+    <li>Review summary cards: Total assigned licenses, Active users, Adoption rate</li>
+    <li>Scroll to per-application breakdown</li>
+  </ol>
+</div>
+
+<div class="step">
+  <div class="step-title">Step 4: Export User-Level Data (5 min)</div>
+  <ol>
+    <li>Click <strong>Export</strong> in the top right corner</li>
+    <li>Select CSV format</li>
+    <li>Open downloaded file to verify user-level activity data</li>
+  </ol>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">NOTE: Data Availability</div>
+  Reports populate within approximately 72 hours of user activity. If this is a new Copilot deployment, allow 3 business days before expecting data.
+</div>
+
+<h2>4.4 Success Criteria</h2>
+<ul class="checklist">
+  <li>Can access Admin Center → Reports → Usage → Microsoft 365 Copilot</li>
+  <li>Summary cards display: Assigned licenses count, Active users count, Adoption percentage</li>
+  <li>Per-application breakdown shows usage across Word, Excel, PowerPoint, Outlook, Teams</li>
+  <li>Can export CSV file with user-level activity data</li>
+  <li>Data is no older than 72 hours (check report timestamp)</li>
+</ul>
+
+<h2>4.5 Limitations</h2>
+<ul>
+  <li>No ROI or productivity impact metrics</li>
+  <li>No sentiment tracking</li>
+  <li>No group-level trend analysis</li>
+  <li>No before/after adoption comparisons</li>
+  <li>Data retention limited to 180 days maximum</li>
+</ul>
+
+<h2>4.6 What is Next</h2>
+<p>Once Admin Center reports are operational, proceed to the <a href="#s5">Viva Insights Copilot Dashboard (Section 5)</a> to unlock ROI metrics and Copilot Assisted Hours/Value calculations.</p>
+
+<h2>4.7 References</h2>
+<ul>
+  <li><a href="https://learn.microsoft.com/en-us/microsoft-365/admin/activity-reports/microsoft-365-copilot-usage">M365 Copilot usage report</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/microsoft-365/admin/add-users/about-admin-roles">Admin roles overview</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/microsoft-365/admin/activity-reports/activity-reports#who-can-see-reports">Who can see reports</a></li>
+</ul>
+
+<!-- ═══════════════════════ 5. COPILOT DASHBOARD ═══════════════════════ -->
+<h1 id="s5">5. Dashboard 2: Viva Insights Copilot Dashboard</h1>
+
+<h2>5.1 When to Use This Dashboard</h2>
+<ul>
+  <li>Business leaders need to demonstrate Copilot ROI to executives</li>
+  <li>Track Copilot Assisted Hours (time saved through Copilot usage)</li>
+  <li>Calculate Copilot Assisted Value (monetary value of time saved)</li>
+  <li>Monitor adoption trends at group/department level</li>
+  <li>Collect and analyse user sentiment about Copilot effectiveness</li>
+  <li>Identify readiness gaps before broader rollout</li>
+</ul>
+
+<div class="callout danger">
+  <div class="callout-title">IMPORTANT: Viva Insights Web App Dependency</div>
+  The Copilot Dashboard is part of the Viva Insights web app. Previous standalone PowerShell controls for the Copilot Dashboard are no longer available. Access is now managed by enabling or disabling the Viva Insights web app itself—disabling the web app disables <strong>all</strong> features including the Copilot Dashboard, Copilot Analytics Reports, Agent Dashboard, and Advanced Analysis tools.
+</div>
+
+<h2>5.2 Prerequisites and Configuration</h2>
+
+<h3>Licensing Requirements</h3>
+<table>
+  <tr><th>Requirement</th><th>Details</th></tr>
+  <tr><td>Full Features</td><td>50 or more assigned Copilot licenses OR 50 or more Viva Insights licenses (combination counts)</td></tr>
+  <tr><td>Limited Features</td><td>Less than 50 assigned Copilot licenses (Readiness page + tenant-level only)</td></tr>
+  <tr><td>Viva Insights Service Plan</td><td>Automatically included with every Copilot license (no additional cost)</td></tr>
+</table>
+
+<div class="callout warning">
+  <div class="callout-title">WARNING: 50-License Threshold</div>
+  Organizations with fewer than 50 Copilot licenses will only see tenant-level adoption metrics. Group-level filtering and the full Impact page require meeting the 50-license threshold. This threshold can be achieved through a <strong>combination</strong> of Copilot and Viva Insights licenses (e.g., 30 Copilot + 20 Viva Insights = 50).
+</div>
+
+<div class="callout info">
+  <div class="callout-title">NOTE: Partial Rollout — Analytics Interpretation</div>
+  <p>If only a subset of employees have Copilot licences (e.g., 200 of 10,000), the dashboard <strong>only measures licensed users</strong>. Unlicensed employees are excluded from the &ldquo;measured population.&rdquo; This means:</p>
+  <ul>
+    <li>Adoption metrics show &ldquo;200 of 200 active&rdquo; (not 200 of 10,000)</li>
+    <li>Group filters (Department, Location) only show groups with licensed users in them</li>
+    <li>Small rollout groups may frequently hit the minimum group size threshold, causing data suppression (N/A values)</li>
+    <li>Before/after comparison data is only meaningful for licensed users</li>
+  </ul>
+  <p><strong>Recommendation:</strong> For rollouts under 500 users, focus on <strong>Admin Center user-level reports</strong> (Section 4) for adoption tracking and use the <strong>Copilot Dashboard</strong> primarily for ROI metrics. Consider increasing the rollout to 500+ users before investing in Advanced Analytics custom queries.</p>
+</div>
+
+<h3>Required Admin Roles</h3>
+<table>
+  <tr><th>Role</th><th>Assigned By</th><th>Capabilities</th></tr>
+  <tr><td>Global Administrator</td><td>N/A (built-in)</td><td>Full access to all settings; inherits Insights Admin privileges</td></tr>
+  <tr><td>AI Administrator</td><td>Global Admin</td><td>Manage dashboard access, enable/disable web app, create exclusion lists</td></tr>
+  <tr><td>Viva Insights Administrator</td><td>Global Admin</td><td>Upload org data, configure privacy &amp; manager settings, manage partitions</td></tr>
+  <tr><td>Insights Analyst</td><td>Global/Insights Admin</td><td>Run advanced queries; with global partition → automatic dashboard access</td></tr>
+</table>
+
+<div class="callout warning">
+  <div class="callout-title">WARNING: AI Administrator Access Gotcha</div>
+  The AI Administrator role does <strong>NOT</strong> grant automatic access to view the Copilot Dashboard. AI Admins must explicitly add themselves via the access management settings. This is a common point of confusion during implementations.
+</div>
+
+<h3>Access Requirements</h3>
+<table>
+  <tr><th>Access Type</th><th>Requirements</th></tr>
+  <tr><td>Automatic (Entra ID)</td><td>Tenant has 2,500+ users; majority in single reporting line; user in top 3 org levels OR has significant direct reports; criteria analysed weekly</td></tr>
+  <tr><td>Manager Access</td><td>User must have Viva Insights license + manager hierarchy in Entra ID or uploaded org data + <strong>Insights Admin must enable via Manager Settings</strong></td></tr>
+  <tr><td>Delegated Access</td><td>User with dashboard access grants access to others; max 75 delegates; scope can be group or company-wide</td></tr>
+  <tr><td>Analyst Access</td><td>Viva Insights Analyst with global partition access gets automatic dashboard access</td></tr>
+</table>
+
+<h3>Configuration Processing Times</h3>
+<table>
+  <tr><th>Configuration Change</th><th>Processing Time</th></tr>
+  <tr><td>User/group access changes</td><td>24 hours</td></tr>
+  <tr><td>Manager settings changes</td><td>1 hour</td></tr>
+  <tr><td>Organizational data upload</td><td>Up to 7 days</td></tr>
+  <tr><td>Minimum group size change</td><td>24 hours</td></tr>
+  <tr><td>Exclusion list upload</td><td>Up to 5 days</td></tr>
+  <tr><td>Exclusion list removal</td><td>Up to 3 days</td></tr>
+  <tr><td>Initial dashboard data population</td><td>Up to 7 days after licenses assigned</td></tr>
+</table>
+
+<h2>5.3 End-to-End Copilot Dashboard Enablement</h2>
+<p><em>Estimated Time: 2–4 hours active configuration + up to 7 days for data processing</em></p>
+<p>This section covers the complete sequence to get the Copilot Dashboard operational — from licence verification through to first data appearing. Follow each step in order.</p>
+
+<div class="step">
+  <div class="step-title">Step 1: Verify Licence Threshold (10 min)</div>
+  <ol>
+    <li>Navigate to <code>https://admin.microsoft.com</code></li>
+    <li>Go to <strong>Billing → Licenses</strong></li>
+    <li>Locate Microsoft 365 Copilot and note the <strong>assigned</strong> count (not purchased)</li>
+    <li>Confirm 50 or more licenses are assigned</li>
+    <li>If less than 50, consider whether to expand licensing</li>
+  </ol>
+</div>
+
+<div class="step">
+  <div class="step-title">Step 2: Verify Entra ID Hierarchy (15 min)</div>
+  <ol>
+    <li>Navigate to <code>https://entra.microsoft.com</code></li>
+    <li>Go to <strong>Users</strong> → select several sample users across different levels</li>
+    <li>For each user, verify the <strong>Manager</strong> attribute is populated</li>
+    <li>If hierarchy is incomplete, work with your directory team to populate</li>
+    <li>Note: Automatic access criteria are analysed weekly by Microsoft</li>
+  </ol>
+</div>
+
+<div class="step">
+  <div class="step-title">Step 3: Verify VFAM Policies Are Enabled (10 min)</div>
+  <p>Requires <strong>AI Administrator</strong> or <strong>Global Administrator</strong> role. This step ensures no previous admin has disabled critical features.</p>
+  <ol>
+    <li>Navigate to <code>https://admin.microsoft.com</code></li>
+    <li>Go to <strong>Settings → Microsoft Viva → Viva Insights</strong></li>
+    <li>Select the <strong>Set up and management</strong> tab</li>
+    <li>Under <strong>Access management</strong>, select <strong>Turn Advanced Insights on or off</strong></li>
+    <li>You will see the <strong>Viva Insights</strong> policy list. Verify the following are set to <strong>On</strong>:</li>
+  </ol>
+  <table>
+    <tr><th>Policy</th><th>Required State</th><th>What Happens If Off</th></tr>
+    <tr><td><strong>Copilot Dashboard</strong> (Enable Copilot Dashboard)</td><td>On</td><td>Nobody can view the dashboard — all other steps are pointless</td></tr>
+    <tr><td><strong>Copilot Dashboard Delegation</strong></td><td>On</td><td>Users cannot share dashboard access with delegates</td></tr>
+    <tr><td><strong>Behavioral Experiences</strong></td><td>On</td><td>Collaboration data (meeting time, email, chat) does not flow — breaks Impact page comparisons</td></tr>
+    <tr><td><strong>Auto CxO Identification</strong> (Dashboard AutoEnablement)</td><td>On (recommended)</td><td>Senior leaders do not get automatic access — must be added manually</td></tr>
+    <tr><td><strong>Copilot Advanced Analytics</strong></td><td>On (if planning Section 8)</td><td>Analysts cannot access the Advanced Analysis workbench</td></tr>
+  </table>
+  <p>If any policy shows <strong>Off</strong> or is scoped to specific users instead of <strong>Everyone</strong>, discuss with the customer whether this was intentional. If not, select the policy → edit → set to <strong>On</strong> for <strong>Everyone</strong> (or the appropriate scope).</p>
+</div>
+
+<div class="callout danger">
+  <div class="callout-title">IMPORTANT: This Is the #1 Cause of "Dashboard Not Working"</div>
+  <p>If a previous admin created a custom VFAM policy that restricts the Copilot Dashboard to specific users, new users added via the access management settings <strong>will not be able to view the dashboard</strong> unless they are also included in the VFAM policy. Always check this screen first when troubleshooting access issues.</p>
+  <p><strong>Accidental VFAM disable &mdash; blast radius &amp; recovery:</strong> If the Copilot Dashboard policy is turned <strong>Off</strong>:</p>
+  <ul>
+    <li><strong>All users</strong> (auto-identified leaders, manually added users, and delegates) immediately lose dashboard access</li>
+    <li>Delegates are <strong>not</strong> removed &mdash; their delegation records survive, but they can&rsquo;t access the dashboard until the policy is re-enabled</li>
+    <li><strong>Recovery:</strong> Turn the policy back On for Everyone (or the required scope). Access takes <strong>up to 24 hours</strong> to propagate. No data is lost during the outage.</li>
+    <li><strong>Prevention:</strong> Restrict VFAM policy editing to Global Administrators only. Document which policies are enabled and why in your admin runbook.</li>
+  </ul>
+</div>
+
+<div class="step">
+  <div class="step-title">Step 4: Configure Dashboard Access — Who Should See It (20 min)</div>
+  <p>Requires <strong>AI Administrator</strong> or <strong>Global Administrator</strong> role.</p>
+  <p>There are three ways users get access to the Copilot Dashboard. Decide which apply:</p>
+  <table>
+    <tr><th>Access Method</th><th>Who Gets Access</th><th>How to Configure</th></tr>
+    <tr><td><strong>Automatic (Entra ID)</strong></td><td>Senior leaders in top 3 org levels with significant reporting lines (tenants with 2,500+ users)</td><td>No action needed — happens automatically if Auto CxO Identification is ON. Refreshed weekly.</td></tr>
+    <tr><td><strong>Manual (Admin-assigned)</strong></td><td>Specific users or groups you choose — AI Admins, BU leaders, HR, analysts, etc.</td><td>Admin Center → Settings → Viva → Viva Insights → Set up and management → Under <strong>Copilot Dashboard</strong>, select <strong>Manage user access</strong> → Add users/groups</td></tr>
+    <tr><td><strong>Delegated</strong></td><td>People that existing dashboard users choose to share with (max 75 per person)</td><td>Configured by users themselves via Settings → Delegation in the Viva Insights web app. No admin action needed.</td></tr>
+  </table>
+  <p><strong>Recommended approach:</strong> Enable automatic access for senior leaders + manually add the AI Admin, Insights Admin, Insights Analyst, and any additional stakeholders (BU leaders, HR, change management leads).</p>
+</div>
+
+<div class="callout danger">
+  <div class="callout-title">IMPORTANT: AI Admin Self-Access</div>
+  If you are an AI Administrator and need to view the dashboard yourself, you must add yourself using the manual access method above. The AI Administrator role does not grant automatic dashboard viewing access.
+</div>
+
+<div class="step">
+  <div class="step-title">Step 5: Enable Manager Access to Team-Level Data (15 min)</div>
+  <p>Requires <strong>Insights Administrator</strong> or <strong>AI Admin</strong> role.</p>
+  <ol>
+    <li>Navigate to Viva Insights web app: <code>https://insights.cloud.microsoft</code></li>
+    <li>Go to <strong>Manager Settings</strong> (under Platform Setup on the left)</li>
+    <li>Toggle on <strong>"Grant managers scoped access to Copilot insights"</strong></li>
+    <li>Set the <strong>Minimum team size</strong> (minimum 5; includes manager in count)</li>
+    <li>Choose which managers to enable:
+      <ul>
+        <li><strong>All managers</strong> — all measured managers meeting team size threshold</li>
+        <li><strong>Select Active Directory group</strong> — choose from Entra ID data</li>
+        <li><strong>Upload .csv file</strong> — list specific manager email addresses</li>
+      </ul>
+    </li>
+    <li>Click <strong>Save changes</strong> (takes effect within 1 hour)</li>
+  </ol>
+  <p><em>Alternative path via Admin Center:</em> Settings → Viva → Viva Insights → Set up and management → Under <strong>Copilot Dashboard</strong>, select <strong>Turn Insights for Managers on or off</strong> and <strong>Assign group managers to Insights for Managers</strong>.</p>
+</div>
+
+<div class="step">
+  <div class="step-title">Step 6: Upload Organizational Data (30–45 min)</div>
+  <p>See <a href="#s9">Section 9: Organizational Data Reference</a> for full details on both upload methods and attribute mapping.</p>
+</div>
+
+<div class="step">
+  <div class="step-title">Step 7: Configure Minimum Group Size for Privacy (10 min)</div>
+  <p>Default is 10; minimum allowed is 5.</p>
+  <p><strong>For tenants WITHOUT Viva Insights license:</strong></p>
+  <ol>
+    <li><code>https://admin.microsoft.com</code> → Settings → Microsoft Viva → Viva Insights</li>
+    <li>Under <strong>Copilot Dashboard</strong>, select <strong>Manage minimum group size</strong></li>
+    <li>Enter preferred minimum (≥5) → Save (takes effect in 24 hours)</li>
+  </ol>
+  <p><strong>For tenants WITH Viva Insights license:</strong></p>
+  <ol>
+    <li><code>https://insights.cloud.microsoft</code> → Admin → Privacy settings</li>
+    <li>Configure minimum group size → Save (takes effect in 24 hours)</li>
+  </ol>
+</div>
+
+<div class="step">
+  <div class="step-title">Step 8: Create Exclusion List (Optional, 20 min)</div>
+  <p>Requires AI Administrator role.</p>
+  <ol>
+    <li><code>https://admin.microsoft.com</code> → Settings → Microsoft Viva → Viva Insights</li>
+    <li>Select <strong>Unified exclusion list</strong></li>
+    <li>Choose method: CSV upload (PersonId column), Entra ID groups, or Replace all</li>
+    <li>Wait up to 5 days for exclusion to take effect</li>
+  </ol>
+  <div class="callout info">
+    <div class="callout-title">NOTE: Exclusion List Scope</div>
+    The exclusion list removes users from both the Copilot Dashboard AND Viva Insights collaboration reports in Advanced Analysis. It also excludes M365 Copilot Chat (web) usage data.
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-title">Step 9: Configure Hourly Rate for ROI (10 min)</div>
+  <ol>
+    <li><code>https://insights.cloud.microsoft</code> → Admin → Impact settings</li>
+    <li>Default hourly rate is $72/hour (USD)</li>
+    <li>Adjust to customer loaded labour rate if different</li>
+    <li>Document the rate used for future reference</li>
+  </ol>
+  <p><strong>How to calculate a loaded labour rate:</strong> (Average base salary + benefits + overheads) ÷ annual productive hours (typically ~1,880). For Australian customers, consider using AUD values directly — the dashboard displays in the currency you enter but does not convert. Example: AUD $95/hour for a mid-level professional.</p>
+  <p><strong>Important:</strong> Changing the hourly rate <strong>retroactively recalculates</strong> all Copilot Assisted Value figures displayed on the dashboard. Agree on the rate with stakeholders before changing it, and document both the old and new values for reporting continuity.</p>
+</div>
+
+<div class="step">
+  <div class="step-title">Step 10: Configure Sentiment Surveys (Optional, 30 min)</div>
+  <p><strong>Option A: Viva Glint or Viva Pulse</strong> — Requires separate licences; enables filters &amp; heat maps.</p>
+  <p><strong>Option B: CSV Upload (Viva Insights customers)</strong> — Upload to Viva Insights Admin → Survey data.</p>
+  <p><strong>Option C: Aggregated Results Upload (Non-Viva)</strong> — Admin Center → Reports → Adoption → AI assistance. Summary view only; no filters or heat maps.</p>
+</div>
+
+<div class="step">
+  <div class="step-title">Step 11: Wait for Data Processing</div>
+  <ul>
+    <li>Initial data processing: up to 7 days after licenses assigned</li>
+    <li>Ongoing refresh: daily, 28-day rolling window, ~6-day delay from current date</li>
+    <li>Newly licensed employees: additional up to 7-day delay before inclusion</li>
+  </ul>
+</div>
+
+<h2>5.4 Understanding Dashboard Pages</h2>
+
+<h3>Readiness Page</h3>
+<p>Shows license assignment status and readiness for Copilot adoption. Available even with less than 50 licenses.</p>
+
+<h3>Adoption Page</h3>
+<p>Displays group-level usage trends, active user counts, usage intensity, and consistent usage metrics. Supports internal and external benchmark comparisons. Requires 50+ assigned licenses for group filtering.</p>
+
+<h3>Impact Page</h3>
+<p>Shows Copilot Assisted Hours and Copilot Assisted Value. This is the primary ROI metric page.</p>
+
+<div class="callout info">
+  <div class="callout-title">NOTE: Copilot Assisted Hours Calculation (Corrected)</div>
+  <p>Assisted Hours is composed of three categories:</p>
+  <table>
+    <tr><th>Category</th><th>What&rsquo;s counted</th><th>Assistance factor</th></tr>
+    <tr><td><strong>Meeting Summaries</strong></td><td>Duration of each meeting summarized or recapped by Copilot. If a user both summarizes mid-meeting and accesses Intelligent Recap after, the meeting is counted once for the most recent action.</td><td>Actual meeting duration (variable)</td></tr>
+    <tr><td><strong>Search &amp; Summaries</strong></td><td>Copilot Chat (work) prompts, Summarize email/Word/PPT actions, Excel analysis, Chat in Word/PPT/Excel prompts</td><td>6 minutes per action (based on Microsoft study #4)</td></tr>
+    <tr><td><strong>Content Creation</strong></td><td>Draft email, Draft in Word, Create presentation, Rewrite text actions</td><td>6 minutes per action</td></tr>
+  </table>
+  <p><strong>Assisted Value</strong> = Assisted Hours × Hourly Rate (default $72/hour, configurable)</p>
+  <p><em>These are broad approximations based on best available research. Microsoft may update the methodology.</em></p>
+</div>
+
+<h3>Sentiment Page</h3>
+<p>Displays survey response data about user perception. Requires survey platform integration. Filters and heat maps only available with Viva Insights licence or CSV upload.</p>
+
+<h2>5.5 How to Delegate Access (For Dashboard Users)</h2>
+<p><strong>Method 1 — Via Settings:</strong> Viva Insights web app → Settings → Delegation → Add delegates.</p>
+<p><strong>Method 2 — Via Dashboard:</strong> On Copilot Dashboard page → Share → Add delegates.</p>
+<p><strong>Delegation Limits:</strong></p>
+<ul>
+  <li>Maximum 75 delegates per person</li>
+  <li>Delegates cannot delegate to others (no cascading)</li>
+  <li>If delegator loses access (or leaves the org), all their delegates also lose access. <strong>Recovery:</strong> Another user with dashboard access must re-delegate to the affected people. Use Purview audit logs (<a href="#s10">Section 10.6</a> &mdash; search for <code>RemoveDelegates</code>) to identify who was affected. <strong>Prevention:</strong> Ensure at least 2&ndash;3 people have direct dashboard access (not just delegated) to avoid single points of failure.</li>
+  <li>Senior leaders can assign scope: <em>Your group</em> (reports) OR <em>Your company</em> (all employees)</li>
+  <li>Agent Dashboard requires "Your company" scope for delegates</li>
+</ul>
+
+<h2>5.6 Success Criteria</h2>
+<ul class="checklist">
+  <li>Can access Copilot Dashboard at <code>https://insights.cloud.microsoft/#/CopilotDashboard</code></li>
+  <li>Readiness page displays license assignment data</li>
+  <li>Adoption page shows active user trends (if 50+ licenses)</li>
+  <li>Impact page displays Copilot Assisted Hours and Value metrics</li>
+  <li>Group-level filtering works (if org data uploaded)</li>
+  <li>Manager settings enabled and managers can see team-level data</li>
+  <li>Minimum group size is configured appropriately</li>
+  <li>Hourly rate is configured for your organisation</li>
+  <li>Exclusion list configured (if required for compliance)</li>
+</ul>
+
+<h2>5.7 Limitations</h2>
+<ul>
+  <li>No user-level detail (privacy thresholds aggregate to groups)</li>
+  <li>No before/after adoption comparison</li>
+  <li>28-day rolling window limits historical trend analysis</li>
+  <li>Limited export capabilities</li>
+  <li>Sentiment filters/heat maps require Viva license or CSV upload</li>
+</ul>
+
+<h2>5.8 References</h2>
+<ul>
+  <li><a href="https://learn.microsoft.com/en-us/viva/insights/org-team-insights/copilot-dashboard">Microsoft Copilot Dashboard</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/viva/insights/advanced/admin/manage-settings-copilot-dashboard">Manage dashboard settings</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/viva/insights/org-team-insights/delegate-access">Delegate access</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/viva/insights/advanced/setup-maint/manager-settings">Configure Manager Settings</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/viva/feature-access-management">Feature access management</a></li>
+</ul>
+
+<!-- ═══════════════════════ 6. COPILOT ANALYTICS REPORTS ═══════════════════════ -->
+<h1 id="s6">6. Dashboard 3: Copilot Analytics Reports</h1>
+
+<h2>6.1 When to Use</h2>
+<ul>
+  <li>Leaders want <strong>targeted, out-of-the-box insights</strong> beyond the Copilot Dashboard summary pages</li>
+  <li>Analysts need pre-built reports they can share with business stakeholders without building custom queries</li>
+  <li>Organization wants deeper collaboration insights alongside Copilot adoption data</li>
+</ul>
+
+<h2>6.2 What Are Copilot Analytics Reports?</h2>
+<p>Copilot Analytics Reports are a set of ready-to-use reports available inside the Viva Insights web app under <strong>Reports</strong> in the left navigation. They provide a variety of targeted insights about adoption and impact of Copilot across the organization, including both Copilot-specific and broader employee collaboration patterns.</p>
+
+<h2>6.3 Prerequisites</h2>
+<p>To view these reports, you must meet <strong>at least one</strong> of the following:</p>
+<ol>
+  <li>You have automatic access to the Copilot Dashboard based on Entra ID data, or you are an enabled manager</li>
+  <li>You have been given delegate access to the Copilot Dashboard</li>
+  <li>You are a <strong>Viva Insights Analyst</strong> with global partition access</li>
+  <li>You are a Microsoft 365 Global Administrator</li>
+</ol>
+
+<div class="callout info">
+  <div class="callout-title">NOTE: No Additional Setup Required</div>
+  If you have already set up the Copilot Dashboard (Section 5), Copilot Analytics Reports are automatically available. No additional configuration is needed.
+</div>
+
+<h2>6.4 How to Access</h2>
+<div class="step">
+  <div class="step-title">Accessing Copilot Analytics Reports</div>
+  <ol>
+    <li>Navigate to the Viva Insights web app: <code>https://insights.cloud.microsoft</code></li>
+    <li>In the left navigation, select <strong>Reports</strong></li>
+    <li>Browse available reports — these include out-of-the-box reports and any reports published by analysts</li>
+  </ol>
+</div>
+
+<h2>6.5 Available Report Types</h2>
+<p>Copilot Analytics Reports fall into two categories in the Viva Insights web app:</p>
+
+<h3>A. Out-of-the-Box Reports (for Leaders &amp; Managers)</h3>
+<p>Pre-built reports that cannot be customised with unique filters or attributes. Select <strong>View report</strong> to see insights.</p>
+<table>
+  <tr><th>Report</th><th>What It Shows</th><th>Who Can Access</th><th>Documentation</th></tr>
+  <tr><td><strong>Copilot Studio Agents</strong></td><td>Adoption and impact of custom agents — top agents, agent-assisted hours, individual agent impact</td><td>Leaders, Managers, Delegates</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/copilot-studio-agents">Learn more</a></td></tr>
+  <tr><td><strong>Copilot for Sales Adoption</strong></td><td>Usage of Copilot for Sales across the org — which actions contribute to sales tasks, usage by group and app</td><td>Leaders, Managers, Delegates</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/copilot-for-sales-adoption">Learn more</a></td></tr>
+</table>
+
+<h3>B. Shared Reports (Analyst-Published)</h3>
+<p>Reports created by Insights Analysts and shared with leaders, managers, and delegates. These appear with a <strong>"Shared"</strong> label. Recipients can view but not customise them.</p>
+<p>Shared reports can be any Power BI report within Viva Insights, or a custom report that includes Viva Insights metrics, survey data, or Copilot metrics.</p>
+
+<h3>C. Advanced Power BI Report Templates (for Analysts)</h3>
+<p>Pre-configured templates that analysts run as queries, then connect to Power BI for full customisation.</p>
+<table>
+  <tr><th>Template</th><th>Purpose</th><th>Special Requirements</th><th>Documentation</th></tr>
+  <tr><td><strong>M365 Copilot Impact</strong></td><td>Primary ROI report — assisted hours, before/after adoption, Copilot vs non-Copilot comparison</td><td>Copilot + Viva Insights licences</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/microsoft-365-copilot-impact">Learn more</a></td></tr>
+  <tr><td><strong>M365 Copilot Adoption</strong></td><td>Detailed adoption patterns — usage trends, feature adoption, group comparisons</td><td>Copilot + Viva Insights licences</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/microsoft-365-copilot-adoption">Learn more</a></td></tr>
+  <tr><td><strong>Copilot Business Impact</strong></td><td>Correlate Copilot usage with business outcomes (sales, CSAT, etc.)</td><td>Business outcome data uploaded; min 65 Copilot + 65 non-Copilot users</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/copilot-business-impact">Learn more</a></td></tr>
+  <tr><td><strong>Copilot Studio Agents (Advanced)</strong></td><td>Agent-specific impact — assisted hours, session outcomes, Copilot Credits, time savings</td><td>50+ Copilot licences; at least one Copilot Studio licence; agent published in Production/default environment</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/copilot-studio-agents">Learn more</a></td></tr>
+  <tr><td><strong>Copilot Employee Experience (Glint)</strong></td><td>Combine Copilot usage with Viva Glint survey data for employee experience analysis</td><td>Viva Glint licence + Copilot licence for measured population</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/copilot-employee-experience-outcome-report">Learn more</a></td></tr>
+</table>
+
+<h2>6.6 Prerequisites for Accessing Reports</h2>
+
+<h3>For Viewing Out-of-the-Box &amp; Shared Reports</h3>
+<p>You must meet <strong>at least one</strong> of the following:</p>
+<ol>
+  <li>Automatic access to the Copilot Dashboard based on Entra ID data, or enabled as a manager via Manager Settings</li>
+  <li>Delegate access to the Copilot Dashboard (<a href="https://learn.microsoft.com/viva/insights/org-team-insights/delegate-access">Learn how</a>)</li>
+  <li><strong>Insights Analyst</strong> role with global partition access</li>
+  <li>Microsoft 365 Global Administrator</li>
+</ol>
+
+<h3>For Creating Advanced Power BI Reports (Analyst Templates)</h3>
+<table>
+  <tr><th>Prerequisite</th><th>Details</th></tr>
+  <tr><td><strong>Insights Analyst role</strong></td><td>Assigned by Global Admin or Insights Admin (<a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/assign-user-roles">Assign roles</a>)</td></tr>
+  <tr><td><strong>Power BI Desktop</strong></td><td>December 2022 or newer (free download: <a href="https://powerbi.microsoft.com/getting-started-with-power-bi/">Get Power BI</a>)</td></tr>
+  <tr><td><strong>Viva Insights licence</strong></td><td>Assigned to the measured population (included with Copilot licences)</td></tr>
+  <tr><td><strong>Copilot licence</strong></td><td>Assigned to employees whose Copilot activity you want to analyse</td></tr>
+  <tr><td><strong>Partition access</strong></td><td>Analyst must have access to the correct data partition (usually Global)</td></tr>
+  <tr><td><strong>Org data uploaded</strong></td><td>Required for group-by and filtering in reports (see <a href="#s9">Section 9</a>)</td></tr>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">NOTE: No Reports Visible?</div>
+  <p>If you see "No reports available", either: (a) no out-of-the-box reports are enabled for your tenant, or (b) no analyst has published shared reports to you. Contact your Insights Administrator to assign someone the Insights Analyst role so they can create and publish reports.</p>
+</div>
+
+<h2>6.7 Step-by-Step: How to Create &amp; Publish Reports</h2>
+
+<div class="step">
+  <div class="step-title">Step 1: Access Copilot Analytics Reports (Leaders/Managers)</div>
+  <ol>
+    <li>Sign in to <code>https://insights.cloud.microsoft</code></li>
+    <li>Select <strong>Reports</strong> in the left navigation</li>
+    <li>Browse <strong>Out-of-the-box</strong> reports (e.g., Copilot Studio Agents, Copilot for Sales)</li>
+    <li>Select <strong>View report</strong> on any card to see the insights</li>
+    <li>Look for <strong>Shared</strong> reports published by your analysts</li>
+  </ol>
+</div>
+
+<div class="step">
+  <div class="step-title">Step 2: Create an Advanced Report Using a Template (Analysts)</div>
+  <ol>
+    <li>Sign in to the analyst experience at <code>https://analysis.insights.viva.office.com</code></li>
+    <li>Select <strong>Create analysis</strong></li>
+    <li>Under <strong>Templates</strong>, browse the <strong>Copilot</strong> section</li>
+    <li>Select the desired template (e.g., <strong>Copilot Impact → Set up analysis</strong>)</li>
+    <li>Configure <strong>Query setup</strong>: name, time period (up to 13 months), auto-refresh, description</li>
+    <li>Review <strong>Predefined metrics</strong> (grey tags = required). Add extra metrics if needed</li>
+    <li>Set <strong>Employee filters</strong> (keep "Is Active"; add department/function filters as needed)</li>
+    <li>Add up to <strong>20 organisational attributes</strong> for group-by/filter options in the report</li>
+    <li>Select <strong>Run</strong> — the query may take minutes to hours</li>
+  </ol>
+  <p><em>Tip: Use the Copilot assistant in Viva Insights to help choose metrics and filters. <a href="https://learn.microsoft.com/viva/insights/advanced/analyst/copilot-query">Learn more</a></em></p>
+</div>
+
+<div class="step">
+  <div class="step-title">Step 3: Connect Power BI to Query Results</div>
+  <ol>
+    <li>Once the query completes, go to <strong>Analysis results</strong></li>
+    <li>Download the <strong>.pbit template file</strong></li>
+    <li>Open in Power BI Desktop → paste <strong>partition ID</strong> and <strong>query ID</strong></li>
+    <li>Set <strong>Minimum group size</strong> → select <strong>Load</strong></li>
+    <li>Sign in with your <strong>Organisational account</strong></li>
+    <li>Configure report Settings: time period, group-by attribute, active user definition</li>
+  </ol>
+</div>
+
+<div class="step">
+  <div class="step-title">Step 4: Publish Report to Leaders (Analysts)</div>
+  <ol>
+    <li>While viewing the report in Viva Insights, select <strong>Publish</strong></li>
+    <li>Create the card: set <strong>title</strong>, <strong>publisher name</strong>, <strong>description</strong></li>
+    <li>Choose data access model:
+      <ul>
+        <li><strong>Unfiltered original report</strong> — publishes as-is to people with Copilot Dashboard access</li>
+        <li><strong>Filter by manager hierarchy</strong> — recipients see only their team's data (for enabled managers)</li>
+      </ul>
+    </li>
+    <li>Set <strong>expiry date</strong> (up to 365 days)</li>
+    <li>Select <strong>Publish</strong> — recipients get an email notification and can view via the Reports tab</li>
+  </ol>
+  <p><strong>Report expiry:</strong> Published reports expire on the date you set (max 365 days). Recipients are <strong>not</strong> automatically notified before expiry. Set a calendar reminder to re-publish before the expiry date. If the publishing analyst leaves the organisation, see <a href="#s8">Section 8.5 — Analyst Departure</a> for transfer guidance.</p>
+  <p><em>Doc: <a href="https://learn.microsoft.com/viva/insights/advanced/analyst/publish-reports">Publish reports feature</a></em></p>
+</div>
+
+<h2>6.8 Relationship to Other Tiers</h2>
+<ul>
+  <li>Copilot Analytics Reports <strong>complement</strong> the Copilot Dashboard — the Dashboard provides summary views; these Reports provide deeper drill-downs</li>
+  <li>Analysts can publish collaboration insights through the <strong>Publish reports</strong> feature, making them available alongside Copilot insights</li>
+  <li>Reports use the same organizational data and privacy settings as the Copilot Dashboard</li>
+  <li>Advanced Power BI templates in Section 8 use the same analyst workflow described here</li>
+</ul>
+
+<h2>6.9 Success Criteria</h2>
+<ul class="checklist">
+  <li>Can navigate to Reports in the Viva Insights web app</li>
+  <li>Out-of-the-box Copilot reports are visible and populated</li>
+  <li>Analyst can create a query using a Copilot template and connect to Power BI</li>
+  <li>Analyst can publish a report that appears for leaders under Shared reports</li>
+  <li>Leaders receive email notification and can view published reports</li>
+</ul>
+
+<h2>6.10 References</h2>
+<ul>
+  <li><a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-analytics-reports">Copilot Analytics Reports overview</a></li>
+  <li><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/introduction-to-templates">Power BI report templates introduction</a></li>
+  <li><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/microsoft-365-copilot-impact">Copilot Impact report template</a></li>
+  <li><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/microsoft-365-copilot-adoption">Copilot Adoption report template</a></li>
+  <li><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/copilot-business-impact">Copilot Business Impact report template</a></li>
+  <li><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/copilot-studio-agents">Copilot Studio Agents report template</a></li>
+  <li><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/copilot-employee-experience-outcome-report">Copilot Employee Experience (Glint) report</a></li>
+  <li><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/publish-reports">Publish reports feature</a></li>
+  <li><a href="https://learn.microsoft.com/viva/insights/copilot-analytics-introduction">Copilot Analytics Introduction</a></li>
+  <li><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/copilot-query">Use Copilot to help set up queries</a></li>
+  <li><a href="https://aka.ms/CopilotAdvancedAnalytics">Copilot Advanced Analytics Playbook</a></li>
+</ul>
+
+<!-- ═══════════════════════ 7. AGENT DASHBOARD ═══════════════════════ -->
+<h1 id="s7">7. Dashboard 4: Agent Dashboard</h1>
+
+<div class="callout warning">
+  <div class="callout-title">PREVIEW: Agent Dashboard</div>
+  The Agent Dashboard is currently in public preview. Features may change before general availability. See the <a href="https://aka.ms/dpa">"Previews" section of the Microsoft Products and Services Data Protection Addendum</a> for more information on personal data processing during previews.
+</div>
+
+<h2>7.1 When to Use This Dashboard</h2>
+<ul>
+  <li>Organization is deploying <strong>Copilot agents</strong> (via Copilot Studio, in-app agents, or third-party agents)</li>
+  <li>Leaders want to understand agent adoption, active users, and usage trends</li>
+  <li>Need to identify which agents are being used most and by whom</li>
+  <li>Track agent adoption over time to optimize deployment</li>
+</ul>
+
+<h2>7.2 Prerequisites</h2>
+<table>
+  <tr><th>Requirement</th><th>Details</th></tr>
+  <tr><td>Copilot/Viva Insights Licenses</td><td>50+ assigned Copilot or Viva Insights licenses (same threshold as Copilot Dashboard)</td></tr>
+  <tr><td>Viva Insights Web App</td><td>Must be enabled (Agent Dashboard is on by default as part of the web app)</td></tr>
+  <tr><td>Access</td><td>Company-level dashboard access (senior leaders, company-scope delegates, Insights Analysts, or Global Admins)</td></tr>
+</table>
+
+<div class="callout danger">
+  <div class="callout-title">IMPORTANT: Team-Level Access Not Available for Agent Dashboard</div>
+  Unlike the Copilot Dashboard, managers <strong>cannot</strong> access a team-level view in the Agent Dashboard, nor can they delegate team-level access. To enable delegates' access to the Agent Dashboard, you must assign "Your company" scope (not "Your group") when delegating.
+</div>
+
+<h2>7.3 How to Access</h2>
+<div class="step">
+  <div class="step-title">Accessing the Agent Dashboard</div>
+  <ol>
+    <li>Navigate to the Viva Insights web app: <code>https://insights.cloud.microsoft</code></li>
+    <li>Select <strong>Agent Dashboard</strong> from the left navigation</li>
+    <li>If you don't see it, verify your access level (must be company-level access)</li>
+  </ol>
+</div>
+
+<h2>7.4 What the Agent Dashboard Shows</h2>
+
+<p>The Agent Dashboard focuses exclusively on <strong>agent adoption and usage</strong>. Unlike the Copilot Dashboard (which tracks Copilot across all M365 apps and includes ROI/sentiment), the Agent Dashboard answers a different set of questions: <em>which agents are being used, by whom, how often, and are users coming back?</em></p>
+
+<h3>Key Metrics</h3>
+<table>
+  <tr><th>Metric</th><th>What It Measures</th></tr>
+  <tr><td><strong>Active agents</strong></td><td>Number of agents with at least one active user in the last 28 days</td></tr>
+  <tr><td><strong>Active users</strong></td><td>Unique users with at least one agent response in the last 28 days</td></tr>
+  <tr><td><strong>Agent responses</strong></td><td>Total number of times agents responded to users</td></tr>
+  <tr><td><strong>Returning users</strong></td><td>Users active in both the current and previous 28-day period (stickiness metric)</td></tr>
+  <tr><td><strong>% of Copilot users using agents</strong></td><td>Adoption penetration — what fraction of your Copilot users are also engaging with agents</td></tr>
+  <tr><td><strong>Copilot Credits</strong></td><td>Credits consumed by agents (visible when Pay-As-You-Go is enabled)</td></tr>
+</table>
+
+<h3>Unique Insights</h3>
+<ul>
+  <li><strong>Most popular agent:</strong> The agent with the highest number of active users</li>
+  <li><strong>Most versatile agent:</strong> The agent used across the most job functions (requires Job Function data)</li>
+  <li><strong>Most shared agent:</strong> Among user-built agents, the one with the widest reach</li>
+  <li><strong>Agent deep-dive pages:</strong> Click into any agent to see its individual adoption trends, response counts, and user breakdown by group</li>
+</ul>
+
+<h3>Agent-Specific Filters (Unique to This Dashboard)</h3>
+<table>
+  <tr><th>Filter</th><th>Options</th></tr>
+  <tr><td><strong>Agent creator type</strong></td><td>User | Your org | Microsoft | Microsoft partner</td></tr>
+  <tr><td><strong>Agent source</strong></td><td>Agent Builder | Microsoft Copilot Studio | SharePoint | Microsoft 365 Agents Toolkit | Other Microsoft</td></tr>
+</table>
+
+<h3>Data Sources</h3>
+<p>Same three sources as the Copilot Dashboard: Entra ID (default), M365 Admin Center org data upload, or Viva Insights org data upload.</p>
+
+<h2>7.5 When to Use the Agent Dashboard — Practical Scenarios</h2>
+
+<div class="callout tip">
+  <div class="callout-title">Scenario 1: Post-Launch Agent Adoption Review</div>
+  <p>Your organisation just deployed three Copilot Studio agents (HR FAQ bot, IT Helpdesk agent, Sales proposal assistant). After 4 weeks, the CIO wants to know: <em>"Are people actually using them?"</em></p>
+  <p><strong>Use the Agent Dashboard to:</strong> Compare active users across all three agents. Check returning users to see if usage is sticky or if people tried once and stopped. Use the agent deep-dive pages to see which departments adopted each agent. If the IT Helpdesk agent has high usage but low returning users, it may indicate the agent is not resolving issues effectively.</p>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">Scenario 2: Cost Governance for Pay-As-You-Go Agents</div>
+  <p>Your organisation enabled Pay-As-You-Go billing for Copilot agents. Finance wants to understand the credit consumption pattern before the next budget cycle.</p>
+  <p><strong>Use the Agent Dashboard to:</strong> Filter by Copilot Chat licence type to see credit-consuming agents. Review the Copilot Credits metric per agent to identify high-cost agents. Cross-reference with the Admin Center Copilot Credits report for per-user and per-billing-policy breakdowns. Use this data to decide which agents justify the spend and which need optimisation or retirement.</p>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">Scenario 3: Identifying Shadow AI / Ungoverned Agents</div>
+  <p>Your IT governance team suspects employees are building and sharing agents without oversight.</p>
+  <p><strong>Use the Agent Dashboard to:</strong> Filter by <strong>Agent creator type = User</strong> to see all end-user-built agents. Sort by active users to find the most widely used ones. Check the <em>Most shared</em> insight to surface user-built agents that have grown beyond a single team. Work with your admin team to decide whether popular user-built agents should be formally published through your organisation's app catalogue with proper governance.</p>
+</div>
+
+<h2>7.6 Detect &rarr; Act: From Agent Dashboard to Agent Governance</h2>
+<p>The Agent Dashboard is your <strong>detection</strong> layer. When you spot an agent that needs attention, here's how to act on it immediately — without leaving the M365 Admin Center.</p>
+
+<div class="callout danger">
+  <div class="callout-title">IMPORTANT: The Detect &rarr; Act Workflow</div>
+  <table>
+    <tr><th>Step</th><th>Where</th><th>Action</th></tr>
+    <tr><td><strong>1. Detect</strong></td><td>Viva Insights &rarr; Agent Dashboard</td><td>Identify the agent: filter by Creator Type, sort by active users, check <em>Most shared</em> insight, review deep-dive page for usage patterns</td></tr>
+    <tr><td><strong>2. Decide</strong></td><td>Your governance process</td><td>Determine the action: approve and formalise, block, or monitor. Consider: Is it user-built or org-published? How many active users? Is it using sensitive data?</td></tr>
+    <tr><td><strong>3. Act — Quick</strong></td><td>M365 Admin Center &rarr; Copilot &rarr; Agents</td><td>Block the agent immediately, review its permissions, or approve it for the org catalogue (see Quick Actions table below)</td></tr>
+    <tr><td><strong>4. Act — Policy</strong></td><td>Power Platform Admin Center</td><td>Set DLP policies to prevent recurrence: block specific connectors, channels, or knowledge sources. Set DLP policies to prevent recurrence. See the <a href="https://learn.microsoft.com/power-platform/admin/"><em>Copilot &amp; Agent Governance</em> project</a> for full configuration</td></tr>
+  </table>
+</div>
+
+<h3>Agent Governance Quick Actions (M365 Admin Center)</h3>
+<p>These actions can be taken by the <strong>AI Administrator</strong> or <strong>Global Admin</strong> directly in the M365 Admin Center.</p>
+<table>
+  <tr><th>Action</th><th>Navigation</th><th>What It Does</th></tr>
+  <tr><td><strong>Review agent inventory</strong></td><td>Admin Center &rarr; Settings &rarr; Copilot &rarr; Agents</td><td>View all agents previously used in Copilot Chat. See agent name, publisher, status, and usage.</td></tr>
+  <tr><td><strong>Block a specific agent</strong></td><td>Agents section &rarr; Select agent &rarr; <strong>Block</strong></td><td>Prevents the agent from being used in Copilot Chat. Note: blocking currently applies to Copilot Chat only — does not extend to OneDrive, SharePoint, or Teams surfaces.</td></tr>
+  <tr><td><strong>Approve for org catalogue</strong></td><td>Agents section &rarr; Select agent &rarr; <strong>Approve</strong></td><td>Makes the agent available org-wide through the app catalogue with admin oversight.</td></tr>
+  <tr><td><strong>Review agent access policies</strong></td><td>Admin Center &rarr; Settings &rarr; Copilot &rarr; Agent policies</td><td>Set tenant-wide policies for agent access, sharing, and publishing permissions.</td></tr>
+</table>
+
+<div class="callout tip">
+  <div class="callout-title">TIP: For Advanced Governance</div>
+  <p>The quick actions above handle immediate response. For <strong>preventive governance</strong> &mdash; DLP policies, environment-level controls, agent sharing limits, publishing approval workflows, and Purview integration &mdash; see the <a href="https://learn.microsoft.com/power-platform/admin/"><strong>Copilot &amp; Agent Governance</strong></a> project (separate documentation).</p>
+</div>
+
+<h2>7.7 Admin Configuration</h2>
+
+<h3>Enable/Disable the Agent Dashboard</h3>
+<p>The Agent Dashboard is <strong>on by default</strong>. To disable:</p>
+
+<p><strong>Via M365 Admin Center:</strong></p>
+<ol>
+  <li>Go to <strong>Settings → Microsoft Viva → Viva Insights → Set up and management</strong></li>
+  <li>Under <strong>Access Management</strong>, select <strong>Turn Advanced Insights on or off</strong></li>
+  <li>Select <strong>Agent Dashboard → Add policy</strong> to disable</li>
+</ol>
+
+<p><strong>Via PowerShell (VFAM):</strong></p>
+<pre><code>Add-VivaModuleFeaturePolicy -ModuleId VivaInsights -FeatureId AgentDashboard -Name DisableFeatureForAll -IsFeatureEnabled $false -Everyone</code></pre>
+<p>AI admins can set policies at tenant, group, or user level. Both the Viva Insights web app control <em>and</em> the Agent Dashboard control must be enabled for access.</p>
+
+<h3>Minimum Group Size</h3>
+<p>Uses the same minimum group size setting as the Copilot Dashboard. Default is 10; minimum is 5. See <a href="#s5">Section 5, Step 6</a> for configuration steps.</p>
+
+<h2>7.8 Delegate Access for Agent Dashboard</h2>
+<p>If you have company-level access to the dashboards, you can delegate access. However:</p>
+<ul>
+  <li>Delegates must be given <strong>"Your company"</strong> scope to access the Agent Dashboard</li>
+  <li>Delegates with <strong>"Your group"</strong> scope can see the Copilot Dashboard team view but <strong>not</strong> the Agent Dashboard</li>
+  <li>To update existing delegates: go to <strong>Delegation settings</strong> → Edit → change scope from "Your group" to "Your company"</li>
+</ul>
+
+<h2>7.9 Success Criteria</h2>
+<ul class="checklist">
+  <li>Agent Dashboard is visible in the Viva Insights web app navigation</li>
+  <li>Adoption page shows agent activity data for the last 28 days</li>
+  <li>Organization/Job Function filters work (if org data uploaded)</li>
+  <li>Individual agent drill-downs are accessible</li>
+  <li>Delegates with "Your company" scope can access the Agent Dashboard</li>
+</ul>
+
+<h2>7.10 Limitations</h2>
+<ul>
+  <li>Preview feature — may change before GA</li>
+  <li>No team-level/manager view (company-level only)</li>
+  <li>No ROI or impact metrics (adoption focus only)</li>
+  <li>Not available in GCC environments</li>
+</ul>
+
+<h2>7.11 References</h2>
+<ul>
+  <li><a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">Agent Dashboard documentation</a></li>
+  <li><a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard">Manage Agent Dashboard settings</a></li>
+  <li><a href="https://learn.microsoft.com/viva/insights/org-team-insights/delegate-access">Delegate access (including Agent Dashboard scope)</a></li>
+  <li><a href="https://learn.microsoft.com/copilot/microsoft-365/agent-essentials/m365-agents-admin-guide">M365 Copilot Agents Admin Guide</a></li>
+  <li><a href="https://learn.microsoft.com/copilot/microsoft-365/copilot-control-system/management-controls">Copilot Control System — Agent Lifecycle</a></li>
+</ul>
+
+<!-- ═══════════════════════ 8. ADVANCED ANALYTICS ═══════════════════════ -->
+<h1 id="s8">8. Dashboard 5: Viva Insights Advanced Analytics (Power BI)</h1>
+
+<h2>8.1 When to Use This Dashboard</h2>
+<ul>
+  <li>You need before/after adoption comparison (Copilot users vs. baseline)</li>
+  <li>Analysts require custom cohort segmentation (by department, role, location)</li>
+  <li>Compare Copilot users' behavioural patterns against non-Copilot users</li>
+  <li>Need full Power BI export and visualization capabilities</li>
+  <li>Your organisation has dedicated analysts to maintain and interpret reports</li>
+  <li>Historical data beyond 28-day rolling window is required</li>
+</ul>
+
+<h2>8.2 Prerequisites</h2>
+
+<h3>Licensing Requirements</h3>
+<table>
+  <tr><th>Requirement</th><th>Details</th></tr>
+  <tr><td>Viva Insights Licence</td><td>Required: 50+ assigned Viva Insights licences for advanced analysis. <strong>Copilot licences automatically include the Viva Insights service plan</strong>, so 50 Copilot licences satisfy this requirement.</td></tr>
+  <tr><td>Microsoft 365 Copilot Licence</td><td>Required for Copilot usage data (assigned to the users whose Copilot activity you want to analyse)</td></tr>
+  <tr><td>Power BI Desktop</td><td>Version June 2022 or newer (free download)</td></tr>
+</table>
+
+<div class="callout danger">
+  <div class="callout-title">IMPORTANT: Licensing Clarification (Corrected from v2.0)</div>
+  <p>v2.0 of this guide stated that Advanced Analytics requires "BOTH Copilot licenses AND Viva Insights licenses" as separate purchases. This was incorrect.</p>
+  <p><strong>Correction:</strong> Every M365 Copilot licence <strong>automatically includes</strong> the Viva Insights service plan. 50 Copilot licences alone satisfy the Viva Insights licence requirement for Advanced Analysis. A separate Viva Insights add-on purchase is only needed if you want to analyse employees who do <em>not</em> have Copilot licences.</p>
+</div>
+
+<h3>Role Requirements</h3>
+<table>
+  <tr><th>Role</th><th>Assigned By</th><th>Purpose</th></tr>
+  <tr><td>Insights Analyst</td><td>Global Admin or Insights Admin</td><td>Access to create and run queries</td></tr>
+  <tr><td>Partition Access</td><td>Insights Admin</td><td>Access to relevant employee partitions</td></tr>
+</table>
+
+<div class="callout danger">
+  <div class="callout-title">IMPORTANT: Insights Admin ≠ Insights Analyst</div>
+  <p>These are <strong>two separate roles</strong> that serve different purposes. Having the <strong>Insights Admin</strong> role lets you configure settings (org data, privacy, manager settings, partitions) but does <strong>NOT</strong> let you create or run queries. For that, the user also needs the <strong>Insights Analyst</strong> role.</p>
+  <p>Common confusion: An Insights Admin opens the Viva Insights web app and sees the Admin panel with settings — but sees no option to &ldquo;Create analysis&rdquo;. They assume something is broken. In reality, the Create analysis button only appears for users with the Insights Analyst role. If one person needs to do both admin and analysis tasks, assign <strong>both</strong> roles.</p>
+  <p><strong>Error you may see:</strong> If the tenant has fewer than 50 assigned Viva Insights / Copilot licences, the Admin page will display: <em>&ldquo;Viva Insights is below the minimum assigned licence requirement for this experience.&rdquo;</em> This means the tenant has not met the 50-licence threshold &mdash; resolve by assigning more Copilot licences (which include Viva Insights) or standalone Viva Insights licences. See <a href="#s10">Section 10 Troubleshooting</a> for the full resolution path.</p>
+</div>
+
+<h3>Data Requirements</h3>
+<table>
+  <tr><th>Requirement</th><th>Details</th><th>Impact if Missing</th></tr>
+  <tr><td>Organizational Data Upload</td><td>HR attributes: Department, Job Function, Location, Level</td><td>Only tenant-level views; no segmentation</td></tr>
+  <tr><td>Pre-Adoption Data</td><td>4 weeks of activity before Copilot rollout</td><td>Cannot perform before/after comparison</td></tr>
+  <tr><td>Post-Adoption Data</td><td>4 weeks of activity after Copilot rollout</td><td>Insufficient data for impact analysis</td></tr>
+  <tr><td>User Adoption Dates</td><td>Ability to identify when each user got Copilot</td><td>Cannot accurately segment cohorts</td></tr>
+</table>
+
+<div class="callout warning">
+  <div class="callout-title">WARNING: Plan Ahead</div>
+  Before/after analysis requires 4 weeks of pre-adoption baseline data. If the customer has already rolled out Copilot, this historical comparison may not be possible. Identify this early.
+</div>
+
+<h2>8.3 Step-by-Step Implementation</h2>
+<p><em>Estimated Time: 4–8 hours active + query runtime + ongoing maintenance</em></p>
+
+<div class="step">
+  <div class="step-title">Step 1: Assign Insights Analyst Role (15 min)</div>
+  <ol>
+    <li>Identify the analyst(s) who will manage reports</li>
+    <li>In M365 Admin Center: <strong>Settings → Viva → Viva Insights → Add-on Plan → Insights Analyst</strong></li>
+    <li>Add users → Save</li>
+    <li>Wait 1–2 hours for permissions to propagate</li>
+  </ol>
+</div>
+
+<div class="step">
+  <div class="step-title">Step 2: Configure Partition Access (15 min)</div>
+  <ol>
+    <li>In Viva Insights Admin, navigate to <strong>Partitions</strong></li>
+    <li>Identify which partition contains relevant employees (usually Global)</li>
+    <li>Grant the Insights Analyst access to the appropriate partition(s)</li>
+  </ol>
+</div>
+
+<div class="step">
+  <div class="step-title">Step 3: Upload Organizational Data (30–60 min)</div>
+  <p>See <a href="#s9">Section 9: Organizational Data Reference</a>. Ensure data includes EffectiveDate set earlier than upload.</p>
+</div>
+
+<div class="step">
+  <div class="step-title">Step 4: Install Power BI Desktop (15 min)</div>
+  <ol>
+    <li>Download from <code>https://powerbi.microsoft.com/desktop/</code></li>
+    <li>Install version June 2022 or newer</li>
+    <li>Sign in with an account that has Insights Analyst role</li>
+  </ol>
+</div>
+
+<h3>8.3.1 Available Copilot Power BI Templates</h3>
+<p>Before creating a query, choose the right template for your analysis goal:</p>
+<table>
+  <tr><th>Template</th><th>Purpose</th><th>Key Analysis</th></tr>
+  <tr><td><strong>Microsoft 365 Copilot Impact</strong></td><td>Primary Copilot ROI report</td><td>Assisted hours, before/after adoption comparison, Copilot vs non-Copilot users across meetings, email, chat, documents, and Copilot Chat (work)</td></tr>
+  <tr><td><strong>Copilot Business Impact</strong></td><td>Correlate Copilot usage with business outcomes</td><td>Requires uploading business data (e.g., sales, CSAT). Shows how Copilot usage relates to the metrics that matter most to your organisation</td></tr>
+  <tr><td><strong>Copilot Studio Agents</strong></td><td>Agent-specific impact and cost analysis</td><td>Agent assisted hours, knowledge source references, session outcomes, Copilot Credits consumed, time savings multiplier (customisable)</td></tr>
+</table>
+<p>For broader collaboration analysis (not Copilot-specific), additional templates include: Ways of Working, Manager Effectiveness, and Wellbeing. These use the same analyst workflow but draw on different metrics.</p>
+
+<div class="step">
+  <div class="step-title">Step 5: Create a Report Using a Built-in Template (30-45 min)</div>
+  <p>This walkthrough uses the <strong>Copilot Impact</strong> template as an example. The same workflow applies to all templates.</p>
+  <ol>
+    <li>Sign in to the Viva Insights analyst experience at <code>https://analysis.insights.viva.office.com</code></li>
+    <li>Select <strong>Create analysis</strong></li>
+    <li>Under <strong>Templates</strong>, navigate to the <strong>Copilot</strong> section and select <strong>Microsoft 365 Copilot impact &rarr; Set up analysis</strong></li>
+    <li>Under <strong>Query setup</strong>:
+      <ul>
+        <li><strong>Query name:</strong> Enter a descriptive name (e.g., "Copilot Impact Q1 2026")</li>
+        <li><strong>Time period:</strong> Select from Last 1 month, Last 3 months, Last 6 months, or Custom date range. Copilot metrics are available for up to 13 months of historical data. For before/after analysis, ensure the range includes the period when Copilot was first deployed.</li>
+        <li><strong>Auto-refresh</strong> (optional): Check this box to have the query automatically re-run when new data arrives</li>
+        <li><strong>Description</strong> (optional): Add context for future reference</li>
+      </ul>
+    </li>
+    <li>Under <strong>Predefined template metrics</strong>: Review the pre-selected metrics (shown as grey tags &mdash; you cannot remove these). Optionally add more metrics by selecting <strong>Add metrics</strong></li>
+    <li>Under <strong>Select which employees you want to include</strong>: Add filters to narrow the population. Keep the predefined "Is Active" filter. Use org attributes to scope (e.g., Department = "Sales" if you want a sales-only report)</li>
+    <li>Under <strong>Select which employee attributes you want to include</strong>: Add up to 20 organisational attributes. These become your group-by and filter options in the Power BI report. Pre-selected attributes (grey) are required; blue attributes are recommended but removable</li>
+    <li>Select <strong>Run</strong> in the upper right. The query may take minutes to hours depending on population size</li>
+  </ol>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">NOTE: Data Quality Warnings</div>
+  <p>If you see yellow warnings on attributes, the data quality is low. Red warnings with the Run button disabled mean the attribute is missing from your org data entirely. Resolve these by updating your org data upload before running the query.</p>
+</div>
+
+<div class="step">
+  <div class="step-title">Step 6: Connect Power BI to Query Results (20 min)</div>
+  <ol>
+    <li>Once the query completes, download the <strong>.pbit template file</strong> from the query results page</li>
+    <li>Open the downloaded template in Power BI Desktop</li>
+    <li>When prompted:
+      <ul>
+        <li>Paste in the <strong>partition identifier</strong> and <strong>query identifier</strong> (shown on the results page)</li>
+        <li>Set the <strong>Minimum group size</strong> for data aggregation (must match your organisation's privacy policy)</li>
+      </ul>
+    </li>
+    <li>Select <strong>Load</strong> to import the query results</li>
+    <li>Sign in using your <strong>Organisational account</strong> (the same account you use for Viva Insights). You may need to sign in more than once</li>
+    <li>Wait for Power BI to load and prepare the data (may take several minutes for large datasets)</li>
+  </ol>
+</div>
+
+<div class="step">
+  <div class="step-title">Step 7: Configure Report Settings &amp; Explore (30-60 min)</div>
+  <p>Once the report loads, configure the Settings page (accessible from the right panel or the Settings icon on any page):</p>
+  <ol>
+    <li><strong>Time period:</strong> Select the date range you want the report to display</li>
+    <li><strong>Group by:</strong> Choose the primary group-by attribute (e.g., Organisation, Department). This applies across all report pages</li>
+    <li><strong>Filters</strong> (optional): Select org attributes and values to filter the employees shown</li>
+    <li><strong>Customise active Copilot user definition:</strong> Choose between:
+      <ul>
+        <li>At least one active day in the selected time period</li>
+        <li>At least one active day per four weeks</li>
+        <li>At least one active day per week</li>
+      </ul>
+    </li>
+    <li><strong>Report language:</strong> Change if needed</li>
+  </ol>
+  <p><strong>Explore the report pages:</strong></p>
+  <ul>
+    <li><strong>Summary page:</strong> Active Copilot users, total actions, Assisted Hours overview, with cards for Meetings, Email, Teams Chat, Documents, and Copilot Chat (work)</li>
+    <li><strong>Per-section deep-dives</strong> (each section has 3 analysis views):
+      <ul>
+        <li><em>Before vs. after adoption:</em> How collaboration behaviour changed after employees started using Copilot</li>
+        <li><em>Copilot vs. non-Copilot users across groups:</em> Compare active Copilot users against non-users by department, function, etc.</li>
+        <li><em>Two-group comparison:</em> Compare two custom cohorts of employees side by side</li>
+      </ul>
+    </li>
+    <li><strong>Research insights page:</strong> Links to Microsoft research on Copilot adoption and impact</li>
+  </ul>
+</div>
+
+<div class="callout warning">
+  <div class="callout-title">WARNING: Before/After Analysis Requires Full Date Range</div>
+  <p>To accurately capture the first time employees began using Copilot, ensure your query time period extends back to when your organisation first enabled Copilot. For example, if Copilot was enabled in January 2025, include data from January 2025 onwards.</p>
+</div>
+
+<h2>8.4 Success Criteria</h2>
+<ul class="checklist">
+  <li>Insights Analyst role assigned and accessible</li>
+  <li>Organizational data uploaded and processed</li>
+  <li>Copilot Impact query created and executed successfully</li>
+  <li>Power BI Desktop connected to OData feed</li>
+  <li>Template report loads with data</li>
+  <li>Before/after adoption comparison is visible</li>
+  <li>Custom segmentation filters work</li>
+  <li>Analyst understands how to refresh and modify reports</li>
+</ul>
+
+<h2>8.5 Ongoing Maintenance &amp; Operationalisation</h2>
+<ul>
+  <li>Refresh organizational data monthly (or when org changes occur)</li>
+  <li>Re-run queries periodically to capture updated data</li>
+  <li>Update Power BI reports when Microsoft releases template updates</li>
+  <li>Share reports with leaders and managers via <strong>Publish Reports</strong> (see <a href="#s6">Section 6.7 Step 4</a>) or by sharing the Power BI workspace directly</li>
+</ul>
+
+<h3>Analyst Departure &mdash; Query &amp; Report Transfer</h3>
+<p>If an Insights Analyst leaves the organisation, their queries and published reports require attention:</p>
+<table>
+  <tr><th>Asset</th><th>What Happens</th><th>Action Required</th></tr>
+  <tr><td><strong>Completed query results</strong></td><td>Results persist in the Viva Insights platform and remain accessible to other analysts with partition access</td><td>No immediate action. New analyst can view and download existing results.</td></tr>
+  <tr><td><strong>Scheduled/recurring queries</strong></td><td>Queries created by the departed analyst may stop running when their account is disabled</td><td>New analyst should recreate recurring queries under their own account before the old account is deleted.</td></tr>
+  <tr><td><strong>Published reports (Publish Reports)</strong></td><td>Published reports have an expiry date (up to 365 days). If the publisher&rsquo;s account is removed, existing published reports <strong>remain accessible until expiry</strong> but cannot be renewed.</td><td>New analyst should re-publish critical reports under their own account before the originals expire.</td></tr>
+  <tr><td><strong>Power BI reports (.pbix files)</strong></td><td>Local .pbix files are on the analyst&rsquo;s machine. Power BI Service reports are in their personal workspace.</td><td>Transfer .pbix files to a shared location (e.g., SharePoint). Move Power BI Service reports to a <strong>shared workspace</strong> and transfer ownership before account deletion. See <a href="https://learn.microsoft.com/power-bi/admin/service-admin-closing-your-account">Power BI account closure guidance</a>.</td></tr>
+  <tr><td><strong>Partition access</strong></td><td>Access is per-user and is removed when the account is deleted</td><td>Insights Admin must assign partition access to the replacement analyst.</td></tr>
+</table>
+<div class="callout warning">
+  <div class="callout-title">WARNING: Plan for Analyst Transitions</div>
+  Always have at least two analysts with partition access. Store .pbix files in a shared workspace, not on individual machines. Document query schedules so they can be recreated if needed.
+</div>
+
+<h3>Suggested Steady-State Review Cadence</h3>
+<p>Once all tiers are operational, suggest the following review rhythm to the customer:</p>
+<table>
+  <tr><th>Cadence</th><th>Who</th><th>What to Review</th><th>Where</th></tr>
+  <tr><td><strong>Weekly</strong></td><td>IT Admin</td><td>Licence utilisation, inactive users for reallocation</td><td>Admin Center &rarr; Reports &rarr; M365 Copilot</td></tr>
+  <tr><td><strong>Fortnightly</strong></td><td>Business Leaders / Managers</td><td>Copilot Assisted Hours &amp; Value trends, adoption by group, sentiment shifts</td><td>Copilot Dashboard (Impact + Adoption pages)</td></tr>
+  <tr><td><strong>Monthly</strong></td><td>Business Leaders</td><td>Copilot Analytics Reports for deeper drill-downs; agent adoption (if applicable)</td><td>Viva Insights &rarr; Reports; Agent Dashboard</td></tr>
+  <tr><td><strong>Quarterly</strong></td><td>Analysts + Exec Sponsor</td><td>Before/after cohort analysis, ROI report for board deck, refresh org data</td><td>Advanced Analytics (Power BI)</td></tr>
+</table>
+<p>Leaders should use the <strong>Copilot Dashboard Impact page</strong> as their primary &ldquo;at a glance&rdquo; view, supplemented by Copilot Analytics Reports for targeted questions. Advanced Analytics Power BI reports are best suited for quarterly deep-dives and executive presentations.</p>
+
+<h2>8.6 References</h2>
+<ul>
+  <li><a href="https://learn.microsoft.com/en-us/viva/insights/advanced/analyst/templates/microsoft-365-copilot-impact">Copilot Impact Report (Power BI)</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/viva/insights/advanced/analyst/templates/copilot-business-impact">Copilot Business Impact Report</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/viva/insights/advanced/setup-maint/setup-overview">Setup Advanced Reporting</a></li>
+  <li><a href="https://learn.microsoft.com/en-us/viva/insights/advanced/setup-maint/assign-user-roles">Assign roles</a></li>
+  <li><a href="https://aka.ms/CopilotAdvancedAnalytics">Copilot Advanced Analytics Playbook</a></li>
+</ul>
+
+<!-- ═══════════════════════ 9. ORG DATA REFERENCE ═══════════════════════ -->
+<h1 id="s9">9. Organizational Data Reference (Consolidated)</h1>
+
+<p>This section consolidates organizational data guidance for all tiers. Upload once; the data serves the Copilot Dashboard, Analytics Reports, Agent Dashboard, and Advanced Analytics.</p>
+
+<h2>9.1 Why Upload Org Data? (Entra ID vs. Org Data Upload)</h2>
+<p>A common customer question: <em>&ldquo;We already have Department, Manager, and Job Title in Entra ID &mdash; why do we need to upload a CSV?&rdquo;</em></p>
+<p>Entra ID provides a baseline, but org data uploads unlock significantly more analytics capability:</p>
+<table>
+  <tr><th>Capability</th><th>Entra ID Only</th><th>With Org Data Upload</th></tr>
+  <tr><td>Department filter on dashboard</td><td>Yes (Entra ID &ldquo;Department&rdquo; attribute)</td><td>Yes (from CSV &mdash; can use different/cleaner values)</td></tr>
+  <tr><td>Job Function / Job Discipline filter</td><td>No</td><td>Yes (via <code>FunctionType</code> / <code>Microsoft_JobDiscipline</code>)</td></tr>
+  <tr><td>Location filter</td><td>No</td><td>Yes (via <code>Location</code> attribute)</td></tr>
+  <tr><td>Level / Seniority filter</td><td>No</td><td>Yes (via <code>LevelDesignation</code>)</td></tr>
+  <tr><td>Custom attributes (Cost Centre, Agency, BU, Region)</td><td>No</td><td>Yes (up to 105 custom attributes)</td></tr>
+  <tr><td>Multi-agency / multi-BU partitioning</td><td>Not possible</td><td>Required (partitions filter on org data attributes like <code>Agency</code>)</td></tr>
+  <tr><td>Before/after cohort segmentation in Power BI</td><td>No segmentation</td><td>Yes (segment by any uploaded attribute)</td></tr>
+  <tr><td>Manager hierarchy accuracy</td><td>Depends on Entra ID completeness</td><td>Can supplement/override with CSV <code>ManagerId</code></td></tr>
+  <tr><td>Data freshness control</td><td>Updated by directory team (often delayed)</td><td>Updated by Insights Admin on a defined cadence</td></tr>
+</table>
+
+<div class="callout tip">
+  <div class="callout-title">TIP: When Entra ID Alone Is Sufficient</div>
+  <p>If the customer <strong>only</strong> needs the Copilot Dashboard with tenant-level views and Department filtering &mdash; and their Entra ID Department attribute is accurate and consistently populated &mdash; they can skip the org data upload. However, if they need <strong>any</strong> of the following, org data upload is required: Location or Job Function filters, custom attributes (Cost Centre, Agency), multi-BU partitioning, or before/after cohort analysis in Power BI.</p>
+</div>
+
+<h3>What Breaks with an Incomplete Entra ID Hierarchy?</h3>
+<p>If the Entra ID <code>Manager</code> attribute is missing or inconsistent for many users:</p>
+<table>
+  <tr><th>Feature</th><th>Impact</th></tr>
+  <tr><td>Auto CxO Identification (automatic dashboard access)</td><td>Fewer leaders are auto-identified. Users without a clear reporting line are excluded from the &ldquo;top 3 levels&rdquo; calculation.</td></tr>
+  <tr><td>Manager Settings (team-level data for managers)</td><td>Managers without a populated <code>Manager</code> attribute or without enough direct reports meeting the minimum team size will <strong>not</strong> see team-level data.</td></tr>
+  <tr><td>Filter by manager hierarchy (Publish Reports)</td><td>Published reports with &ldquo;Filter by manager hierarchy&rdquo; will show incomplete data. Managers without hierarchy data see nothing.</td></tr>
+  <tr><td>Advanced Analytics cohort segmentation</td><td>If <code>ManagerId</code> is missing in org data and Entra ID, manager-based grouping will be inaccurate.</td></tr>
+</table>
+<p><strong>Recommendation:</strong> Before deploying dashboards, run <a href="#s5">Section 5.3 Step 2 (Verify Entra ID Hierarchy)</a>. If more than 20% of users lack a Manager attribute, prioritise fixing directory data or supplement with an org data CSV upload that includes correct <code>ManagerId</code> values.</p>
+
+<h3>What Happens After Org Data Is Uploaded? (Reversal)</h3>
+<p>Once org data is uploaded, it <strong>permanently replaces Entra ID as the data source</strong> for dashboard filters. This means:</p>
+<ul>
+  <li>Department values come from the CSV, not from Entra ID &mdash; even if they differ</li>
+  <li>If you stop uploading, the data becomes stale (not reverted to Entra ID)</li>
+  <li>To revert to Entra ID as the source, you must <strong>contact Microsoft Support</strong> to reset the org data configuration. There is no self-service reversal.</li>
+  <li><strong>Before uploading:</strong> Confirm with the customer that they are ready to own the ongoing refresh cycle (monthly re-uploads recommended)</li>
+</ul>
+
+<h2>9.2 Upload Methods</h2>
+<table>
+  <tr><th>Method</th><th>Who Uploads</th><th>Best For</th></tr>
+  <tr><td><strong>Option A:</strong> Viva Insights web app</td><td>Insights Administrator</td><td>Customers WITH Viva Insights licences (recommended — richer attribute support)</td></tr>
+  <tr><td><strong>Option B:</strong> M365 Admin Center</td><td>Global Admin</td><td>Customers WITHOUT Viva Insights licences</td></tr>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">NOTE: Merged Uploads</div>
+  If both methods are used, the dashboard merges the uploads and prioritises the more recent data.
+</div>
+
+<h2>9.2 Attribute Mapping</h2>
+<table>
+  <tr><th>Viva Insights Attribute</th><th>M365 Admin Center Attribute</th><th>Required?</th></tr>
+  <tr><td><code>PersonId</code></td><td><code>Microsoft_PersonEmail</code></td><td>Required</td></tr>
+  <tr><td><code>ManagerId</code></td><td><code>Microsoft_ManagerEmail</code></td><td>Required</td></tr>
+  <tr><td><code>Organization</code></td><td><code>Microsoft_Organization</code></td><td>Required</td></tr>
+  <tr><td><code>EffectiveDate</code></td><td>N/A</td><td>Recommended (set earlier than upload date)</td></tr>
+  <tr><td><code>FunctionType</code></td><td><code>Microsoft_JobDiscipline</code></td><td>Optional (enables Job Function filter)</td></tr>
+  <tr><td><code>LevelDesignation</code></td><td>N/A</td><td>Optional (enables level views)</td></tr>
+  <tr><td><code>Location</code></td><td>N/A</td><td>Optional (enables location filter)</td></tr>
+  <tr><td>Custom attributes (e.g., <code>BusinessUnit</code>)</td><td>N/A</td><td>Optional (up to 105 total attributes)</td></tr>
+</table>
+
+<h2>9.3 Upload Steps (Option A — Viva Insights)</h2>
+<ol>
+  <li>Prepare CSV: UTF-8 encoded, &lt;1 GB, include all required columns + custom attributes</li>
+  <li>Navigate to <code>https://insights.cloud.microsoft</code> → Admin → Data hub → .csv upload → Start</li>
+  <li>Upload file, map fields to Viva Insights attributes</li>
+  <li>Validate and submit — wait up to 7 days for processing</li>
+</ol>
+
+<h2>9.4 Upload Steps (Option B — M365 Admin Center)</h2>
+<ol>
+  <li>Prepare CSV with <code>Microsoft_*</code> attribute names</li>
+  <li>Navigate to <code>https://admin.microsoft.com</code> → Settings → Org settings → Organization profile → Organizational data</li>
+  <li>Upload CSV file — wait up to 7 days for processing</li>
+</ol>
+
+<h2>9.5 Re-Upload &amp; Maintenance</h2>
+<p>Org data must be <strong>fully re-uploaded</strong> whenever changes occur (new departments, reorgs, location changes). There is no incremental/delta upload — each upload completely replaces the previous dataset.</p>
+<table>
+  <tr><th>Scenario</th><th>Action</th><th>Processing Time</th></tr>
+  <tr><td>New department added (reorg)</td><td>Update the CSV with new department values for affected employees. Re-upload the full file.</td><td>Up to 7 days</td></tr>
+  <tr><td>Employee moved between departments</td><td>Update their row in the CSV. Re-upload the full file.</td><td>Up to 7 days</td></tr>
+  <tr><td>Bad data uploaded (filters broken)</td><td>Re-upload the previous correct CSV immediately. The system will overwrite the bad data.</td><td>Up to 7 days</td></tr>
+  <tr><td>Switching from M365 Admin upload to Viva Insights upload</td><td>Upload via Viva Insights. The system merges and prioritises the most recent upload.</td><td>Up to 7 days</td></tr>
+</table>
+
+<div class="callout warning">
+  <div class="callout-title">WARNING: Always Validate Before Uploading</div>
+  <p>There is <strong>no automatic rollback</strong> — if you upload bad data, filters will break for up to 7 days while the corrected file processes. Before uploading:</p>
+  <ol>
+    <li>Open the CSV in a spreadsheet and verify column names match exactly (Section 9.2)</li>
+    <li>Confirm encoding is UTF-8 and file size is &lt;1 GB</li>
+    <li>Check that <code>EffectiveDate</code> is set to a date <strong>earlier</strong> than today</li>
+    <li>Verify every employee has a <code>PersonId</code>, <code>ManagerId</code>, and <code>Organization</code></li>
+    <li>Keep a copy of the previous CSV so you can re-upload it if needed</li>
+  </ol>
+</div>
+
+<p><strong>Recommended cadence:</strong> Re-upload org data <strong>monthly</strong> or whenever significant org changes occur (restructures, M&amp;A, location moves). Set a calendar reminder for the Insights Admin.</p>
+
+<h2>9.6 Key Guidance</h2>
+<ul>
+  <li>Upload data for <strong>every employee</strong> to ensure Scope filters are accurate</li>
+  <li>Do <strong>not</strong> upload a <code>TimeZone</code> column (will cause an error)</li>
+  <li>Include <code>EffectiveDate</code> set to a date <strong>earlier</strong> than the upload date to avoid delays</li>
+  <li>If both Insights Admin and Global Admin upload data, the dashboard prioritises the most recent upload</li>
+  <li>Org data permanently changes the data source from Entra ID to the file — refresh regularly</li>
+</ul>
+
+<!-- ═══════════════════════ 10. TROUBLESHOOTING ═══════════════════════ -->
+<h1 id="s10">10. Troubleshooting Common Issues</h1>
+
+<h2>10.1 Admin Center Reports</h2>
+<table>
+  <tr><th>Issue</th><th>Possible Cause</th><th>Resolution</th></tr>
+  <tr><td>No data appearing</td><td>Less than 72 hours since first usage</td><td>Wait 72 hours</td></tr>
+  <tr><td>No data appearing</td><td>No users have Copilot licenses assigned</td><td>Verify license assignment</td></tr>
+  <tr><td>Cannot export CSV</td><td>Insufficient admin role</td><td>Request Reports Reader role</td></tr>
+  <tr><td>User details hidden</td><td>Privacy settings enabled</td><td>Check Reports → Settings → Display concealed user info</td></tr>
+  <tr><td>Data shows 0 active users</td><td>Users haven&rsquo;t used Copilot</td><td>Confirm users have accessed Copilot features</td></tr>
+</table>
+
+<h2>10.2 Viva Insights Dashboard &amp; Analytics Reports</h2>
+<table>
+  <tr><th>Issue</th><th>Possible Cause</th><th>Resolution</th></tr>
+  <tr><td>Dashboard access denied</td><td>Copilot Dashboard VFAM policy is OFF or scoped to specific users</td><td>Admin Center → Settings → Viva → Viva Insights → Set up and management → Turn Advanced Insights on or off → verify <strong>Enable Copilot Dashboard</strong> is ON for Everyone (or includes the affected user)</td></tr>
+  <tr><td>Dashboard access denied</td><td>AI Admin not added to access list</td><td>AI Admins must explicitly add themselves via Manage user access for Copilot Dashboard</td></tr>
+  <tr><td>Dashboard access denied</td><td>Delegation VFAM policy restricts delegates</td><td>Check <strong>Copilot Dashboard Delegation</strong> policy — if scoped to specific users, delegates must be included</td></tr>
+  <tr><td>Dashboard access denied</td><td>Less than 2,500 users in tenant (no auto-access)</td><td>Use manual access assignment or delegate access</td></tr>
+  <tr><td>Impact page missing collaboration data</td><td>Behavioral Experiences policy is OFF</td><td>Navigate to <code>admin.microsoft.com</code> &rarr; Settings &rarr; Microsoft Viva &rarr; Viva Insights &rarr; Set up and management &rarr; Turn Advanced Insights on or off &rarr; verify <strong>TenantPolicyForBehavioralExperiences</strong> is set to <strong>On</strong> for Everyone. Changes take 24 hours to propagate.</td></tr>
+  <tr><td>Only Readiness page visible</td><td>Less than 50 assigned licenses</td><td>Increase assigned licenses to 50+</td></tr>
+  <tr><td>&ldquo;Viva Insights is below the minimum assigned licence requirement for this experience&rdquo;</td><td>Tenant has fewer than 50 assigned Viva Insights or Copilot licences</td><td>Assign 50+ Copilot licences (each includes Viva Insights service plan) OR standalone Viva Insights licences. Go to Admin Center &rarr; Billing &rarr; Licenses and verify the <strong>assigned</strong> count (not purchased). If recently assigned, wait 24&ndash;48 hours for propagation.</td></tr>
+  <tr><td>No group-level filtering</td><td>Organizational data not uploaded</td><td>Upload HR data (see <a href="#s9">Section 9</a>)</td></tr>
+  <tr><td>Impact page shows no data</td><td>Less than 7 days since license assignment</td><td>Wait up to 7 days for processing</td></tr>
+  <tr><td>Data suppressed (N/A)</td><td>Group size below privacy threshold</td><td>Groups must meet minimum configured size (default 10)</td></tr>
+  <tr><td>Managers can&rsquo;t see team data</td><td>Manager Settings not enabled</td><td>Navigate to <code>insights.cloud.microsoft</code> &rarr; Admin &rarr; <strong>Manager Settings</strong> (under Platform Setup) &rarr; Turn on &ldquo;Grant managers scoped access&rdquo;. Wait 1 hour for propagation. Also verify the manager has a populated ManagerID in Entra ID. (See Section 5.3, Step 5)</td></tr>
+  <tr><td>Sentiment page empty</td><td>No survey platform configured</td><td>Configure Viva Glint, Pulse, or upload survey data</td></tr>
+  <tr><td>Exclusion list not working</td><td>Processing not complete</td><td>Exclusion list changes take up to 5 days to process. Check status at <code>admin.microsoft.com</code> &rarr; Settings &rarr; Microsoft Viva &rarr; Viva Insights &rarr; <strong>Unified exclusion list</strong>.</td></tr>
+  <tr><td>Org data not showing</td><td>Missing EffectiveDate or wrong attribute names</td><td>Verify attribute names match exactly; include EffectiveDate. <strong>Note:</strong> M365 Admin Center uses <code>Microsoft_Organization</code> while Viva Insights uses <code>Organization</code> &mdash; they are different field names.</td></tr>
+  <tr><td>Org data not showing</td><td>Upload still processing (within 7-day window)</td><td>Org data uploads take up to 7 days to process. Check status: <code>insights.cloud.microsoft</code> &rarr; Admin &rarr; <strong>Data hub</strong> &rarr; verify upload shows &ldquo;Complete&rdquo; (not &ldquo;Processing&rdquo; or &ldquo;Failed&rdquo;). If failed, re-upload with corrected CSV.</td></tr>
+  <tr><td>Org data not showing</td><td>Upload failed silently</td><td>Navigate to <code>insights.cloud.microsoft</code> &rarr; Admin &rarr; <strong>Data quality</strong> to check for validation errors. Common failures: incorrect encoding (must be UTF-8), file &gt;1 GB, missing required columns (PersonId, ManagerId, Organization).</td></tr>
+</table>
+
+<h2>10.3 Agent Dashboard</h2>
+<table>
+  <tr><th>Issue</th><th>Possible Cause</th><th>Resolution</th></tr>
+  <tr><td>Agent Dashboard not visible</td><td>User only has "Your group" scope delegate access</td><td>Update delegate scope to "Your company"</td></tr>
+  <tr><td>Agent Dashboard disabled</td><td>VFAM policy disabling Agent Dashboard</td><td>Check AgentDashboard VFAM control; ensure both web app and Agent Dashboard controls are enabled</td></tr>
+  <tr><td>No agent data</td><td>No agents deployed or no agent activity</td><td>Verify Copilot agents are deployed and users are interacting with them</td></tr>
+</table>
+
+<h2>10.4 Advanced Analytics (Power BI)</h2>
+<table>
+  <tr><th>Issue</th><th>Possible Cause</th><th>Resolution</th></tr>
+  <tr><td>&ldquo;Viva Insights is below the minimum assigned licence requirement for this experience&rdquo;</td><td>Fewer than 50 Viva Insights / Copilot licences assigned in the tenant</td><td>Assign 50+ Copilot licences (each includes Viva Insights) OR add standalone Viva Insights licences. Check: Admin Center &rarr; Billing &rarr; Licenses &rarr; verify <strong>assigned</strong> count (&ge;50). Wait 24&ndash;48 hours after assigning.</td></tr>
+  <tr><td>Cannot access analyst experience</td><td>Insights Analyst role not assigned</td><td>Request role from Global/Insights Admin; wait 1–2 hours</td></tr>
+  <tr><td>Can see Admin settings but no &ldquo;Create analysis&rdquo; button</td><td>User has Insights Admin role but <strong>not</strong> Insights Analyst role</td><td>Insights Admin ≠ Insights Analyst. Assign the Insights Analyst role separately: Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Add-on Plan &rarr; Insights Analyst. Both roles can be assigned to the same user.</td></tr>
+  <tr><td>Query returns no data</td><td>No users in selected partition</td><td>Verify partition access and employee filters</td></tr>
+  <tr><td>Query fails</td><td>Time period exceeds available data</td><td>Reduce query time period</td></tr>
+  <tr><td>Power BI won&rsquo;t connect</td><td>Authentication issues</td><td>Sign in with account that has Insights Analyst role</td></tr>
+  <tr><td>No segmentation options</td><td>Organizational data not uploaded</td><td>Upload HR data before creating queries</td></tr>
+  <tr><td>Before/after unavailable</td><td>No pre-adoption baseline data</td><td>Focus on current-state analysis instead</td></tr>
+</table>
+
+<h2>10.5 Transient Errors &amp; Service Issues</h2>
+<table>
+  <tr><th>Issue</th><th>Possible Cause</th><th>Resolution</th></tr>
+  <tr><td>Dashboard shows blank page or &ldquo;Something went wrong&rdquo;</td><td>Microsoft 365 service incident or temporary outage</td><td>Check <a href="https://admin.microsoft.com/Adminportal/Home#/servicehealth">M365 Service Health</a> (Admin Center &rarr; Health &rarr; Service health). Look for incidents affecting &ldquo;Microsoft Viva&rdquo; or &ldquo;Microsoft 365 suite.&rdquo; If an incident is active, wait for Microsoft to resolve it.</td></tr>
+  <tr><td>Dashboard loads but data is stale or missing</td><td>Backend processing delay</td><td>Dashboard data has a ~6-day processing delay. If data is missing beyond this window, check Service Health. No admin action required for processing delays.</td></tr>
+  <tr><td>Dashboard worked yesterday, broken today (no config change)</td><td>Browser cache or extension conflict</td><td>Try: (1) Clear browser cache and cookies for <code>insights.cloud.microsoft</code>. (2) Open in InPrivate/Incognito window. (3) Try a different browser (Edge recommended). (4) Disable browser extensions temporarily.</td></tr>
+  <tr><td>Intermittent &ldquo;Access denied&rdquo; errors</td><td>Token refresh issue or Entra ID sync delay</td><td>Sign out of all Microsoft sessions &rarr; clear browser data &rarr; sign back in. If persistent after 1 hour, check VFAM policies (Section 5.3 Step 3).</td></tr>
+  <tr><td>Power BI template fails to connect after working previously</td><td>Query expired or analyst session timed out</td><td>Re-authenticate in Power BI Desktop with the Insights Analyst account. If the query expired, create a new query run in Viva Insights.</td></tr>
+</table>
+<div class="callout tip">
+  <div class="callout-title">TIP: Before Escalating</div>
+  Before engaging Microsoft Support, always check: (1) Service Health dashboard for known incidents, (2) Try InPrivate browser, (3) Verify VFAM policies haven&rsquo;t changed, (4) Confirm licences are still assigned. If none of these resolve the issue, escalate via Admin Center &rarr; Help and Support with tenant ID, screenshots, and timestamps.
+</div>
+
+<h2>10.6 Auditing Delegation Access</h2>
+<p>Use Microsoft Purview audit logs to track delegation:</p>
+<table>
+  <tr><th>Operation</th><th>Friendly Name</th><th>Description</th></tr>
+  <tr><td><code>AddDelegates</code></td><td>Added delegate access</td><td>User granted dashboard access to another user</td></tr>
+  <tr><td><code>RemoveDelegates</code></td><td>Removed delegate access</td><td>User revoked dashboard access from another user</td></tr>
+</table>
+
+<div class="callout tip">
+  <div class="callout-title">TIP: Escalation Path</div>
+  For issues not resolved by these steps, engage Microsoft Support via the Admin Center Help and Support section. Have tenant ID, license counts, and specific error messages ready.
+</div>
+
+<!-- ═══════════════════════ 11. PRIVACY ═══════════════════════ -->
+<h1 id="s11">11. Data Privacy &amp; Compliance</h1>
+
+<h2>11.1 Privacy Thresholds</h2>
+<ul>
+  <li><strong>Default minimum group size:</strong> 10 users</li>
+  <li><strong>Configurable minimum:</strong> 5 users (lowest allowed); <strong>maximum:</strong> configurable up to 100</li>
+  <li><strong>Regional requirements:</strong> Some jurisdictions (e.g., European Works Councils, German Betriebsrat) may require higher minimums (commonly 25+). Always consult the customer&rsquo;s legal/compliance team before setting the threshold below any regulatory or contractual requirement.</li>
+  <li>Data suppressed for groups below threshold</li>
+  <li>No individual user behaviour visible in Viva Insights dashboards</li>
+  <li><strong>Differential privacy:</strong> Automatically applied — randomly adjusts individual observations so aggregated results protect privacy</li>
+  <li><strong>Distribution masking:</strong> Automatically hides results where "almost all" or "almost none" fit a profile</li>
+</ul>
+
+<div class="callout info">
+  <div class="callout-title">NOTE: Minimum Team Size vs. Minimum Group Size</div>
+  <p><strong>Minimum team size</strong> (set in Manager Settings) determines which managers can see their team&rsquo;s data. Includes the manager in the count.</p>
+  <p><strong>Minimum group size</strong> (set in Privacy Settings) is the smallest group shown in dashboards and Power BI reports for group comparisons.</p>
+  <p>Both minimum values must be ≥5.</p>
+</div>
+
+<h2>11.2 Exclusion Lists</h2>
+<ul>
+  <li>Removes users from Copilot Dashboard AND Viva Insights behaviour reports</li>
+  <li>Also excludes M365 Copilot Chat (web) usage data</li>
+  <li>Upload: CSV or Entra ID groups</li>
+  <li>Processing: up to 5 days to apply, up to 3 days to remove</li>
+</ul>
+
+<h2>11.3 Data Residency</h2>
+<p>Viva Insights data residency follows the <strong>Exchange Online mailbox location</strong> for each user. This means:</p>
+<ul>
+  <li>Collaboration signals (meetings, emails, chats) are processed and stored in the <strong>same geographic region</strong> as each user&rsquo;s Exchange Online mailbox</li>
+  <li>Copilot activity data follows the same residency as the user&rsquo;s M365 tenant</li>
+  <li>Organizational data uploads are stored in the tenant&rsquo;s primary data location</li>
+  <li><strong>Australia:</strong> If the tenant is provisioned in the Australia geography, data is stored in Microsoft&rsquo;s Sydney and Melbourne data centres. Verify in Admin Center &rarr; Settings &rarr; Org settings &rarr; Organization profile &rarr; Data location.</li>
+  <li><strong>EU:</strong> If the tenant is in the EU Data Boundary, data stays within EU data centres</li>
+  <li><strong>Multi-Geo:</strong> For tenants with Multi-Geo, each user&rsquo;s data follows their mailbox location</li>
+</ul>
+<p><strong>Reference:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/privacy/data-residency">Viva Insights data residency</a> | <a href="https://learn.microsoft.com/microsoft-365/enterprise/o365-data-locations">Microsoft 365 data locations</a></p>
+
+<h2>11.4 Privacy Audit Evidence</h2>
+<p>When an auditor requests proof that individual-level data was not exposed, gather the following evidence:</p>
+<table>
+  <tr><th>Evidence Item</th><th>Where to Find It</th><th>What It Proves</th></tr>
+  <tr><td>Minimum group size configuration</td><td>Viva Insights &rarr; Admin &rarr; Privacy settings</td><td>Groups below threshold are suppressed (no individual data visible)</td></tr>
+  <tr><td>Differential privacy enabled</td><td>Enabled by default &mdash; no admin toggle (always on)</td><td>Individual values are randomly adjusted before aggregation</td></tr>
+  <tr><td>Distribution masking</td><td>Enabled by default</td><td>Results where &ldquo;almost all&rdquo; or &ldquo;almost none&rdquo; match are hidden</td></tr>
+  <tr><td>Exclusion list</td><td>Admin Center &rarr; Viva Insights &rarr; Unified exclusion list</td><td>Named individuals excluded from all analytics</td></tr>
+  <tr><td>Delegation audit log</td><td>Purview Compliance Portal &rarr; Audit &rarr; search for &ldquo;AddDelegates&rdquo; / &ldquo;RemoveDelegates&rdquo;</td><td>Who granted dashboard access to whom, and when</td></tr>
+  <tr><td>VFAM policy list</td><td>Admin Center &rarr; Viva Insights &rarr; Turn Advanced Insights on or off</td><td>Which features are enabled and for which scope</td></tr>
+  <tr><td>Dashboard access list</td><td>Admin Center &rarr; Viva Insights &rarr; Manage user access for Copilot Dashboard</td><td>Exactly which users have dashboard access</td></tr>
+</table>
+<p><strong>Reference:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/privacy/privacy">Viva Insights privacy overview</a></p>
+
+<h2>11.5 GDPR and Regional Compliance</h2>
+<ul>
+  <li>Viva Insights designed with GDPR compliance in mind</li>
+  <li>Users can opt out via their settings</li>
+  <li>Organizational data uploads should follow customer data handling policies</li>
+  <li>Consult customer legal/compliance team for specific regulatory requirements</li>
+</ul>
+
+<h2>11.5 Data Retention</h2>
+<table>
+  <tr><th>Dashboard</th><th>Retention Period</th><th>Notes</th></tr>
+  <tr><td>Admin Center Reports</td><td>Up to 180 days (selectable)</td><td>No historical data beyond 180 days</td></tr>
+  <tr><td>Copilot Dashboard</td><td>28-day rolling window</td><td>Daily refresh; up to 6-day delay</td></tr>
+  <tr><td>Advanced Analytics (collaboration)</td><td>Up to 27 months</td><td>Initially 13 months, grows with weekly refreshes</td></tr>
+  <tr><td>Advanced Analytics (Copilot metrics)</td><td>Up to 13 months</td><td>Copilot-specific metrics only retain 13 months</td></tr>
+</table>
+
+<!-- ═══════════════════════ 12. FAQ ═══════════════════════ -->
+<h1 id="s12">12. Common Customer Questions (FAQ)</h1>
+
+<table>
+  <tr><th>#</th><th>Question</th><th>Answer</th></tr>
+  <tr><td>1</td><td>Can managers see individual employee Copilot usage?</td><td><strong>No.</strong> All data is aggregated at group level and protected by minimum group size thresholds, differential privacy, and distribution masking.</td></tr>
+  <tr><td>2</td><td>What happens if we drop below 50 licences?</td><td>The dashboard reverts to limited features (tenant-level only, Readiness page). Previously available group-level data is no longer shown.</td></tr>
+  <tr><td>3</td><td>Can we trial the Dashboard before licensing everyone?</td><td>The basic Copilot Dashboard is available to any M365/O365 tenant with Exchange Online — no paid Viva licence required. But full group filtering requires the 50-licence threshold.</td></tr>
+  <tr><td>4</td><td>Does the Dashboard track Copilot Chat (web) usage?</td><td>Yes, if Copilot Chat reporting is enabled in the tenant and you have 50+ Copilot or Viva Insights licences. There is a separate licence filter for Copilot Chat.</td></tr>
+  <tr><td>5</td><td>How often does the data refresh?</td><td>Daily for the Copilot Dashboard (28-day rolling window, ~6-day delay). Admin Center reports refresh approximately every 72 hours.</td></tr>
+  <tr><td>6</td><td>Can we see data by business unit or country?</td><td>Yes, but you must upload organizational data with those attributes. Without org data, only Entra ID Department is available as a filter.</td></tr>
+  <tr><td>7</td><td>Is a separate Viva Insights licence needed if we have Copilot?</td><td><strong>No.</strong> Every M365 Copilot licence includes the Viva Insights service plan. Separate purchase is only needed to analyse non-Copilot users.</td></tr>
+  <tr><td>8</td><td>Can employees opt out of being analysed?</td><td>Users can opt out of Viva Insights personal insights. For advanced analysis, the Insights Admin can configure privacy settings and exclusion lists.</td></tr>
+  <tr><td>9</td><td>How is the $72/hour default calculated?</td><td>It is a broad industry estimate of loaded labour cost. Customers should adjust this to their own loaded rate for accurate ROI calculations.</td></tr>
+  <tr><td>10</td><td>Can we use the Agent Dashboard without Copilot Dashboard?</td><td>Both are part of the Viva Insights web app. You cannot enable one without the other being available, but access to each can be controlled separately via VFAM policies.</td></tr>
+  <tr><td>11</td><td>Who needs licences &mdash; only leaders viewing dashboards, or also employees whose data we want to analyse?</td><td><strong>Both.</strong> Employees whose collaboration data you want to analyse must have a Viva Insights licence assigned (included automatically with every Copilot licence). Leaders and managers viewing dashboards also need a Viva Insights licence to access the full Copilot Dashboard and organisation insights. Unlicensed employees who collaborate with licensed users appear as &ldquo;other internal collaborators&rdquo; in aggregate but are not directly measured.</td></tr>
+  <tr><td>12</td><td>We already have Department and Manager in Entra ID &mdash; why do we need to upload org data?</td><td>Entra ID provides basic Department filtering only. Org data upload adds: Location, Job Function, Level, and <strong>up to 105 custom attributes</strong> (e.g., Cost Centre, Agency, Region). It also enables multi-BU partitioning and before/after cohort segmentation in Power BI. If your customer only needs tenant-level + Department views, Entra ID alone is sufficient. For anything more granular, upload org data. See <a href="#s9">Section 9.1</a> for the full comparison.</td></tr>
+  <tr><td>13</td><td>We uploaded org data and now our Department filter shows different values than Entra ID &mdash; can we go back?</td><td>Once org data is uploaded, it <strong>permanently replaces Entra ID</strong> as the data source for filters. There is no self-service reversal &mdash; you must contact Microsoft Support to reset. Make sure the CSV values match your intended naming before uploading. See <a href="#s9">Section 9.1</a>.</td></tr>
+  <tr><td>14</td><td>We want broader productivity metrics (meeting time, focus time) not just Copilot reporting. Is that covered here?</td><td><strong>No.</strong> This guide covers Copilot Analytics only. Broader Viva Insights productivity metrics (meeting time, focus time, after-hours, collaboration networks) use the same Viva Insights licence and analyst role but are a separate analytics workstream. See Section 2.2 (Out of Scope) for pointers to the right resources. The org data and privacy settings configured through this guide carry over.</td></tr>
+</table>
+
+<!-- ═══════════════════════ APPENDIX A ═══════════════════════ -->
+<h1 id="appA">Appendix A: Further Considerations</h1>
+
+<ol>
+  <li><strong>50-License Threshold Timing:</strong> Should licensing be expanded before deployment to unlock group-level analytics? The threshold can be met through a combination of Copilot + Viva Insights licences.</li>
+  <li><strong>Entra ID Hierarchy Completeness:</strong> Is the customer directory populated correctly? Criteria analysed weekly. If not, manual access assignment or org data upload is needed.</li>
+  <li><strong>AI Administrator Role Assignment:</strong> Has the customer assigned this role? Required for dashboard access management, privacy, and exclusion lists. AI Admins must add themselves to view.</li>
+  <li><strong>Manager Settings Enablement:</strong> Has the Insights Admin toggled on "Grant managers scoped access"? Without this, no managers can see team-level data even if they are licensed.</li>
+  <li><strong>Organizational Data Upload:</strong> Is HR data available? Without it, only tenant-level views. Attribute names must match exactly. Include EffectiveDate.</li>
+  <li><strong>Hourly Rate Customisation:</strong> Default $72/hour. Should be adjusted based on customer's loaded labour rate.</li>
+  <li><strong>Privacy Thresholds &amp; Small Groups:</strong> Default group size = 10. Small departments or pilot groups may see suppressed data. Consider when planning phased rollouts.</li>
+  <li><strong>Baseline Data for Before/After:</strong> Needs 4 weeks pre-adoption data. If Copilot already deployed, comparison may not be possible.</li>
+  <li><strong>Compliance Exclusion Requirements:</strong> Plan for 5-day processing time for exclusion list uploads.</li>
+  <li><strong>Delegation Policy:</strong> Should delegation be allowed? If not, disable via <code>CopilotDashboardDelegation</code> VFAM policy.</li>
+  <li><strong>Agent Dashboard Scope:</strong> If agents are being deployed, ensure company-level delegates are configured (not just group-level).</li>
+  <li><strong>Multi-Agency / Multi-BU Data Isolation:</strong> If the customer operates multiple independent agencies or business units within a single M365 tenant and requires that Agency A <em>cannot</em> see Agency B's Copilot usage data, the standard Copilot Dashboard does not provide hard data isolation. Senior leaders auto-identified via Entra ID hierarchy will see &ldquo;Your company&rdquo; data covering all agencies. The solution is a <strong>partition-based architecture</strong> using Viva Insights Advanced Analytics &mdash; create one partition per agency filtered by a custom &ldquo;Agency&rdquo; attribute in org data, assign agency-specific analysts, and deliver reports via isolated Power BI workspaces. The Copilot Dashboard itself should be restricted to Central IT only for tenant-wide licence management. See the <em>Multi-Agency Isolation Architecture</em> reference document for the validated solution, implementation runbook, and PowerShell lockdown steps.</li>
+  <li><strong>Copilot Agent Governance:</strong> If the customer is deploying Copilot Studio agents and needs DLP policies, connector governance, agent sharing controls, or publishing approval workflows, these are managed through the <strong>Power Platform Admin Center</strong> &mdash; not through Viva Insights. See the <strong><a href="https://learn.microsoft.com/power-platform/admin/">Copilot &amp; Agent Governance</a></strong> project for the full governance framework including tenant/environment/agent-level controls, DSPM for AI, and billing boundaries.</li>
+  <li><strong>Licence Lifecycle &amp; Billing:</strong> If the customer needs to understand what happens to analytics data when licences are assigned, removed, or reassigned &mdash; or needs to manage Copilot Credits billing, Pay-As-You-Go metering, or multi-agency chargeback &mdash; see the <em>Copilot Lifecycle &amp; Billing Playbook</em>.</li>
+  <li><strong>Broader Collaboration Analysis (Beyond Copilot):</strong> If the you want meeting time, focus time, after-hours, wellbeing, or manager effectiveness metrics independent of Copilot, these use the same Viva Insights analyst workbench and org data but different templates and metrics. See the <em>Advanced Viva Insights Collaboration Analysis Guide</em>. The 4-week baseline window (item 8 above) is best captured using these collaboration templates.</li>
+</ol>
+
+<!-- ═══════════════════════ APPENDIX B ═══════════════════════ -->
+<h1 id="appB">Appendix B: Glossary</h1>
+<table>
+  <tr><th>Term</th><th>Definition</th></tr>
+  <tr><td>AI Administrator</td><td>M365 admin role that manages Copilot Dashboard settings, access, exclusion lists, and privacy. Does NOT grant automatic dashboard viewing access.</td></tr>
+  <tr><td>Assisted Hours</td><td>Estimated time saved via Copilot — composed of meeting summaries (actual duration), search/summary actions (6 min each), and creation actions (6 min each).</td></tr>
+  <tr><td>Assisted Value</td><td>Monetary value of Assisted Hours: Assisted Hours × configured hourly rate (default $72/hour).</td></tr>
+  <tr><td>Auto-enablement</td><td>Automatic process granting senior leaders dashboard access based on Entra ID hierarchy. Refreshed weekly. Can be disabled tenant-wide.</td></tr>
+  <tr><td>Copilot Analytics Reports</td><td>Out-of-the-box reports in the Viva Insights web app providing targeted Copilot and collaboration insights.</td></tr>
+  <tr><td>Delegated Access</td><td>Manually granted dashboard access. Max 75 delegates per person. No cascading.</td></tr>
+  <tr><td>Exclusion List</td><td>Users excluded from Copilot Dashboard and Viva Insights analytics. Uploaded via CSV or Entra ID groups.</td></tr>
+  <tr><td>Insights Administrator</td><td>Viva Insights role with access to org data upload, privacy settings, manager settings, and partitions.</td></tr>
+  <tr><td>Insights Analyst</td><td>Viva Insights role that can create/run queries and access advanced analysis.</td></tr>
+  <tr><td>Loaded Labour Rate</td><td>Fully-burdened employee cost per hour including salary, benefits, and overhead.</td></tr>
+  <tr><td>Minimum Group Size</td><td>Smallest group shown in dashboards/reports. Default 10, minimum 5. Protects individual privacy.</td></tr>
+  <tr><td>Minimum Team Size</td><td>Determines which managers can see team data. Includes manager in count. Minimum 5.</td></tr>
+  <tr><td>Organizational Data</td><td>HR attributes uploaded to enable group-level filtering and segmentation.</td></tr>
+  <tr><td>Partition</td><td>Logical grouping of employees in Viva Insights. Analysts need partition access to query data.</td></tr>
+  <tr><td>Rolling Window</td><td>Data retention approach showing only the most recent period. Copilot Dashboard uses 28-day window.</td></tr>
+  <tr><td>VFAM</td><td>Viva Feature Access Management — PowerShell/admin center controls for enabling/disabling features at tenant, group, or user level.</td></tr>
+</table>
+
+<!-- ═══════════════════════ APPENDIX C ═══════════════════════ -->
+<h1 id="appC">Appendix C: Additional Resources</h1>
+<p><em>Links last verified: February 2026</em></p>
+
+<h2>Adoption &amp; Success Resources</h2>
+<table>
+  <tr><th>Resource</th><th>URL</th></tr>
+  <tr><td>M365 Copilot Adoption Hub</td><td><a href="https://adoption.microsoft.com/en-us/copilot/">https://adoption.microsoft.com/en-us/copilot/</a></td></tr>
+  <tr><td>Copilot Success Kit</td><td><a href="https://adoption.microsoft.com/en-us/copilot/success-kit/">https://adoption.microsoft.com/en-us/copilot/success-kit/</a></td></tr>
+  <tr><td>Copilot Scenario Library</td><td><a href="https://adoption.microsoft.com/en-us/copilot/scenario-library/">https://adoption.microsoft.com/en-us/copilot/scenario-library/</a></td></tr>
+</table>
+
+<h2>Dashboard Direct Links</h2>
+<table>
+  <tr><th>Dashboard</th><th>URL</th></tr>
+  <tr><td>M365 Admin Center</td><td><code>https://admin.microsoft.com/</code></td></tr>
+  <tr><td>Copilot Dashboard</td><td><code>https://insights.cloud.microsoft/#/CopilotDashboard</code></td></tr>
+  <tr><td>Copilot Dashboard Overview (aka.ms)</td><td><a href="https://aka.ms/Copilot/DashboardOverview">https://aka.ms/Copilot/DashboardOverview</a></td></tr>
+  <tr><td>Advanced Analytics Playbook</td><td><a href="https://aka.ms/CopilotAdvancedAnalytics">https://aka.ms/CopilotAdvancedAnalytics</a></td></tr>
+</table>
+
+<h2>Technical Documentation</h2>
+<table>
+  <tr><th>Topic</th><th>URL</th></tr>
+  <tr><td>Copilot Analytics Introduction</td><td><a href="https://learn.microsoft.com/viva/insights/copilot-analytics-introduction">learn.microsoft.com/.../copilot-analytics-introduction</a></td></tr>
+  <tr><td>Copilot Dashboard</td><td><a href="https://learn.microsoft.com/en-us/viva/insights/org-team-insights/copilot-dashboard">learn.microsoft.com/.../copilot-dashboard</a></td></tr>
+  <tr><td>Copilot Analytics Reports</td><td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-analytics-reports">learn.microsoft.com/.../copilot-analytics-reports</a></td></tr>
+  <tr><td>Agent Dashboard</td><td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">learn.microsoft.com/.../agent-dashboard</a></td></tr>
+  <tr><td>Manage Dashboard Settings</td><td><a href="https://learn.microsoft.com/en-us/viva/insights/advanced/admin/manage-settings-copilot-dashboard">learn.microsoft.com/.../manage-settings-copilot-dashboard</a></td></tr>
+  <tr><td>Delegate Access</td><td><a href="https://learn.microsoft.com/en-us/viva/insights/org-team-insights/delegate-access">learn.microsoft.com/.../delegate-access</a></td></tr>
+  <tr><td>Configure Manager Settings</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/manager-settings">learn.microsoft.com/.../manager-settings</a></td></tr>
+  <tr><td>Upload Organizational Data</td><td><a href="https://learn.microsoft.com/en-us/viva/insights/advanced/admin/upload-org-data-first">learn.microsoft.com/.../upload-org-data-first</a></td></tr>
+  <tr><td>Prepare Org Data</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/admin/prepare-org-data">learn.microsoft.com/.../prepare-org-data</a></td></tr>
+  <tr><td>Privacy Settings</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/privacy-settings">learn.microsoft.com/.../privacy-settings</a></td></tr>
+  <tr><td>Feature Access Management</td><td><a href="https://learn.microsoft.com/en-us/viva/feature-access-management">learn.microsoft.com/.../feature-access-management</a></td></tr>
+  <tr><td>Assign Roles</td><td><a href="https://learn.microsoft.com/en-us/viva/insights/advanced/setup-maint/assign-user-roles">learn.microsoft.com/.../assign-user-roles</a></td></tr>
+  <tr><td>Roles in Viva Insights</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/user-roles">learn.microsoft.com/.../user-roles</a></td></tr>
+  <tr><td>Setup Checklist</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/setup-overview">learn.microsoft.com/.../setup-overview</a></td></tr>
+  <tr><td>Environment Requirements</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/environment-requirements">learn.microsoft.com/.../environment-requirements</a></td></tr>
+  <tr><td>Admin Center Copilot Usage Report</td><td><a href="https://learn.microsoft.com/en-us/microsoft-365/admin/activity-reports/microsoft-365-copilot-usage">learn.microsoft.com/.../microsoft-365-copilot-usage</a></td></tr>
+  <tr><td>M365 Copilot Reporting Options</td><td><a href="https://learn.microsoft.com/copilot/microsoft-365/microsoft-365-copilot-reports-for-admins">learn.microsoft.com/.../microsoft-365-copilot-reports-for-admins</a></td></tr>
+  <tr><td>Technical Privacy Guide</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/privacy/privacy">learn.microsoft.com/.../privacy</a></td></tr>
+</table>
+
+<div class="callout tip">
+  <div class="callout-title">TIP: Bookmark aka.ms Links</div>
+  Use aka.ms short links where available (e.g., <code>https://aka.ms/Copilot/DashboardOverview</code>). These are Microsoft-maintained permanent redirects that survive documentation URL changes.
+</div>
+
+<!-- ═══════════════════════ QUICK-START CHEAT SHEET ═══════════════════════ -->
+<h1 id="cheat">Quick-Start Cheat Sheet</h1>
+
+<div class="cheatsheet">
+<h3>One-Page Implementation Checklist</h3>
+
+<h4>Tier 1 — Admin Center (Day 1)</h4>
+<ul class="checklist">
+  <li>Verify Reports Reader role → <code>admin.microsoft.com</code></li>
+  <li>Navigate to Reports → Usage → Microsoft 365 Copilot</li>
+  <li>Wait ~72 hours for data → export CSV to verify</li>
+</ul>
+
+<h4>Tier 2 — Copilot Dashboard (Day 1–7)</h4>
+<ul class="checklist">
+  <li>Verify 50+ assigned Copilot/Viva Insights licences</li>
+  <li>Verify Entra ID manager hierarchy is populated</li>
+  <li>AI Admin: add self + users/groups to dashboard access → <code>admin.microsoft.com</code> → Viva → Viva Insights</li>
+  <li>Insights Admin: enable Manager Settings → <code>insights.cloud.microsoft</code> → Manager Settings</li>
+  <li>Upload org data CSV (PersonId, ManagerId, Organization + custom attributes)</li>
+  <li>Configure minimum group size (default 10, min 5)</li>
+  <li>Configure hourly rate for ROI (default $72/h)</li>
+  <li>Optional: create exclusion list, configure sentiment surveys</li>
+  <li>Wait up to 7 days → verify all 4 dashboard pages</li>
+</ul>
+
+<h4>Tier 3 — Copilot Analytics Reports (Auto)</h4>
+<ul class="checklist">
+  <li>No action needed — automatically available to Dashboard users</li>
+  <li>Verify: <code>insights.cloud.microsoft</code> → Reports (left nav)</li>
+</ul>
+
+<h4>Tier 4 — Agent Dashboard (Day 7+)</h4>
+<ul class="checklist">
+  <li>On by default — verify visibility in Viva Insights left nav</li>
+  <li>Ensure delegates have "Your company" scope (not "Your group")</li>
+  <li>If agents deployed, verify agent activity data populates</li>
+</ul>
+
+<h4>Tier 5 — Advanced Analytics (Week 2+)</h4>
+<ul class="checklist">
+  <li>Assign Insights Analyst role → wait 1–2 hours</li>
+  <li>Grant partition access</li>
+  <li>Ensure org data uploaded and processed (from Tier 2)</li>
+  <li>Install Power BI Desktop (June 2022+)</li>
+  <li>Create Copilot Impact query in Viva Insights analyst experience</li>
+  <li>Connect Power BI via OData feed → apply template</li>
+  <li>Configure scheduled refresh for ongoing reporting</li>
+</ul>
+
+<h4>Key URLs</h4>
+<table>
+  <tr><td><strong>M365 Admin Center</strong></td><td><code>https://admin.microsoft.com</code></td></tr>
+  <tr><td><strong>Entra Admin Center</strong></td><td><code>https://entra.microsoft.com</code></td></tr>
+  <tr><td><strong>Viva Insights Web App</strong></td><td><code>https://insights.cloud.microsoft</code></td></tr>
+  <tr><td><strong>Copilot Dashboard Direct</strong></td><td><code>https://insights.cloud.microsoft/#/CopilotDashboard</code></td></tr>
+  <tr><td><strong>Power BI Desktop</strong></td><td><code>https://powerbi.microsoft.com/desktop/</code></td></tr>
+</table>
+
+<h4>Key Wait Times</h4>
+<table>
+  <tr><td>Admin Center data</td><td>~72 hours</td></tr>
+  <tr><td>Dashboard initial data</td><td>Up to 7 days</td></tr>
+  <tr><td>Manager settings change</td><td>1 hour</td></tr>
+  <tr><td>Access changes</td><td>24 hours</td></tr>
+  <tr><td>Min group size change</td><td>24 hours</td></tr>
+  <tr><td>Org data upload</td><td>Up to 7 days</td></tr>
+  <tr><td>Exclusion list apply</td><td>Up to 5 days</td></tr>
+  <tr><td>Exclusion list remove</td><td>Up to 3 days</td></tr>
+</table>
+</div>
+
+<p style="text-align:center; margin-top:40px; padding:20px; color:var(--text-muted); font-style:italic; border-top: 1px solid var(--border);">
+  --- End of Document ---<br>
+  Microsoft 365 Copilot Analytics Implementation Guide v3.1 &bull; February 2026
+</p>
+
+<div class="callout info" style="margin-top:20px;">
+  <div class="callout-title">Disclaimer</div>
+  <p>This guide is provided as a procedural reference and may not reflect the latest product changes. Microsoft 365 features, settings, and admin experiences are updated frequently. Always refer to the official <a href="https://learn.microsoft.com/viva/insights/">Microsoft Viva Insights documentation</a> and <a href="https://learn.microsoft.com/copilot/microsoft-365/">Microsoft 365 Copilot documentation</a> on Microsoft Learn for the most up-to-date information, procedures, and feature availability.</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microsoft 365 Copilot Analytics — Frequently Asked Questions</title>
+<link rel="stylesheet" href="../assets/docs-style.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; color: #333; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 30px 20px; }
+  h1 { color: #1F4E79; font-size: 1.6em; border-bottom: 3px solid #1F4E79; padding-bottom: 8px; margin-bottom: 6px; }
+  .subtitle { color: #666; font-size: 0.95em; margin-bottom: 24px; }
+  .faq { margin-bottom: 20px; border-left: 3px solid #0078D4; padding: 12px 16px; background: #F8FBFF; border-radius: 0 6px 6px 0; }
+  .faq-q { font-weight: 700; color: #1F4E79; font-size: 1.02em; margin-bottom: 6px; }
+  .faq-q::before { content: "Q" attr(data-num) ". "; color: #0078D4; }
+  .faq-a { font-size: 0.94em; }
+  .faq-a strong { color: #1F4E79; }
+  .category { color: #2E75B6; font-size: 1.15em; font-weight: 700; margin: 28px 0 12px; padding-bottom: 4px; border-bottom: 1px solid #DEE2E6; }
+  .footer { text-align: center; font-size: 0.8em; color: #999; margin-top: 30px; padding-top: 12px; border-top: 1px solid #ddd; }
+  a { color: #0078D4; }
+  .callout { background: #FFF3CD; border-left: 3px solid #FFC107; padding: 10px 14px; border-radius: 4px; margin: 16px 0; font-size: 0.9em; }
+  @media print { body { max-width: 100%; } .faq { break-inside: avoid; } }
+</style>
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">FAQ</span>
+  </div>
+  <div class="doc-nav-right">
+    <a href="pdfs/Copilot_Analytics_FAQ.pdf" class="pdf-btn" title="Download PDF">&#128196; PDF</a>
+  </div>
+</nav>
+
+<h1>Microsoft 365 Copilot Analytics</h1>
+<div class="subtitle">Frequently Asked Questions — For Customers &amp; IT Administrators</div>
+
+<!-- ─── LICENSING ─── -->
+<div class="category">Licensing &amp; Access</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="1">Is a separate Viva Insights licence needed if we already have Microsoft 365 Copilot?</div>
+  <div class="faq-a"><strong>No.</strong> Every M365 Copilot licence automatically includes the Viva Insights service plan — covering personal insights, manager/leader insights, and advanced analysis. A separate Viva Insights purchase is only needed if you want to analyse employees who do <em>not</em> have Copilot licences.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="2">Who needs licences — only leaders viewing dashboards, or also the employees whose data we want to analyse?</div>
+  <div class="faq-a"><strong>Both.</strong> Employees whose collaboration data you want to analyse must have a Viva Insights licence assigned (included with every Copilot licence). Leaders and managers viewing dashboards also need a Viva Insights licence to access the full Copilot Dashboard and organisation insights. Unlicensed employees who collaborate with licensed users appear as "other internal collaborators" in aggregate but are not directly measured.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="3">What is the minimum number of licences needed for full dashboard features?</div>
+  <div class="faq-a">At least <strong>50 assigned</strong> Copilot or Viva Insights licences (or a combination) are required for group-level filtering, the full Adoption page, and the Impact page. Below 50, only the Readiness page and tenant-level metrics are available.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="4">What happens if we drop below 50 licences?</div>
+  <div class="faq-a">The dashboard reverts to limited features (tenant-level only, Readiness page). Previously available group-level data is no longer shown.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="5">Can we trial the Dashboard before licensing everyone?</div>
+  <div class="faq-a">Yes. The basic Copilot Dashboard is available to any M365/O365 tenant with Exchange Online — no paid Viva licence required. But full group filtering and the Impact page require the 50-licence threshold.</div>
+</div>
+
+<!-- ─── PRIVACY ─── -->
+<div class="category">Privacy &amp; Data Protection</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="6">Can managers see individual employee Copilot usage?</div>
+  <div class="faq-a"><strong>No.</strong> All data is aggregated at group level and protected by minimum group size thresholds (default 10, minimum 5), differential privacy, and distribution masking. No individual user behaviour is ever visible in the dashboards.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="7">Can employees opt out of being analysed?</div>
+  <div class="faq-a">Users can opt out of Viva Insights personal insights via their settings. For advanced analysis and the Copilot Dashboard, the Insights Administrator can configure privacy settings and create exclusion lists to remove specific users from aggregated insights.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="8">What is the minimum group size, and can we change it?</div>
+  <div class="faq-a">The minimum group size is the smallest number of people for which data will be displayed. Default is <strong>10</strong>; the lowest allowed setting is <strong>5</strong>. It can be configured by the AI Administrator or Insights Administrator. Groups smaller than this threshold will show "N/A" instead of data.</div>
+</div>
+
+<!-- ─── DATA & REPORTING ─── -->
+<div class="category">Data &amp; Reporting</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="9">How often does the data refresh?</div>
+  <div class="faq-a">The Copilot Dashboard refreshes <strong>daily</strong>, showing a 28-day rolling window with up to a 6-day delay from the current date. Admin Center reports refresh approximately every 72 hours. Newly licensed employees may take an additional 7 days before appearing.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="10">Can we see data by business unit, department, or country?</div>
+  <div class="faq-a"><strong>Yes</strong>, but you must upload organizational data (a CSV file with attributes like Business Unit, Department, Country) to enable these filters. Without an org data upload, only the Entra ID "Department" field is available as a filter. Custom attributes can also be added.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="11">Does the Dashboard track Copilot Chat (web) usage?</div>
+  <div class="faq-a">Yes, if Copilot Chat reporting is enabled in your tenant and you have 50+ Copilot or Viva Insights licences. There is a separate licence filter on the dashboard to switch between Microsoft 365 Copilot and Copilot Chat views.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="12">How is the $72/hour default for Copilot Assisted Value calculated?</div>
+  <div class="faq-a">The $72/hour is based on data compiled by the U.S. Bureau of Labor Statistics as a broad estimate of loaded labour cost. <strong>Customers should adjust this to their own loaded rate</strong> for accurate ROI calculations. The rate can be changed in the Impact settings or via the Hours and Value calculator on the dashboard.</div>
+</div>
+
+<!-- ─── AGENTS ─── -->
+<div class="category">Agent Dashboard</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="13">Can we use the Agent Dashboard without the Copilot Dashboard?</div>
+  <div class="faq-a">Both are part of the Viva Insights web app. You cannot enable one without the other being available, but access to each can be controlled separately via Viva Feature Access Management (VFAM) policies.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="14">Why can my delegates see the Copilot Dashboard but not the Agent Dashboard?</div>
+  <div class="faq-a">Managers cannot access a team-level view in the Agent Dashboard. Delegates must be given <strong>"Your company"</strong> scope (not "Your group") to access the Agent Dashboard. Update their delegation scope in Viva Insights → Settings → Delegation.</div>
+</div>
+
+<!-- ─── SCOPE ─── -->
+<div class="category">Scope &amp; Broader Productivity</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="15">We want broader productivity metrics (meeting time, focus time, after-hours) — not just Copilot reporting. Is that available?</div>
+  <div class="faq-a"><strong>Yes, but through a separate workstream.</strong> Copilot Analytics covers Copilot-specific adoption, impact, and ROI. Broader Viva Insights productivity metrics (meeting time, focus time, after-hours, collaboration networks) use the same Viva Insights licence and analyst role but are configured through the Advanced Analysis workbench with different queries and templates. The organizational data and privacy settings you configure for Copilot Analytics carry over to the broader Viva Insights analysis.</div>
+</div>
+
+<div class="callout">
+  <strong>Learn more:</strong> For the full list of Copilot Analytics capabilities and setup steps, refer to the <em>Microsoft 365 Copilot Analytics Implementation Guide</em> or the following Microsoft Learn resources:
+  <ul style="margin: 6px 0 0 20px;">
+    <li><a href="https://learn.microsoft.com/viva/insights/copilot-analytics-introduction">Copilot Analytics Introduction</a></li>
+    <li><a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Copilot Dashboard</a></li>
+    <li><a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-analytics-reports">Copilot Analytics Reports</a></li>
+    <li><a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">Agent Dashboard</a></li>
+    <li><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/environment-requirements">Licensing &amp; Environment Requirements</a></li>
+  </ul>
+</div>
+
+<div class="footer">
+  Microsoft 365 Copilot Analytics — FAQ v1.0 &bull; March 2026<br>
+  Community Reference Guide
+</div>
+
+</body>
+</html>

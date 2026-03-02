@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Viva Insights — Collaboration Analysis Guide</title>
+    <link rel="stylesheet" href="../../assets/docs-style.css">
+<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            line-height: 1.7;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 40px 24px 60px;
+            background: #f9fafb;
+        }
+        h1 {
+            color: #1F4E79;
+            font-size: 2rem;
+            border-bottom: 3px solid #1F4E79;
+            padding-bottom: 12px;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: #555;
+            font-size: 0.95rem;
+            margin-bottom: 32px;
+        }
+        h2 {
+            color: #1F4E79;
+            font-size: 1.4rem;
+            margin-top: 36px;
+            margin-bottom: 12px;
+            border-left: 4px solid #1F4E79;
+            padding-left: 12px;
+        }
+        h3 {
+            color: #1F4E79;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            margin-bottom: 8px;
+        }
+        p { margin-bottom: 12px; }
+        ul, ol {
+            margin: 0 0 16px 24px;
+        }
+        li { margin-bottom: 6px; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0 24px;
+            font-size: 0.93rem;
+        }
+        th, td {
+            border: 1px solid #c0c8d0;
+            padding: 10px 14px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background: #1F4E79;
+            color: #fff;
+            font-weight: 600;
+        }
+        tr:nth-child(even) { background: #eef2f7; }
+        tr:hover { background: #dce6f0; }
+        .callout {
+            background: #e8f0fe;
+            border-left: 4px solid #1F4E79;
+            padding: 14px 18px;
+            margin: 16px 0 20px;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.93rem;
+        }
+        .callout-warning {
+            background: #fff8e1;
+            border-left: 4px solid #e6a700;
+            padding: 14px 18px;
+            margin: 16px 0 20px;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.93rem;
+        }
+        .callout-success {
+            background: #e6f4ea;
+            border-left: 4px solid #34a853;
+            padding: 14px 18px;
+            margin: 16px 0 20px;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.93rem;
+        }
+        a { color: #1F4E79; }
+        a:hover { text-decoration: none; }
+        code {
+            background: #e8ecf0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .step-list { counter-reset: step-counter; list-style: none; margin-left: 0; }
+        .step-list li {
+            counter-increment: step-counter;
+            padding-left: 36px;
+            position: relative;
+            margin-bottom: 10px;
+        }
+        .step-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 26px;
+            height: 26px;
+            background: #1F4E79;
+            color: #fff;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 26px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .disclaimer {
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 16px 20px;
+            margin-top: 40px;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            color: #555;
+        }
+        .toc {
+            background: #fff;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            padding: 18px 24px;
+            margin-bottom: 32px;
+        }
+        .toc h3 { margin-top: 0; color: #1F4E79; }
+        .toc ol { margin-bottom: 0; }
+        .toc a { text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        hr { border: none; border-top: 1px solid #d0d7de; margin: 32px 0; }
+        .scenario {
+            background: #fff;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            padding: 18px 20px;
+            margin: 16px 0 20px;
+        }
+        .scenario h4 {
+            color: #1F4E79;
+            margin-bottom: 8px;
+            font-size: 1.05rem;
+        }
+    </style>
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Collaboration Analysis</span>
+  </div>
+  <div class="doc-nav-right">
+    <a href="../../artifacts/pdfs/Advanced_Viva_Insights_Collaboration_Guide.pdf" class="pdf-btn" title="Download PDF">&#128196; PDF</a>
+  </div>
+</nav>
+
+<h1>Advanced Viva Insights — Collaboration Analysis Guide</h1>
+<p class="subtitle">Using the Advanced Analysis Workbench for Workplace Collaboration Patterns Beyond Copilot</p>
+
+<div class="toc">
+    <h3>Contents</h3>
+    <ol>
+        <li><a href="#purpose">Purpose</a></li>
+        <li><a href="#relationship">Relationship to Copilot Analytics</a></li>
+        <li><a href="#templates">Available Collaboration Templates</a></li>
+        <li><a href="#metrics">Key Behavioural Metrics</a></li>
+        <li><a href="#custom">Custom Query Capabilities</a></li>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#howto">How to Create a Collaboration Report</a></li>
+        <li><a href="#scenarios">Common Use Cases</a></li>
+        <li><a href="#retention">Data Retention</a></li>
+        <li><a href="#references">References</a></li>
+    </ol>
+</div>
+
+<!-- Section 1 -->
+<h2 id="purpose">1. Purpose</h2>
+<p>
+    This guide covers using Viva Insights Advanced Analysis to understand workplace collaboration
+    patterns <strong>beyond Copilot</strong>. The same analyst workbench, the same <a href="https://learn.microsoft.com/viva/insights/advanced/admin/org-data-overview">org data</a>, the
+    same privacy settings, and the same Power BI workflow — but with different metrics and templates
+    focused on meetings, focus time, wellbeing, and manager effectiveness.
+</p>
+<p>
+    Collaboration analysis provides the organisational context that makes Copilot impact data
+    meaningful. Without understanding baseline collaboration patterns, it is impossible to
+    measure whether Copilot is genuinely improving how people work.
+</p>
+
+<!-- Section 2 -->
+<h2 id="relationship">2. Relationship to Copilot Analytics</h2>
+<p>
+    Collaboration analysis and Copilot analytics share the same infrastructure. Understanding their
+    relationship helps analysts maximise both capabilities.
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Aspect</th>
+            <th>Copilot Analytics</th>
+            <th>Collaboration Analysis</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Role required</td>
+            <td>Insights Analyst</td>
+            <td>Insights Analyst (same role)</td>
+        </tr>
+        <tr>
+            <td>Org data</td>
+            <td>Shared org data upload</td>
+            <td>Same org data — carries over automatically</td>
+        </tr>
+        <tr>
+            <td>Privacy settings</td>
+            <td>Shared privacy configuration</td>
+            <td>Same privacy settings apply</td>
+        </tr>
+        <tr>
+            <td><a href="https://learn.microsoft.com/viva/insights/advanced/admin/partitions">Partitions</a></td>
+            <td>Configured per agency/BU</td>
+            <td>Same partitions carry over</td>
+        </tr>
+        <tr>
+            <td>Metrics focus</td>
+            <td>Copilot adoption, usage, impact, sentiment</td>
+            <td>Collaboration time, meeting patterns, focus time, after-hours, wellbeing</td>
+        </tr>
+        <tr>
+            <td>Data retention</td>
+            <td>Up to 13 months</td>
+            <td>Up to <a href="https://learn.microsoft.com/viva/insights/advanced/privacy/privacy-settings">27 months</a></td>
+        </tr>
+        <tr>
+            <td>Power BI workflow</td>
+            <td>Download .pbit → paste IDs → Load</td>
+            <td>Same workflow</td>
+        </tr>
+        <tr>
+            <td>Can run simultaneously</td>
+            <td colspan="2" style="text-align: center;">Yes — no conflict. Both query types can be active concurrently.</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="callout">
+    <strong>Key Insight:</strong> If you have already configured org data, partitions, and privacy
+    settings for Copilot Analytics, you can start running collaboration queries immediately
+    with no additional setup.
+</div>
+
+<!-- Section 3 -->
+<h2 id="templates">3. Available Collaboration Templates</h2>
+<p>
+    Viva Insights provides pre-built Power BI templates for common collaboration analysis scenarios.
+    Each template includes predefined metrics, visualisations, and narrative guidance.
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Template</th>
+            <th>Analysis Focus</th>
+            <th>Key Questions Answered</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Ways of Working</strong></td>
+            <td>Collaboration patterns, meeting effectiveness, wellbeing, coaching</td>
+            <td>
+                How much time do employees spend in digital collaboration? Is meeting time
+                effective? Do employees get sufficient focus time? Are managers coaching
+                their teams?
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Meeting Effectiveness</strong></td>
+            <td>Meeting culture — duration, frequency, overlap, multitasking</td>
+            <td>
+                Are meetings too long? Too frequent? Do employees multitask during meetings?
+                How much time is spent in recurring vs. ad-hoc meetings?
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Wellbeing – Balance &amp; Flexibility</strong></td>
+            <td>Focus time, work-life balance, urgency, flexible schedules, breaks, community</td>
+            <td>
+                Are employees working after hours? Do they have enough focus time? Are
+                schedules flexible? Do employees take breaks and connect with colleagues?
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Impact Explorer</strong></td>
+            <td>Impact estimation of Viva Insights actions</td>
+            <td>
+                Did meeting reduction initiatives save time? Did focus time protection
+                improve productivity? What is the estimated impact of behavioural nudges?
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Manager Effectiveness</strong></td>
+            <td>Manager 1:1 time, team collaboration, span of control</td>
+            <td>
+                Are managers spending enough 1:1 time with direct reports? What is the
+                typical span of control? How do team collaboration patterns vary by manager?
+            </td>
+        </tr>
+        <tr>
+            <td><strong>External Collaboration</strong></td>
+            <td>Collaboration with external contacts — meetings, email, chat</td>
+            <td>
+                How much time is spent collaborating with external parties? Which teams
+                have the most external interaction? What channels are used?
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Template References</h3>
+<ul>
+    <li><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/ways-of-working">Ways of Working</a></li>
+    <li><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/meeting-effectiveness">Meeting Effectiveness</a></li>
+    <li><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/wellbeing">Wellbeing – Balance &amp; Flexibility</a></li>
+    <li><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/impact-explorer">Impact Explorer</a></li>
+    <li><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/manager-effectiveness">Manager Effectiveness</a></li>
+    <li><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/external-collaboration">External Collaboration</a></li>
+</ul>
+
+<!-- Section 4 -->
+<h2 id="metrics">4. Key Behavioural Metrics</h2>
+<p>
+    The following table groups the core behavioural metrics available for collaboration analysis.
+    These metrics can be used in templates, custom queries, and filters.
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Category</th>
+            <th>Metrics</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Meeting Hours</strong></td>
+            <td>
+                Meeting hours, recurring meeting hours, conflicting meeting hours,
+                multitasking meeting hours, long meeting hours, large meeting hours
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Focus Time</strong></td>
+            <td>
+                Focus hours, uninterrupted focus hours, booked focus hours
+                (via Viva Insights focus plan)
+            </td>
+        </tr>
+        <tr>
+            <td><strong>After-Hours</strong></td>
+            <td>
+                After-hours collaboration hours, after-hours meeting hours,
+                after-hours email hours, after-hours chat hours
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Email</strong></td>
+            <td>Email hours, emails sent, emails read</td>
+        </tr>
+        <tr>
+            <td><strong>Chat &amp; Calls</strong></td>
+            <td>Chat hours, chats sent, call hours, calls made</td>
+        </tr>
+        <tr>
+            <td><strong>Manager Interaction</strong></td>
+            <td>Manager 1:1 meeting hours, manager co-attendance hours</td>
+        </tr>
+        <tr>
+            <td><strong>Collaboration Scope</strong></td>
+            <td>
+                Internal collaboration hours, external collaboration hours,
+                cross-group collaboration hours, network size
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="callout">
+    <strong>Metric Tip:</strong> "Multitasking meeting hours" captures time in meetings where the
+    employee was also actively sending emails or chats — a strong indicator of meeting overload
+    or low meeting relevance.
+</div>
+
+<p><strong>Reference:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/reference/metrics">Viva Insights Metric Definitions</a></p>
+
+<!-- Section 5 -->
+<h2 id="custom">5. Custom Query Capabilities</h2>
+<p>
+    Beyond the pre-built templates, analysts can create fully custom queries with tailored
+    metrics, filters, and groupings.
+</p>
+
+<h3>Custom Metric Features</h3>
+<ul>
+    <li>Filter metrics by day of week (e.g., meeting hours on Fridays only)</li>
+    <li>Filter by meeting duration (e.g., meetings longer than 60 minutes)</li>
+    <li>Filter by attendee count (e.g., meetings with more than 10 attendees)</li>
+    <li>Filter by organisational attributes from org data (e.g., department, location, level)</li>
+    <li>Clone existing metrics and modify filters for tailored analysis</li>
+</ul>
+
+<h3>Copilot Assistant</h3>
+<p>
+    The Viva Insights analyst workbench includes a Copilot assistant that can help you choose
+    appropriate metrics and filters based on your analysis goals. Describe what you want to
+    measure, and the assistant will suggest relevant metrics and configurations.
+</p>
+
+<div class="callout">
+    <strong>Power User Tip:</strong> Clone a standard metric (e.g., "Meeting hours"), then add
+    a filter for "recurring = true" and "duration &gt; 60 minutes" to create a metric that
+    specifically captures time in long recurring meetings — a common target for optimisation.
+</div>
+
+<p><strong>Reference:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/analyst/custom-metrics">Custom Metrics in Viva Insights</a></p>
+
+<!-- Section 6 -->
+<h2 id="prerequisites">6. Prerequisites</h2>
+<p>
+    The prerequisites for collaboration analysis are the same as for Copilot Analytics.
+    If you have already set up the Copilot Analytics environment, no additional configuration
+    is required.
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Requirement</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Role</strong></td>
+            <td><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/assign-user-roles">Insights Analyst role</a> assigned in the Microsoft 365 Admin Center</td>
+        </tr>
+        <tr>
+            <td><strong>Licences</strong></td>
+            <td>50+ <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/setup-overview">Viva Insights licences</a> (included with Microsoft 365 Copilot licence)</td>
+        </tr>
+        <tr>
+            <td><strong>Power BI Desktop</strong></td>
+            <td>December 2022 release or later</td>
+        </tr>
+        <tr>
+            <td><strong>Org Data</strong></td>
+            <td>Uploaded via Viva Insights admin settings (CSV or Azure AD sync)</td>
+        </tr>
+        <tr>
+            <td><strong>Behavioural Insights</strong></td>
+            <td>
+                Enabled via VFAM: <code><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/viva-feature-access-management">TenantPolicyForBehavioralExperiences</a> = ON</code>.
+                This is a tenant-level setting that must be enabled by a Global Administrator.
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="callout-warning">
+    <strong>Note:</strong> If <code>TenantPolicyForBehavioralExperiences</code> is set to OFF,
+    no behavioural metrics (meeting hours, focus time, etc.) will be available — for either
+    Copilot or collaboration queries. This is the single most common blocker for new deployments.
+</div>
+
+<!-- Section 7 -->
+<h2 id="howto">7. How to Create a Collaboration Report</h2>
+<p>
+    The workflow for creating a collaboration report follows the same pattern as Copilot
+    Analytics templates. If you have created a Copilot query before, this process will
+    be familiar.
+</p>
+
+<ol class="step-list">
+    <li>Sign in to <a href="https://analysis.insights.viva.office.com">analysis.insights.viva.office.com</a> with your Insights Analyst account.</li>
+    <li>Select <strong>Create analysis</strong> from the left navigation, then choose <strong>Templates</strong>.</li>
+    <li>Select a collaboration template — for example, <strong>Ways of Working</strong>.</li>
+    <li>Configure the query:
+        <ul>
+            <li><strong>Name:</strong> Give it a descriptive name (e.g., "Q1 2026 Ways of Working – All Agencies")</li>
+            <li><strong>Time period:</strong> Select the analysis window — collaboration data supports up to 27 months</li>
+            <li><strong>Auto-refresh:</strong> Enable if you want the query to re-run automatically on a schedule</li>
+        </ul>
+    </li>
+    <li>Review the predefined metrics included in the template. Optionally add custom metrics
+        using the <strong>Add metric</strong> button.</li>
+    <li>Set employee filters to scope the analysis (e.g., specific departments, locations, or levels).
+        Select which org attributes to include in the output for grouping.</li>
+    <li>Select <strong>Run</strong> to execute the query. Processing time depends on population size
+        and time period — typically 30 minutes to several hours.</li>
+    <li>Once complete, download the <strong>.pbit</strong> file (Power BI template) from the query results page.</li>
+    <li>Open the .pbit file in Power BI Desktop. When prompted, paste the <strong>Partition ID</strong>
+        and <strong>Query ID</strong> from the Viva Insights results page. Select <strong>Load</strong>.</li>
+    <li>Explore the report — navigate through the pre-built pages, apply filters, and customise
+        visualisations as needed.</li>
+    <li>To share with leadership, use the <strong><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/query-results">Publish Reports</a></strong> feature in Viva Insights
+        to push a read-only version to authorised viewers.</li>
+</ol>
+
+<div class="callout-success">
+    <strong>Time-Saver:</strong> If you have an existing Copilot query with org attributes and
+    filters configured, you can use the same setup for your collaboration query — just select
+    a different template. No need to reconfigure org data or privacy settings.
+</div>
+
+<!-- Section 8 -->
+<h2 id="scenarios">8. Common Use Cases</h2>
+
+<div class="scenario">
+    <h4>Scenario 1: Meeting Culture Audit</h4>
+    <p><strong>Template:</strong> Meeting Effectiveness</p>
+    <p><strong>Goal:</strong> Identify meeting overload, long recurring meetings, and multitasking patterns across the organisation.</p>
+    <p><strong>Approach:</strong></p>
+    <ol>
+        <li>Run the Meeting Effectiveness template with a 6-month time window.</li>
+        <li>Analyse metrics: recurring meeting hours, meetings &gt; 60 minutes, multitasking hours.</li>
+        <li>Group by department or business unit to identify hotspots.</li>
+        <li>Calculate potential time savings: if average employee spends 4 hours/week in meetings that could be emails, that's X hours reclaimed per person per week.</li>
+    </ol>
+    <p><strong>Outcome:</strong> Data-driven recommendations to reclaim meeting time, backed by actual behavioural data rather than surveys.</p>
+</div>
+
+<div class="scenario">
+    <h4>Scenario 2: Wellbeing Baseline Before Copilot Rollout</h4>
+    <p><strong>Template:</strong> Wellbeing – Balance &amp; Flexibility</p>
+    <p><strong>Goal:</strong> Capture focus time, after-hours work, and work-life balance metrics <strong>before</strong> Copilot deployment. Then compare after 3 months using the Copilot Impact template.</p>
+    <p><strong>Approach:</strong></p>
+    <ol>
+        <li>Run the Wellbeing template covering the 4 weeks immediately before Copilot licence assignment — this is the "4-week baseline window" referenced in the <a href="../core/Copilot_Analytics_Implementation_Guide.html">Copilot Analytics Implementation Guide</a>.</li>
+        <li>Record baseline metrics: average focus hours, after-hours collaboration hours, weekend work hours.</li>
+        <li>After 3 months of Copilot usage, run the Copilot Impact template for the same population.</li>
+        <li>Compare pre- and post-deployment metrics to quantify Copilot's impact on employee wellbeing.</li>
+    </ol>
+    <p><strong>Outcome:</strong> Quantifiable evidence of whether Copilot improved, maintained, or negatively affected employee wellbeing metrics.</p>
+</div>
+
+<div class="scenario">
+    <h4>Scenario 3: Manager Effectiveness Programme</h4>
+    <p><strong>Template:</strong> Manager Effectiveness</p>
+    <p><strong>Goal:</strong> Identify managers with low 1:1 time or high span of control. Feed insights into leadership development initiatives.</p>
+    <p><strong>Approach:</strong></p>
+    <ol>
+        <li>Run the Manager Effectiveness template for the past 6 months.</li>
+        <li>Analyse metrics: manager 1:1 meeting hours, team size (span of control), team after-hours patterns.</li>
+        <li>Filter to managers with fewer than 30 minutes of 1:1 time per direct report per month.</li>
+        <li>Cross-reference with team wellbeing metrics to identify teams with both low manager engagement and high after-hours work.</li>
+    </ol>
+    <p><strong>Outcome:</strong> Targeted list of managers who would benefit from coaching programmes, with behavioural evidence to support the recommendation.</p>
+</div>
+
+<!-- Section 9 -->
+<h2 id="retention">9. Data Retention</h2>
+<p>
+    Understanding data retention windows is important for planning analysis timeframes
+    and comparing historical trends.
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Data Type</th>
+            <th>Maximum Retention</th>
+            <th>Notes</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Collaboration metrics</strong> (meetings, email, chat, focus time)</td>
+            <td>Up to 27 months</td>
+            <td>Starts at 13 months and grows weekly as new data accumulates. Full 27-month window available after ~14 months of active data collection.</td>
+        </tr>
+        <tr>
+            <td><strong>Copilot metrics</strong> (adoption, usage, impact, sentiment)</td>
+            <td>Up to 13 months</td>
+            <td>Shorter retention window due to newer data collection. Does not extend beyond 13 months.</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="callout">
+    <strong>Practical Implication:</strong> Collaboration analysis can look further back in history
+    than Copilot analysis. This means you can establish a rich historical baseline of collaboration
+    patterns — even if Copilot was deployed recently. Use the longer retention window to identify
+    seasonal trends, reorganisation impacts, and long-term cultural shifts.
+</div>
+
+<!-- Section 10 -->
+<h2 id="references">10. References</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Topic</th>
+            <th>URL</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Ways of Working Template</td>
+            <td><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/ways-of-working">learn.microsoft.com/viva/insights/advanced/analyst/templates/ways-of-working</a></td>
+        </tr>
+        <tr>
+            <td>Meeting Effectiveness Template</td>
+            <td><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/meeting-effectiveness">learn.microsoft.com/viva/insights/advanced/analyst/templates/meeting-effectiveness</a></td>
+        </tr>
+        <tr>
+            <td>Wellbeing – Balance &amp; Flexibility Template</td>
+            <td><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/wellbeing">learn.microsoft.com/viva/insights/advanced/analyst/templates/wellbeing</a></td>
+        </tr>
+        <tr>
+            <td>Impact Explorer Template</td>
+            <td><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/impact-explorer">learn.microsoft.com/viva/insights/advanced/analyst/templates/impact-explorer</a></td>
+        </tr>
+        <tr>
+            <td>Manager Effectiveness Template</td>
+            <td><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/manager-effectiveness">learn.microsoft.com/viva/insights/advanced/analyst/templates/manager-effectiveness</a></td>
+        </tr>
+        <tr>
+            <td>External Collaboration</td>
+            <td><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/external-collaboration">learn.microsoft.com/viva/insights/advanced/analyst/external-collaboration</a></td>
+        </tr>
+        <tr>
+            <td>Metric Definitions</td>
+            <td><a href="https://learn.microsoft.com/viva/insights/advanced/reference/metrics">learn.microsoft.com/viva/insights/advanced/reference/metrics</a></td>
+        </tr>
+        <tr>
+            <td>Custom Metrics</td>
+            <td><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/custom-metrics">learn.microsoft.com/viva/insights/advanced/analyst/custom-metrics</a></td>
+        </tr>
+    </tbody>
+</table>
+
+<hr>
+
+<div class="disclaimer">
+    <strong>Disclaimer:</strong> This document is provided as a practical guidance resource and reflects
+    product capabilities at the time of writing. Microsoft products and services evolve rapidly — metric
+    definitions, template availability, and data retention windows are subject to change. For the most
+    current and authoritative information, always refer to
+    <a href="https://learn.microsoft.com">Microsoft Learn</a>. This guide does not constitute
+    official Microsoft documentation or organisational policy advice.
+</div>
+
+</body>
+</html>

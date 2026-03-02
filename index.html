@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copilot Analytics — Documentation Hub</title>
+<style>
+  :root { --primary: #1F4E79; --accent: #0078D4; --success: #28A745; --warning: #E97132; --text: #333; --muted: #666; --bg: #F8F9FA; --card-bg: #fff; --border: #DEE2E6; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; color: var(--text); background: var(--bg); }
+  .header { background: var(--primary); color: #fff; padding: 40px 20px; text-align: center; }
+  .header h1 { font-size: 2em; margin-bottom: 8px; font-weight: 300; }
+  .header h1 strong { font-weight: 700; }
+  .header p { font-size: 1.05em; opacity: 0.85; max-width: 700px; margin: 0 auto; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
+
+  /* Role selector */
+  .role-bar { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin: -20px auto 30px; background: var(--card-bg); padding: 16px 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); max-width: 900px; position: relative; z-index: 1; }
+  .role-btn { padding: 8px 16px; border: 2px solid var(--border); border-radius: 20px; background: var(--card-bg); cursor: pointer; font-size: 0.88em; font-weight: 600; color: var(--muted); transition: all 0.2s; }
+  .role-btn:hover, .role-btn.active { border-color: var(--accent); color: var(--accent); background: #E8F4FD; }
+  .role-btn.active { background: var(--accent); color: #fff; }
+
+  /* Section headers */
+  .section-title { font-size: 1.3em; color: var(--primary); font-weight: 700; margin: 30px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--primary); }
+  .section-subtitle { font-size: 0.9em; color: var(--muted); margin: -12px 0 16px; }
+
+  /* Cards */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin-bottom: 30px; }
+  .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 20px; transition: box-shadow 0.2s, border-color 0.2s; display: flex; flex-direction: column; }
+  .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-color: var(--accent); }
+  .card-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.7em; font-weight: 700; margin-bottom: 8px; }
+  .badge-core { background: #E8F4FD; color: var(--accent); }
+  .badge-playbook { background: #FFF3CD; color: #8A6D3B; }
+  .badge-artifact { background: #D4EDDA; color: var(--success); }
+  .badge-customer { background: #EDE7F6; color: #6F42C1; }
+  .card h3 { font-size: 1.05em; color: var(--primary); margin-bottom: 6px; }
+  .card p { font-size: 0.88em; color: var(--muted); flex-grow: 1; margin-bottom: 12px; line-height: 1.5; }
+  .card-meta { font-size: 0.78em; color: #999; margin-bottom: 12px; }
+  .card-roles { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 12px; }
+  .card-role { font-size: 0.72em; padding: 2px 6px; border-radius: 8px; background: var(--bg); color: var(--muted); }
+  .card a { display: inline-block; padding: 8px 16px; background: var(--accent); color: #fff; text-decoration: none; border-radius: 4px; font-size: 0.88em; font-weight: 600; text-align: center; transition: background 0.2s; }
+  .card a:hover { background: var(--primary); }
+  .card a.secondary { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+  .card a.secondary:hover { background: #E8F4FD; }
+  .card-links { display: flex; gap: 8px; }
+
+  /* Decision guide */
+  .decision { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 30px; }
+  .decision h3 { color: var(--primary); margin-bottom: 12px; }
+  .decision table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+  .decision th { background: var(--primary); color: #fff; padding: 10px 12px; text-align: left; }
+  .decision td { padding: 8px 12px; border: 1px solid var(--border); }
+  .decision tr:nth-child(even) td { background: #F8FBFF; }
+  .decision a { color: var(--accent); }
+
+  /* Footer */
+  .footer { text-align: center; padding: 30px 20px; color: var(--muted); font-size: 0.85em; border-top: 1px solid var(--border); margin-top: 30px; }
+  .footer a { color: var(--accent); }
+
+
+  /* Search bar */
+  .search-bar { max-width: 900px; margin: 0 auto 24px; position: relative; }
+  .search-bar input { width: 100%; padding: 12px 16px 12px 42px; border: 2px solid var(--border); border-radius: 8px; font-size: 0.95em; font-family: 'Segoe UI', Arial, sans-serif; background: var(--card-bg); transition: border-color 0.2s; }
+  .search-bar input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,120,212,0.15); }
+  .search-bar::before { content: "\1F50D"; position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 1.1em; pointer-events: none; }
+  .search-bar .clear-btn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.2em; cursor: pointer; color: var(--muted); display: none; }
+  .search-bar .clear-btn:hover { color: var(--text); }
+  .no-results { text-align: center; color: var(--muted); padding: 30px; font-size: 0.95em; display: none; }
+
+  @media (max-width: 700px) {
+    .card-grid { grid-template-columns: 1fr; }
+    .role-bar { flex-direction: column; align-items: stretch; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1><strong>Copilot Analytics</strong> Documentation Hub</h1>
+  <p>Everything you need to implement, govern, and operationalise Microsoft 365 Copilot analytics — in one place.</p>
+</div>
+
+<div class="container">
+
+<!-- Role filter bar -->
+<div class="role-bar">
+  <span style="font-size:0.85em;color:var(--muted);align-self:center;margin-right:8px;">I am a:</span>
+  <button class="role-btn active" onclick="filterCards('all')">Show All</button>
+  <button class="role-btn" onclick="filterCards('admin')">IT Admin</button>
+  <button class="role-btn" onclick="filterCards('leader')">Business Leader</button>
+  <button class="role-btn" onclick="filterCards('analyst')">Analyst</button>
+  <button class="role-btn" onclick="filterCards('governance')">Governance / Security</button>
+  <button class="role-btn" onclick="filterCards('finance')">Finance / Licensing</button>
+</div>
+
+
+<!-- Search -->
+<div class="search-bar">
+  <input type="text" id="docSearch" placeholder="Search documents... (e.g. VFAM, billing, DLP, focus time)" autocomplete="off">
+  <button class="clear-btn" id="clearSearch" onclick="clearSearch()">&#x2715;</button>
+</div>
+<div class="no-results" id="noResults">No documents match your search. Try different keywords.</div>
+
+<!-- DECISION GUIDE -->
+<div class="decision">
+  <h3>What do you need?</h3>
+  <table>
+    <tr><th>If you need to...</th><th>Start here</th></tr>
+    <tr><td>Set up Copilot analytics dashboards &amp; reports</td><td><a href="docs/core/Copilot_Analytics_Implementation_Guide.html">Implementation Guide</a> or <a href="docs/core/Copilot_Analytics_Setup_Companion_Guide.html">Setup Companion</a> (Customer)</td></tr>
+    <tr><td>Hand a setup guide to the customer's IT team</td><td><a href="docs/core/Copilot_Analytics_Setup_Companion_Guide.html">Setup Companion Guide</a> or <a href="artifacts/Copilot_Analytics_Setup_Companion_Guide.pdf">PDF version</a></td></tr>
+    <tr><td>Control what Copilot agents can do (DLP, connectors, publishing)</td><td><a href="docs/core/Copilot_Analytics_Implementation_Guide.html#s7">Agent Dashboard (detect)</a> &rarr; Copilot &amp; Agent Governance (separate guide)</td></tr>
+    <tr><td>Understand billing, credits, or licence lifecycle impact on data</td><td><a href="docs/playbooks/Copilot_Lifecycle_Billing_Playbook.html">Lifecycle &amp; Billing Playbook</a></td></tr>
+    <tr><td>Analyse meeting time, focus time, wellbeing (beyond Copilot)</td><td><a href="docs/playbooks/Advanced_Viva_Insights_Collaboration_Guide.html">Collaboration Analysis Guide</a></td></tr>
+    <tr><td>Isolate Copilot data between agencies in a shared tenant</td><td><a href="docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Multi-Agency Isolation Architecture</a></td></tr>
+    <tr><td>Get a quick-start checklist for implementation</td><td><a href="artifacts/Copilot_Analytics_QuickStart_CheatSheet.html">Quick-Start Cheat Sheet</a></td></tr>
+    <tr><td>Answer common customer questions</td><td><a href="artifacts/Copilot_Analytics_FAQ.html">FAQ</a></td></tr>
+  </table>
+</div>
+
+<!-- CORE GUIDES -->
+<div class="section-title">Core Guides</div>
+<div class="section-subtitle">Start here — the primary implementation and handoff documents.</div>
+<div class="card-grid">
+
+  <div class="card" data-roles="admin leader analyst governance finance" data-keywords="VFAM dashboard tier admin center copilot reports agent analytics power bi template org data privacy roles PowerShell enable setup configure">
+    <span class="card-badge badge-core">CORE</span>
+    <h3>Copilot Analytics Implementation Guide</h3>
+    <p>Complete procedural reference covering all 5 analytics tiers — Admin Center, Copilot Dashboard, Analytics Reports, Agent Dashboard, and Advanced Analytics (Power BI). Includes VFAM policy verification, end-to-end dashboard enablement, template walkthrough, and troubleshooting.</p>
+    <div class="card-meta">v3.1 &bull; ~40 pages &bull; 13 sections + appendices</div>
+    <div class="card-roles">
+      <span class="card-role">IT Admin</span>
+      <span class="card-role">AI Admin</span>
+      <span class="card-role">Insights Admin</span>
+      <span class="card-role">Insights Analyst</span>
+    </div>
+    <div class="card-links">
+      <a href="docs/core/Copilot_Analytics_Implementation_Guide.html">Open Guide</a>
+      <a href="artifacts/pdfs/Copilot_Analytics_Implementation_Guide.pdf" class="secondary">PDF</a>
+    </div>
+  </div>
+
+  <div class="card" data-roles="admin leader" data-keywords="customer handoff setup configure dashboard enable VFAM org data roles privacy">
+    <span class="card-badge badge-customer">CUSTOMER-FACING</span>
+    <h3>Setup Companion Guide</h3>
+    <p>A streamlined version of the implementation guide for IT administrators. Includes disclaimer pointing to Microsoft Learn for the latest information.</p>
+    <div class="card-meta">v1.1 &bull; ~35 pages</div>
+    <div class="card-roles">
+      <span class="card-role">Customer IT Admin</span>
+      <span class="card-role">Customer Leaders</span>
+    </div>
+    <div class="card-links">
+      <a href="docs/core/Copilot_Analytics_Setup_Companion_Guide.html">HTML</a>
+      <a href="artifacts/Copilot_Analytics_Setup_Companion_Guide.pdf" class="secondary">PDF</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- PLAYBOOKS -->
+<div class="section-title">Agent Analytics</div>
+<div class="section-subtitle">Detect ungoverned agents in the Agent Dashboard &rarr; Act via M365 Admin Center quick actions. For preventive governance, see the the Copilot &amp; Agent Governance guide (separate).</div>
+<div class="card-grid">
+
+  <div class="card" data-roles="admin governance leader" data-keywords="agent shadow AI detect creator type adoption metrics returning users block approve review governance">
+    <span class="card-badge badge-core">IN MAIN GUIDE — Section 7</span>
+    <h3>Agent Dashboard (Detect)</h3>
+    <p>Adoption metrics, returning users, per-agent deep-dives, shadow AI detection via Creator Type filter. Includes the <strong>Detect → Act workflow</strong> bridging analytics to governance — quick actions in M365 Admin Center to block, approve, or review agents.</p>
+    <div class="card-roles">
+      <span class="card-role">AI Admin</span>
+      <span class="card-role">IT Governance</span>
+      <span class="card-role">Leaders</span>
+    </div>
+    <a href="docs/core/Copilot_Analytics_Implementation_Guide.html#s7">Open Section 7</a>
+  </div>
+
+</div>
+
+<!-- OTHER PLAYBOOKS -->
+<div class="section-title">Playbooks</div>
+<div class="section-subtitle">Scenario-specific guides for billing, collaboration analysis, and multi-agency isolation.</div>
+<div class="card-grid">
+
+  <div class="card" data-roles="admin finance leader" data-keywords="licence license billing credits chargeback lifecycle renewal expiry model subscription PAYG commit consumption cost finance">
+    <span class="card-badge badge-playbook">PLAYBOOK</span>
+    <h3>Lifecycle &amp; Billing</h3>
+    <p>Operational guide for licence lifecycle events and billing. Covers 5 licensing models, 6 lifecycle scenarios (with analytics data impact), Copilot Credits consumption, PPAC billing config, multi-agency chargeback, and monthly/quarterly operational checklists.</p>
+    <div class="card-meta">~16 pages &bull; 9 sections</div>
+    <div class="card-roles">
+      <span class="card-role">IT Admin</span>
+      <span class="card-role">Finance</span>
+      <span class="card-role">Licence Admin</span>
+    </div>
+    <div class="card-links">
+      <a href="docs/playbooks/Copilot_Lifecycle_Billing_Playbook.html">Open Playbook</a>
+      <a href="artifacts/pdfs/Copilot_Lifecycle_Billing_Playbook.pdf" class="secondary">PDF</a>
+    </div>
+  </div>
+
+  <div class="card" data-roles="analyst leader" data-keywords="meeting time focus time wellbeing manager effectiveness collaboration template query 27 months behavioural metrics HR people analytics">
+    <span class="card-badge badge-playbook">PLAYBOOK</span>
+    <h3>Advanced Viva Insights — Collaboration Analysis</h3>
+    <p>Guide for using Viva Insights to analyse meeting time, focus time, wellbeing, and manager effectiveness — beyond Copilot. Covers 6 templates, behavioural metrics, custom queries, 3 use case scenarios, and data retention differences (27 months vs 13 months).</p>
+    <div class="card-meta">~20 pages &bull; 10 sections</div>
+    <div class="card-roles">
+      <span class="card-role">Insights Analyst</span>
+      <span class="card-role">HR / People Analytics</span>
+    </div>
+    <a href="docs/playbooks/Advanced_Viva_Insights_Collaboration_Guide.html">Open Playbook</a>
+  </div>
+
+  <div class="card" data-roles="admin governance" data-keywords="partition isolation multi-agency single tenant VFAM lockdown PowerShell access control risk register org data architecture solution">
+    <span class="card-badge badge-playbook">PLAYBOOK — ARCHITECTURE</span>
+    <h3>Multi-Agency Isolation Architecture</h3>
+    <p>Solution architecture for deploying Copilot Dashboard in a single tenant with multiple independent agencies. Covers partition-based isolation, VFAM lockdown, PowerShell commands, access control matrix, risk register, and org data strategy.</p>
+    <div class="card-meta">~15 pages &bull; 12 sections + appendices</div>
+    <div class="card-roles">
+      <span class="card-role">Solution Architect</span>
+      <span class="card-role">IT Admin</span>
+    </div>
+    <div class="card-links">
+      <a href="docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Open Playbook</a>
+      <a href="artifacts/pdfs/Copilot_Multi_Agency_Isolation_Architecture.pdf" class="secondary">PDF</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- ARTIFACTS -->
+<div class="section-title">Quick References &amp; Artifacts</div>
+<div class="section-subtitle">Printable cheat sheets, FAQs, and campaign materials.</div>
+<div class="card-grid">
+
+  <div class="card" data-roles="admin analyst" data-keywords="checklist quick start one page printable URLs wait times roles tier">
+    <span class="card-badge badge-artifact">ARTIFACT</span>
+    <h3>Quick-Start Cheat Sheet</h3>
+    <p>One-page printable checklist covering all 5 tiers. Key URLs, wait times, org data fields, and roles at a glance. Print as PDF via File → Print → Save as PDF.</p>
+    <div class="card-roles">
+      <span class="card-role">IT Admin</span>
+      <span class="card-role">Analyst</span>
+    </div>
+    <div class="card-links">
+      <a href="artifacts/Copilot_Analytics_QuickStart_CheatSheet.html">Open</a>
+      <a href="artifacts/pdfs/Copilot_Analytics_QuickStart_CheatSheet.pdf" class="secondary">PDF</a>
+    </div>
+  </div>
+
+  <div class="card" data-roles="leader admin" data-keywords="questions answers licensing privacy data refresh agents billing scope common">
+    <span class="card-badge badge-artifact">ARTIFACT — CUSTOMER-FACING</span>
+    <h3>FAQ</h3>
+    <p>15 most common customer questions with direct answers. Covers licensing, privacy, data refresh, agents, billing, and scope. Ready to share pre-engagement.</p>
+    <div class="card-roles">
+      <span class="card-role">Pre-sales</span>
+      <span class="card-role">Account Team</span>
+    </div>
+    <div class="card-links">
+      <a href="artifacts/Copilot_Analytics_FAQ.html">Open FAQ</a>
+      <a href="artifacts/pdfs/Copilot_Analytics_FAQ.pdf" class="secondary">PDF</a>
+    </div>
+  </div>
+
+  <div class="card" data-roles="leader" data-keywords="marketing LinkedIn posts content strategy thought leadership campaign angles">
+    <span class="card-badge badge-artifact">ARTIFACT — INTERNAL</span>
+    <h3>LinkedIn Campaign Brief</h3>
+    <p>Content brief for creating LinkedIn posts based on the guide's key insights. Includes 8 hard-to-find insights, 12 campaign angles by audience, tone guidance, and content structure breakdown.</p>
+    <div class="card-roles">
+      <span class="card-role">Marketing</span>
+      <span class="card-role">Thought Leadership</span>
+    </div>
+    <a href="CAMPAIGN_BRIEF.md">Open Brief</a>
+  </div>
+
+</div>
+
+</div>
+
+<div class="footer">
+  <p><strong>Disclaimer:</strong> These guides are provided as procedural references and may not reflect the latest product changes. Always refer to the official
+  <a href="https://learn.microsoft.com/viva/insights/">Viva Insights</a> and
+  <a href="https://learn.microsoft.com/copilot/microsoft-365/">Microsoft 365 Copilot</a> documentation on Microsoft Learn for the most up-to-date information.</p>
+  <p style="margin-top:12px;">Copilot Analytics Documentation Hub &bull; March 2026</p>
+</div>
+
+<script>
+let activeRole = 'all';
+let searchTerm = '';
+
+function filterCards(role) {
+  activeRole = role;
+  document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  applyFilters();
+}
+
+function applyFilters() {
+  const term = searchTerm.toLowerCase().trim();
+  let visibleCount = 0;
+  document.querySelectorAll('.card').forEach(card => {
+    // Role filter
+    let roleMatch = true;
+    if (activeRole !== 'all') {
+      const roles = card.getAttribute('data-roles') || '';
+      roleMatch = roles.includes(activeRole);
+    }
+    // Search filter
+    let searchMatch = true;
+    if (term) {
+      const title = (card.querySelector('h3')?.textContent || '').toLowerCase();
+      const desc = (card.querySelector('p')?.textContent || '').toLowerCase();
+      const keywords = (card.getAttribute('data-keywords') || '').toLowerCase();
+      const badges = (card.querySelector('.card-badge')?.textContent || '').toLowerCase();
+      searchMatch = title.includes(term) || desc.includes(term) || keywords.includes(term) || badges.includes(term);
+    }
+    const visible = roleMatch && searchMatch;
+    card.style.display = visible ? '' : 'none';
+    if (visible) visibleCount++;
+  });
+  // Show/hide section titles based on visible cards
+  document.querySelectorAll('.card-grid').forEach(grid => {
+    const hasVisible = Array.from(grid.querySelectorAll('.card')).some(c => c.style.display !== 'none');
+    const title = grid.previousElementSibling;
+    const subtitle = title?.previousElementSibling;
+    if (title?.classList.contains('section-subtitle')) {
+      title.style.display = hasVisible ? '' : 'none';
+      if (subtitle?.classList.contains('section-title')) subtitle.style.display = hasVisible ? '' : 'none';
+    } else if (title?.classList.contains('section-title')) {
+      title.style.display = hasVisible ? '' : 'none';
+    }
+  });
+  // Also hide/show the decision guide based on search
+  const decision = document.querySelector('.decision');
+  if (decision) {
+    decision.style.display = term ? 'none' : '';
+  }
+  // No results message
+  document.getElementById('noResults').style.display = (visibleCount === 0 && term) ? '' : 'none';
+}
+
+// Search input handler
+const searchInput = document.getElementById('docSearch');
+const clearBtn = document.getElementById('clearSearch');
+searchInput.addEventListener('input', function() {
+  searchTerm = this.value;
+  clearBtn.style.display = searchTerm ? '' : 'none';
+  applyFilters();
+});
+
+function clearSearch() {
+  searchInput.value = '';
+  searchTerm = '';
+  clearBtn.style.display = 'none';
+  applyFilters();
+  searchInput.focus();
+}
+
+// Keyboard shortcut: Cmd/Ctrl+K to focus search
+document.addEventListener('keydown', function(e) {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault();
+    searchInput.focus();
+    searchInput.select();
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copilot Analytics — Quick-Start Cheat Sheet</title>
+<link rel="stylesheet" href="../assets/docs-style.css">
+<style>
+  @page { size: A4; margin: 12mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 8.5pt; color: #222; max-width: 210mm; margin: 0 auto; padding: 10px; line-height: 1.35; }
+  h1 { font-size: 14pt; color: #1F4E79; text-align: center; margin-bottom: 2px; }
+  .subtitle { text-align: center; font-size: 8pt; color: #666; margin-bottom: 8px; border-bottom: 2px solid #1F4E79; padding-bottom: 6px; }
+  h2 { font-size: 9.5pt; color: #1F4E79; margin: 8px 0 3px; padding: 2px 6px; background: #E8F0FE; border-radius: 3px; }
+  .cols { display: flex; gap: 10px; }
+  .col { flex: 1; }
+  ul { list-style: none; padding: 0; margin: 0 0 4px; }
+  ul li { padding: 2px 0 2px 14px; position: relative; font-size: 8pt; }
+  ul li::before { content: "☐"; position: absolute; left: 0; font-weight: 700; color: #28A745; }
+  table { width: 100%; border-collapse: collapse; font-size: 7.5pt; margin: 2px 0 6px; }
+  th { background: #1F4E79; color: #fff; padding: 3px 5px; text-align: left; font-size: 7.5pt; }
+  td { padding: 2px 5px; border: 1px solid #ddd; }
+  tr:nth-child(even) td { background: #F5F8FC; }
+  code { background: #EEF2F7; padding: 0 3px; border-radius: 2px; font-family: 'Cascadia Code', Consolas, monospace; font-size: 7.5pt; }
+  .footer { text-align: center; font-size: 7pt; color: #999; margin-top: 6px; border-top: 1px solid #ddd; padding-top: 4px; }
+  .warn { background: #FFF3CD; border-left: 3px solid #FFC107; padding: 3px 6px; font-size: 7.5pt; margin: 4px 0; border-radius: 2px; }
+</style>
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Quick-Start Cheat Sheet</span>
+  </div>
+  <div class="doc-nav-right">
+    <a href="pdfs/Copilot_Analytics_QuickStart_CheatSheet.pdf" class="pdf-btn" title="Download PDF">&#128196; PDF</a>
+  </div>
+</nav>
+
+<h1>Microsoft 365 Copilot Analytics — Quick-Start Cheat Sheet</h1>
+<div class="subtitle">Implementation Checklist &bull; All 5 Tiers &bull; February 2026</div>
+
+<div class="cols">
+<div class="col">
+
+<h2>Tier 1 — Admin Center (Day 1)</h2>
+<ul>
+  <li>Verify Reports Reader role</li>
+  <li>Reports → Usage → Microsoft 365 Copilot</li>
+  <li>Wait ~72 hours for data → export CSV</li>
+</ul>
+
+<h2>Tier 2 — Copilot Dashboard (Day 1–7)</h2>
+<ul>
+  <li>Verify 50+ assigned Copilot/Viva Insights licences</li>
+  <li>Verify Entra ID manager hierarchy populated</li>
+  <li>AI Admin: add self + users to access</li>
+  <li>Insights Admin: enable Manager Settings (toggle on "Grant managers scoped access")</li>
+  <li>Upload org data CSV (PersonId, ManagerId, Organization + custom)</li>
+  <li>Configure minimum group size (default 10, min 5)</li>
+  <li>Configure hourly rate for ROI (default $72/h)</li>
+  <li>Optional: exclusion list, sentiment surveys</li>
+  <li>Wait up to 7 days → verify all 4 pages</li>
+</ul>
+
+<h2>Tier 3 — Analytics Reports (Auto)</h2>
+<ul>
+  <li>No action — auto-available to Dashboard users</li>
+  <li>Verify: Viva Insights → Reports (left nav)</li>
+</ul>
+
+<h2>Tier 4 — Agent Dashboard (Day 7+)</h2>
+<ul>
+  <li>On by default — verify in Viva Insights left nav</li>
+  <li>Delegates need "Your company" scope (not "Your group")</li>
+  <li>If agents deployed, verify activity data</li>
+</ul>
+
+<h2>Tier 5 — Advanced Analytics (Week 2+)</h2>
+<ul>
+  <li>Assign Insights Analyst role → wait 1–2 hours</li>
+  <li>Grant partition access</li>
+  <li>Org data uploaded &amp; processed (from Tier 2)</li>
+  <li>Install Power BI Desktop (June 2022+)</li>
+  <li>Create Copilot Impact query</li>
+  <li>Connect Power BI via OData feed → apply template</li>
+  <li>Configure scheduled refresh</li>
+</ul>
+
+</div>
+<div class="col">
+
+<h2>Key URLs</h2>
+<table>
+  <tr><td><strong>M365 Admin Center</strong></td><td><code>admin.microsoft.com</code></td></tr>
+  <tr><td><strong>Entra Admin Center</strong></td><td><code>entra.microsoft.com</code></td></tr>
+  <tr><td><strong>Viva Insights</strong></td><td><code>insights.cloud.microsoft</code></td></tr>
+  <tr><td><strong>Copilot Dashboard</strong></td><td><code>insights.cloud.microsoft/#/CopilotDashboard</code></td></tr>
+  <tr><td><strong>Power BI Desktop</strong></td><td><code>powerbi.microsoft.com/desktop/</code></td></tr>
+</table>
+
+<h2>Key Wait Times</h2>
+<table>
+  <tr><th>Action</th><th>Wait</th></tr>
+  <tr><td>Admin Center data</td><td>~72 hours</td></tr>
+  <tr><td>Dashboard initial data</td><td>Up to 7 days</td></tr>
+  <tr><td>Manager settings change</td><td>1 hour</td></tr>
+  <tr><td>Access changes</td><td>24 hours</td></tr>
+  <tr><td>Min group size change</td><td>24 hours</td></tr>
+  <tr><td>Org data upload</td><td>Up to 7 days</td></tr>
+  <tr><td>Exclusion list apply</td><td>Up to 5 days</td></tr>
+  <tr><td>Exclusion list remove</td><td>Up to 3 days</td></tr>
+</table>
+
+<h2>Org Data CSV — Required Fields</h2>
+<table>
+  <tr><th>Viva Insights</th><th>M365 Admin Center</th><th>Req?</th></tr>
+  <tr><td>PersonId</td><td>Microsoft_PersonEmail</td><td>Yes</td></tr>
+  <tr><td>ManagerId</td><td>Microsoft_ManagerEmail</td><td>Yes</td></tr>
+  <tr><td>Organization</td><td>Microsoft_Organization</td><td>Yes</td></tr>
+  <tr><td>EffectiveDate</td><td>N/A</td><td>Rec.</td></tr>
+  <tr><td>FunctionType</td><td>Microsoft_JobDiscipline</td><td>Opt.</td></tr>
+</table>
+
+<h2>Roles Needed</h2>
+<table>
+  <tr><th>Role</th><th>What They Do</th></tr>
+  <tr><td>Global Admin</td><td>Assign licences &amp; roles</td></tr>
+  <tr><td>AI Admin</td><td>Dashboard access, VFAM, exclusion lists</td></tr>
+  <tr><td>Insights Admin</td><td>Org data, privacy, manager settings</td></tr>
+  <tr><td>Insights Analyst</td><td>Queries, Power BI, advanced analysis</td></tr>
+</table>
+
+<div class="warn">
+  <strong>Common Gotcha:</strong> AI Admin does NOT get automatic dashboard access — must add self via access management settings.
+</div>
+
+<h2>Suggested Review Cadence</h2>
+<table>
+  <tr><th>Cadence</th><th>Who</th><th>What</th></tr>
+  <tr><td>Weekly</td><td>IT Admin</td><td>Licence utilisation, inactive users</td></tr>
+  <tr><td>Fortnightly</td><td>Leaders</td><td>Assisted Hours, adoption trends</td></tr>
+  <tr><td>Monthly</td><td>Leaders</td><td>Analytics Reports, agent data</td></tr>
+  <tr><td>Quarterly</td><td>Analysts</td><td>Before/after analysis, ROI deck</td></tr>
+</table>
+
+</div>
+</div>
+
+<div class="footer">
+  Microsoft 365 Copilot Analytics Implementation Guide v3.0 &bull; Quick-Start Cheat Sheet &bull; February 2026 &bull; Print as PDF: File → Print → Save as PDF
+</div>
+
+</body>
+</html>

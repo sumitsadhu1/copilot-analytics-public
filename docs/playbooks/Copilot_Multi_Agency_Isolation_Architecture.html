@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solution Architecture: Copilot Dashboard & Analytics for Multi-Agency Single Tenant</title>
+    <link rel="stylesheet" href="../../assets/docs-style.css">
+<style>
+        :root {
+            --primary-color: #005a9e;
+            --secondary-color: #0078d4;
+            --bg-color: #f3f2f1;
+            --text-color: #323130;
+            --border-color: #edebe9;
+            --success-color: #107c10;
+            --danger-color: #a4262c;
+            --warning-bg: #fff4ce;
+            --warning-border: #d83b01;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        /* Sidebar Navigation */
+        nav {
+            width: 300px;
+            background-color: #ffffff;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            box-sizing: border-box;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+        }
+
+        nav h3 {
+            color: var(--primary-color);
+            font-size: 1.1em;
+            margin-top: 0;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav li {
+            margin-bottom: 10px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 0.95em;
+            display: block;
+            padding: 5px 8px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        nav a:hover {
+            background-color: var(--bg-color);
+            color: var(--primary-color);
+        }
+
+        /* Main Content */
+        main {
+            margin-left: 300px;
+            padding: 40px;
+            max-width: 1000px;
+            background-color: #ffffff;
+            min-height: 100vh;
+            box-sizing: border-box;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        header {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.2em;
+            margin: 0 0 10px 0;
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            margin-top: 40px;
+        }
+
+        h3 {
+            color: #444;
+            margin-top: 25px;
+        }
+
+        /* Callouts & Alerts */
+        .alert {
+            padding: 15px 20px;
+            background-color: var(--warning-bg);
+            border-left: 5px solid var(--warning-border);
+            margin: 20px 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .alert strong {
+            color: var(--warning-border);
+        }
+
+        .highlight-box {
+            background-color: #f0f6ff;
+            border: 1px solid #cce3ff;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95em;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #faf9f8;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fdfdfd;
+        }
+
+        /* Status Badges */
+        .pass { color: var(--success-color); font-weight: bold; }
+        .fail { color: var(--danger-color); font-weight: bold; }
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        .badge-p0 { background-color: #fde7e9; color: var(--danger-color); }
+        .badge-p1 { background-color: #fff4ce; color: #8a8886; }
+        .badge-p2 { background-color: #e1dfdd; color: #323130; }
+
+        /* Code & Preformatted */
+        pre {
+            background-color: #282c34;
+            color: #abb2bf;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: #f3f2f1;
+            padding: 2px 5px;
+            border-radius: 3px;
+            color: #d83b01;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* Architecture Diagram Styling */
+        .diagram-container {
+            background-color: #282c34;
+            color: #61afef;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: monospace;
+            white-space: pre;
+            overflow-x: auto;
+            line-height: 1.2;
+            margin: 20px 0;
+        }
+
+        /* Runbook Steps */
+        .step-card {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .step-card h4 {
+            margin-top: 0;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .step-number {
+            background: var(--primary-color);
+            color: white;
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Multi-Agency Isolation</span>
+  </div>
+  <div class="doc-nav-right">
+    <a href="../../artifacts/pdfs/Copilot_Multi_Agency_Isolation_Architecture.pdf" class="pdf-btn" title="Download PDF">&#128196; PDF</a>
+  </div>
+</nav>
+
+    <nav>
+        <h3>Solution Architecture</h3>
+        <ul>
+            <li><a href="#exec-summary">1. Executive Summary</a></li>
+            <li><a href="#business-context">2. Business Context & Requirements</a></li>
+            <li><a href="#options-assessment">3. Solution Options Assessment</a></li>
+            <li><a href="#recommended-arch">4. Recommended Architecture</a></li>
+            <li><a href="#runbook">5. Implementation Runbook</a></li>
+            <li><a href="#org-data">6. Organizational Data Strategy</a></li>
+            <li><a href="#access-control">7. Access Control Matrix</a></li>
+            <li><a href="#governance">8. Governance & Operations</a></li>
+            <li><a href="#risks">9. Risk Register</a></li>
+            <li><a href="#discovery">10. Discovery Questions</a></li>
+            <li><a href="#appendix-a">Appendix A: PowerShell</a></li>
+            <li><a href="#appendix-b">Appendix B: CSV Templates</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <header>
+            <h1>Copilot Dashboard & Analytics for Multi-Agency Single Tenant</h1>
+            <p><strong>Document Type:</strong> Solution Architecture Artifact<br>
+            <strong>Version:</strong> 2.0 | <strong>Date:</strong> March 2026<br>
+            <strong>Classification:</strong> Internal — Customer Deliverable</p>
+        </header>
+
+        <div class="highlight-box" style="border-left:4px solid #0078d4; margin-bottom:20px;">
+            <strong>TL;DR &mdash; 5 Things to Do</strong>
+            <ol style="margin:8px 0 0 20px;">
+                <li><strong>Lock down</strong> the Copilot Dashboard to Central IT only (VFAM + Entra group) &mdash; <a href="#runbook">Phase 1</a></li>
+                <li><strong>Upload org data</strong> with an <code>Agency</code> attribute for every employee &mdash; <a href="#org-data">Section 6</a></li>
+                <li><strong>Create one partition per agency</strong> in Viva Insights, filtered by Agency &mdash; <a href="#runbook">Phase 3</a></li>
+                <li><strong>Assign agency-specific analysts</strong> to their partitions only &mdash; <a href="#access-matrix">Section 7</a></li>
+                <li><strong>Deliver reports</strong> via Publish Reports or isolated Power BI workspaces &mdash; <a href="#runbook">Phase 4</a></li>
+            </ol>
+            <p style="margin:8px 0 0;font-size:0.88em;color:#666;">Time estimate: 2&ndash;3 days. Prerequisites: 50+ Copilot licences, Insights Admin role, org data CSV ready.</p>
+        </div>
+
+        <section id="exec-summary">
+            <h2>1. Executive Summary</h2>
+            <p>This document provides a validated, end-to-end solution architecture for deploying Microsoft Copilot Dashboard and Copilot Analytics in a <strong>single Microsoft 365 tenant</strong> that hosts <strong>multiple independent agencies</strong>. Each agency operates as a distinct organization with its own CEO and full management hierarchy, but all share one Entra ID tenant.</p>
+            
+            <div class="alert">
+                <strong>Core Constraint & Key Finding:</strong><br>
+                The customer requires that Agency A cannot see Agency B's Copilot usage data. 
+                After validation against official Microsoft documentation, <strong>the Copilot Dashboard does not natively support hard data isolation between organizational units within a single tenant.</strong> Users identified as "senior leaders" by Entra ID hierarchy will always see "Your company" data, which includes all agencies.
+            </div>
+
+            <div class="highlight-box">
+                <strong>Recommended Approach: A Two-Tier Architecture</strong>
+                <ol>
+                    <li><strong>Viva Insights Advanced Analytics with Partitions</strong> — for agency-isolated Copilot reporting (primary reporting surface for agencies).</li>
+                    <li><strong>Copilot Dashboard with controlled access</strong> — for tenant-level oversight by central IT only (secondary, restricted use).</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="business-context">
+            <h2>2. Business Context & Requirements</h2>
+            
+            <h3>2.1 Organizational Structure</h3>
+            <div class="diagram-container">
+┌─────────────────────────────────────────────┐
+│           Single M365 Tenant                │
+│                                             │
+│  ┌───────────┐ ┌───────────┐ ┌───────────┐  │
+│  │ Agency A  │ │ Agency B  │ │ Agency C  │  │
+│  │           │ │           │ │           │  │
+│  │ CEO-A     │ │ CEO-B     │ │ CEO-C     │  │
+│  │  ├─VP1    │ │  ├─VP1    │ │  ├─VP1    │  │
+│  │  ├─VP2    │ │  ├─VP2    │ │  ├─VP2    │  │
+│  │  └─...    │ │  └─...    │ │  └─...    │  │
+│  └───────────┘ └───────────┘ └───────────┘  │
+│                                             │
+│         Central IT / Shared Services        │
+└─────────────────────────────────────────────┘
+            </div>
+
+            <h3>2.2 Functional Requirements</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Requirement</th>
+                        <th>Priority</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>FR-01</td><td>Agency A leaders see ONLY Agency A Copilot usage data</td><td><span class="badge badge-p0">P0 — Must Have</span></td></tr>
+                    <tr><td>FR-02</td><td>Agency A leaders CANNOT see Agency B/C aggregate data</td><td><span class="badge badge-p0">P0 — Must Have</span></td></tr>
+                    <tr><td>FR-03</td><td>Each agency CEO gets adoption, impact, and sentiment metrics</td><td><span class="badge badge-p1">P1 — Should Have</span></td></tr>
+                    <tr><td>FR-04</td><td>Central IT retains tenant-wide visibility for license management</td><td><span class="badge badge-p1">P1 — Should Have</span></td></tr>
+                    <tr><td>FR-05</td><td>Agency-level analysts can run custom Copilot queries</td><td><span class="badge badge-p2">P2 — Nice to Have</span></td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="options-assessment">
+            <h2>3. Solution Options Assessment</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Option</th>
+                        <th>Description</th>
+                        <th>FR-01 (Isolation)</th>
+                        <th>FR-02 (No Cross-Vis)</th>
+                        <th>Verdict</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1. Dashboard Only</strong></td>
+                        <td>Standard deployment relying on "Your group" scope.</td>
+                        <td class="fail">❌ Fail</td>
+                        <td class="fail">❌ Fail</td>
+                        <td><strong>NOT RECOMMENDED.</strong> Senior leaders auto-get "Your company" view.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2. Dashboard + Delegation</strong></td>
+                        <td>Admin delegates "Your group" view to CEOs.</td>
+                        <td class="fail">❌ Fail</td>
+                        <td class="fail">❌ Fail</td>
+                        <td><strong>NOT RECOMMENDED.</strong> Scope is based on delegator's hierarchy.</td>
+                    </tr>
+                    <tr style="background-color: #f0fdf4;">
+                        <td><strong>3. Partitions (Advanced Analytics)</strong></td>
+                        <td>Create Viva Insights Partitions per agency.</td>
+                        <td class="pass">✅ Pass</td>
+                        <td class="pass">✅ Pass</td>
+                        <td><strong>RECOMMENDED.</strong> Provides true row/column data isolation.</td>
+                    </tr>
+                    <tr style="background-color: #f0fdf4; border-left: 4px solid var(--success-color);">
+                        <td><strong>4. Hybrid (Partitions + Restricted Dashboard)</strong></td>
+                        <td>Partitions for agencies + Dashboard for Central IT.</td>
+                        <td class="pass">✅ Pass</td>
+                        <td class="pass">✅ Pass</td>
+                        <td><strong>RECOMMENDED ARCHITECTURE.</strong> Meets all requirements.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="recommended-arch">
+            <h2>4. Recommended Architecture</h2>
+            
+            <div class="diagram-container" style="color: #98c379;">
+┌──────────────────────────────────────────────────────────────────┐
+│                      Single M365 Tenant                          │
+│                                                                  │
+│  ┌──────────────────────────────────────────────────────────┐    │
+│  │              Viva Insights Advanced Analytics            │    │
+│  │                                                          │    │
+│  │  ┌─────────────────┐  ┌─────────────────┐                │    │
+│  │  │   Partition:    │  │   Partition:    │    ...more     │    │
+│  │  │   Agency A      │  │   Agency B      │    partitions  │    │
+│  │  │                 │  │                 │                │    │
+│  │  │  Filter:        │  │  Filter:        │                │    │
+│  │  │  Agency="A"     │  │  Agency="B"     │                │    │
+│  │  │                 │  │                 │                │    │
+│  │  │  Analysts:      │  │  Analysts:      │                │    │
+│  │  │  analyst-a1     │  │  analyst-b1     │                │    │
+│  │  │                 │  │                 │                │    │
+│  │  │  ┌───────────┐  │  │  ┌───────────┐  │                │    │
+│  │  │  │ Copilot   │  │  │  │ Copilot   │  │                │    │
+│  │  │  │ PBI       │  │  │  │ PBI       │  │                │    │
+│  │  │  │ Template  │  │  │  │ Template  │  │                │    │
+│  │  │  └─────┬─────┘  │  │  └─────┬─────┘  │                │    │
+│  │  └────────┼────────┘  └────────┼────────┘                │    │
+│  └───────────┼────────────────────┼─────────────────────────┘    │
+│              ▼                    ▼                              │
+│  ┌──────────────────┐  ┌──────────────────┐                      │
+│  │  Power BI        │  │  Power BI        │                      │
+│  │  Service:        │  │  Service:        │                      │
+│  │  Agency A        │  │  Agency B        │                      │
+│  │  Workspace       │  │  Workspace       │                      │
+│  │                  │  │                  │                      │
+│  │  Consumers:      │  │  Consumers:      │                      │
+│  │  CEO-A, VPs, HR  │  │  CEO-B, VPs, HR  │                      │
+│  └──────────────────┘  └──────────────────┘                      │
+│                                                                  │
+│  ┌──────────────────────────────────────────────────────────┐    │
+│  │          Copilot Dashboard (Restricted)                  │    │
+│  │  Access: Central IT Only (Tenant-wide license mgmt)      │    │
+│  └──────────────────────────────────────────────────────────┘    │
+└──────────────────────────────────────────────────────────────────┘
+            </div>
+        </section>
+
+        <section id="runbook">
+            <h2>5. Implementation Runbook</h2>
+            
+            <div class="step-card">
+                <h4><span class="step-number">0</span> Phase 0: Pre-Flight Audit</h4>
+                <p>Before locking anything down, audit the current state. Disabling policies does not revoke existing access.</p>
+                <ul>
+                    <li>Run <code><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/viva-feature-access-management">Get-VivaModuleFeaturePolicy</a> -ModuleId VivaInsights</code> to audit all current VFAM policies.</li>
+                    <li>In M365 Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; <strong>Manage user access for Copilot Dashboard</strong>, check who currently has access.</li>
+                    <li>Identify any agency CEOs or leaders who already have dashboard access (auto-enabled or manually added).</li>
+                    <li>Document the current state of all VFAM policies (AutoCxoIdentification, CopilotDashboardDelegation, AgentDashboard, CopilotMetricsExport).</li>
+                    <li>Verify the Entra ID ManagerID hierarchy &mdash; confirm each agency CEO reports to a different top-level node (not to each other).</li>
+                </ul>
+            </div>
+
+            <div class="step-card">
+                <h4><span class="step-number">1</span> Phase 1: Foundation (Lockdown)</h4>
+                <p>Prevent agency CEOs from being auto-identified as senior leaders and getting tenant-wide access.</p>
+                <ul>
+                    <li>Disable <code>AutoCxoIdentification</code> via PowerShell for the entire tenant.</li>
+                    <li>Remove any existing auto-enabled agency leaders in M365 Admin Center.</li>
+                    <li>Disable <code>CopilotDashboardDelegation</code> via PowerShell to prevent cross-agency leaks.</li>
+                    <li>Create <a href="https://learn.microsoft.com/entra/identity/users/groups-create-rule">Entra group</a> <code>CentralIT-CopilotDashboard-Access</code> and grant dashboard access ONLY to this group.</li>
+                    <li>Disable the <strong>Agent Dashboard</strong> for everyone except Central IT using VFAM: <code>Add-VivaModuleFeaturePolicy -ModuleId VivaInsights -FeatureId AgentDashboard -Name "RestrictAgentDashboard" -IsFeatureEnabled $false -Everyone</code>. Then create a group-level policy to re-enable for Central IT only.</li>
+                    <li>Disable the <strong>Copilot Metrics Export</strong> feature to prevent user-level data downloads: <code>Add-VivaModuleFeaturePolicy -ModuleId VivaInsights -FeatureId CopilotMetricsReport -Name "DisableMetricsExport" -IsFeatureEnabled $false -Everyone</code>.</li>
+                </ul>
+                <div class="alert">
+                    <strong>After Phase 1 &mdash; Verification:</strong><br>
+                    Confirm no agency leaders appear in the dashboard access list. Verify all four VFAM policies (AutoCxo, Delegation, AgentDashboard, MetricsExport) show as disabled. Have an agency CEO attempt to access <code>insights.cloud.microsoft</code> and confirm access is denied.
+                </div>
+            </div>
+
+            <div class="step-card">
+                <h4><span class="step-number">2</span> Phase 2: Organizational Data</h4>
+                <p>Prepare and upload the foundational data that enables partitioning.</p>
+                <ul>
+                    <li>Create a consolidated CSV file containing ALL employees across ALL agencies.</li>
+                    <li>Include the critical custom attribute: <code>Agency</code> (e.g., "Agency A", "Agency B").</li>
+                    <li>Upload via Viva Insights web app or M365 Admin Center.</li>
+                </ul>
+                <div class="alert">
+                    <strong>After Phase 2 &mdash; Verification:</strong><br>
+                    Check Viva Insights Admin &rarr; Data Quality to verify the <code>Agency</code> attribute has 100% coverage. Verify employee counts per agency match HR records.
+                </div>
+                <div class="highlight-box">
+                    <strong>Shared Services Decision:</strong> If your organisation has shared-services teams (IT, Legal, Finance) that serve multiple agencies, choose one of these approaches:
+                    <ol>
+                        <li><strong>Dedicated &ldquo;Shared Services&rdquo; partition</strong> (recommended) &mdash; Create a separate partition filtered by <code>Agency = "Shared Services"</code>. Central IT analysts access this partition alongside the global partition.</li>
+                        <li><strong>Global partition only</strong> &mdash; Exclude shared services from all agency partitions. Their data is only visible in the global partition (Central IT only).</li>
+                        <li><strong>Include in every agency partition</strong> &mdash; Not recommended. Creates duplicate data and inflates agency metrics.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <h4><span class="step-number">3</span> Phase 3: Partitions Setup</h4>
+                <p>Create the hard data boundaries.</p>
+                <div class="alert">
+                    <strong>Before Enabling Partitions &mdash; Confirm:</strong><br>
+                    (a) You have a reliable, repeatable process for monthly org data uploads with the Agency attribute.<br>
+                    (b) You have identified at least one <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/assign-user-roles">Insights Analyst</a> per agency.<br>
+                    (c) You accept that once enabled, turning off partitions requires contacting Microsoft support and will <strong>delete all partition configurations, query results, and custom metrics</strong> created within partitions.<br>
+                    (d) You understand that privacy settings (minimum group size) are tenant-wide, not per-partition &mdash; all agencies must agree on the number.
+                </div>
+                <ul>
+                    <li>Enable Partitions in Viva Insights <a href="https://learn.microsoft.com/viva/insights/advanced/privacy/privacy-settings">Privacy Settings</a>.</li>
+                    <li>Create a partition per agency using the filter: <code>Agency = "Agency A"</code>. Verify the <strong>Filtered employees</strong> counter matches the expected headcount for that agency.</li>
+                    <li>Assign designated Insights Analysts to their respective agency partitions <strong>only</strong>. Do NOT assign agency analysts to the global partition.</li>
+                    <li>Assign Central IT analysts to the automatically created <strong>Global Partition</strong> for tenant-wide queries.</li>
+                </ul>
+                <div class="highlight-box">
+                    <strong>Why agency analysts must NOT have global partition access:</strong> Analysts with global partition access automatically get Copilot Dashboard access AND Copilot Analytics Reports access &mdash; both of which show tenant-wide data across all agencies. This would defeat the entire isolation architecture.
+                </div>
+                <div class="alert">
+                    <strong>After Phase 3 &mdash; Verification:</strong><br>
+                    Have each agency analyst sign in to <code>insights.cloud.microsoft</code>. Confirm they only see their agency&rsquo;s partition in the partition switcher. Have them run a test person query and verify the employee count matches their agency only.
+                </div>
+            </div>
+
+            <div class="step-card">
+                <h4><span class="step-number">4</span> Phase 4: Copilot Reporting</h4>
+                <p>Generate and distribute the isolated reports.</p>
+                <ul>
+                    <li>Agency analysts run Copilot Power BI template queries within their isolated partition.</li>
+                </ul>
+                <p><strong>Option A: Power BI Workspaces</strong> (requires Power BI Pro/Premium licences for viewers)</p>
+                <ul>
+                    <li>Create dedicated Power BI workspaces per agency (e.g., <code>Agency-A-Copilot-Analytics</code>).</li>
+                    <li>Publish reports and grant Viewer access to agency leadership via Entra group.</li>
+                    <li>Configure <a href="https://learn.microsoft.com/power-bi/enterprise/service-admin-rls">Row-Level Security</a> (RLS) as a secondary control if multiple agencies share a workspace.</li>
+                </ul>
+                <p><strong>Option B: Viva Insights <a href="https://learn.microsoft.com/viva/insights/advanced/analyst/query-results">Publish Reports</a></strong> (no Power BI licence required for viewers)</p>
+                <ul>
+                    <li>Use the <strong>Publish Reports</strong> feature in the Viva Insights analyst experience.</li>
+                    <li>Select <strong>&ldquo;Filter report by manager hierarchy&rdquo;</strong> to automatically scope data to the recipient&rsquo;s team.</li>
+                    <li>Recipients view published reports in the Viva Insights web app &rarr; Reports tab.</li>
+                    <li>Set expiry date (up to 365 days) and republish as needed.</li>
+                </ul>
+                <div class="alert">
+                    <strong>After Phase 4 &mdash; Verification:</strong><br>
+                    Have an agency CEO view their report (either PBI or Viva Insights). Confirm: (a) only their agency&rsquo;s employees appear, (b) no cross-agency group names or data are visible, (c) the minimum group size threshold is respected for small departments within the agency.
+                </div>
+            </div>
+        </section>
+
+        <section id="org-data">
+            <h2>6. Organizational Data Strategy</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data Type</th>
+                        <th>Source</th>
+                        <th>Refresh Cadence</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Employee hierarchy (ManagerId)</td>
+                        <td>Centralized HR or per-agency HR feeds</td>
+                        <td>Monthly (minimum)</td>
+                    </tr>
+                    <tr>
+                        <td>Custom attributes (Agency, FunctionType)</td>
+                        <td>HR system (via CSV)</td>
+                        <td>Monthly</td>
+                    </tr>
+                    <tr>
+                        <td>Copilot usage data</td>
+                        <td>Automatic from M365 signals</td>
+                        <td>Daily (6-day delay)</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>Data Quality Rule:</strong> The <code>Agency</code> attribute must have 100% coverage. Missing values will exclude employees from all partitions.</p>
+            <div class="alert">
+                <strong>Data Refresh Failure Alerting:</strong><br>
+                If a monthly org data upload fails or the Agency attribute is missing for new employees, those employees silently disappear from all partitions. Nobody gets alerted.<br><br>
+                <strong>Mitigations:</strong>
+                <ul>
+                    <li>After each upload, check the <strong>Data Quality</strong> page in Viva Insights Admin to verify attribute coverage.</li>
+                    <li>Set a calendar reminder to verify Agency attribute has 100% coverage within 7 days of each upload.</li>
+                    <li>Consider automating uploads via the <a href="https://learn.microsoft.com/viva/insights/advanced/admin/import-org-data-first">Viva Insights API-based import</a> or <a href="https://learn.microsoft.com/viva/insights/advanced/admin/import-org-data-azure">Azure blob import</a> for more reliable cadence.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="access-control">
+            <h2>7. Access Control Matrix</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>Copilot Dashboard</th>
+                        <th>Partition Access</th>
+                        <th>Power BI Reports</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Global / Insights Admin</strong></td>
+                        <td>✅ Full ("Your company")</td>
+                        <td>✅ Manage all partitions (Requires Analyst role on Global Partition to query)</td>
+                        <td>✅ All workspaces</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Insights Analyst (Agency A)</strong></td>
+                        <td>❌ Not enabled</td>
+                        <td>✅ Agency A partition only</td>
+                        <td>Agency A workspace (Contributor)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Agency A CEO / VP</strong></td>
+                        <td>❌ Not enabled</td>
+                        <td>❌ No direct access</td>
+                        <td>Agency A workspace (Viewer)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="governance">
+            <h2>8. Governance & Ongoing Operations</h2>
+            <ul>
+                <li><strong>Monthly:</strong> Upload updated organizational data CSV (Central IT).</li>
+                <li><strong>Monthly:</strong> Refresh Copilot PBI template queries and publish reports (Agency Analysts).</li>
+                <li><strong>Quarterly:</strong> Audit dashboard access list and partition memberships.</li>
+                <li><strong>Onboarding:</strong> To add a new agency, add them to the CSV, create a new partition, assign an analyst, and spin up a new PBI workspace.</li>
+            </ul>
+
+            <h3>Day 2 Operations Runbook</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Scenario</th>
+                        <th>Who</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Employee transfers from Agency A to Agency B</td>
+                        <td>Central IT</td>
+                        <td>Update <code>Agency</code> attribute in the next CSV upload. Employee moves between partitions automatically on next data refresh (up to 7 days).</td>
+                    </tr>
+                    <tr>
+                        <td>New agency created</td>
+                        <td>Central IT + Insights Admin</td>
+                        <td>Add agency to CSV &rarr; create new partition &rarr; assign analyst &rarr; create PBI workspace or use Publish Reports &rarr; grant CEO viewer access.</td>
+                    </tr>
+                    <tr>
+                        <td>Agency merged or retired</td>
+                        <td>Insights Admin</td>
+                        <td>Update <code>Agency</code> attribute for merged employees &rarr; delete the retired partition (<strong>warning: deletes all queries and custom metrics in that partition</strong>) &rarr; reassign analysts.</td>
+                    </tr>
+                    <tr>
+                        <td>Agency analyst leaves</td>
+                        <td>Insights Admin</td>
+                        <td>Remove from partition &rarr; assign replacement. <strong>Note:</strong> Query results belong to the original analyst &mdash; the replacement cannot access historical query results. Re-run queries under the new analyst&rsquo;s account.</td>
+                    </tr>
+                    <tr>
+                        <td>AutoCxo accidentally re-enabled</td>
+                        <td>Central IT</td>
+                        <td>Run <code>Get-VivaModuleFeaturePolicy -ModuleId VivaInsights</code> &rarr; verify state &rarr; re-disable &rarr; remove any newly auto-enabled agency leaders from the access list immediately.</td>
+                    </tr>
+                    <tr>
+                        <td>New hire not appearing in any partition</td>
+                        <td>Central IT</td>
+                        <td>Check if the employee has the <code>Agency</code> attribute in the org data CSV. If missing, they are excluded from all partitions. Add the attribute and re-upload.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="risks">
+            <h2>9. Risk Register</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Risk</th>
+                        <th>Impact</th>
+                        <th>Mitigation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Auto-enablement policy is accidentally re-enabled</td>
+                        <td>High</td>
+                        <td>Document the policy; set quarterly audit of PowerShell feature policies.</td>
+                    </tr>
+                    <tr>
+                        <td>Partition filter misconfigured, includes wrong agency</td>
+                        <td>High</td>
+                        <td>Validate filtered employee count during partition creation; quarterly audit.</td>
+                    </tr>
+                    <tr>
+                        <td>Power BI workspace permissions grant cross-agency access</td>
+                        <td>High</td>
+                        <td>Use dedicated workspaces per agency with strict Entra group-based access.</td>
+                    </tr>
+                    <tr>
+                        <td>Copilot Metrics Export enabled &mdash; user-level data downloadable</td>
+                        <td>High</td>
+                        <td>Disable CopilotMetricsReport VFAM control for entire tenant. Only re-enable for Central IT if needed.</td>
+                    </tr>
+                    <tr>
+                        <td>Agent Dashboard exposes cross-agency agent usage</td>
+                        <td>Medium</td>
+                        <td>Disable AgentDashboard VFAM control for everyone except Central IT. Agent Dashboard only has company-level scope.</td>
+                    </tr>
+                    <tr>
+                        <td>Analytics Reports auto-available to global partition analysts</td>
+                        <td>High</td>
+                        <td>Ensure agency analysts are NOT assigned to the global partition. Only Central IT analysts should have global access.</td>
+                    </tr>
+                    <tr>
+                        <td>Org data upload fails &mdash; employees silently drop from partitions</td>
+                        <td>Medium</td>
+                        <td>Verify Agency attribute coverage after each upload. Set calendar reminder. Consider automated API-based imports.</td>
+                    </tr>
+                    <tr>
+                        <td>Analyst query results not transferable when analyst leaves</td>
+                        <td>Low</td>
+                        <td>Document this limitation. Re-run critical queries under the replacement analyst before the departing analyst&rsquo;s access is revoked.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="discovery">
+            <h2>10. Discovery Questions for Customer</h2>
+            <ol>
+                <li><strong>How is the Entra ID ManagerID hierarchy currently structured?</strong> (Determines if CEOs are auto-identified as senior leaders).</li>
+                <li><strong>How many total employees per agency, and how many have Copilot licenses?</strong> (Partitions need sufficient population to meet the minimum group size threshold, default 10).</li>
+                <li><strong>Are there shared-services teams (IT, Legal, Finance) that serve multiple agencies?</strong> (Determines if a "Shared Services" partition is needed).</li>
+                <li><strong>What minimum privacy threshold (minimum group size) is acceptable?</strong> (This is set tenant-wide; all agencies must agree on the number).</li>
+                <li><strong>Do agency leaders need Power BI Pro/Premium licences, or should we use Viva Insights Publish Reports?</strong> (Determines report distribution method &mdash; Phase 4 options.)</li>
+                <li><strong>Has anyone already been granted Copilot Dashboard access or does any analyst have global partition access?</strong> (Must audit and remediate before proceeding with Phase 1 lockdown.)</li>
+                <li><strong>Is there an automated HR data feed, or will org data uploads be manual CSV?</strong> (Impacts reliability of partition boundaries over time.)</li>
+                <li><strong>Are Copilot agents deployed across agencies? If so, does agent usage data also need isolation?</strong> (Determines whether Agent Dashboard needs VFAM lockdown.)</li>
+            </ol>
+        </section>
+
+        <section id="appendix-a">
+            <h2>Appendix A: PowerShell Reference</h2>
+            <pre><code># Install required module
+Install-Module -Name <a href="https://learn.microsoft.com/powershell/exchange/exchange-online-powershell-v2">ExchangeOnlineManagement</a> -Force -AllowClobber
+Connect-ExchangeOnline -UserPrincipalName admin@tenant.com
+
+# Disable Auto-Enablement for Dashboard
+Add-VivaModuleFeaturePolicy `
+  -ModuleId VivaInsights `
+  -FeatureId AutoCxoIdentification `
+  -Name "DisableAutoEnableForAllAgencies" `
+  -IsFeatureEnabled $false `
+  -Everyone
+
+# Disable Delegation
+Add-VivaModuleFeaturePolicy `
+  -ModuleId VivaInsights `
+  -FeatureId CopilotDashboardDelegation `
+  -Name "DisableDelegationForTenant" `
+  -IsFeatureEnabled $false `
+  -Everyone
+
+# Disable Agent Dashboard (company-level scope exposes cross-agency data)
+Add-VivaModuleFeaturePolicy `
+  -ModuleId VivaInsights `
+  -FeatureId AgentDashboard `
+  -Name "DisableAgentDashboardForTenant" `
+  -IsFeatureEnabled $false `
+  -Everyone
+
+# Disable Copilot Metrics Export (prevents user-level data download)
+Add-VivaModuleFeaturePolicy `
+  -ModuleId VivaInsights `
+  -FeatureId CopilotMetricsReport `
+  -Name "DisableMetricsExportForTenant" `
+  -IsFeatureEnabled $false `
+  -Everyone
+
+# Audit current policies
+Get-VivaModuleFeaturePolicy -ModuleId VivaInsights</code></pre>
+        </section>
+
+        <section id="appendix-b">
+            <h2>Appendix B: Organizational Data CSV Template</h2>
+            <p>Example format for Viva Insights Web App Upload:</p>
+            <pre><code>EffectiveDate,PersonId,ManagerId,Organization,Agency,FunctionType,LevelDesignation
+2026-02-01,user1@tenant.com,ceo-a@tenant.com,Engineering,Agency A,Engineering,Director
+2026-02-01,user2@tenant.com,user1@tenant.com,Engineering,Agency A,Engineering,Manager
+2026-02-01,ceo-a@tenant.com,,Executive,Agency A,Executive,CEO
+2026-02-01,user4@tenant.com,ceo-b@tenant.com,Operations,Agency B,Operations,Director
+2026-02-01,ceo-b@tenant.com,,Executive,Agency B,Executive,CEO</code></pre>
+        </section>
+
+    </main>
+
+</body>
+</html>

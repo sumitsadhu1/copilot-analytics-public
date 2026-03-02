@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copilot Lifecycle &amp; Billing Playbook</title>
+    <link rel="stylesheet" href="../../assets/docs-style.css">
+<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            line-height: 1.7;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 40px 24px 60px;
+            background: #f9fafb;
+        }
+        h1 {
+            color: #1F4E79;
+            font-size: 2rem;
+            border-bottom: 3px solid #1F4E79;
+            padding-bottom: 12px;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: #555;
+            font-size: 0.95rem;
+            margin-bottom: 32px;
+        }
+        h2 {
+            color: #1F4E79;
+            font-size: 1.4rem;
+            margin-top: 36px;
+            margin-bottom: 12px;
+            border-left: 4px solid #1F4E79;
+            padding-left: 12px;
+        }
+        h3 {
+            color: #1F4E79;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            margin-bottom: 8px;
+        }
+        p { margin-bottom: 12px; }
+        ul, ol {
+            margin: 0 0 16px 24px;
+        }
+        li { margin-bottom: 6px; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0 24px;
+            font-size: 0.93rem;
+        }
+        th, td {
+            border: 1px solid #c0c8d0;
+            padding: 10px 14px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background: #1F4E79;
+            color: #fff;
+            font-weight: 600;
+        }
+        tr:nth-child(even) { background: #eef2f7; }
+        tr:hover { background: #dce6f0; }
+        .callout {
+            background: #e8f0fe;
+            border-left: 4px solid #1F4E79;
+            padding: 14px 18px;
+            margin: 16px 0 20px;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.93rem;
+        }
+        .callout-warning {
+            background: #fff8e1;
+            border-left: 4px solid #e6a700;
+            padding: 14px 18px;
+            margin: 16px 0 20px;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.93rem;
+        }
+        a { color: #1F4E79; }
+        a:hover { text-decoration: none; }
+        code {
+            background: #e8ecf0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .step-list { counter-reset: step-counter; list-style: none; margin-left: 0; }
+        .step-list li {
+            counter-increment: step-counter;
+            padding-left: 36px;
+            position: relative;
+            margin-bottom: 10px;
+        }
+        .step-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 26px;
+            height: 26px;
+            background: #1F4E79;
+            color: #fff;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 26px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .disclaimer {
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 16px 20px;
+            margin-top: 40px;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            color: #555;
+        }
+        .toc {
+            background: #fff;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            padding: 18px 24px;
+            margin-bottom: 32px;
+        }
+        .toc h3 { margin-top: 0; color: #1F4E79; }
+        .toc ol { margin-bottom: 0; }
+        .toc a { text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        hr { border: none; border-top: 1px solid #d0d7de; margin: 32px 0; }
+        .checklist { list-style: none; margin-left: 0; }
+        .checklist li { padding-left: 28px; position: relative; }
+        .checklist li::before {
+            content: '☐';
+            position: absolute;
+            left: 0;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Lifecycle & Billing</span>
+  </div>
+  <div class="doc-nav-right">
+    <a href="../../artifacts/pdfs/Copilot_Lifecycle_Billing_Playbook.pdf" class="pdf-btn" title="Download PDF">&#128196; PDF</a>
+  </div>
+</nav>
+
+<h1>Copilot Lifecycle &amp; Billing Playbook</h1>
+<p class="subtitle">Operational Guide for Licence Management, Billing Models &amp; Analytics Data Impact</p>
+
+<div class="callout" style="border-left:4px solid #0078d4; background:#E8F4FD; padding:14px 18px; border-radius:4px; margin:16px 0;">
+    <strong>TL;DR &mdash; Key Facts</strong>
+    <ul style="margin:8px 0 0 20px;">
+        <li>Every <strong>M365 Copilot licence includes Viva Insights</strong> &mdash; no separate purchase needed (<a href="#licensing">Section 2</a>)</li>
+        <li><strong>50+ licences</strong> required for full dashboard features; dropping below reverts to limited view (<a href="#lifecycle">Section 3</a>)</li>
+        <li>Copilot Credits <strong>do not roll over</strong> &mdash; monitor weekly and set alerts (<a href="#credits">Section 4</a>)</li>
+        <li>When credits are exhausted, <strong>agents are blocked immediately</strong> &mdash; see emergency procedure (<a href="#credits">Section 4</a>)</li>
+        <li>Licence changes take <strong>up to 7 days</strong> to appear in dashboards (<a href="#lifecycle">Section 3</a>)</li>
+    </ul>
+</div>
+
+<div class="toc">
+    <h3>Contents</h3>
+    <ol>
+        <li><a href="#purpose">Purpose</a></li>
+        <li><a href="#licensing">Licensing Models Overview</a></li>
+        <li><a href="#lifecycle">Lifecycle Events — Impact on Analytics Data</a></li>
+        <li><a href="#credits">Copilot Credits — Understanding Consumption</a></li>
+        <li><a href="#ppac-billing">PPAC Billing Configuration</a></li>
+        <li><a href="#admin-reports">Admin Center Billing Reports</a></li>
+        <li><a href="#chargeback">Multi-Agency Chargeback Model</a></li>
+        <li><a href="#checklist">Operational Checklist</a></li>
+        <li><a href="#references">References</a></li>
+    </ol>
+</div>
+
+<!-- Section 1 -->
+<h2 id="purpose">1. Purpose</h2>
+<p>
+    This playbook is an operational guide for managing Microsoft Copilot licence lifecycle events
+    and billing models. It covers what happens to analytics data when licences are assigned, removed,
+    or reassigned — and provides step-by-step billing configuration procedures.
+</p>
+<p>
+    Use this document alongside the main Copilot Analytics guide to ensure licence changes
+    do not create gaps in your analytics reporting or unexpected billing charges.
+</p>
+
+<!-- Section 2 -->
+<h2 id="licensing">2. Licensing Models Overview</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Licensing Model</th>
+            <th>Billing Type</th>
+            <th>Key Features</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Microsoft 365 Copilot</strong> (add-on licence)</td>
+            <td>Per-user, monthly/annual</td>
+            <td>
+                Includes <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/setup-overview">Viva Insights service plan</a>; Copilot in all M365 apps (Word, Excel,
+                PowerPoint, Outlook, Teams, etc.); zero-rated agent usage in M365 Copilot,
+                Teams, and SharePoint
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Microsoft 365 <a href="https://learn.microsoft.com/copilot/microsoft-365/microsoft-365-copilot-chat-overview">Copilot Chat</a></strong></td>
+            <td>Included in M365 subscription</td>
+            <td>
+                Web-based only (copilot.microsoft.com); metered charges for shared tenant data
+                (SharePoint, Graph) access via Copilot Credits
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Copilot Studio Standalone</strong></td>
+            <td>Prepaid Copilot Credits subscription</td>
+            <td>
+                Build and publish agents via Copilot Studio; prepaid credit pool;
+                agent responses consume credits
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Copilot Studio Pay-As-You-Go</strong></td>
+            <td>Azure subscription billing</td>
+            <td>
+                Monthly actual usage billed to an Azure subscription; no upfront commitment;
+                suitable for variable workloads
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Copilot Credits Pre-Purchase Plan</strong></td>
+            <td>One-year prepaid</td>
+            <td>
+                Bulk credit purchase at a discount; usable across eligible products
+                (Copilot Studio, M365 Copilot Chat tenant data, etc.)
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>Reference:</strong> <a href="https://learn.microsoft.com/microsoft-copilot-studio/billing-licensing">Copilot Studio Billing and Licensing</a></p>
+
+<!-- Section 3 -->
+<h2 id="lifecycle">3. Lifecycle Events — Impact on Analytics Data</h2>
+<p>
+    The following table describes common licence lifecycle events and their impact on Copilot
+    analytics dashboards and Viva Insights data.
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Impact on Copilot Dashboard</th>
+            <th>Impact on Advanced Analytics (Viva Insights)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>New licence assigned</strong></td>
+            <td>User data appears in the dashboard within 7 days. Employee joins the measured population automatically.</td>
+            <td>User is added to the measured population. Activity data begins accumulating for query inclusion.</td>
+        </tr>
+        <tr>
+            <td><strong>Licence removed</strong></td>
+            <td>Employees with only a Copilot licence are removed from analysis after licence removal.</td>
+            <td>Viva Insights service plan removal removes the user from the measured population. Historical data in existing query results is retained.</td>
+        </tr>
+        <tr>
+            <td><strong>Licence reassigned to a different user</strong></td>
+            <td>Previous user's historical data remains in the measured period. New user data appears within 7 days.</td>
+            <td>Previous user retains data in completed queries. New user begins accumulating data from assignment date.</td>
+        </tr>
+        <tr>
+            <td><strong>Employee leaves organisation</strong></td>
+            <td>If Copilot licence was removed before departure, they are excluded going forward. Exclusion lists can also be used to remove them.</td>
+            <td>Historical data in existing queries persists. User is removed from the active measured population upon account deletion.</td>
+        </tr>
+        <tr>
+            <td><strong>Agency/BU merge</strong></td>
+            <td>Dashboard reflects updated <a href="https://learn.microsoft.com/viva/insights/advanced/admin/org-data-overview">org data</a> after the CSV is re-uploaded with new organisational structure.</td>
+            <td>Update org data CSV to reflect the new org structure. Partition boundaries may need restructuring (see <a href="Copilot_Multi_Agency_Isolation_Architecture.html">Multi-Agency Isolation Architecture</a>).</td>
+        </tr>
+        <tr>
+            <td><strong>Scale-up (adding 50+ more licences)</strong></td>
+            <td>Dashboard automatically includes new users within 7 days. No configuration change is needed.</td>
+            <td>New users added to measured population automatically. Queries will include them on the next run.</td>
+        </tr>
+        <tr>
+            <td><strong>Scale-down below 50 licences</strong></td>
+            <td>Dashboard reverts to <strong>limited features</strong>: only Readiness page and tenant-level adoption visible. Group-level filtering, Impact page, and Sentiment page become unavailable. <em>Data is retained but inaccessible</em> &mdash; restoring to 50+ licences re-enables full features without data loss.</td>
+            <td>Advanced Analytics workbench remains accessible if existing Viva Insights licences total &ge;50. If total drops below 50, the analyst experience shows <em>&ldquo;Viva Insights is below the minimum assigned licence requirement&rdquo;</em>. Existing query results and Power BI reports remain intact but new queries cannot be created.</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="callout">
+    <strong>Key Point:</strong> The 7-day data appearance window is a processing delay, not a
+    configuration requirement. No manual action is needed — the system detects new licence
+    assignments automatically. For dashboard enablement steps, see the <a href="../core/Copilot_Analytics_Implementation_Guide.html#s5">Implementation Guide Section 5</a>.
+</div>
+
+<p><strong>Reference:</strong> <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard#faqs">Copilot Dashboard FAQs</a></p>
+
+<!-- Section 4 -->
+<h2 id="credits">4. Copilot Credits — Understanding Consumption</h2>
+<p>
+    Copilot Credits are the consumption currency for Copilot Studio agent interactions
+    and certain M365 Copilot Chat scenarios. Understanding what costs credits — and what
+    doesn't — is essential for budget management.
+</p>
+
+<h3>What Costs Credits</h3>
+<ul>
+    <li>Agent responses using Copilot Studio capabilities beyond zero-rated usage</li>
+    <li>Tenant data grounding (SharePoint, Graph) in M365 Copilot Chat (web-based)</li>
+    <li>Custom agent actions, plugins, and connector invocations</li>
+    <li>Generative answers using non-M365 knowledge sources</li>
+</ul>
+
+<h3>Zero-Rated (No Credits Required)</h3>
+<ul>
+    <li>Classic (deterministic) answers in Copilot Studio agents</li>
+    <li>Generative answers using Microsoft Graph tenant grounding <strong>when used by M365 Copilot licensed users in M365 apps</strong> (Word, Excel, Teams, etc.)</li>
+    <li>Standard Copilot-in-app interactions for licensed M365 Copilot users</li>
+</ul>
+
+<h3>Credit Mechanics</h3>
+<ul>
+    <li>Credits reset monthly — there is <strong>no rollover</strong> of unused credits to the next month.</li>
+    <li>Overage behaviour: when credits are exhausted, model runs are blocked until more credits are purchased or allocated.</li>
+    <li>Credits are pooled at the tenant level for prepaid plans, or billed per-environment for <a href="https://learn.microsoft.com/power-platform/admin/pay-as-you-go-overview">pay-as-you-go</a>.</li>
+</ul>
+
+<div class="callout-warning">
+    <strong>Warning:</strong> Credits do not roll over. Monitor consumption weekly to avoid
+    unexpected service interruptions at month-end.
+</div>
+
+<h3>Emergency: Credits Exhausted &mdash; Agents Blocked</h3>
+<p>If agents stop responding and users see errors, follow this resolution path:</p>
+<ol>
+    <li><strong>Confirm the cause:</strong> Navigate to <a href="https://admin.powerplatform.microsoft.com">Power Platform Admin Center</a> &rarr; Billing &rarr; Licenses. Check if the credit balance shows 0 or &ldquo;Exhausted&rdquo;.</li>
+    <li><strong>Immediate fix &mdash; Add credits:</strong>
+        <ul>
+            <li><strong>Pay-as-you-go:</strong> Verify the Azure subscription linked to the billing policy is active and has available budget. If the subscription spending limit was hit, increase it in <a href="https://portal.azure.com/#blade/Microsoft_Azure_CostManagement">Azure Portal &rarr; Cost Management</a>.</li>
+            <li><strong>Prepaid:</strong> Purchase additional Copilot Credits via your Microsoft account team or the M365 Admin Center &rarr; Billing &rarr; Purchase Services. Credits are applied within 1&ndash;2 hours.</li>
+        </ul>
+    </li>
+    <li><strong>Prevent recurrence &mdash; Set up alerts:</strong>
+        <ul>
+            <li>In <strong>PPAC</strong>: Billing &rarr; select the billing policy &rarr; configure usage notifications at 50%, 75%, and 90% thresholds.</li>
+            <li>In <strong>Azure</strong> (for pay-as-you-go): Cost Management &rarr; Budgets &rarr; create a budget with action group email alerts.</li>
+        </ul>
+    </li>
+    <li><strong>Review consumption:</strong> Use the <a href="https://learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-365-copilot-credits">Copilot Credits Activity Report</a> in Admin Center to identify which agents consumed the most credits and whether any can be optimised.</li>
+</ol>
+
+<p><strong>Reference:</strong> <a href="https://learn.microsoft.com/microsoft-copilot-studio/requirements-messages-management">Copilot Studio Message and Credit Management</a></p>
+
+<!-- Section 5 -->
+<h2 id="ppac-billing">5. PPAC Billing Configuration</h2>
+<p>Follow these steps to configure and monitor billing in the Power Platform Admin Center:</p>
+
+<ol class="step-list">
+    <li>Navigate to <a href="https://admin.powerplatform.microsoft.com">admin.powerplatform.microsoft.com</a> and sign in as a Power Platform Administrator.</li>
+    <li>Go to <strong>Licensing → Copilot Studio</strong> in the left navigation pane.</li>
+    <li>Review the <strong>Summary</strong> view:
+        <ul>
+            <li>Prepaid capacity — total credits purchased, credits consumed, credits remaining</li>
+            <li>Pay-as-you-go — active billing plans linked to Azure subscriptions</li>
+            <li>Consumption trend — daily/weekly/monthly usage graphs</li>
+        </ul>
+    </li>
+    <li>View <strong>Capacity consumption by product</strong> to see breakdown across Copilot Studio, M365 Copilot Chat, and other eligible products.</li>
+    <li>To allocate prepaid credits to specific environments:
+        <ul>
+            <li>Select <strong>Allocate capacity</strong></li>
+            <li>Choose the target environment</li>
+            <li>Enter the number of credits to allocate</li>
+            <li>Confirm the allocation</li>
+        </ul>
+    </li>
+    <li>To create a pay-as-you-go billing policy:
+        <ul>
+            <li>Select <strong>New billing policy</strong></li>
+            <li>Link to an Azure subscription and resource group</li>
+            <li>Assign the billing policy to one or more environments</li>
+            <li>Set spending limits if desired</li>
+        </ul>
+    </li>
+    <li>Use the <strong>Agent Usage Estimator</strong> tool to forecast credit consumption for planned agents:
+        <a href="https://microsoft.github.io/copilot-studio-estimator/">microsoft.github.io/copilot-studio-estimator</a>
+    </li>
+</ol>
+
+<p><strong>Reference:</strong> <a href="https://learn.microsoft.com/power-platform/admin/manage-copilot-studio-messages-capacity">Manage Copilot Studio Messages Capacity</a></p>
+
+<!-- Section 6 -->
+<h2 id="admin-reports">6. Admin Center Billing Reports</h2>
+<p>
+    The Microsoft 365 Admin Center provides a Copilot Credits report that gives detailed
+    visibility into credit consumption across your organisation.
+</p>
+
+<h3>Accessing the Report</h3>
+<ol class="step-list">
+    <li>Sign in to <a href="https://admin.microsoft.com">admin.microsoft.com</a>.</li>
+    <li>Navigate to <strong>Reports → Usage → Copilot Credits</strong>.</li>
+    <li>Review the report components:
+        <ul>
+            <li><strong>Total credits used:</strong> Aggregate consumption for the billing period</li>
+            <li><strong>Time series:</strong> Cumulative and daily credit consumption charts</li>
+            <li><strong>Per-user breakdown:</strong> Credits consumed by individual users</li>
+            <li><strong>Per-agent breakdown:</strong> Credits consumed by each published agent</li>
+            <li><strong>Per-billing-policy:</strong> Consumption grouped by billing policy</li>
+        </ul>
+    </li>
+</ol>
+
+<div class="callout">
+    <strong>Tip:</strong> Export the per-user breakdown to CSV and join it with your org data
+    file to produce agency-level or cost-centre-level chargeback reports.
+</div>
+
+<p><strong>Reference:</strong> <a href="https://learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-365-copilot-credits">Copilot Credits Activity Report</a></p>
+
+<!-- Section 7 -->
+<h2 id="chargeback">7. Multi-Agency Chargeback Model</h2>
+<p>
+    For organisations with multiple agencies, departments, or cost centres, a chargeback model
+    distributes Copilot costs to the consuming business units.
+</p>
+
+<h3>Option A: Org Data–Based Attribution</h3>
+<ol>
+    <li>Upload org data with an <code>Agency</code> (or <code>CostCentre</code>) attribute via Viva Insights or PPAC.</li>
+    <li>Export the Copilot Credits report filtered by user from the M365 Admin Center.</li>
+    <li>Join user-level consumption data with org data to map each user's credit usage to their agency.</li>
+    <li>Aggregate by agency to produce the chargeback summary.</li>
+</ol>
+
+<h3>Option B: Separate Billing Policies</h3>
+<ol>
+    <li>Create separate billing policies in PPAC — one per agency.</li>
+    <li>Link each billing policy to a different Azure subscription or cost centre.</li>
+    <li>Assign environments to the appropriate billing policy based on the owning agency.</li>
+    <li>Each agency's Azure subscription is billed directly for their consumption.</li>
+</ol>
+
+<h3>Quarterly Reconciliation Process</h3>
+<ul>
+    <li>At the end of each quarter, export consumption data from both PPAC and M365 Admin Center.</li>
+    <li>Reconcile prepaid credit consumption against allocations per agency.</li>
+    <li>Reconcile pay-as-you-go charges against Azure invoices.</li>
+    <li>Review and adjust allocations based on actual usage trends.</li>
+    <li>Produce a chargeback summary report for finance teams.</li>
+</ul>
+
+<div class="callout-warning">
+    <strong>Note:</strong> Option B (separate billing policies) provides cleaner cost separation
+    but requires more administrative overhead. Option A is simpler to maintain for
+    organisations with fewer than 10 agencies.
+</div>
+
+<div class="callout" style="border-left:4px solid #0078d4; background:#E8F4FD; padding:14px 18px; border-radius:4px; margin:16px 0;">
+    <strong>Agent Billing Governance:</strong> For detailed credit mechanics, safe scaling patterns,
+    irreversible billing decisions, and the billing boundary design framework, see the
+    <strong>Copilot &amp; Agent Governance project</strong> &mdash; specifically the
+    <em>Agent Billing &amp; Credit Governance</em> guide.
+</div>
+
+<!-- Section 8 -->
+<h2 id="checklist">8. Operational Checklist</h2>
+
+<h3>Monthly Tasks</h3>
+<ul class="checklist">
+    <li>Review <a href="https://learn.microsoft.com/microsoft-365/admin/manage/assign-licenses-to-users">licence utilisation</a> in the M365 Admin Center — identify unused licences</li>
+    <li>Review credit consumption in PPAC — check against budget thresholds</li>
+    <li>Reallocate unused licences to requesting users or business units</li>
+    <li>Check for blocked agent runs due to credit exhaustion</li>
+    <li>Review new licence assignments and confirm dashboard data appearance</li>
+</ul>
+
+<h3>Quarterly Tasks</h3>
+<ul class="checklist">
+    <li>Audit <a href="https://learn.microsoft.com/viva/insights/advanced/privacy/privacy-settings">exclusion list</a>s in Viva Insights — remove departed employees, add new exclusions</li>
+    <li>Review billing policies — ensure environments are assigned to correct policies</li>
+    <li>Reconcile chargeback — produce agency-level cost reports (see <a href="Copilot_Multi_Agency_Isolation_Architecture.html">Multi-Agency Isolation Architecture</a> for partition-based chargeback setup)</li>
+    <li>Assess scale needs — forecast licence and credit requirements for next quarter</li>
+    <li>Review lifecycle events — confirm org data CSV reflects current organisational structure</li>
+    <li>Document any licence model changes (e.g., shift from prepaid to pay-as-you-go)</li>
+</ul>
+
+<div class="callout">
+    <strong>Best Practice:</strong> Create calendar reminders for these tasks and assign a named
+    owner to each checklist item. Governance lapses most often occur when tasks lack clear ownership.
+</div>
+
+<!-- Section 9 -->
+<h2 id="references">9. References</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Topic</th>
+            <th>URL</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Copilot Studio Billing and Licensing</td>
+            <td><a href="https://learn.microsoft.com/microsoft-copilot-studio/billing-licensing">learn.microsoft.com/microsoft-copilot-studio/billing-licensing</a></td>
+        </tr>
+        <tr>
+            <td>Copilot Dashboard FAQs</td>
+            <td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard#faqs">learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard#faqs</a></td>
+        </tr>
+        <tr>
+            <td>Copilot Studio Message and Credit Management</td>
+            <td><a href="https://learn.microsoft.com/microsoft-copilot-studio/requirements-messages-management">learn.microsoft.com/microsoft-copilot-studio/requirements-messages-management</a></td>
+        </tr>
+        <tr>
+            <td>Manage Copilot Studio Messages Capacity</td>
+            <td><a href="https://learn.microsoft.com/power-platform/admin/manage-copilot-studio-messages-capacity">learn.microsoft.com/power-platform/admin/manage-copilot-studio-messages-capacity</a></td>
+        </tr>
+        <tr>
+            <td>Copilot Credits Activity Report</td>
+            <td><a href="https://learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-365-copilot-credits">learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-365-copilot-credits</a></td>
+        </tr>
+        <tr>
+            <td>Agent Usage Estimator Tool</td>
+            <td><a href="https://microsoft.github.io/copilot-studio-estimator/">microsoft.github.io/copilot-studio-estimator</a></td>
+        </tr>
+    </tbody>
+</table>
+
+<hr>
+
+<div class="disclaimer">
+    <strong>Disclaimer:</strong> This document is provided as a practical guidance resource and reflects
+    product capabilities at the time of writing. Microsoft products and services evolve rapidly — licensing
+    models, billing mechanisms, and feature availability are subject to change. For the most current and
+    authoritative information, always refer to
+    <a href="https://learn.microsoft.com">Microsoft Learn</a>. This playbook does not constitute
+    official Microsoft documentation or financial/legal advice.
+</div>
+
+</body>
+</html>
