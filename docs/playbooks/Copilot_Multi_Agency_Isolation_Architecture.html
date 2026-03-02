@@ -500,10 +500,11 @@
                     (d) You understand that privacy settings (minimum group size) are tenant-wide, not per-partition &mdash; all agencies must agree on the number.
                 </div>
                 <ul>
-                    <li>Enable Partitions in Viva Insights <a href="https://learn.microsoft.com/viva/insights/advanced/privacy/privacy-settings">Privacy Settings</a>.</li>
-                    <li>Create a partition per agency using the filter: <code>Agency = "Agency A"</code>. Verify the <strong>Filtered employees</strong> counter matches the expected headcount for that agency.</li>
-                    <li>Assign designated Insights Analysts to their respective agency partitions <strong>only</strong>. Do NOT assign agency analysts to the global partition.</li>
+                    <li>Navigate to <code>insights.cloud.microsoft</code> &rarr; <strong>Admin</strong> &rarr; <strong>Privacy settings</strong> &rarr; <strong>Partitions</strong>. Select <strong>Enable Partitions</strong>.</li>
+                    <li>Select <strong>New partition</strong>. Name it (e.g., &ldquo;Agency A&rdquo;). Set the filter: <code>Agency = "Agency A"</code>. Verify the <strong>Filtered employees</strong> counter matches the expected headcount for that agency. Select <strong>Save</strong>.</li>
+                    <li>Click the newly created partition &rarr; <strong>Edit</strong> &rarr; <strong>Analysts</strong> tab &rarr; <strong>Add analysts</strong>. Search for the designated agency analyst by name or email &rarr; select &rarr; <strong>Save</strong>. Assign agency analysts to their respective agency partitions <strong>only</strong>. Do NOT assign agency analysts to the global partition.</li>
                     <li>Assign Central IT analysts to the automatically created <strong>Global Partition</strong> for tenant-wide queries.</li>
+                    <li>Repeat for each agency. Allow 1&ndash;2 hours for partition access to propagate.</li>
                 </ul>
                 <div class="highlight-box">
                     <strong>Why agency analysts must NOT have global partition access:</strong> Analysts with global partition access automatically get Copilot Dashboard access AND Copilot Analytics Reports access &mdash; both of which show tenant-wide data across all agencies. This would defeat the entire isolation architecture.
