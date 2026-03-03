@@ -614,6 +614,67 @@
                     </tr>
                 </tbody>
             </table>
+
+            <h3>Role &amp; Partition Interaction Scenarios</h3>
+            <p>In a multi-agency environment, the combination of <strong>roles</strong> and <strong>partition assignments</strong> determines what each user can actually do. This is the most common source of confusion during implementation.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Scenario</th>
+                        <th>Roles Assigned</th>
+                        <th>Partition Assignment</th>
+                        <th>What They Can Do</th>
+                        <th>What They Cannot Do</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Central IT Admin (configure only)</strong></td>
+                        <td>Insights Admin</td>
+                        <td>None needed</td>
+                        <td>Create/edit/delete all partitions. Assign analysts. Upload org data. Configure privacy &amp; manager settings.</td>
+                        <td>Run queries. View Copilot Dashboard. See &ldquo;Create analysis&rdquo; button.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Central IT Admin + Analyst</strong></td>
+                        <td>Insights Admin + Insights Analyst</td>
+                        <td>Global partition</td>
+                        <td>Everything above, plus: run tenant-wide queries, create Power BI reports, view Copilot Dashboard (auto-access via global partition).</td>
+                        <td>Query agency-specific partitions (must be explicitly added to each agency partition to query it).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Agency A Analyst</strong></td>
+                        <td>Insights Analyst</td>
+                        <td>Agency A partition only</td>
+                        <td>Run queries for Agency A employees only. Create Power BI reports scoped to Agency A.</td>
+                        <td>See any other agency&rsquo;s data. Access global partition. View Copilot Dashboard. Change any admin settings.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Agency A Analyst mistakenly on Global partition</strong></td>
+                        <td>Insights Analyst</td>
+                        <td>Global + Agency A</td>
+                        <td>Query ALL employees across ALL agencies via global partition. Automatic Copilot Dashboard access showing &ldquo;Your company&rdquo; data.</td>
+                        <td><strong>&#x26A0; Isolation is broken.</strong> This analyst can see Agency B and C data. Remove global partition access immediately.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AI Admin managing VFAM</strong></td>
+                        <td>AI Admin</td>
+                        <td>N/A</td>
+                        <td>Enable/disable VFAM features, manage Dashboard access list, set exclusion lists.</td>
+                        <td>View Dashboard (must add self). Manage partitions (needs Insights Admin). Run queries (needs Analyst).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Full access (Central IT only)</strong></td>
+                        <td>AI Admin + Insights Admin + Insights Analyst</td>
+                        <td>Global partition</td>
+                        <td>Full access: configure everything, query all employees, view Dashboard, publish reports.</td>
+                        <td>Nothing. Limit to 1&ndash;2 people in multi-agency environments.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="alert">
+                <strong>Critical Rule:</strong> Never assign an agency analyst to the <strong>Global partition</strong>. Global partition grants automatic Copilot Dashboard access and tenant-wide query access &mdash; defeating the entire isolation architecture. Always verify partition assignments after adding new analysts: <code>insights.cloud.microsoft</code> &rarr; Admin &rarr; Privacy settings &rarr; Partitions &rarr; select each partition &rarr; verify the Analysts tab.
+            </div>
         </section>
 
         <section id="governance">
