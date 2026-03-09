@@ -232,6 +232,23 @@
             border-radius: 50%;
             font-size: 0.8em;
         }
+
+        /* ─── Print overrides for sidebar layout ─── */
+        @media print {
+            body {
+                display: block;
+                background: #fff;
+            }
+            nav {
+                display: none !important;
+            }
+            main {
+                margin-left: 0;
+                padding: 0;
+                max-width: 100%;
+                box-shadow: none;
+            }
+        }
     </style>
 </head>
 <body class="has-nav">
@@ -253,6 +270,8 @@
             <li><a href="#business-context">2. Business Context & Requirements</a></li>
             <li><a href="#options-assessment">3. Solution Options Assessment</a></li>
             <li><a href="#recommended-arch">4. Recommended Architecture</a></li>
+            <li><a href="#choose-path">4.1 Choose Your Path</a></li>
+            <li><a href="#entra-attrs">4.2 Entra ID Attributes Reference</a></li>
             <li><a href="#runbook">5. Implementation Runbook</a></li>
             <li><a href="#org-data">6. Organizational Data Strategy</a></li>
             <li><a href="#access-control">7. Access Control Matrix</a></li>
@@ -267,21 +286,28 @@
     <main>
         <header>
             <h1>Copilot Dashboard & Analytics for Multi-Agency Single Tenant</h1>
-            <p><strong>Document Type:</strong> Solution Architecture Artifact<br>
-            <strong>Version:</strong> 2.0 | <strong>Date:</strong> March 2026<br>
-            <strong>Classification:</strong> Internal — Customer Deliverable</p>
+            <p><strong>Version:</strong> 2.1 | <strong>Author:</strong> Sumit Sadhu | <strong>Published:</strong> March 2026</p>
         </header>
 
         <div class="highlight-box" style="border-left:4px solid #0078d4; margin-bottom:20px;">
-            <strong>TL;DR &mdash; 5 Things to Do</strong>
+            <strong>TL;DR &mdash; Two Paths to Agency Isolation</strong>
+            <p style="margin:8px 0 4px;font-size:0.92em;">Both paths share the same Phase 1 lockdown. Choose your data strategy based on your environment:</p>
+            <table style="font-size:0.9em;margin:8px 0 12px;">
+                <tr><th style="width:30%"></th><th style="width:35%">Path A: CSV Org Data Upload</th><th style="width:35%">Path B: Entra ID Domain Filter</th></tr>
+                <tr><td><strong>When to use</strong></td><td>Agencies share one email domain, OR you need Department + Agency filtering</td><td>Each agency has a <strong>distinct email domain</strong> (e.g., agencya.gov.au, agencyb.gov.au)</td></tr>
+                <tr><td><strong>Partition filter</strong></td><td><code>Agency = "Agency A"</code></td><td><code>Domain = "agencya.gov.au"</code></td></tr>
+                <tr><td><strong>Data upload needed?</strong></td><td>Yes &mdash; CSV with <code>Agency</code> attribute</td><td>No &mdash; Domain is system-generated from SMTP</td></tr>
+                <tr><td><strong>Extra filtering</strong></td><td>Full: Department, Location, Job Function, etc.</td><td>Limited to Entra defaults (Organization, Domain, TimeZone)</td></tr>
+            </table>
+            <strong>Common Steps (both paths):</strong>
             <ol style="margin:8px 0 0 20px;">
                 <li><strong>Lock down</strong> the Copilot Dashboard to Central IT only (VFAM + Entra group) &mdash; <a href="#runbook">Phase 1</a></li>
-                <li><strong>Upload org data</strong> with an <code>Agency</code> attribute for every employee &mdash; <a href="#org-data">Section 6</a></li>
-                <li><strong>Create one partition per agency</strong> in Viva Insights, filtered by Agency &mdash; <a href="#runbook">Phase 3</a></li>
-                <li><strong>Assign agency-specific analysts</strong> to their partitions only &mdash; <a href="#access-matrix">Section 7</a></li>
+                <li><strong>Choose your data strategy</strong> &mdash; CSV upload (Path A) or Entra Domain (Path B) &mdash; <a href="#choose-path">Section 4.1</a></li>
+                <li><strong>Create one partition per agency</strong> in Viva Insights &mdash; <a href="#runbook">Phase 3</a></li>
+                <li><strong>Assign agency-specific analysts</strong> to their partitions only &mdash; <a href="#access-control">Section 7</a></li>
                 <li><strong>Deliver reports</strong> via Publish Reports or isolated Power BI workspaces &mdash; <a href="#runbook">Phase 4</a></li>
             </ol>
-            <p style="margin:8px 0 0;font-size:0.88em;color:#666;">Time estimate: 2&ndash;3 days. Prerequisites: 50+ Copilot licences, Insights Admin role, org data CSV ready.</p>
+            <p style="margin:8px 0 0;font-size:0.88em;color:#666;">Time estimate: 1&ndash;3 days depending on path chosen. Prerequisites: 50+ Copilot licences, Insights Admin role.</p>
         </div>
 
         <section id="exec-summary">
@@ -403,8 +429,12 @@
 │  │  │   Partition:    │  │   Partition:    │    ...more     │    │
 │  │  │   Agency A      │  │   Agency B      │    partitions  │    │
 │  │  │                 │  │                 │                │    │
-│  │  │  Filter:        │  │  Filter:        │                │    │
+│  │  │  Filter (A):    │  │  Filter (A):    │                │    │
 │  │  │  Agency="A"     │  │  Agency="B"     │                │    │
+│  │  │       OR        │  │       OR        │                │    │
+│  │  │  Filter (B):    │  │  Filter (B):    │                │    │
+│  │  │  Domain=        │  │  Domain=        │                │    │
+│  │  │  "a.gov.au"     │  │  "b.gov.au"     │                │    │
 │  │  │                 │  │                 │                │    │
 │  │  │  Analysts:      │  │  Analysts:      │                │    │
 │  │  │  analyst-a1     │  │  analyst-b1     │                │    │
@@ -435,6 +465,148 @@
             </div>
         </section>
 
+        <section id="choose-path">
+            <h2>4.1 Choose Your Path: CSV Org Data vs. Entra ID Domain</h2>
+
+            <p>Viva Insights partitions filter on <strong>organizational data attributes</strong>. Attributes reach Viva Insights from two sources:</p>
+
+            <table>
+                <thead>
+                    <tr><th>Source</th><th>Attributes Available</th><th>Setup Required</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Microsoft Entra ID</strong> (automatic sync)</td>
+                        <td><code>PersonId</code>, <code>ManagerId</code>, <code>Organization</code> (from Entra <code>Department</code> field), plus system-generated: <code>Domain</code> (from SMTP), <code>TimeZone</code>, <code>PopulationType</code></td>
+                        <td>None &mdash; syncs automatically. Optionally enable ManagerId/Organization via &ldquo;Configure Entra connection&rdquo;</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CSV Org Data Upload</strong></td>
+                        <td>All of the above, plus up to 105 custom attributes: <code>Agency</code>, <code>FunctionType</code>, <code>Location</code>, <code>LevelDesignation</code>, <code>CostCentre</code>, etc.</td>
+                        <td>Prepare and upload CSV via Viva Insights web app or M365 Admin Center</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Path A: CSV Org Data Upload (Full Capability)</h3>
+            <div class="highlight-box">
+                <strong>Use when:</strong>
+                <ul style="margin:8px 0 0 20px;">
+                    <li>All agencies share the <strong>same email domain</strong> (e.g., everyone is <code>@onetenant.gov.au</code>)</li>
+                    <li>You need <strong>both agency isolation AND department/location/job function filtering</strong> within each agency</li>
+                    <li>You want the richest possible analytics (custom attributes, before/after cohort segmentation)</li>
+                    <li>HR can provide a consolidated employee CSV with an <code>Agency</code> column</li>
+                </ul>
+                <p style="margin:8px 0 0;"><strong>Partition filter:</strong> <code>Agency = "Agency A"</code></p>
+                <p><strong>End-to-end workflow:</strong></p>
+                <ol style="margin:4px 0 0 20px;">
+                    <li>Phase 0: Pre-flight audit (same as Path B)</li>
+                    <li>Phase 1: Lockdown &mdash; disable AutoCxO, delegation, Agent Dashboard, Metrics Export (same as Path B)</li>
+                    <li><strong>Phase 2: Prepare and upload CSV</strong> with <code>PersonId</code>, <code>ManagerId</code>, <code>Organization</code>, <code>EffectiveDate</code>, and custom <code>Agency</code> attribute. Verify 100% coverage on Data Quality page.</li>
+                    <li>Phase 3: Create partitions filtered by <code>Agency = "Agency A"</code>, etc. Assign analysts.</li>
+                    <li>Phase 4: Analysts run Copilot PBI queries within their partition &rarr; publish reports.</li>
+                </ol>
+                <p style="margin:8px 0 0;font-size:0.88em;color:#666;"><strong>Time estimate:</strong> 2&ndash;3 days. <strong>Ongoing:</strong> Monthly CSV re-upload to keep data current.</p>
+            </div>
+
+            <h3>Path B: Entra ID Domain Filter (Zero CSV)</h3>
+            <div class="highlight-box" style="border-left:4px solid var(--success-color, #107c10);">
+                <strong>Use when:</strong>
+                <ul style="margin:8px 0 0 20px;">
+                    <li>Each agency has a <strong>distinct email domain</strong> (e.g., <code>agencya.gov.au</code>, <code>agencyb.gov.au</code>)</li>
+                    <li>All employees use their agency domain as their <strong>primary SMTP address</strong></li>
+                    <li>You <strong>do not</strong> need custom attribute filtering (Department/Location come only from Entra defaults)</li>
+                    <li>You want the <strong>fastest possible deployment</strong> with zero data preparation</li>
+                </ul>
+                <p style="margin:8px 0 0;"><strong>Partition filter:</strong> <code>Domain = "agencya.gov.au"</code></p>
+                <p><strong>End-to-end workflow:</strong></p>
+                <ol style="margin:4px 0 0 20px;">
+                    <li>Phase 0: Pre-flight audit (same as Path A)</li>
+                    <li>Phase 1: Lockdown &mdash; disable AutoCxO, delegation, Agent Dashboard, Metrics Export (same as Path A)</li>
+                    <li><strong>Phase 2: Skip CSV upload.</strong> Optionally enable <code>ManagerId</code> and <code>Organization</code> in &ldquo;Configure Entra connection&rdquo; for richer hierarchy and department data.</li>
+                    <li>Phase 3: Create partitions filtered by <code>Domain = "agencya.gov.au"</code>, etc. Assign analysts.</li>
+                    <li>Phase 4: Analysts run Copilot PBI queries within their partition &rarr; publish reports.</li>
+                </ol>
+                <p style="margin:8px 0 0;font-size:0.88em;color:#666;"><strong>Time estimate:</strong> 1 day (no data prep). <strong>Ongoing:</strong> No CSV maintenance &mdash; Domain auto-updates as employees join/leave.</p>
+            </div>
+
+            <h3>Decision Matrix</h3>
+            <table>
+                <thead>
+                    <tr><th>Question</th><th>If Yes &rarr; Path</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Do all agencies share the same email domain?</td><td><strong>Path A</strong> (CSV required &mdash; <code>Domain</code> cannot differentiate agencies)</td></tr>
+                    <tr><td>Does each agency have a unique email domain?</td><td><strong>Path B</strong> is available (can also use Path A for richer attributes)</td></tr>
+                    <tr><td>Do you need Department/Location/Job Function filters per agency?</td><td><strong>Path A</strong> (CSV adds these attributes beyond Entra defaults)</td></tr>
+                    <tr><td>Are there shared-services staff on a common domain?</td><td><strong>Path A</strong> preferred (assign <code>Agency = "Shared Services"</code> in CSV)</td></tr>
+                    <tr><td>Need the fastest deployment with minimal data preparation?</td><td><strong>Path B</strong> (zero CSV, Domain-only filter)</td></tr>
+                    <tr><td>Want to start with Path B and add CSV later?</td><td><strong>Path B now, Path A later</strong> &mdash; you can always upload CSV to add richer attributes. Use the <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">parallel data ingestion</a> feature to keep Entra as source for ManagerId/Organization while adding custom attributes via CSV.</td></tr>
+                </tbody>
+            </table>
+
+            <div class="alert">
+                <strong>Important:</strong> Whichever path you choose, the <strong>Phase 1 lockdown</strong> and <strong>partition-based isolation architecture</strong> are identical. The only difference is <em>how employee data reaches Viva Insights</em> and <em>which attribute you filter partitions on</em>.
+            </div>
+        </section>
+
+        <section id="entra-attrs">
+            <h2>4.2 Entra ID Attributes Reference for Viva Insights</h2>
+            <p>Understanding exactly which Entra ID attributes reach Viva Insights is critical for choosing the right path. Per <a href="https://learn.microsoft.com/viva/insights/advanced/admin/org-data-overview">Microsoft Learn</a>:</p>
+
+            <h3>Attributes Synced from Entra ID</h3>
+            <table>
+                <thead>
+                    <tr><th>Entra ID Source Field</th><th>Viva Insights Attribute</th><th>Available for Partition Filter?</th><th>Notes</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>UserPrincipalName</code></td><td>PersonId</td><td>No (identifier only)</td><td>Always synced</td></tr>
+                    <tr><td><code>Manager / UserPrincipalName</code></td><td>ManagerId</td><td>Yes (required attribute)</td><td>Enable via &ldquo;Configure Entra connection&rdquo; checkbox</td></tr>
+                    <tr><td><code>Department</code></td><td>Organization</td><td>Yes (required attribute)</td><td>Enable via &ldquo;Configure Entra connection&rdquo; checkbox</td></tr>
+                </tbody>
+            </table>
+
+            <h3>System-Generated Attributes (Always Available)</h3>
+            <table>
+                <thead>
+                    <tr><th>Attribute</th><th>Source</th><th>Available for Partition Filter?</th><th>Multi-Agency Use</th></tr>
+                </thead>
+                <tbody>
+                    <tr style="background-color: #f0fdf4;"><td><strong>Domain</strong></td><td>Primary SMTP address</td><td><strong>Yes</strong></td><td><strong>Key attribute for Path B</strong> &mdash; if each agency has a distinct email domain, this is your partition filter</td></tr>
+                    <tr><td>TimeZone</td><td>Outlook/Exchange settings</td><td>Yes</td><td>Useful for filtering by geography but not for agency isolation</td></tr>
+                    <tr><td>PopulationType</td><td>SMTP address</td><td>Yes</td><td>Distinguishes internal vs. external collaborators</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Attributes NOT Available from Entra ID</h3>
+            <p>The following Entra ID user profile fields are <strong>not</strong> synced to Viva Insights. If you need them, you must upload via CSV:</p>
+            <table>
+                <thead>
+                    <tr><th>Entra ID Field</th><th>Status in Viva Insights</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>Company</code></td><td>Not synced &mdash; use CSV <code>Organization</code> or custom attribute</td></tr>
+                    <tr><td><code>Division</code></td><td>Not synced</td></tr>
+                    <tr><td><code>JobTitle</code></td><td>Not synced &mdash; use CSV <code>FunctionType</code></td></tr>
+                    <tr><td><code>City</code> / <code>Country</code> / <code>State</code></td><td>Not synced &mdash; use CSV <code>Location</code> / <code>CountryOrRegion</code></td></tr>
+                    <tr><td><code>EmployeeType</code></td><td>Not synced</td></tr>
+                    <tr><td><code>extensionAttribute1-15</code></td><td>Not synced</td></tr>
+                </tbody>
+            </table>
+            <div class="alert">
+                <strong>Common Misconception:</strong> Many customers assume that because they have <code>Company</code>, <code>Division</code>, or <code>extensionAttributes</code> populated in Entra ID, these will automatically appear in Viva Insights. They will not. Only the three attributes listed above (PersonId, ManagerId, Organization) sync from Entra. Everything else requires a CSV upload.
+            </div>
+
+            <h3>Parallel Data Ingestion (Best of Both Worlds)</h3>
+            <p>You can use <strong>both</strong> Entra ID and CSV simultaneously via the <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">parallel data ingestion</a> feature:</p>
+            <ul>
+                <li>Let Entra continue providing <code>ManagerId</code> and <code>Organization</code> (always accurate, auto-refreshing)</li>
+                <li>Upload a CSV with <strong>only</strong> the additional attributes you need (e.g., <code>Agency</code>, <code>Location</code>, <code>CostCentre</code>)</li>
+                <li>Entra-sourced attributes take precedence for the fields you select; CSV provides the rest</li>
+            </ul>
+            <p>This is ideal for organisations starting with <strong>Path B</strong> (Domain-based) who later want to add richer attributes without disrupting existing Entra-based data flows.</p>
+        </section>
+
         <section id="runbook">
             <h2>5. Implementation Runbook</h2>
             
@@ -442,10 +614,10 @@
                 <h4><span class="step-number">0</span> Phase 0: Pre-Flight Audit</h4>
                 <p>Before locking anything down, audit the current state. Disabling policies does not revoke existing access.</p>
                 <ul>
-                    <li>Run <code><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/viva-feature-access-management">Get-VivaModuleFeaturePolicy</a> -ModuleId VivaInsights</code> to audit all current VFAM policies.</li>
-                    <li>In M365 Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; <strong>Manage user access for Copilot Dashboard</strong>, check who currently has access.</li>
+                    <li><strong>Audit VFAM policies (Admin UI):</strong> Navigate to <code>admin.microsoft.com</code> &rarr; Settings &rarr; Microsoft Viva &rarr; Viva Insights &rarr; Set up and management &rarr; <strong>Turn Advanced Insights on or off</strong>. Review the status of each feature: AutoCxoIdentification, CopilotDashboardDelegation, AgentDashboard, CopilotMetricsReport. Document the current state (On/Off, scope: Everyone or Specific users).</li>
+                    <li><strong>Alternative (PowerShell):</strong> Run <code><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/viva-feature-access-management">Get-VivaModuleFeaturePolicy</a> -ModuleId VivaInsights</code> for a scripted audit of all policies.</li>
+                    <li><strong>Audit dashboard access list:</strong> Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; <strong>Manage user access for Copilot Dashboard</strong>. Check who currently has access.</li>
                     <li>Identify any agency CEOs or leaders who already have dashboard access (auto-enabled or manually added).</li>
-                    <li>Document the current state of all VFAM policies (AutoCxoIdentification, CopilotDashboardDelegation, AgentDashboard, CopilotMetricsExport).</li>
                     <li>Verify the Entra ID ManagerID hierarchy &mdash; confirm each agency CEO reports to a different top-level node (not to each other).</li>
                 </ul>
             </div>
@@ -454,12 +626,15 @@
                 <h4><span class="step-number">1</span> Phase 1: Foundation (Lockdown)</h4>
                 <p>Prevent agency CEOs from being auto-identified as senior leaders and getting tenant-wide access.</p>
                 <ul>
-                    <li>Disable <code>AutoCxoIdentification</code> via PowerShell for the entire tenant.</li>
-                    <li>Remove any existing auto-enabled agency leaders in M365 Admin Center.</li>
-                    <li>Disable <code>CopilotDashboardDelegation</code> via PowerShell to prevent cross-agency leaks.</li>
-                    <li>Create <a href="https://learn.microsoft.com/entra/identity/users/groups-create-rule">Entra group</a> <code>CentralIT-CopilotDashboard-Access</code> and grant dashboard access ONLY to this group.</li>
-                    <li>Disable the <strong>Agent Dashboard</strong> for everyone except Central IT using VFAM: <code>Add-VivaModuleFeaturePolicy -ModuleId VivaInsights -FeatureId AgentDashboard -Name "RestrictAgentDashboard" -IsFeatureEnabled $false -Everyone</code>. Then create a group-level policy to re-enable for Central IT only.</li>
-                    <li>Disable the <strong>Copilot Metrics Export</strong> feature to prevent user-level data downloads: <code>Add-VivaModuleFeaturePolicy -ModuleId VivaInsights -FeatureId CopilotMetricsReport -Name "DisableMetricsExport" -IsFeatureEnabled $false -Everyone</code>.</li>
+                    <li><strong>Disable Auto CxO Identification (Admin UI):</strong> Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Turn Advanced Insights on or off &rarr; select <strong>Auto CxO Identification</strong> &rarr; set to <strong>Off</strong> for Everyone &rarr; Save.<br>
+                    <em>Alternative (PowerShell):</em> <code>Add-VivaModuleFeaturePolicy -ModuleId VivaInsights -FeatureId AutoCxoIdentification -Name "DisableAutoEnableForAllAgencies" -IsFeatureEnabled $false -Everyone</code></li>
+                    <li><strong>Remove existing auto-enabled leaders:</strong> Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; <strong>Manage user access for Copilot Dashboard</strong> &rarr; remove any agency leaders who were auto-identified.</li>
+                    <li><strong>Disable Dashboard Delegation (Admin UI):</strong> Same &ldquo;Turn Advanced Insights on or off&rdquo; page &rarr; select <strong>Copilot Dashboard Delegation</strong> &rarr; set to <strong>Off</strong> for Everyone &rarr; Save.<br>
+                    <em>Alternative (PowerShell):</em> <code>Add-VivaModuleFeaturePolicy -ModuleId VivaInsights -FeatureId CopilotDashboardDelegation -Name "DisableDelegationForTenant" -IsFeatureEnabled $false -Everyone</code></li>
+                    <li><strong>Restrict dashboard access to Central IT:</strong> Create <a href="https://learn.microsoft.com/entra/identity/users/groups-create-rule">Entra group</a> <code>CentralIT-CopilotDashboard-Access</code>. In <strong>Manage user access for Copilot Dashboard</strong> &rarr; add this group &rarr; remove all individual agency users.</li>
+                    <li><strong>Disable Agent Dashboard (Admin UI):</strong> Same page &rarr; select <strong>Agent Dashboard</strong> &rarr; set to <strong>Off</strong> for Everyone &rarr; Save. Then create a group-scoped policy to re-enable for Central IT only.<br>
+                    <em>Alternative (PowerShell):</em> <code>Add-VivaModuleFeaturePolicy -ModuleId VivaInsights -FeatureId AgentDashboard -Name "RestrictAgentDashboard" -IsFeatureEnabled $false -Everyone</code></li>
+                    <li><strong>Disable Copilot Metrics Export (PowerShell only):</strong> This feature does not currently have an Admin UI toggle. Use PowerShell: <code>Add-VivaModuleFeaturePolicy -ModuleId VivaInsights -FeatureId CopilotMetricsReport -Name "DisableMetricsExport" -IsFeatureEnabled $false -Everyone</code></li>
                 </ul>
                 <div class="alert">
                     <strong>After Phase 1 &mdash; Verification:</strong><br>
@@ -469,20 +644,35 @@
 
             <div class="step-card">
                 <h4><span class="step-number">2</span> Phase 2: Organizational Data</h4>
-                <p>Prepare and upload the foundational data that enables partitioning.</p>
+                <p>Prepare the foundational data that enables partitioning. Your approach depends on which path you chose in <a href="#choose-path">Section 4.1</a>.</p>
+
+                <h4 style="color:var(--secondary-color);margin-top:16px;">Path A: CSV Org Data Upload</h4>
                 <ul>
                     <li>Create a consolidated CSV file containing ALL employees across ALL agencies.</li>
                     <li>Include the critical custom attribute: <code>Agency</code> (e.g., "Agency A", "Agency B").</li>
+                    <li>Include required fields: <code>EffectiveDate</code>, <code>PersonId</code>, <code>ManagerId</code>, <code>Organization</code>.</li>
                     <li>Upload via Viva Insights web app or M365 Admin Center.</li>
                 </ul>
                 <div class="alert">
-                    <strong>After Phase 2 &mdash; Verification:</strong><br>
+                    <strong>Path A Verification:</strong><br>
                     Check Viva Insights Admin &rarr; Data Quality to verify the <code>Agency</code> attribute has 100% coverage. Verify employee counts per agency match HR records.
                 </div>
+
+                <h4 style="color:var(--success-color, #107c10);margin-top:16px;">Path B: Entra ID Domain (No CSV)</h4>
+                <ul>
+                    <li><strong>No CSV upload required.</strong> The <code>Domain</code> attribute is system-generated from each employee&rsquo;s primary SMTP address.</li>
+                    <li><strong>Recommended:</strong> Navigate to Viva Insights &rarr; Organizational data &rarr; <strong>Configure Entra connection</strong> &rarr; enable <strong>ManagerId</strong> and <strong>Organization</strong> checkboxes &rarr; <strong>Save</strong>. This enriches your data with manager hierarchy and department info (takes ~24 hours to sync).</li>
+                    <li>Verify domain mapping: confirm that each agency&rsquo;s employees use a distinct email domain (e.g., <code>agencya.gov.au</code>, <code>agencyb.gov.au</code>).</li>
+                </ul>
+                <div class="alert">
+                    <strong>Path B Verification:</strong><br>
+                    In Viva Insights Admin &rarr; Organizational data, verify that <code>Domain</code> appears as an available attribute. Check the Data Quality page to see Domain values and confirm they cleanly map to agencies. If any employees use a shared domain (e.g., contractors on <code>shared.gov.au</code>), decide how to handle them (see Shared Services Decision below).
+                </div>
+
                 <div class="highlight-box">
-                    <strong>Shared Services Decision:</strong> If your organisation has shared-services teams (IT, Legal, Finance) that serve multiple agencies, choose one of these approaches:
+                    <strong>Shared Services Decision (both paths):</strong> If your organisation has shared-services teams (IT, Legal, Finance) that serve multiple agencies, choose one of these approaches:
                     <ol>
-                        <li><strong>Dedicated &ldquo;Shared Services&rdquo; partition</strong> (recommended) &mdash; Create a separate partition filtered by <code>Agency = "Shared Services"</code>. Central IT analysts access this partition alongside the global partition.</li>
+                        <li><strong>Dedicated &ldquo;Shared Services&rdquo; partition</strong> (recommended) &mdash; Create a separate partition filtered by <code>Agency = "Shared Services"</code> (Path A) or <code>Domain = "shared.gov.au"</code> (Path B). Central IT analysts access this partition alongside the global partition.</li>
                         <li><strong>Global partition only</strong> &mdash; Exclude shared services from all agency partitions. Their data is only visible in the global partition (Central IT only).</li>
                         <li><strong>Include in every agency partition</strong> &mdash; Not recommended. Creates duplicate data and inflates agency metrics.</li>
                     </ol>
@@ -491,17 +681,22 @@
 
             <div class="step-card">
                 <h4><span class="step-number">3</span> Phase 3: Partitions Setup</h4>
-                <p>Create the hard data boundaries.</p>
+                <p>Create the hard data boundaries. The partition filter differs by path, but all other steps are identical.</p>
                 <div class="alert">
                     <strong>Before Enabling Partitions &mdash; Confirm:</strong><br>
-                    (a) You have a reliable, repeatable process for monthly org data uploads with the Agency attribute.<br>
+                    (a) <strong>Path A:</strong> You have a reliable, repeatable process for monthly org data uploads with the Agency attribute. <strong>Path B:</strong> You have verified Domain values cleanly map to agencies.<br>
                     (b) You have identified at least one <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/assign-user-roles">Insights Analyst</a> per agency.<br>
                     (c) You accept that once enabled, turning off partitions requires contacting Microsoft support and will <strong>delete all partition configurations, query results, and custom metrics</strong> created within partitions.<br>
                     (d) You understand that privacy settings (minimum group size) are tenant-wide, not per-partition &mdash; all agencies must agree on the number.
                 </div>
                 <ul>
                     <li>Navigate to <code>insights.cloud.microsoft</code> &rarr; <strong>Admin</strong> &rarr; <strong>Privacy settings</strong> &rarr; <strong>Partitions</strong>. Select <strong>Enable Partitions</strong>.</li>
-                    <li>Select <strong>New partition</strong>. Name it (e.g., &ldquo;Agency A&rdquo;). Set the filter: <code>Agency = "Agency A"</code>. Verify the <strong>Filtered employees</strong> counter matches the expected headcount for that agency. Select <strong>Save</strong>.</li>
+                    <li>Select <strong>New partition</strong>. Name it (e.g., &ldquo;Agency A&rdquo;).
+                        <ul>
+                            <li><strong>Path A filter:</strong> Set <code>Agency = "Agency A"</code></li>
+                            <li><strong>Path B filter:</strong> Set <code>Domain = "agencya.gov.au"</code></li>
+                        </ul>
+                    Verify the <strong>Filtered employees</strong> counter matches the expected headcount for that agency. Select <strong>Save</strong>.</li>
                     <li>Click the newly created partition &rarr; <strong>Edit</strong> &rarr; <strong>Analysts</strong> tab &rarr; <strong>Add analysts</strong>. Search for the designated agency analyst by name or email &rarr; select &rarr; <strong>Save</strong>. Assign agency analysts to their respective agency partitions <strong>only</strong>. Do NOT assign agency analysts to the global partition.</li>
                     <li>Assign Central IT analysts to the automatically created <strong>Global Partition</strong> for tenant-wide queries.</li>
                     <li>Repeat for each agency. Allow 1&ndash;2 hours for partition access to propagate.</li>
@@ -543,6 +738,9 @@
 
         <section id="org-data">
             <h2>6. Organizational Data Strategy</h2>
+            <p>How employee data reaches Viva Insights depends on your chosen path. Both paths share the same Copilot usage data (automatic from M365).</p>
+
+            <h3>6.1 Path A: CSV Org Data Upload</h3>
             <table>
                 <thead>
                     <tr>
@@ -554,7 +752,7 @@
                 <tbody>
                     <tr>
                         <td>Employee hierarchy (ManagerId)</td>
-                        <td>Centralized HR or per-agency HR feeds</td>
+                        <td>Centralized HR or per-agency HR feeds (CSV)</td>
                         <td>Monthly (minimum)</td>
                     </tr>
                     <tr>
@@ -571,7 +769,7 @@
             </table>
             <p><strong>Data Quality Rule:</strong> The <code>Agency</code> attribute must have 100% coverage. Missing values will exclude employees from all partitions.</p>
             <div class="alert">
-                <strong>Data Refresh Failure Alerting:</strong><br>
+                <strong>Data Refresh Failure Alerting (Path A):</strong><br>
                 If a monthly org data upload fails or the Agency attribute is missing for new employees, those employees silently disappear from all partitions. Nobody gets alerted.<br><br>
                 <strong>Mitigations:</strong>
                 <ul>
@@ -580,6 +778,52 @@
                     <li>Consider automating uploads via the <a href="https://learn.microsoft.com/viva/insights/advanced/admin/import-org-data-first">Viva Insights API-based import</a> or <a href="https://learn.microsoft.com/viva/insights/advanced/admin/import-org-data-azure">Azure blob import</a> for more reliable cadence.</li>
                 </ul>
             </div>
+
+            <h3>6.2 Path B: Entra ID Domain (No CSV)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data Type</th>
+                        <th>Source</th>
+                        <th>Refresh Cadence</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Domain (agency identifier)</td>
+                        <td>Primary SMTP address (system-generated)</td>
+                        <td>Automatic &mdash; updates as employees are added/removed in Entra</td>
+                    </tr>
+                    <tr>
+                        <td>Employee hierarchy (ManagerId)</td>
+                        <td>Entra ID (enable via Configure Entra connection)</td>
+                        <td>Automatic &mdash; ~24-hour sync</td>
+                    </tr>
+                    <tr>
+                        <td>Department (Organization)</td>
+                        <td>Entra ID <code>Department</code> field (enable via Configure Entra connection)</td>
+                        <td>Automatic &mdash; ~24-hour sync</td>
+                    </tr>
+                    <tr>
+                        <td>Copilot usage data</td>
+                        <td>Automatic from M365 signals</td>
+                        <td>Daily (6-day delay)</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>Key advantage:</strong> No ongoing data maintenance. New employees automatically appear in the correct partition based on their SMTP domain. Departing employees are automatically removed when their account is disabled.</p>
+            <div class="highlight-box">
+                <strong>Path B Limitation:</strong> You cannot filter by custom attributes (Cost Centre, Job Function, Location, etc.) within agency partitions. If you need these filters, upload a CSV using the <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">parallel data ingestion</a> method &mdash; Entra continues providing ManagerId and Organization while the CSV adds custom attributes.
+            </div>
+
+            <h3>6.3 Upgrading from Path B to Path A</h3>
+            <p>Organisations can start with Path B for rapid deployment and later add a CSV upload to unlock richer analytics:</p>
+            <ol>
+                <li>Enable <strong>parallel data ingestion</strong> in Viva Insights &rarr; Organizational data &rarr; Configure Entra connection.</li>
+                <li>Keep Entra as the source for <code>ManagerId</code> and <code>Organization</code>.</li>
+                <li>Upload a CSV with additional attributes (<code>Agency</code>, <code>FunctionType</code>, <code>Location</code>, etc.).</li>
+                <li>Update partition filters from <code>Domain</code> to <code>Agency</code> if preferred (edit each partition &rarr; change filter condition).</li>
+            </ol>
         </section>
 
         <section id="access-control">
@@ -680,10 +924,10 @@
         <section id="governance">
             <h2>8. Governance & Ongoing Operations</h2>
             <ul>
-                <li><strong>Monthly:</strong> Upload updated organizational data CSV (Central IT).</li>
+                <li><strong>Monthly (Path A only):</strong> Upload updated organizational data CSV (Central IT). Path B requires no recurring data maintenance.</li>
                 <li><strong>Monthly:</strong> Refresh Copilot PBI template queries and publish reports (Agency Analysts).</li>
                 <li><strong>Quarterly:</strong> Audit dashboard access list and partition memberships.</li>
-                <li><strong>Onboarding:</strong> To add a new agency, add them to the CSV, create a new partition, assign an analyst, and spin up a new PBI workspace.</li>
+                <li><strong>Onboarding:</strong> To add a new agency: <strong>Path A</strong> &mdash; add them to the CSV, create a new partition, assign an analyst. <strong>Path B</strong> &mdash; create a partition filtered by the new agency&rsquo;s domain, assign an analyst. Both paths: spin up a new PBI workspace or use Publish Reports.</li>
             </ul>
 
             <h3>Day 2 Operations Runbook</h3>
@@ -699,12 +943,12 @@
                     <tr>
                         <td>Employee transfers from Agency A to Agency B</td>
                         <td>Central IT</td>
-                        <td>Update <code>Agency</code> attribute in the next CSV upload. Employee moves between partitions automatically on next data refresh (up to 7 days).</td>
+                        <td><strong>Path A:</strong> Update <code>Agency</code> attribute in the next CSV upload. Employee moves between partitions on next data refresh (up to 7 days).<br><strong>Path B:</strong> Change the employee&rsquo;s primary SMTP address to the new agency&rsquo;s domain in Entra ID. Partition membership updates automatically.</td>
                     </tr>
                     <tr>
                         <td>New agency created</td>
                         <td>Central IT + Insights Admin</td>
-                        <td>Add agency to CSV &rarr; create new partition &rarr; assign analyst &rarr; create PBI workspace or use Publish Reports &rarr; grant CEO viewer access.</td>
+                        <td><strong>Path A:</strong> Add agency to CSV &rarr; create partition filtered by <code>Agency</code> &rarr; assign analyst.<br><strong>Path B:</strong> Create partition filtered by new agency&rsquo;s <code>Domain</code> &rarr; assign analyst.<br>Both: create PBI workspace or use Publish Reports &rarr; grant CEO viewer access.</td>
                     </tr>
                     <tr>
                         <td>Agency merged or retired</td>
@@ -719,12 +963,12 @@
                     <tr>
                         <td>AutoCxo accidentally re-enabled</td>
                         <td>Central IT</td>
-                        <td>Run <code>Get-VivaModuleFeaturePolicy -ModuleId VivaInsights</code> &rarr; verify state &rarr; re-disable &rarr; remove any newly auto-enabled agency leaders from the access list immediately.</td>
+                        <td>Verify in Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Turn Advanced Insights on or off &rarr; confirm <strong>Auto CxO Identification = Off</strong>. If re-enabled, set back to Off and remove any newly auto-enabled agency leaders from the dashboard access list immediately. <em>Alternative:</em> <code>Get-VivaModuleFeaturePolicy -ModuleId VivaInsights</code> for scripted verification.</td>
                     </tr>
                     <tr>
                         <td>New hire not appearing in any partition</td>
                         <td>Central IT</td>
-                        <td>Check if the employee has the <code>Agency</code> attribute in the org data CSV. If missing, they are excluded from all partitions. Add the attribute and re-upload.</td>
+                        <td><strong>Path A:</strong> Check if the employee has the <code>Agency</code> attribute in the org data CSV. If missing, they are excluded from all partitions. Add the attribute and re-upload.<br><strong>Path B:</strong> Verify the employee&rsquo;s primary SMTP domain matches an existing partition filter. If they use a shared/common domain, they won&rsquo;t appear in any agency partition.</td>
                     </tr>
                 </tbody>
             </table>
@@ -788,6 +1032,7 @@
         <section id="discovery">
             <h2>10. Discovery Questions for Customer</h2>
             <ol>
+                <li><strong>Does each agency have a distinct email domain, or do all agencies share one domain?</strong> (Determines whether Path B &mdash; Domain-based isolation &mdash; is viable, or whether Path A &mdash; CSV with custom Agency attribute &mdash; is required. See <a href="#choose-path">Section 4.1</a>).</li>
                 <li><strong>How is the Entra ID ManagerID hierarchy currently structured?</strong> (Determines if CEOs are auto-identified as senior leaders).</li>
                 <li><strong>How many total employees per agency, and how many have Copilot licenses?</strong> (Partitions need sufficient population to meet the minimum group size threshold, default 10).</li>
                 <li><strong>Are there shared-services teams (IT, Legal, Finance) that serve multiple agencies?</strong> (Determines if a "Shared Services" partition is needed).</li>
@@ -801,6 +1046,7 @@
 
         <section id="appendix-a">
             <h2>Appendix A: PowerShell Reference</h2>
+            <p><strong>Note:</strong> Most VFAM policies listed below can also be configured via the Admin UI: <code>admin.microsoft.com</code> &rarr; Settings &rarr; Microsoft Viva &rarr; Viva Insights &rarr; Turn Advanced Insights on or off. <strong>Use the Admin UI for one-off changes.</strong> Use PowerShell for scripted deployments, bulk operations, or when the Admin UI does not expose the control (e.g., CopilotMetricsReport).</p>
             <pre><code># Install required module
 Install-Module -Name <a href="https://learn.microsoft.com/powershell/exchange/exchange-online-powershell-v2">ExchangeOnlineManagement</a> -Force -AllowClobber
 Connect-ExchangeOnline -UserPrincipalName admin@tenant.com

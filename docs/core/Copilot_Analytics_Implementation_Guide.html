@@ -124,34 +124,11 @@
 <table>
   <tr><th>Document Property</th><th>Value</th></tr>
   <tr><td>Version</td><td>3.1</td></tr>
-  <tr><td>Effective Date</td><td>February 2026</td></tr>
-  <tr><td>Document Owner</td><td>Sumit Sadhu</td></tr>
-  <tr><td>Last Reviewed</td><td>February 2026</td></tr>
-  <tr><td>Next Review Due</td><td>August 2026</td></tr>
-  <tr><td>Classification</td><td>Internal Use</td></tr>
+  <tr><td>Author</td><td>Sumit Sadhu</td></tr>
+  <tr><td>Published</td><td>February 2026</td></tr>
 </table>
 
-<h3>Change Log</h3>
-<table>
-  <tr><th>Version</th><th>Date</th><th>Author</th><th>Changes</th></tr>
-  <tr><td>1.0</td><td>Feb 2026</td><td>Sumit Sadhu</td><td>Initial release</td></tr>
-  <tr><td>2.0</td><td>Feb 2026</td><td>Sumit Sadhu</td><td>Added AI Admin role, exclusion lists, delegation details, configuration procedures</td></tr>
-  <tr>
-    <td>3.0</td><td>Feb 2026</td><td>Sumit Sadhu</td>
-    <td>Major update: Fixed dual-licensing inaccuracy, corrected Assisted Hours formula, added Copilot Analytics Reports, Agent Dashboard, discovery questions, architecture diagram, RACI matrices, LOE summary, FAQ, Quick-Start Cheat Sheet. Consolidated org data guidance.</td>
-  </tr>
-  <tr>
-    <td>3.1</td><td>Feb 2026</td><td>Sumit Sadhu</td>
-    <td>
-      <strong>Major update:</strong> Fixed dual-licensing inaccuracy (Sec 7), corrected Assisted Hours formula (Sec 5.4), 
-      added Copilot Analytics Reports section (Sec 6), added Agent Dashboard section (Sec 7), 
-      added Pre-Configuration Discovery questions (Sec 2.4), added Architecture Diagram, RACI matrices, 
-      Expanded Section 6 (Copilot Analytics Reports): added complete report catalogue with OOB, shared, and advanced PBI templates; added prerequisites for viewing and creating reports; added 4-step guide (access → create → connect PBI → publish); added Publish Reports workflow.
-      Expanded Section 7 (Agent Dashboard): added key metrics table, unique insights, agent-specific filters, 3 practical scenarios (post-launch review, cost governance, shadow AI detection).
-      Expanded Section 8 (Advanced Analytics): added template catalogue (Copilot Impact, Business Impact, Studio Agents); expanded Steps 5-7 with detailed query creation walkthrough, PBI connection flow, and report settings configuration.
-    </td>
-  </tr>
-</table>
+
 
 <!-- ═══════════════════════ TABLE OF CONTENTS ═══════════════════════ -->
 <h1 id="toc">Table of Contents</h1>
@@ -1260,7 +1237,7 @@
   <ol>
     <li>On the Partitions page, select <strong>New partition</strong></li>
     <li>Name the partition (e.g., &ldquo;Agency A&rdquo;)</li>
-    <li>Set the filter: choose an org data attribute (e.g., <code>Agency</code>) and value (e.g., &ldquo;Agency A&rdquo;)</li>
+    <li>Set the filter: choose an org data attribute (e.g., <code>Agency = "Agency A"</code> if using CSV upload, or <code>Domain = "agencya.gov.au"</code> if using Entra ID Domain-based isolation)</li>
     <li>Assign analysts &rarr; <strong>Save</strong></li>
     <li>Repeat for each agency/BU</li>
   </ol>
@@ -1440,7 +1417,7 @@
   <tr><td>Location filter</td><td>No</td><td>Yes (via <code>Location</code> attribute)</td></tr>
   <tr><td>Level / Seniority filter</td><td>No</td><td>Yes (via <code>LevelDesignation</code>)</td></tr>
   <tr><td>Custom attributes (Cost Centre, Agency, BU, Region)</td><td>No</td><td>Yes (up to 105 custom attributes)</td></tr>
-  <tr><td>Multi-agency / multi-BU partitioning</td><td>Not possible</td><td>Required (partitions filter on org data attributes like <code>Agency</code>)</td></tr>
+  <tr><td>Multi-agency / multi-BU partitioning</td><td>Yes &mdash; if each agency has a distinct email domain, use the system-generated <code>Domain</code> attribute as the partition filter (no CSV needed)</td><td>Yes &mdash; use a custom <code>Agency</code> attribute for maximum flexibility (works even when agencies share one domain)</td></tr>
   <tr><td>Before/after cohort segmentation in Power BI</td><td>No segmentation</td><td>Yes (segment by any uploaded attribute)</td></tr>
   <tr><td>Manager hierarchy accuracy</td><td>Depends on Entra ID completeness</td><td>Can supplement/override with CSV <code>ManagerId</code></td></tr>
   <tr><td>Data freshness control</td><td>Updated by directory team (often delayed)</td><td>Updated by Insights Admin on a defined cadence</td></tr>
@@ -1448,7 +1425,7 @@
 
 <div class="callout tip">
   <div class="callout-title">TIP: When Entra ID Alone Is Sufficient</div>
-  <p>If you <strong>only</strong> need the Copilot Dashboard with tenant-level views and Department filtering &mdash; and the Entra ID Department attribute is accurate and consistently populated &mdash; you can skip the org data upload. However, if you need <strong>any</strong> of the following, org data upload is required: Location or Job Function filters, custom attributes (Cost Centre, Agency), multi-BU partitioning, or before/after cohort analysis in Power BI.</p>
+  <p>If you <strong>only</strong> need the Copilot Dashboard with tenant-level views and Department filtering &mdash; and the Entra ID Department attribute is accurate and consistently populated &mdash; you can skip the org data upload. However, if you need <strong>any</strong> of the following, org data upload is required: Location or Job Function filters, custom attributes (Cost Centre, Agency), or before/after cohort analysis in Power BI. <strong>Exception:</strong> For multi-agency partitioning, if each agency has a distinct email domain, you can use the system-generated <code>Domain</code> attribute as a partition filter without uploading a CSV. See the <em>Multi-Agency Isolation Architecture</em> document, <a href="../playbooks/Copilot_Multi_Agency_Isolation_Architecture.html#choose-path">Section 4.1</a>, for the full decision framework.</p>
 </div>
 
 <h3>What Breaks with an Incomplete Entra ID Hierarchy?</h3>
@@ -1714,7 +1691,7 @@
   <tr><td>9</td><td>How is the $72/hour default calculated?</td><td>It is a broad industry estimate of loaded labour cost. Customers should adjust this to their own loaded rate for accurate ROI calculations.</td></tr>
   <tr><td>10</td><td>Can we use the Agent Dashboard without Copilot Dashboard?</td><td>Both are part of the Viva Insights web app. You cannot enable one without the other being available, but access to each can be controlled separately via VFAM policies.</td></tr>
   <tr><td>11</td><td>Who needs licences &mdash; only leaders viewing dashboards, or also employees whose data we want to analyse?</td><td><strong>Both.</strong> Employees whose collaboration data you want to analyse must have a Viva Insights licence assigned (included automatically with every Copilot licence). Leaders and managers viewing dashboards also need a Viva Insights licence to access the full Copilot Dashboard and organisation insights. Unlicensed employees who collaborate with licensed users appear as &ldquo;other internal collaborators&rdquo; in aggregate but are not directly measured.</td></tr>
-  <tr><td>12</td><td>We already have Department and Manager in Entra ID &mdash; why do we need to upload org data?</td><td>Entra ID provides basic Department filtering only. Org data upload adds: Location, Job Function, Level, and <strong>up to 105 custom attributes</strong> (e.g., Cost Centre, Agency, Region). It also enables multi-BU partitioning and before/after cohort segmentation in Power BI. If your customer only needs tenant-level + Department views, Entra ID alone is sufficient. For anything more granular, upload org data. See <a href="#s9">Section 9.1</a> for the full comparison.</td></tr>
+  <tr><td>12</td><td>We already have Department and Manager in Entra ID &mdash; why do we need to upload org data?</td><td>Entra ID syncs only three attributes to Viva Insights: <code>PersonId</code> (from UPN), <code>ManagerId</code> (from Manager), and <code>Organization</code> (from Department). The system also generates <code>Domain</code> (from SMTP), <code>TimeZone</code>, and <code>PopulationType</code>. Other Entra fields like <code>Company</code>, <code>Division</code>, <code>JobTitle</code>, and <code>extensionAttributes</code> are <strong>not synced</strong>. Org data upload adds: Location, Job Function, Level, and <strong>up to 105 custom attributes</strong> (e.g., Cost Centre, Agency, Region). It also enables before/after cohort segmentation in Power BI. <strong>For multi-agency partitioning:</strong> if each agency has a distinct email domain, you can use <code>Domain</code> as a partition filter without uploading a CSV. Otherwise, a custom <code>Agency</code> attribute via CSV is required. See <a href="#s9">Section 9.1</a> for the full comparison and the <a href="../playbooks/Copilot_Multi_Agency_Isolation_Architecture.html#choose-path">Multi-Agency Isolation Architecture</a> for the dual-path decision framework.</td></tr>
   <tr><td>13</td><td>We uploaded org data and now our Department filter shows different values than Entra ID &mdash; can we go back?</td><td>Once org data is uploaded, it <strong>permanently replaces Entra ID</strong> as the data source for filters. There is no self-service reversal &mdash; you must contact Microsoft Support to reset. Make sure the CSV values match your intended naming before uploading. See <a href="#s9">Section 9.1</a>.</td></tr>
   <tr><td>14</td><td>We want broader productivity metrics (meeting time, focus time) not just Copilot reporting. Is that covered here?</td><td><strong>No.</strong> This guide covers Copilot Analytics only. Broader Viva Insights productivity metrics (meeting time, focus time, after-hours, collaboration networks) use the same Viva Insights licence and analyst role but are a separate analytics workstream. See Section 2.2 (Out of Scope) for pointers to the right resources. The org data and privacy settings configured through this guide carry over.</td></tr>
 </table>
@@ -1734,7 +1711,7 @@
   <li><strong>Compliance Exclusion Requirements:</strong> Plan for 5-day processing time for exclusion list uploads.</li>
   <li><strong>Delegation Policy:</strong> Should delegation be allowed? If not, disable via <code>CopilotDashboardDelegation</code> VFAM policy.</li>
   <li><strong>Agent Dashboard Scope:</strong> If agents are being deployed, ensure company-level delegates are configured (not just group-level).</li>
-  <li><strong>Multi-Agency / Multi-BU Data Isolation:</strong> If your organisation operates multiple independent agencies or business units within a single M365 tenant and requires that Agency A <em>cannot</em> see Agency B's Copilot usage data, the standard Copilot Dashboard does not provide hard data isolation. Senior leaders auto-identified via Entra ID hierarchy will see &ldquo;Your company&rdquo; data covering all agencies. The solution is a <strong>partition-based architecture</strong> using Viva Insights Advanced Analytics &mdash; create one partition per agency filtered by a custom &ldquo;Agency&rdquo; attribute in org data, assign agency-specific analysts, and deliver reports via isolated Power BI workspaces. The Copilot Dashboard itself should be restricted to Central IT only for tenant-wide licence management. See the <em>Multi-Agency Isolation Architecture</em> reference document for the validated solution, implementation runbook, and PowerShell lockdown steps.</li>
+  <li><strong>Multi-Agency / Multi-BU Data Isolation:</strong> If your organisation operates multiple independent agencies or business units within a single M365 tenant and requires that Agency A <em>cannot</em> see Agency B's Copilot usage data, the standard Copilot Dashboard does not provide hard data isolation. Senior leaders auto-identified via Entra ID hierarchy will see &ldquo;Your company&rdquo; data covering all agencies. The solution is a <strong>partition-based architecture</strong> using Viva Insights Advanced Analytics. Two paths are available: <strong>(A)</strong> Create partitions filtered by a custom <code>Agency</code> attribute in a CSV upload &mdash; best when agencies share one email domain or you need rich filtering. <strong>(B)</strong> Create partitions filtered by the system-generated <code>Domain</code> attribute &mdash; zero CSV required if each agency has a distinct email domain. Both paths require restricting the Copilot Dashboard to Central IT only. See the <em><a href="../playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Multi-Agency Isolation Architecture</a></em> reference document for the validated dual-path solution, implementation runbook, and PowerShell lockdown steps.</li>
   <li><strong>Copilot Agent Governance:</strong> If deploying Copilot Studio agents and needs DLP policies, connector governance, agent sharing controls, or publishing approval workflows, these are managed through the <strong>Power Platform Admin Center</strong> &mdash; not through Viva Insights. See the <strong><a href="https://learn.microsoft.com/power-platform/admin/">Copilot &amp; Agent Governance</a></strong> project for the full governance framework including tenant/environment/agent-level controls, DSPM for AI, and billing boundaries.</li>
   <li><strong>Licence Lifecycle &amp; Billing:</strong> If you need to understand what happens to analytics data when licences are assigned, removed, or reassigned &mdash; or needs to manage Copilot Credits billing, Pay-As-You-Go metering, or multi-agency chargeback &mdash; see the <em>Copilot Lifecycle &amp; Billing Playbook</em>.</li>
   <li><strong>Broader Collaboration Analysis (Beyond Copilot):</strong> If the you want meeting time, focus time, after-hours, wellbeing, or manager effectiveness metrics independent of Copilot, these use the same Viva Insights analyst workbench and org data but different templates and metrics. See the <em>Advanced Viva Insights Collaboration Analysis Guide</em>. The 4-week baseline window (item 8 above) is best captured using these collaboration templates.</li>
