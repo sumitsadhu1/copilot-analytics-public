@@ -528,6 +528,17 @@
   <tr><td>Insights Analyst</td><td>Global/Insights Admin</td><td>Run advanced queries; with global partition → automatic dashboard access</td></tr>
 </table>
 
+<div class="callout info">
+  <div class="callout-title">NOTE: Additional Stakeholders Beyond Viva Insights Roles</div>
+  <p>The roles above are specific to Viva Insights. A complete deployment also requires coordination with:</p>
+  <ul>
+    <li><strong>Entra / directory owner</strong> &mdash; maintains manager hierarchy accuracy and domain hygiene (critical for dashboard scope filters and partition correctness)</li>
+    <li><strong>HR / org-data owner</strong> &mdash; provides and refreshes employee attributes (Agency, Organization, FunctionType) for CSV uploads</li>
+    <li><strong>Power BI / Fabric admin</strong> &mdash; required if delivering reports via Power BI workspaces (workspace creation, access governance, RLS)</li>
+    <li><strong>Licensing / finance owner</strong> &mdash; manages licence assignments, monitors the 50-licence threshold, and approves any additional Power BI Pro or Viva Insights standalone licensing</li>
+  </ul>
+</div>
+
 <h3>What Each Role Sees in the Viva Insights Web App</h3>
 <p>Use this table to verify your role is working correctly. If what you see doesn&rsquo;t match, check role assignment in Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights.</p>
 <table>
@@ -603,7 +614,7 @@
   </ol>
   <table>
     <tr><th>Policy</th><th>Required State</th><th>What Happens If Off</th></tr>
-    <tr><td><strong>Copilot Dashboard</strong> (Enable Copilot Dashboard)</td><td>On</td><td>Nobody can view the dashboard — all other steps are pointless</td></tr>
+    <tr><td><strong>Viva Insights web app</strong> (replaces former &ldquo;Copilot Dashboard&rdquo; toggle)</td><td>On</td><td>The entire Viva Insights web app is disabled &mdash; no Copilot Dashboard, no Analytics Reports, no admin or analyst tools</td></tr>
     <tr><td><strong>Copilot Dashboard Delegation</strong></td><td>On</td><td>Users cannot share dashboard access with delegates</td></tr>
     <tr><td><strong>Behavioral Experiences</strong></td><td>On</td><td>Collaboration data (meeting time, email, chat) does not flow — breaks Impact page comparisons</td></tr>
     <tr><td><strong>Auto CxO Identification</strong> (Dashboard AutoEnablement)</td><td>On (recommended)</td><td>Senior leaders do not get automatic access — must be added manually</td></tr>
@@ -640,6 +651,11 @@
 <div class="callout danger">
   <div class="callout-title">IMPORTANT: AI Admin Self-Access</div>
   If you are an AI Administrator and need to view the dashboard yourself, you must add yourself using the manual access method above. The AI Administrator role does not grant automatic dashboard viewing access.
+</div>
+
+<div class="callout warning">
+  <div class="callout-title">WARNING: Multi-Agency Tenants &mdash; Different Posture Required</div>
+  If your tenant hosts <strong>multiple independent agencies</strong> that must not see each other&rsquo;s Copilot data, <strong>do not follow the general enablement steps above</strong>. Auto CxO Identification and broad manager access grant Copilot Dashboard access showing &ldquo;Your company&rdquo; data across all agencies. Instead, follow the <a href="../playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Multi-Agency Isolation Architecture</a> playbook, which prescribes a lockdown-first posture: disable AutoCxO, disable delegation, restrict dashboard access to Central IT, and deliver reports via isolated Power BI workspaces or partition-scoped Publish Reports.
 </div>
 
 <div class="step">

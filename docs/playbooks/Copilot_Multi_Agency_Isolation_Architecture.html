@@ -722,13 +722,19 @@
                     <li>Publish reports and grant Viewer access to agency leadership via Entra group.</li>
                     <li>Configure <a href="https://learn.microsoft.com/power-bi/enterprise/service-admin-rls">Row-Level Security</a> (RLS) as a secondary control if multiple agencies share a workspace.</li>
                 </ul>
-                <p><strong>Option B: Viva Insights <a href="https://learn.microsoft.com/viva/insights/advanced/analyst/query-results">Publish Reports</a></strong> (no Power BI licence required for viewers)</p>
+                <p><strong>Option B: Viva Insights <a href="https://learn.microsoft.com/viva/insights/advanced/analyst/publish-reports">Publish Reports</a></strong> (prerequisites apply &mdash; review notes below)</p>
                 <ul>
                     <li>Use the <strong>Publish Reports</strong> feature in the Viva Insights analyst experience.</li>
-                    <li>Select <strong>&ldquo;Filter report by manager hierarchy&rdquo;</strong> to automatically scope data to the recipient&rsquo;s team.</li>
+                    <li><strong>&ldquo;Filter report by manager hierarchy&rdquo;:</strong> Publishes to <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/manager-settings">enabled managers</a> only. Each recipient sees only their own team&rsquo;s data. If the agency CEO&rsquo;s hierarchy covers the entire agency, they see the full agency dataset.</li>
+                    <li><strong>&ldquo;Unfiltered original report&rdquo;:</strong> Publishes to users who have been granted <strong>Copilot Dashboard access</strong>. In the multi-agency lockdown, dashboard access is restricted to Central IT &mdash; so this sub-option does <strong>not</strong> reach agency heads.</li>
                     <li>Recipients view published reports in the Viva Insights web app &rarr; Reports tab.</li>
                     <li>Set expiry date (up to 365 days) and republish as needed.</li>
                 </ul>
+                <div class="alert">
+                    <strong>&#x26A0; Publish Reports Risk in Multi-Agency:</strong><br>
+                    Enabling a manager grants them <strong>automatic Copilot Dashboard access</strong> (<a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard#how-automatic-access-to-the-copilot-dashboard-is-determined">Learn reference</a>), including the &ldquo;Your company&rdquo; scope showing <strong>all agencies&rsquo; data</strong>. Before using &ldquo;Filter by manager hierarchy,&rdquo; test with one pilot agency CEO and verify they cannot toggle to &ldquo;Your company&rdquo; on the Copilot Dashboard. If they can, fall back to <strong>Option A (Power BI workspaces)</strong> for agency-head delivery.<br><br>
+                    <strong>Recommendation:</strong> Use Option A as the primary delivery surface for agency heads. Reserve Publish Reports for Central IT analysts who already have dashboard access.
+                </div>
                 <div class="alert">
                     <strong>After Phase 4 &mdash; Verification:</strong><br>
                     Have an agency CEO view their report (either PBI or Viva Insights). Confirm: (a) only their agency&rsquo;s employees appear, (b) no cross-agency group names or data are visible, (c) the minimum group size threshold is respected for small departments within the agency.
