@@ -635,10 +635,13 @@
                     <li><strong>Disable Agent Dashboard (Admin UI):</strong> Same page &rarr; select <strong>Agent Dashboard</strong> &rarr; set to <strong>Off</strong> for Everyone &rarr; Save. Then create a group-scoped policy to re-enable for Central IT only.<br>
                     <em>Alternative (PowerShell):</em> <code>Add-VivaModuleFeaturePolicy -ModuleId VivaInsights -FeatureId AgentDashboard -Name "RestrictAgentDashboard" -IsFeatureEnabled $false -Everyone</code></li>
                     <li><strong>Disable Copilot Metrics Export (PowerShell only):</strong> This feature does not currently have an Admin UI toggle. Use PowerShell: <code>Add-VivaModuleFeaturePolicy -ModuleId VivaInsights -FeatureId CopilotMetricsReport -Name "DisableMetricsExport" -IsFeatureEnabled $false -Everyone</code></li>
+                    <li><strong>Optional &mdash; Disable Viva Insights web app for non-Central-IT users (strongest lockdown):</strong> The <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#enable-or-disable-the-viva-insights-web-app">Viva Insights web app VFAM control</a> disables the <strong>entire</strong> web app (Copilot Dashboard, Analytics Reports, and admin/analyst tools) for targeted users. Create a group-scoped policy that keeps the web app <strong>On</strong> for Central IT and agency analysts, and <strong>Off</strong> for everyone else. This is the strongest possible blanket lockdown.<br>
+                    <em>Admin UI:</em> Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Turn Advanced Insights on or off &rarr; select <strong>Viva Insights web app</strong> &rarr; Add policy &rarr; scope to the group that should <strong>not</strong> have access &rarr; set to Off.<br>
+                    <em>Note:</em> If you previously disabled the old &ldquo;Copilot Dashboard&rdquo; VFAM control, those settings now apply to the entire web app.</li>
                 </ul>
                 <div class="alert">
                     <strong>After Phase 1 &mdash; Verification:</strong><br>
-                    Confirm no agency leaders appear in the dashboard access list. Verify all four VFAM policies (AutoCxo, Delegation, AgentDashboard, MetricsExport) show as disabled. Have an agency CEO attempt to access <code>insights.cloud.microsoft</code> and confirm access is denied.
+                    Confirm no agency leaders appear in the dashboard access list. Verify all five VFAM policies (AutoCxo, Delegation, AgentDashboard, MetricsExport, and optionally Viva Insights web app) show as disabled for agency users. Have an agency CEO attempt to access <code>insights.cloud.microsoft</code> and confirm access is denied.
                 </div>
             </div>
 
@@ -721,6 +724,7 @@
                     <li>Create dedicated Power BI workspaces per agency (e.g., <code>Agency-A-Copilot-Analytics</code>).</li>
                     <li>Publish reports and grant Viewer access to agency leadership via Entra group.</li>
                     <li>Configure <a href="https://learn.microsoft.com/power-bi/enterprise/service-admin-rls">Row-Level Security</a> (RLS) as a secondary control if multiple agencies share a workspace.</li>
+                    <li><strong>Licensing:</strong> Each viewer needs a <strong>Power BI Pro</strong> or <strong>Premium Per User (PPU)</strong> licence. Alternatively, if your organisation has a <strong>Power BI Premium capacity</strong> (P or F SKU), reports published to that capacity can be viewed by users with a free Power BI licence &mdash; eliminating per-user viewer costs. Consult your licensing/finance owner.</li>
                 </ul>
                 <p><strong>Option B: Viva Insights <a href="https://learn.microsoft.com/viva/insights/advanced/analyst/publish-reports">Publish Reports</a></strong> (prerequisites apply &mdash; review notes below)</p>
                 <ul>
@@ -734,6 +738,22 @@
                     <strong>&#x26A0; Publish Reports Risk in Multi-Agency:</strong><br>
                     Enabling a manager grants them <strong>automatic Copilot Dashboard access</strong> (<a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard#how-automatic-access-to-the-copilot-dashboard-is-determined">Learn reference</a>), including the &ldquo;Your company&rdquo; scope showing <strong>all agencies&rsquo; data</strong>. Before using &ldquo;Filter by manager hierarchy,&rdquo; test with one pilot agency CEO and verify they cannot toggle to &ldquo;Your company&rdquo; on the Copilot Dashboard. If they can, fall back to <strong>Option A (Power BI workspaces)</strong> for agency-head delivery.<br><br>
                     <strong>Recommendation:</strong> Use Option A as the primary delivery surface for agency heads. Reserve Publish Reports for Central IT analysts who already have dashboard access.
+                </div>
+                <div class="alert">
+                    <strong>&#x26A0; Licensing Prerequisite for Publish Reports Recipients:</strong><br>
+                    To view published reports, recipients must have a <strong>Viva Insights service plan</strong>. This is automatically included with every M365 Copilot licence. However, if an agency head does <strong>not</strong> have a Copilot licence, they will need a <strong>standalone Viva Insights licence</strong> to access published reports in the web app. Confirm licensing coverage before choosing this delivery path.
+                </div>
+                <div class="highlight-box">
+                    <strong>Publish Reports Pilot Procedure (recommended before full rollout):</strong>
+                    <ol>
+                        <li>Select <strong>one pilot agency CEO</strong> who has a Copilot licence (Viva Insights service plan included).</li>
+                        <li>In Manager Settings, enable this CEO as a manager (ensure their team meets minimum team size).</li>
+                        <li>Wait 1 hour for manager settings to propagate.</li>
+                        <li>Have the pilot CEO navigate to <code>insights.cloud.microsoft</code>. Check whether they can see the <strong>Copilot Dashboard</strong> in the left nav and whether it shows &ldquo;Your company&rdquo; data across all agencies.</li>
+                        <li><strong>If they can see cross-agency data:</strong> Fall back to Option A (Power BI workspaces). Disable the pilot CEO&rsquo;s manager access.</li>
+                        <li><strong>If they only see their team&rsquo;s data:</strong> Proceed with publishing filtered reports to remaining agency CEOs.</li>
+                        <li>After pilot, publish a Copilot PBI template report using &ldquo;Filter by manager hierarchy&rdquo; and verify the CEO receives only their agency&rsquo;s data.</li>
+                    </ol>
                 </div>
                 <div class="alert">
                     <strong>After Phase 4 &mdash; Verification:</strong><br>
