@@ -718,13 +718,17 @@
 <div class="step">
   <div class="step-title">Step 9: Configure Hourly Rate for ROI (10 min)</div>
   <ol>
-    <li><code>https://insights.cloud.microsoft</code> → Admin → Impact settings</li>
-    <li>Default hourly rate is $72/hour (USD)</li>
-    <li>Adjust to customer loaded labour rate if different</li>
+    <li>Navigate to the <strong>Impact page</strong> on the Copilot Dashboard</li>
+    <li>Select <strong>Hours and Value calculator</strong>, then select <strong>Value calculator</strong></li>
+    <li>Default hourly rate is $72/hour (USD, based on <a href="https://www.bls.gov/news.release/ecec.t04.htm">U.S. Bureau of Labor Statistics</a>)</li>
+    <li>Adjust to your loaded labour rate and select the appropriate currency</li>
     <li>Document the rate used for future reference</li>
   </ol>
-  <p><strong>How to calculate a loaded labour rate:</strong> (Average base salary + benefits + overheads) ÷ annual productive hours (typically ~1,880). For Australian customers, consider using AUD values directly — the dashboard displays in the currency you enter but does not convert. Example: AUD $95/hour for a mid-level professional.</p>
-  <p><strong>Important:</strong> Changing the hourly rate <strong>retroactively recalculates</strong> all Copilot Assisted Value figures displayed on the dashboard. Agree on the rate with stakeholders before changing it, and document both the old and new values for reporting continuity.</p>
+  <p><strong>How to calculate a loaded labour rate:</strong> (Average base salary + benefits + overheads) &divide; annual productive hours (typically ~1,880). For Australian customers, consider using AUD values directly &mdash; the dashboard displays in the currency you enter but does not convert. Example: AUD $95/hour for a mid-level professional.</p>
+  <div class="callout warning">
+    <div class="callout-title">WARNING: Hourly Rate Is Session-Only</div>
+    <p>As of March 2026, changes to the hourly rate and currency are <strong>not saved persistently</strong>. You must re-enter your preferred rate <strong>every time you reopen the Copilot Dashboard</strong>. This is a current platform limitation &mdash; the settings reset on page reload. Agree on the rate with stakeholders and document it, so it can be consistently re-applied.</p>
+  </div>
 </div>
 
 <div class="step">
@@ -752,7 +756,12 @@
 <p>Displays group-level usage trends, active user counts, usage intensity, and consistent usage metrics. Supports internal and external benchmark comparisons. Requires 50+ assigned licenses for group filtering.</p>
 
 <h3>Impact Page</h3>
-<p>Shows Copilot Assisted Hours and Copilot Assisted Value. This is the primary ROI metric page.</p>
+<p>Shows four top-level metrics: <strong>Copilot Actions Taken</strong>, <strong>Copilot Assisted Hours</strong>, <strong>Copilot Assisted Value</strong>, and <strong>Satisfaction Rate</strong>. This is the primary ROI and impact measurement page. A six-month trendline shows weekly snapshots of each metric (selectable via the Metric dropdown). Each metric is calculated over a <strong>28-day rolling window</strong> with up to a 6-day data delay.</p>
+
+<div class="callout info">
+  <div class="callout-title">NOTE: Satisfaction Rate (New Metric)</div>
+  <p>The <strong>Satisfaction Rate</strong> card shows the percentage of positive reactions (thumbs up) out of all reactions (thumbs up + thumbs down) that users have provided for Copilot responses across Microsoft 365 apps. It is calculated over a rolling 28-day period and provides a built-in sentiment signal without requiring a survey upload.</p>
+</div>
 
 <div class="callout info">
   <div class="callout-title">NOTE: Copilot Assisted Hours Calculation (Corrected)</div>
