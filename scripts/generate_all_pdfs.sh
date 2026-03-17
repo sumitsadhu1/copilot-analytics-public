@@ -22,6 +22,7 @@ declare -a DOCS=(
   "docs/playbooks/Copilot_Lifecycle_Billing_Playbook.html|Copilot_Lifecycle_Billing_Playbook.pdf"
   "docs/playbooks/Advanced_Viva_Insights_Collaboration_Guide.html|Advanced_Viva_Insights_Collaboration_Guide.pdf"
   "docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html|Copilot_Multi_Agency_Isolation_Architecture.pdf"
+  "docs/playbooks/Copilot_Multi_Agency_Default_Priority_Architecture.html|Copilot_Multi_Agency_Default_Priority_Architecture.pdf"
   "artifacts/Copilot_Analytics_FAQ.html|Copilot_Analytics_FAQ.pdf"
   "artifacts/Copilot_Analytics_QuickStart_CheatSheet.html|Copilot_Analytics_QuickStart_CheatSheet.pdf"
 )

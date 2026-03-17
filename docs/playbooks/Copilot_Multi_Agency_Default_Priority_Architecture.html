@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solution Architecture: Copilot Analytics with Agency-Default Views for Multi-Agency Single Tenant</title>
+    <link rel="stylesheet" href="../../assets/docs-style.css">
+<style>
+        :root {
+            --primary-color: #005a9e;
+            --secondary-color: #0078d4;
+            --bg-color: #f3f2f1;
+            --text-color: #323130;
+            --border-color: #edebe9;
+            --success-color: #107c10;
+            --danger-color: #a4262c;
+            --warning-bg: #fff4ce;
+            --warning-border: #d83b01;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        /* Sidebar Navigation */
+        nav {
+            width: 300px;
+            background-color: #ffffff;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            box-sizing: border-box;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+        }
+
+        nav h3 {
+            color: var(--primary-color);
+            font-size: 1.1em;
+            margin-top: 0;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav li {
+            margin-bottom: 10px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 0.95em;
+            display: block;
+            padding: 5px 8px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        nav a:hover {
+            background-color: var(--bg-color);
+            color: var(--primary-color);
+        }
+
+        /* Main Content */
+        main {
+            margin-left: 300px;
+            padding: 40px;
+            max-width: 1000px;
+            background-color: #ffffff;
+            min-height: 100vh;
+            box-sizing: border-box;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        header {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.2em;
+            margin: 0 0 10px 0;
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            margin-top: 40px;
+        }
+
+        h3 {
+            color: #444;
+            margin-top: 25px;
+        }
+
+        /* Callouts & Alerts */
+        .alert {
+            padding: 15px 20px;
+            background-color: var(--warning-bg);
+            border-left: 5px solid var(--warning-border);
+            margin: 20px 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .alert strong {
+            color: var(--warning-border);
+        }
+
+        .highlight-box {
+            background-color: #f0f6ff;
+            border: 1px solid #cce3ff;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95em;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #faf9f8;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fdfdfd;
+        }
+
+        /* Status Badges */
+        .pass { color: var(--success-color); font-weight: bold; }
+        .fail { color: var(--danger-color); font-weight: bold; }
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        .badge-p0 { background-color: #fde7e9; color: var(--danger-color); }
+        .badge-p1 { background-color: #fff4ce; color: #8a8886; }
+        .badge-p2 { background-color: #e1dfdd; color: #323130; }
+
+        /* Code & Preformatted */
+        pre {
+            background-color: #282c34;
+            color: #abb2bf;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: #f3f2f1;
+            padding: 2px 5px;
+            border-radius: 3px;
+            color: #d83b01;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* Architecture Diagram Styling */
+        .diagram-container {
+            background-color: #282c34;
+            color: #61afef;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: monospace;
+            white-space: pre;
+            overflow-x: auto;
+            line-height: 1.2;
+            margin: 20px 0;
+        }
+
+        /* Runbook Steps */
+        .step-card {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .step-card h4 {
+            margin-top: 0;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .step-number {
+            background: var(--primary-color);
+            color: white;
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 0.8em;
+        }
+
+        /* Comparison Banner */
+        .guide-selector {
+            display: flex;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .guide-selector a {
+            flex: 1;
+            display: block;
+            padding: 14px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.92em;
+            text-align: center;
+            transition: transform 0.15s;
+        }
+        .guide-selector a:hover {
+            transform: translateY(-2px);
+        }
+        .guide-selector .current {
+            background: #e8f4fd;
+            border: 2px solid var(--secondary-color);
+            color: var(--secondary-color);
+            font-weight: 700;
+            cursor: default;
+        }
+        .guide-selector .other {
+            background: #f3f2f1;
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+            font-weight: 600;
+        }
+        .guide-selector .other:hover {
+            border-color: var(--secondary-color);
+        }
+
+        /* ─── Print overrides for sidebar layout ─── */
+        @media print {
+            body {
+                display: block;
+                background: #fff;
+            }
+            nav {
+                display: none !important;
+            }
+            main {
+                margin-left: 0;
+                padding: 0;
+                max-width: 100%;
+                box-shadow: none;
+            }
+            /* Remove link styling in PDF — show as plain text */
+            a[href] {
+                color: inherit !important;
+                text-decoration: none !important;
+                pointer-events: none;
+            }
+        }
+    </style>
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Multi-Agency Default Priority</span>
+  </div>
+  <div class="doc-nav-right">
+    <a href="../../artifacts/pdfs/Copilot_Multi_Agency_Default_Priority_Architecture.pdf" class="pdf-btn" title="Download PDF">&#128196; PDF</a>
+  </div>
+</nav>
+
+    <nav>
+        <h3>Solution Architecture</h3>
+        <ul>
+            <li><a href="#which-guide">Which Guide Do I Need?</a></li>
+            <li><a href="#exec-summary">1. Executive Summary</a></li>
+            <li><a href="#business-context">2. Business Context &amp; Requirements</a></li>
+            <li><a href="#options-assessment">3. Solution Options Assessment</a></li>
+            <li><a href="#recommended-arch">4. Recommended Architecture</a></li>
+            <li><a href="#hierarchy-setup">4.1 Manager Hierarchy Setup</a></li>
+            <li><a href="#enrich-data">4.2 Enrich with Org Data</a></li>
+            <li><a href="#runbook">5. Implementation Runbook</a></li>
+            <li><a href="#analytics-surfaces">6. Analytics Surfaces per Role</a></li>
+            <li><a href="#roi-per-agency">6.1 ROI Analysis per Agency</a></li>
+            <li><a href="#access-control">7. Access Control Matrix</a></li>
+            <li><a href="#governance">8. Governance &amp; Operations</a></li>
+            <li><a href="#risks">9. Risk Register</a></li>
+            <li><a href="#discovery">10. Discovery Questions</a></li>
+            <li><a href="#appendix-a">Appendix A: PowerShell</a></li>
+            <li><a href="#appendix-b">Appendix B: CSV Template</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <header>
+            <h1>Copilot Analytics with Agency-Default Views for Multi-Agency Single Tenant</h1>
+            <p><strong>Version:</strong> 1.0 | <strong>Author:</strong> Sumit Sadhu | <strong>Published:</strong> March 2026</p>
+        </header>
+
+        <!-- ─── WHICH GUIDE ─── -->
+        <section id="which-guide">
+            <h2>Which Guide Do I Need?</h2>
+            <p>There are <strong>two</strong> multi-agency architecture guides. Choose based on your data-sharing posture:</p>
+            <div class="guide-selector">
+                <span class="current">&#9654; You are here<br><strong>Default-Priority (Open)</strong><br><span style="font-size:0.82em;font-weight:400;">Agencies see their own data by default; cross-agency visibility is acceptable</span></span>
+                <a class="other" href="../../artifacts/pdfs/Copilot_Multi_Agency_Isolation_Architecture.pdf">Go to<br><strong>Isolation Architecture</strong><br><span style="font-size:0.82em;">Agency A <em>cannot</em> see Agency B&rsquo;s data (regulatory/sovereign requirement)</span></a>
+            </div>
+            <table>
+                <thead>
+                    <tr><th style="width:30%">Dimension</th><th style="width:35%">This Guide (Default-Priority)</th><th style="width:35%">Isolation Architecture</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Core posture</strong></td><td>&#x1F513; Open &mdash; agencies default to their own data but <em>may</em> see aggregate tenant data</td><td>&#x1F512; Locked &mdash; hard data isolation; Agency A <em>cannot</em> see Agency B&rsquo;s data</td></tr>
+                    <tr><td><strong>VFAM features</strong></td><td>AutoCxO, Delegation, Agent Dashboard &mdash; all <strong>enabled</strong></td><td>AutoCxO, Delegation, Agent Dashboard &mdash; all <strong>disabled</strong> for agency users</td></tr>
+                    <tr><td><strong>Copilot Dashboard</strong></td><td>Available to agency leaders (scoped to &ldquo;Your group&rdquo; by default)</td><td>Restricted to Central IT only</td></tr>
+                    <tr><td><strong>Partitions</strong></td><td>Optional &mdash; for deeper analyst-level analytics</td><td>Required &mdash; sole mechanism for agency-scoped reporting</td></tr>
+                    <tr><td><strong>Complexity &amp; time</strong></td><td>Low &mdash; hours to configure</td><td>High &mdash; 1&ndash;3 days, PowerShell, CSV, strict governance</td></tr>
+                    <tr><td><strong>Typical customer</strong></td><td>Holding companies, universities, federated departments, conglomerates</td><td>Government shared tenants, sovereign agencies, regulatory-driven</td></tr>
+                </tbody>
+            </table>
+            <div class="highlight-box" style="border-left:4px solid var(--success-color);">
+                <strong>Decision shortcut:</strong> If any agency has stated &ldquo;we must not see other agencies&rsquo; data&rdquo; as a compliance or regulatory requirement, use the <a href="../../artifacts/pdfs/Copilot_Multi_Agency_Isolation_Architecture.pdf">Isolation Architecture</a> guide. If the requirement is &ldquo;we want to see <em>our</em> data first and by default,&rdquo; you are in the right place.
+            </div>
+        </section>
+
+        <!-- ─── TL;DR ─── -->
+        <div class="highlight-box" style="border-left:4px solid #0078d4; margin-bottom:20px;">
+            <strong>TL;DR &mdash; Agency-Default Views in Under a Day</strong>
+            <p style="margin:8px 0 4px;font-size:0.92em;">Leverage native Copilot Dashboard scoping and delegation so each agency leader sees their own data by default &mdash; no lockdowns, no partitions required.</p>
+            <ol style="margin:8px 0 0 20px;">
+                <li><strong>Verify manager hierarchy</strong> &mdash; ensure each agency CEO is the top-level manager for their agency in Entra ID (<a href="#hierarchy-setup">Section 4.1</a>)</li>
+                <li><strong>Enable AutoCxO &amp; Delegation</strong> &mdash; agency CEOs auto-identified, then delegate down to VPs (<a href="#runbook">Phase 1</a>)</li>
+                <li><strong>Enrich org data</strong> (optional) &mdash; CSV or Entra attributes for department/location filtering within each agency view (<a href="#enrich-data">Section 4.2</a>)</li>
+                <li><strong>Configure Publish Reports</strong> &mdash; enable manager settings so filtered reports reach agency leaders automatically (<a href="#runbook">Phase 3</a>)</li>
+                <li><strong>Create partitions</strong> (optional) &mdash; for analysts who need focused query access within a single agency (<a href="#runbook">Phase 4</a>)</li>
+            </ol>
+            <p style="margin:8px 0 0;font-size:0.88em;color:#666;">Time estimate: 2&ndash;4 hours for core setup (Phases 0&ndash;2). Add half a day if using partitions or CSV enrichment.</p>
+        </div>
+
+        <div class="highlight-box" style="margin-bottom:20px;">
+            <strong>Prerequisites &amp; Licensing</strong>
+            <table style="font-size:0.9em;margin:8px 0 8px;">
+                <tr><th style="width:40%">Requirement</th><th>Details</th></tr>
+                <tr><td>50+ assigned Copilot licences (or combined Copilot + Viva Insights = 50)</td><td>Required for Copilot Dashboard, Analytics Reports, and advanced analytics features</td></tr>
+                <tr><td>Insights Admin + AI Admin roles assigned</td><td>Assign via M365 Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Add-on Plan, or Role assignments &rarr; search role name</td></tr>
+                <tr><td>Clean manager hierarchy per agency</td><td>Each agency CEO must be the top-level manager for their agency employees in Entra ID</td></tr>
+            </table>
+        </div>
+
+        <!-- ─── 1. EXECUTIVE SUMMARY ─── -->
+        <section id="exec-summary">
+            <h2>1. Executive Summary</h2>
+            <p>This document provides a solution architecture for deploying Microsoft Copilot Dashboard and Copilot Analytics across a <strong>single Microsoft 365 tenant</strong> that hosts <strong>multiple agencies</strong>, where each agency wants to see its own Copilot adoption and impact data <strong>by default</strong>, but does not require hard data isolation between agencies.</p>
+
+            <div class="highlight-box" style="border-left:4px solid var(--success-color);">
+                <strong>Key Difference from the Isolation Architecture:</strong><br>
+                The <a href="../../artifacts/pdfs/Copilot_Multi_Agency_Isolation_Architecture.pdf">Isolation Architecture</a> disables native dashboard features (AutoCxO, Delegation, Agent Dashboard) to prevent cross-agency visibility. This guide <strong>embraces</strong> those features &mdash; they naturally scope data to the viewer&rsquo;s management hierarchy, which is exactly the &ldquo;agency-default&rdquo; experience.
+            </div>
+
+            <div class="highlight-box">
+                <strong>Recommended Approach: Native Scoping + Optional Partitions</strong>
+                <ol>
+                    <li><strong>Copilot Dashboard with &ldquo;Your group&rdquo; default</strong> &mdash; agency leaders auto-identified; see their own hierarchy&rsquo;s data by default.</li>
+                    <li><strong>Dashboard Delegation</strong> &mdash; CEOs delegate down to VPs and directors for cascading agency-scoped views.</li>
+                    <li><strong>Publish Reports</strong> &mdash; filtered by manager hierarchy for automatic agency-scoped delivery.</li>
+                    <li><strong>Partitions (optional)</strong> &mdash; for analyst-level deep dives scoped to a single agency; analysts may access multiple partitions if collaboration requires it.</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ─── 2. BUSINESS CONTEXT ─── -->
+        <section id="business-context">
+            <h2>2. Business Context &amp; Requirements</h2>
+
+            <h3>2.1 Organizational Structure</h3>
+            <div class="diagram-container">
+&#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+&#x2502;           Single M365 Tenant                &#x2502;
+&#x2502;                                             &#x2502;
+&#x2502;  &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510; &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510; &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;  &#x2502;
+&#x2502;  &#x2502; Agency A  &#x2502; &#x2502; Agency B  &#x2502; &#x2502; Agency C  &#x2502;  &#x2502;
+&#x2502;  &#x2502;           &#x2502; &#x2502;           &#x2502; &#x2502;           &#x2502;  &#x2502;
+&#x2502;  &#x2502; CEO-A     &#x2502; &#x2502; CEO-B     &#x2502; &#x2502; CEO-C     &#x2502;  &#x2502;
+&#x2502;  &#x2502;  &#x251C;&#x2500;VP1    &#x2502; &#x2502;  &#x251C;&#x2500;VP1    &#x2502; &#x2502;  &#x251C;&#x2500;VP1    &#x2502;  &#x2502;
+&#x2502;  &#x2502;  &#x251C;&#x2500;VP2    &#x2502; &#x2502;  &#x251C;&#x2500;VP2    &#x2502; &#x2502;  &#x251C;&#x2500;VP2    &#x2502;  &#x2502;
+&#x2502;  &#x2502;  &#x2514;&#x2500;...    &#x2502; &#x2502;  &#x2514;&#x2500;...    &#x2502; &#x2502;  &#x2514;&#x2500;...    &#x2502;  &#x2502;
+&#x2502;  &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518; &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518; &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;  &#x2502;
+&#x2502;                                             &#x2502;
+&#x2502;         Central IT / Shared Services        &#x2502;
+&#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;
+            </div>
+
+            <h3>2.2 Functional Requirements</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Requirement</th>
+                        <th>Priority</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>FR-01</td><td>Agency leaders see their own agency&rsquo;s Copilot data <strong>by default</strong> when opening the dashboard</td><td><span class="badge badge-p0">P0 &mdash; Must Have</span></td></tr>
+                    <tr><td>FR-02</td><td>Agency leaders can delegate dashboard views to their direct reports</td><td><span class="badge badge-p0">P0 &mdash; Must Have</span></td></tr>
+                    <tr><td>FR-03</td><td>Each agency CEO gets adoption, impact, and sentiment metrics for their agency</td><td><span class="badge badge-p1">P1 &mdash; Should Have</span></td></tr>
+                    <tr><td>FR-04</td><td>Central IT retains tenant-wide visibility for licence management and governance</td><td><span class="badge badge-p1">P1 &mdash; Should Have</span></td></tr>
+                    <tr><td>FR-05</td><td>Agency-level analysts can run custom Copilot queries scoped to their agency</td><td><span class="badge badge-p2">P2 &mdash; Nice to Have</span></td></tr>
+                    <tr><td>FR-06</td><td>Cross-agency aggregate visibility (e.g., &ldquo;Your company&rdquo; toggle) is acceptable if available</td><td><span class="badge badge-p2">P2 &mdash; Acceptable</span></td></tr>
+                </tbody>
+            </table>
+
+            <div class="alert">
+                <strong>Key distinction from Isolation Architecture:</strong><br>
+                FR-06 is explicitly &ldquo;Acceptable.&rdquo; In the Isolation guide, the equivalent requirement (FR-02) is &ldquo;P0 &mdash; Must Have: Agency A leaders CANNOT see Agency B/C aggregate data.&rdquo; This fundamental difference drives the entire architecture.
+            </div>
+        </section>
+
+        <!-- ─── 3. OPTIONS ASSESSMENT ─── -->
+        <section id="options-assessment">
+            <h2>3. Solution Options Assessment</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Option</th>
+                        <th>Description</th>
+                        <th>FR-01 (Default View)</th>
+                        <th>FR-02 (Delegation)</th>
+                        <th>Verdict</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background-color: #f0fdf4;">
+                        <td><strong>1. Dashboard + AutoCxO + Delegation</strong></td>
+                        <td>Enable native features. CEOs auto-get &ldquo;Your group&rdquo; as their default scope.</td>
+                        <td class="pass">&#x2705; Pass</td>
+                        <td class="pass">&#x2705; Pass</td>
+                        <td><strong>RECOMMENDED for most scenarios.</strong> Zero friction, zero lockdown.</td>
+                    </tr>
+                    <tr style="background-color: #f0fdf4; border-left: 4px solid var(--success-color);">
+                        <td><strong>2. Option 1 + Partitions for Analysts</strong></td>
+                        <td>Add partitions for analyst-level scoped queries alongside native dashboard.</td>
+                        <td class="pass">&#x2705; Pass</td>
+                        <td class="pass">&#x2705; Pass</td>
+                        <td><strong>RECOMMENDED ARCHITECTURE.</strong> Best of both worlds.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3. Full Isolation (Partitions + Lockdown)</strong></td>
+                        <td>Disable all native features, partition-only reporting.</td>
+                        <td class="pass">&#x2705; Pass</td>
+                        <td class="fail">&#x274C; Overkill</td>
+                        <td><strong>NOT REQUIRED.</strong> Over-engineers when isolation isn&rsquo;t needed. See <a href="../../artifacts/pdfs/Copilot_Multi_Agency_Isolation_Architecture.pdf">Isolation guide</a> if needed.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- ─── 4. RECOMMENDED ARCHITECTURE ─── -->
+        <section id="recommended-arch">
+            <h2>4. Recommended Architecture</h2>
+
+            <div class="diagram-container" style="color: #98c379;">
+&#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+&#x2502;                      Single M365 Tenant                          &#x2502;
+&#x2502;                                                                  &#x2502;
+&#x2502;  &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;    &#x2502;
+&#x2502;  &#x2502;       Copilot Dashboard (Native Features Enabled)           &#x2502;    &#x2502;
+&#x2502;  &#x2502;                                                              &#x2502;    &#x2502;
+&#x2502;  &#x2502;  AutoCxO: ON     Delegation: ON     Agent Dashboard: ON     &#x2502;    &#x2502;
+&#x2502;  &#x2502;                                                              &#x2502;    &#x2502;
+&#x2502;  &#x2502;  &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;  &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;  &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;  &#x2502;    &#x2502;
+&#x2502;  &#x2502;  &#x2502;   CEO-A        &#x2502;  &#x2502;   CEO-B        &#x2502;  &#x2502;  Central IT &#x2502;  &#x2502;    &#x2502;
+&#x2502;  &#x2502;  &#x2502;   Scope:       &#x2502;  &#x2502;   Scope:       &#x2502;  &#x2502;  Scope:     &#x2502;  &#x2502;    &#x2502;
+&#x2502;  &#x2502;  &#x2502;   "Your group" &#x2502;  &#x2502;   "Your group" &#x2502;  &#x2502;  "Your co." &#x2502;  &#x2502;    &#x2502;
+&#x2502;  &#x2502;  &#x2502;   = Agency A   &#x2502;  &#x2502;   = Agency B   &#x2502;  &#x2502;  = All      &#x2502;  &#x2502;    &#x2502;
+&#x2502;  &#x2502;  &#x2502;       &#x2502;        &#x2502;  &#x2502;       &#x2502;        &#x2502;  &#x2502;              &#x2502;  &#x2502;    &#x2502;
+&#x2502;  &#x2502;  &#x2502;   Delegates:   &#x2502;  &#x2502;   Delegates:   &#x2502;  &#x2502;              &#x2502;  &#x2502;    &#x2502;
+&#x2502;  &#x2502;  &#x2502;   VP1-A, VP2-A &#x2502;  &#x2502;   VP1-B, VP2-B &#x2502;  &#x2502;              &#x2502;  &#x2502;    &#x2502;
+&#x2502;  &#x2502;  &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;  &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;  &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;  &#x2502;    &#x2502;
+&#x2502;  &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;    &#x2502;
+&#x2502;                                                                  &#x2502;
+&#x2502;  &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;    &#x2502;
+&#x2502;  &#x2502;    Viva Insights Advanced Analytics (Optional Partitions)    &#x2502;    &#x2502;
+&#x2502;  &#x2502;                                                              &#x2502;    &#x2502;
+&#x2502;  &#x2502;  &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;  &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;  &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;    &#x2502;    &#x2502;
+&#x2502;  &#x2502;  &#x2502; Partition:   &#x2502;  &#x2502; Partition:   &#x2502;  &#x2502; Global       &#x2502;    &#x2502;    &#x2502;
+&#x2502;  &#x2502;  &#x2502; Agency A     &#x2502;  &#x2502; Agency B     &#x2502;  &#x2502; Partition    &#x2502;    &#x2502;    &#x2502;
+&#x2502;  &#x2502;  &#x2502;              &#x2502;  &#x2502;              &#x2502;  &#x2502;              &#x2502;    &#x2502;    &#x2502;
+&#x2502;  &#x2502;  &#x2502; Analyst:     &#x2502;  &#x2502; Analyst:     &#x2502;  &#x2502; Analyst:     &#x2502;    &#x2502;    &#x2502;
+&#x2502;  &#x2502;  &#x2502; analyst-a    &#x2502;  &#x2502; analyst-b    &#x2502;  &#x2502; central-it   &#x2502;    &#x2502;    &#x2502;
+&#x2502;  &#x2502;  &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;  &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;  &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;    &#x2502;    &#x2502;
+&#x2502;  &#x2502;  Note: Analysts MAY access multiple partitions if needed     &#x2502;    &#x2502;
+&#x2502;  &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;    &#x2502;
+&#x2502;                                                                  &#x2502;
+&#x2502;  &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;    &#x2502;
+&#x2502;  &#x2502;           Publish Reports (Manager-Filtered)                &#x2502;    &#x2502;
+&#x2502;  &#x2502;  CEO-A sees Agency A data | CEO-B sees Agency B data        &#x2502;    &#x2502;
+&#x2502;  &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;    &#x2502;
+&#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;
+            </div>
+
+            <h3>How &ldquo;Your Group&rdquo; Scoping Works</h3>
+            <p>The Copilot Dashboard identifies senior leaders using the Entra ID manager hierarchy (<a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard#how-automatic-access-to-the-copilot-dashboard-is-determined">Auto CxO Identification</a>). Leaders automatically see two scopes:</p>
+            <table>
+                <thead>
+                    <tr><th>Scope</th><th>What It Shows</th><th>Default?</th></tr>
+                </thead>
+                <tbody>
+                    <tr style="background-color:#f0fdf4;"><td><strong>&ldquo;Your group&rdquo;</strong></td><td>Copilot data for all employees in the leader&rsquo;s management chain</td><td><strong>Yes</strong> &mdash; lands on this scope by default when opening the dashboard</td></tr>
+                    <tr><td>&ldquo;Your company&rdquo;</td><td>Tenant-wide Copilot data across all agencies</td><td>No &mdash; available via toggle, but not the default view</td></tr>
+                </tbody>
+            </table>
+            <p>When each agency CEO is the top of their hierarchy, <strong>&ldquo;Your group&rdquo; = their entire agency</strong>. The dashboard opens to this view by default, immediately satisfying the &ldquo;see my agency data first&rdquo; requirement without any lockdown.</p>
+
+            <div class="highlight-box">
+                <strong>What about &ldquo;Your company&rdquo;?</strong><br>
+                Agency leaders <em>can</em> toggle to &ldquo;Your company&rdquo; and see aggregate data across all agencies. In this architecture, that is explicitly acceptable (FR-06). If it is not acceptable, use the <a href="../../artifacts/pdfs/Copilot_Multi_Agency_Isolation_Architecture.pdf">Isolation Architecture</a> instead.
+            </div>
+        </section>
+
+        <!-- ─── 4.1 HIERARCHY ─── -->
+        <section id="hierarchy-setup">
+            <h2>4.1 Manager Hierarchy Setup</h2>
+            <p>The entire default-priority architecture depends on a clean manager hierarchy in Entra ID. Each agency must form a self-contained tree.</p>
+
+            <h3>Hierarchy Requirements</h3>
+            <table>
+                <thead>
+                    <tr><th>Requirement</th><th>Why It Matters</th><th>How to Verify</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Each agency CEO has <strong>no manager set</strong> in Entra, or reports to a tenant-level admin outside all agencies</td>
+                        <td>If CEO-A reports to CEO-B, then CEO-B&rsquo;s &ldquo;Your group&rdquo; will include Agency A employees</td>
+                        <td>Entra portal &rarr; Users &rarr; select CEO &rarr; Properties &rarr; Manager field</td>
+                    </tr>
+                    <tr>
+                        <td>All agency employees have a <strong>manager chain that terminates at their agency CEO</strong></td>
+                        <td>Broken chains (null ManagerID mid-tree) cause employees to not appear in &ldquo;Your group&rdquo;</td>
+                        <td>Run the PowerShell audit in <a href="#appendix-a">Appendix A</a></td>
+                    </tr>
+                    <tr>
+                        <td>Shared-services staff report through a clear chain</td>
+                        <td>If shared services staff report to an agency CEO, they appear in that agency&rsquo;s &ldquo;Your group.&rdquo; If they report to a separate Shared Services head, they appear only in the company view.</td>
+                        <td>Decide on shared-services reporting line before configuration</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="diagram-container" style="color:#98c379;font-size:0.9em;">
+CORRECT:                           INCORRECT:
+                                   
+&#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;   &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;              &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+&#x2502; CEO-A  &#x2502;   &#x2502; CEO-B  &#x2502;              &#x2502; CEO-A  &#x2502;
+&#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2518;   &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2518;              &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2518;
+     &#x2502;            &#x2502;                       &#x2502;
+  &#x250C;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2510;     &#x250C;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2510;              &#x250C;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2510;
+  &#x2502;VP1-A&#x2502;     &#x2502;VP1-B&#x2502;              &#x2502;VP1-A&#x2502;
+  &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;     &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;              &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;     &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+                                                      &#x2502; CEO-B  &#x2502;
+Two independent trees =            &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2518;
+"Your group" = Agency only              &#x2502;
+                                   &#x250C;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2510;
+                                   &#x2502;VP1-B&#x2502;
+                                   &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;
+
+                                   CEO-B reports to CEO-A =
+                                   CEO-A's "Your group" includes
+                                   ALL of Agency B. Not desired.
+            </div>
+
+            <div class="alert">
+                <strong>Common Pitfall:</strong> In some shared tenants, a &ldquo;super admin&rdquo; or &ldquo;Secretary General&rdquo; is set as the manager of all agency CEOs. This creates a single tree where that person&rsquo;s &ldquo;Your group&rdquo; covers the entire tenant. <strong>Solution:</strong> Leave the <code>Manager</code> field blank for all agency CEOs, or have them all report to a shared-services administrative account that is not a real user (and therefore will not access the dashboard).
+            </div>
+        </section>
+
+        <!-- ─── 4.2 ENRICH DATA ─── -->
+        <section id="enrich-data">
+            <h2>4.2 Enrich with Organizational Data (Optional)</h2>
+            <p>Org data enrichment adds <strong>filter dimensions</strong> within the dashboard and analytics views. This is not required for agency-default scoping (the hierarchy handles that), but enhances the analytics experience.</p>
+
+            <table>
+                <thead>
+                    <tr><th style="width:30%">Enrichment Method</th><th style="width:35%">What It Adds</th><th style="width:35%">When to Use</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Entra ID Attributes</strong> (zero effort)</td>
+                        <td><code>Organization</code> (Department), <code>ManagerId</code>, <code>Domain</code>, <code>TimeZone</code></td>
+                        <td>Always enable. Navigate to Viva Insights &rarr; Organizational data &rarr; Configure Entra connection &rarr; enable checkboxes.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CSV Org Data Upload</strong></td>
+                        <td>Custom attributes: <code>Agency</code>, <code>FunctionType</code>, <code>Location</code>, <code>LevelDesignation</code>, <code>CostCentre</code>, etc.</td>
+                        <td>When you need filters beyond Entra defaults (e.g., filter by job function within an agency dashboard view).</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="highlight-box" style="border-left:4px solid var(--success-color);">
+                <strong>Key difference from Isolation Architecture:</strong> In the isolation guide, org data (CSV or Domain) is the <strong>mechanism for partition filtering</strong> &mdash; it determines which employees appear in each partition. Here, org data is purely for <strong>enriching analytics</strong> &mdash; the dashboard scoping is already handled by the manager hierarchy.
+            </div>
+        </section>
+
+        <!-- ─── 5. RUNBOOK ─── -->
+        <section id="runbook">
+            <h2>5. Implementation Runbook</h2>
+
+            <div class="step-card">
+                <h4><span class="step-number">0</span> Phase 0: Pre-Flight Verification</h4>
+                <p>Audit the current state before configuring anything.</p>
+                <ul>
+                    <li><strong>Verify manager hierarchy:</strong> Confirm each agency CEO has no cross-agency manager relationship. Use Entra portal &rarr; Users &rarr; select each CEO &rarr; check Manager field. Run the PowerShell audit in <a href="#appendix-a">Appendix A</a> for bulk verification.</li>
+                    <li><strong>Confirm licence counts:</strong> Verify 50+ Copilot licences are assigned. M365 Admin Center &rarr; Billing &rarr; Licences &rarr; Microsoft 365 Copilot.</li>
+                    <li><strong>Identify agency leaders:</strong> List each agency&rsquo;s CEO and their direct reports (VPs). These will be the primary dashboard consumers and delegation targets.</li>
+                    <li><strong>Review current VFAM state:</strong> Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Turn Advanced Insights on or off. Document which features are currently enabled or disabled.</li>
+                    <li><strong>Check existing dashboard access:</strong> Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Manage user access for Copilot Dashboard. Note who currently has access.</li>
+                </ul>
+            </div>
+
+            <div class="step-card">
+                <h4><span class="step-number">1</span> Phase 1: Enable Native Features</h4>
+                <p>Ensure all dashboard access features are enabled. This is the opposite of the Isolation Architecture&rsquo;s &ldquo;lockdown&rdquo; phase.</p>
+
+                <p><strong>1.1 &mdash; Enable Auto CxO Identification</strong></p>
+                <p>Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Turn Advanced Insights on or off &rarr; <strong>Auto CxO Identification</strong> &rarr; ensure set to <strong>On</strong> for <strong>Everyone</strong> (or verify no disable policy exists).</p>
+                <p><em>This automatically identifies agency CEOs (and other senior leaders) based on the Entra ID hierarchy and grants them Copilot Dashboard access with the &ldquo;Your group&rdquo; scope.</em></p>
+
+                <p><strong>1.2 &mdash; Enable Dashboard Delegation</strong></p>
+                <p>Same page &rarr; <strong>Copilot Dashboard Delegation</strong> &rarr; ensure set to <strong>On</strong> for <strong>Everyone</strong>.</p>
+                <p><em>This allows agency CEOs to delegate their dashboard view to their direct reports (VPs, directors). Delegates see the same scope as their delegator &mdash; the agency&rsquo;s data.</em></p>
+
+                <p><strong>1.3 &mdash; Enable Agent Dashboard</strong></p>
+                <p>Same page &rarr; <strong>Agent Dashboard</strong> &rarr; ensure set to <strong>On</strong> for <strong>Everyone</strong>.</p>
+
+                <p><strong>1.4 &mdash; Metrics Export (optional)</strong></p>
+                <p>If you want agency leaders to export Copilot metrics, leave <code>CopilotMetricsReport</code> enabled. If you want a slightly more controlled experience, disable it and direct users to the dashboard and published reports instead.</p>
+
+                <div class="highlight-box">
+                    <strong>After Phase 1 &mdash; Verification:</strong>
+                    <ol style="margin:4px 0 0 20px;">
+                        <li>Wait 1&ndash;2 hours for AutoCxO to process.</li>
+                        <li>Check <strong>Manage user access for Copilot Dashboard</strong> &mdash; agency CEOs should appear in the list as auto-identified.</li>
+                        <li>Have an agency CEO navigate to <code>insights.cloud.microsoft</code> and confirm they see the Copilot Dashboard with &ldquo;Your group&rdquo; as the default scope.</li>
+                        <li>Confirm the &ldquo;Your group&rdquo; employee count matches the agency&rsquo;s expected headcount.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <h4><span class="step-number">2</span> Phase 2: Configure Delegation &amp; Manager Settings</h4>
+                <p>Set up the delegation chain so agency leaders can share their dashboard view with their teams.</p>
+
+                <p><strong>2.1 &mdash; Agency CEO Delegates to VPs</strong></p>
+                <p>Each agency CEO should:</p>
+                <ol>
+                    <li>Navigate to <code>insights.cloud.microsoft</code> &rarr; Copilot Dashboard.</li>
+                    <li>Select the <strong>Share</strong> or <strong>Delegate</strong> option (top-right corner of the dashboard).</li>
+                    <li>Add their direct reports (VPs, directors) as delegates.</li>
+                    <li>Delegates will receive access and see the same agency-scoped view (&ldquo;Your group&rdquo; inheriting the CEO&rsquo;s scope).</li>
+                </ol>
+
+                <p><strong>2.2 &mdash; Enable Manager Settings for Publish Reports</strong></p>
+                <p>Navigate to <code>insights.cloud.microsoft</code> &rarr; <strong>Admin</strong> &rarr; <strong>Manager settings</strong>.</p>
+                <ul>
+                    <li>Enable managers to receive published reports.</li>
+                    <li>Set the minimum team size threshold (this is the same tenant-wide privacy setting).</li>
+                    <li>Agency CEOs with team sizes above the threshold will be eligible to receive published reports filtered to their hierarchy.</li>
+                </ul>
+
+                <p><strong>2.3 &mdash; Enrich Organizational Data (Optional)</strong></p>
+                <ul>
+                    <li>Navigate to Viva Insights &rarr; Organizational data &rarr; <strong>Configure Entra connection</strong> &rarr; enable <code>ManagerId</code> and <code>Organization</code> checkboxes &rarr; Save.</li>
+                    <li>If you need custom attributes: prepare and upload a CSV per the format in <a href="#appendix-b">Appendix B</a>. This enriches dashboard filters but does not change scoping.</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <strong>After Phase 2 &mdash; Verification:</strong>
+                    <ol style="margin:4px 0 0 20px;">
+                        <li>Have a VP who was delegated access navigate to the dashboard. Confirm they see their agency&rsquo;s data.</li>
+                        <li>If org data was uploaded, verify filters (Department, Location, etc.) appear on the dashboard.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <h4><span class="step-number">3</span> Phase 3: Publish Reports</h4>
+                <p>Use Viva Insights Publish Reports to deliver curated analytics to agency leaders automatically.</p>
+
+                <p><strong>3.1 &mdash; Run Copilot PBI Template Queries</strong></p>
+                <ul>
+                    <li>Insights analysts (Central IT or agency-level) navigate to <code>insights.cloud.microsoft</code> &rarr; Create analysis.</li>
+                    <li>Select a Copilot Power BI template (Copilot Adoption, Impact Explorer, Business Impact, etc.).</li>
+                    <li>Run the query. If partitions are enabled, run within the appropriate partition. If not, run against the global population.</li>
+                </ul>
+
+                <p><strong>3.2 &mdash; Publish with &ldquo;Filter by Manager Hierarchy&rdquo;</strong></p>
+                <ul>
+                    <li>After the query completes, select <strong>Publish report</strong>.</li>
+                    <li>Choose <strong>&ldquo;Filter report by manager hierarchy&rdquo;</strong>.</li>
+                    <li>Each enabled manager (CEO, VP) will receive a version of the report filtered to their team.</li>
+                    <li>Set an expiry date (up to 365 days) and republish monthly to keep data current.</li>
+                </ul>
+
+                <div class="highlight-box" style="border-left:4px solid var(--success-color);">
+                    <strong>Why this works in Default-Priority (but not in Isolation):</strong><br>
+                    In the Isolation Architecture, enabling a manager grants them automatic Copilot Dashboard access, which shows &ldquo;Your company&rdquo; data &mdash; a problem when cross-agency visibility must be blocked. In this architecture, &ldquo;Your company&rdquo; visibility is acceptable (FR-06), so Publish Reports with manager filtering is a simple, effective delivery mechanism.
+                </div>
+            </div>
+
+            <div class="step-card">
+                <h4><span class="step-number">4</span> Phase 4: Partitions for Analyst Deep Dives (Optional)</h4>
+                <p>If your organisation has designated analysts per agency who need to run custom queries, partitions provide focused workspaces. This phase is <strong>optional</strong> &mdash; skip it if dashboard views and published reports are sufficient.</p>
+
+                <div class="alert">
+                    <strong>Before Enabling Partitions:</strong><br>
+                    (a) Understand that enabling partitions is <strong>irreversible without contacting Microsoft support</strong> and will delete all partition configurations if disabled.<br>
+                    (b) <strong>Export all existing query results</strong> before enabling partitions.<br>
+                    (c) Partitions are only needed when analysts require scoped custom queries. Dashboard and published reports already provide agency-scoped views via the hierarchy.
+                </div>
+
+                <ul>
+                    <li>Navigate to <code>insights.cloud.microsoft</code> &rarr; Admin &rarr; Privacy settings &rarr; Partitions &rarr; Enable Partitions.</li>
+                    <li>Create a partition per agency (e.g., &ldquo;Agency A&rdquo;), filtered by <code>Agency</code> attribute (CSV) or <code>Domain</code> (Entra).</li>
+                    <li>Assign agency analysts to their primary partition.</li>
+                    <li><strong>Key difference from Isolation Architecture:</strong> Analysts <em>may</em> be assigned to multiple partitions if cross-agency analysis is needed. There is no rule preventing an analyst from seeing multiple agencies&rsquo; data.</li>
+                    <li>Assign Central IT analysts to the Global Partition for tenant-wide queries.</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <strong>After Phase 4 &mdash; Verification:</strong>
+                    <ol style="margin:4px 0 0 20px;">
+                        <li>Have an agency analyst sign in and confirm they see their agency&rsquo;s partition in the partition switcher.</li>
+                        <li>Run a test person query and verify the employee count matches the expected agency headcount.</li>
+                        <li>If a cross-agency analyst exists, confirm they can switch between partitions they are assigned to.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── 6. ANALYTICS SURFACES ─── -->
+        <section id="analytics-surfaces">
+            <h2>6. Analytics Surfaces per Role</h2>
+            <p>Unlike the Isolation Architecture (where many surfaces are disabled for agency users), the Default-Priority approach keeps all analytics surfaces available. The scoping comes from the hierarchy, not from feature lockdowns.</p>
+
+            <table>
+                <thead>
+                    <tr><th>Analytics Surface</th><th>Agency CEO / VP</th><th>Agency Analyst (with partition)</th><th>Central IT</th></tr>
+                </thead>
+                <tbody>
+                    <tr style="background-color:#f0fdf4;">
+                        <td><strong>Copilot Dashboard &mdash; &ldquo;Your group&rdquo;</strong></td>
+                        <td>&#x2705; Default view = their agency</td>
+                        <td>&mdash;</td>
+                        <td>&#x2705; Default view = their reports</td>
+                    </tr>
+                    <tr>
+                        <td>Copilot Dashboard &mdash; &ldquo;Your company&rdquo;</td>
+                        <td>&#x2705; Available via toggle (acceptable)</td>
+                        <td>&mdash;</td>
+                        <td>&#x2705; Full tenant view</td>
+                    </tr>
+                    <tr style="background-color:#f0fdf4;">
+                        <td><strong>Copilot Analytics Reports (OOB)</strong></td>
+                        <td>&#x2705; Via Dashboard access</td>
+                        <td>&#x2705; Via global or partition</td>
+                        <td>&#x2705; Full access</td>
+                    </tr>
+                    <tr>
+                        <td>Agent Dashboard</td>
+                        <td>&#x2705; Available (&ldquo;Your company&rdquo; scope only)</td>
+                        <td>&mdash;</td>
+                        <td>&#x2705; Full access</td>
+                    </tr>
+                    <tr style="background-color:#f0fdf4;">
+                        <td><strong>Publish Reports (manager-filtered)</strong></td>
+                        <td>&#x2705; Filtered to their hierarchy</td>
+                        <td>&mdash;</td>
+                        <td>&#x2705; Can publish</td>
+                    </tr>
+                    <tr>
+                        <td>Custom Person Queries</td>
+                        <td>&mdash;</td>
+                        <td>&#x2705; Scoped to assigned partition(s)</td>
+                        <td>&#x2705; Global or any partition</td>
+                    </tr>
+                    <tr style="background-color:#f0fdf4;">
+                        <td><strong>Power BI Templates</strong></td>
+                        <td>&mdash;</td>
+                        <td>&#x2705; Scoped to assigned partition(s)</td>
+                        <td>&#x2705; Global or any partition</td>
+                    </tr>
+                    <tr>
+                        <td>Dashboard Delegation</td>
+                        <td>&#x2705; Can delegate to direct reports</td>
+                        <td>&mdash;</td>
+                        <td>&#x2705; Can delegate</td>
+                    </tr>
+                    <tr>
+                        <td>Copilot Metrics Export</td>
+                        <td>&#x2705; (if enabled)</td>
+                        <td>&mdash;</td>
+                        <td>&#x2705;</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="highlight-box">
+                <strong>Compare with Isolation Architecture:</strong> In the isolation guide, surfaces marked &#x274C; for agency users include: Copilot Dashboard (all scopes), Analytics Reports (OOB), Agent Dashboard, Copilot Metrics Export, and Delegation. Here, <strong>all surfaces are available</strong> &mdash; the only scoping is the natural hierarchy-based default view.
+            </div>
+
+            <h3 id="roi-per-agency">6.1 ROI Analysis per Agency: Capabilities &amp; Gaps</h3>
+            <p>Agency leaders asking &ldquo;What is Copilot&rsquo;s ROI for <em>my</em> agency?&rdquo; will find that some metrics scope naturally to their hierarchy and some do not. Set expectations upfront using the matrix below.</p>
+
+            <h4>Which ROI Metrics Are Agency-Scoped?</h4>
+            <table>
+                <thead>
+                    <tr><th>ROI Metric</th><th>Scoped to &ldquo;Your group&rdquo; (Agency)?</th><th>Notes</th></tr>
+                </thead>
+                <tbody>
+                    <tr style="background-color:#f0fdf4;">
+                        <td><strong>Copilot Assisted Hours</strong></td>
+                        <td class="pass">&#x2705; Yes</td>
+                        <td>Impact page shows Assisted Hours for the leader&rsquo;s management hierarchy. Agency CEOs see their agency&rsquo;s total.</td>
+                    </tr>
+                    <tr style="background-color:#f0fdf4;">
+                        <td><strong>Copilot Assisted Value</strong></td>
+                        <td class="pass">&#x2705; Yes</td>
+                        <td>Calculated as Assisted Hours &times; Hourly Rate. Scoped to &ldquo;Your group.&rdquo; <strong>However</strong>, the hourly rate is a single tenant-wide setting (see limitation below).</td>
+                    </tr>
+                    <tr style="background-color:#f0fdf4;">
+                        <td><strong>Adoption metrics</strong> (active users, usage intensity, consistent usage)</td>
+                        <td class="pass">&#x2705; Yes</td>
+                        <td>Adoption page filters to &ldquo;Your group&rdquo; by default.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sentiment</strong> (Glint / Pulse / CSV survey)</td>
+                        <td class="fail">&#x274C; No &mdash; tenant-level only</td>
+                        <td>Sentiment page on the Copilot Dashboard shows tenant-wide data only. Not filterable by &ldquo;Your group.&rdquo; Agency leaders see all agencies&rsquo; survey responses.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Agent usage</strong> (Agent Dashboard)</td>
+                        <td class="fail">&#x274C; No &mdash; &ldquo;Your company&rdquo; only</td>
+                        <td>Agent Dashboard has no &ldquo;Your group&rdquo; scope. Agency leaders see tenant-wide agent adoption.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Licence cost data</strong></td>
+                        <td class="fail">&#x274C; Not in dashboard</td>
+                        <td>Licence costs are in M365 Admin Center / billing. Not connected to the Copilot Dashboard. See the <a href="../../artifacts/pdfs/Copilot_Lifecycle_Billing_Playbook.pdf">Lifecycle &amp; Billing Playbook</a> for cost-side data.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="alert">
+                <strong>Limitation: Single Tenant-Wide Hourly Rate</strong><br>
+                Copilot Assisted Value is calculated as <code>Assisted Hours &times; Hourly Rate</code>. The hourly rate is configured <strong>once</strong> at <code>insights.cloud.microsoft &rarr; Admin &rarr; Impact settings</code> and applies to <strong>all employees across all agencies</strong>. There is no way to set different rates per agency, department, or role.
+                <p style="margin:8px 0 4px;"><strong>Impact:</strong> If Agency A&rsquo;s average loaded labour rate is $140/hr and Agency B&rsquo;s is $65/hr, the Assisted Value figure shown to both CEOs uses the same rate &mdash; making one agency&rsquo;s ROI appear over- or under-stated.</p>
+                <p style="margin:4px 0 0;"><strong>Workaround:</strong> Use Power BI templates in partitions (<a href="#runbook">Phase 4</a>) to apply <strong>agency-specific hourly rates in the Power BI calculation layer</strong>. The raw Copilot Assisted Hours data flows into the PBI template; the analyst replaces the default rate with the agency&rsquo;s actual loaded labour rate in a DAX measure or parameter. This produces accurate per-agency Assisted Value figures outside the dashboard.</p>
+            </div>
+
+            <div class="alert">
+                <strong>Limitation: No Historical ROI Trending on the Dashboard</strong><br>
+                The Copilot Dashboard uses a <strong>28-day rolling window</strong> and provides <strong>no before/after comparison or historical trendline</strong>. Agency leaders who need to demonstrate ROI growth over quarters (e.g., &ldquo;Agency B&rsquo;s Copilot value grew from $20K/month in Q1 to $35K/month in Q3&rdquo;) cannot do this from the dashboard alone.
+                <p style="margin:8px 0 0;"><strong>Workaround &mdash; Recommended for ROI-focused agencies:</strong> Use Power BI templates within partitions (<a href="#runbook">Phase 4</a>). Run the Copilot Impact Explorer or Business Impact template <strong>monthly</strong>, each time capturing the month&rsquo;s metrics. Publish each refresh as a new dataset snapshot in the agency&rsquo;s Power BI workspace. Stack monthly snapshots in a summary report to build a quarter-over-quarter ROI trendline.</p>
+                <p style="margin:4px 0 0;"><strong>Implication:</strong> For agencies that need ROI trending, Phase 4 (partitions) is <strong>not optional</strong> &mdash; it becomes a required component of the architecture. Plan the partition and analyst setup accordingly.</p>
+            </div>
+
+            <div class="highlight-box" style="border-left:4px solid var(--success-color);">
+                <strong>Recommendation for ROI-Focused Multi-Agency Deployments</strong>
+                <ol style="margin:8px 0 0 20px;">
+                    <li><strong>Dashboard for real-time adoption &amp; current-month ROI:</strong> Agency CEOs use the Copilot Dashboard (&ldquo;Your group&rdquo;) for live adoption metrics and this month&rsquo;s Assisted Hours/Value.</li>
+                    <li><strong>Partitions + PBI for accurate, historical, agency-calibrated ROI:</strong> Treat Phase 4 as mandatory. Analysts run monthly PBI template queries within their agency partition, apply agency-specific hourly rates, and build cumulative ROI reports.</li>
+                    <li><strong>Billing Playbook for cost-side data:</strong> Combine the Assisted Value from PBI reports with licence cost data from the <a href="../../artifacts/pdfs/Copilot_Lifecycle_Billing_Playbook.pdf">Lifecycle &amp; Billing Playbook</a> to produce a net ROI figure per agency.</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ─── 7. ACCESS CONTROL ─── -->
+        <section id="access-control">
+            <h2>7. Access Control Matrix</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>Copilot Dashboard</th>
+                        <th>Default Scope</th>
+                        <th>Partition Access</th>
+                        <th>Can Delegate?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Global / Insights Admin</strong></td>
+                        <td>&#x2705; Full</td>
+                        <td>&ldquo;Your group&rdquo; or &ldquo;Your company&rdquo;</td>
+                        <td>All partitions + Global</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Agency CEO (auto-identified)</strong></td>
+                        <td>&#x2705; Auto-granted</td>
+                        <td><strong>&ldquo;Your group&rdquo; = Agency</strong></td>
+                        <td>N/A (dashboard user, not analyst)</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Agency VP (delegated by CEO)</strong></td>
+                        <td>&#x2705; Via delegation</td>
+                        <td>&ldquo;Your group&rdquo; = CEO&rsquo;s scope</td>
+                        <td>N/A</td>
+                        <td>Inherits delegator&rsquo;s capability</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Agency Analyst</strong></td>
+                        <td>&#x2705; If on global partition; &#x274C; if agency partition only</td>
+                        <td>&mdash;</td>
+                        <td>Assigned agency partition(s)</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Central IT Analyst</strong></td>
+                        <td>&#x2705; Via global partition</td>
+                        <td>&ldquo;Your company&rdquo;</td>
+                        <td>Global + any agency partitions as needed</td>
+                        <td>No</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="highlight-box" style="border-left:4px solid var(--success-color);">
+                <strong>Flexible partition access:</strong> Unlike the Isolation Architecture (where assigning an agency analyst to the global partition is a critical violation), the Default-Priority approach allows analysts to be assigned to multiple partitions, including the global partition, based on their role requirements. There is no isolation to break.
+            </div>
+        </section>
+
+        <!-- ─── 8. GOVERNANCE ─── -->
+        <section id="governance">
+            <h2>8. Governance &amp; Ongoing Operations</h2>
+
+            <h3>Ongoing Tasks</h3>
+            <table>
+                <thead>
+                    <tr><th>Cadence</th><th>Task</th><th>Owner</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Monthly</td><td>Refresh Copilot PBI template queries and republish reports</td><td>Insights Analyst</td></tr>
+                    <tr><td>Monthly (if CSV)</td><td>Upload updated org data CSV</td><td>Central IT</td></tr>
+                    <tr><td>Quarterly</td><td>Audit manager hierarchy &mdash; verify agency CEOs are still top-of-tree and new hires have correct manager chains</td><td>Central IT</td></tr>
+                    <tr><td>Quarterly</td><td>Review dashboard access list &mdash; confirm auto-identified leaders match expected agency leadership</td><td>AI Admin</td></tr>
+                    <tr><td>On change</td><td>When a new agency is added: verify CEO hierarchy, wait for AutoCxO identification, CEO delegates to VPs</td><td>Central IT</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Day 2 Operations</h3>
+            <table>
+                <thead>
+                    <tr><th>Scenario</th><th>Who</th><th>Action</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Employee transfers from Agency A to Agency B</td>
+                        <td>HR / Central IT</td>
+                        <td>Update the employee&rsquo;s manager in Entra ID to a manager within Agency B. The employee will automatically appear in CEO-B&rsquo;s &ldquo;Your group&rdquo; after the next Entra sync (~24 hours). If using CSV org data, update the <code>Agency</code> attribute in the next upload.</td>
+                    </tr>
+                    <tr>
+                        <td>New agency created</td>
+                        <td>Central IT</td>
+                        <td>Ensure the new CEO has no cross-agency manager. Wait for AutoCxO to identify them (1&ndash;2 hours). CEO delegates to their VPs. If using partitions, create a new partition. If using CSV, add the new agency to the next upload.</td>
+                    </tr>
+                    <tr>
+                        <td>New agency CEO appointed</td>
+                        <td>Central IT</td>
+                        <td>Update Entra ID: set the new CEO as manager of all direct reports previously under the old CEO. AutoCxO will identify the new CEO. The old CEO may need to be manually removed from the dashboard access list if they are no longer in a leadership role.</td>
+                    </tr>
+                    <tr>
+                        <td>VP not seeing dashboard</td>
+                        <td>Agency CEO</td>
+                        <td>Check if the CEO has delegated access to the VP. If not, CEO delegates via the dashboard. If delegated but not working, verify the VP&rsquo;s Copilot or Viva Insights licence.</td>
+                    </tr>
+                    <tr>
+                        <td>&ldquo;Your group&rdquo; count seems wrong</td>
+                        <td>Central IT</td>
+                        <td>Audit the Entra ID hierarchy. Common causes: (a) employees with null ManagerID, (b) cross-agency reporting lines, (c) new hires not yet synced. Run the PowerShell hierarchy report in <a href="#appendix-a">Appendix A</a>.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- ─── 9. RISK REGISTER ─── -->
+        <section id="risks">
+            <h2>9. Risk Register</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Risk</th>
+                        <th>Impact</th>
+                        <th>Mitigation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Manager hierarchy misconfigured &mdash; CEO-A&rsquo;s &ldquo;Your group&rdquo; includes Agency B employees</td>
+                        <td>Medium</td>
+                        <td>Quarterly hierarchy audit. Run PowerShell report to verify tree boundaries. Since cross-agency visibility is acceptable, impact is operational (confusing data) rather than a compliance breach.</td>
+                    </tr>
+                    <tr>
+                        <td>AutoCxO identifies unintended users as senior leaders</td>
+                        <td>Low</td>
+                        <td>Quarterly review of dashboard access list. Remove any incorrectly identified users. AutoCxO uses hierarchy depth, not job title &mdash; a shallow tree may identify mid-level managers.</td>
+                    </tr>
+                    <tr>
+                        <td>Agency leader toggles to &ldquo;Your company&rdquo; and sees data they find confusing (not sensitive, but unexpected)</td>
+                        <td>Low</td>
+                        <td>Include user guidance: &ldquo;Your group = your agency. Your company = entire tenant. Your default view is Your group.&rdquo; Set expectations during onboarding.</td>
+                    </tr>
+                    <tr>
+                        <td>Delegation chain extends too far &mdash; low-level managers get dashboard access</td>
+                        <td>Low</td>
+                        <td>Communicate delegation best practices: delegate only to direct reports. Monitor the dashboard access list quarterly.</td>
+                    </tr>
+                    <tr>
+                        <td>Org data CSV not maintained &mdash; custom filters become stale</td>
+                        <td>Low</td>
+                        <td>This affects filter accuracy, not scoping. Dashboard scope (hierarchy-based) is unaffected by CSV staleness. Set calendar reminders for monthly uploads.</td>
+                    </tr>
+                    <tr>
+                        <td>Shared-services staff appear in an agency CEO&rsquo;s &ldquo;Your group&rdquo;</td>
+                        <td>Low</td>
+                        <td>Decide upfront where shared services report. If they report to a separate Shared Services head, they appear only in &ldquo;Your company.&rdquo; Document the decision.</td>
+                    </tr>
+                    <tr>
+                        <td>Agency later requires hard isolation (regulatory change)</td>
+                        <td>Medium</td>
+                        <td>Migrate to the <a href="../../artifacts/pdfs/Copilot_Multi_Agency_Isolation_Architecture.pdf">Isolation Architecture</a>. The partition structure (if created in Phase 4) carries over. The main change is adding the Phase 1 lockdown (disable AutoCxO, Delegation, Agent Dashboard for agency users).</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- ─── 10. DISCOVERY ─── -->
+        <section id="discovery">
+            <h2>10. Discovery Questions for Customer</h2>
+            <ol>
+                <li><strong>Is cross-agency data visibility acceptable, or is hard isolation required?</strong> (If isolation is required, use the <a href="../../artifacts/pdfs/Copilot_Multi_Agency_Isolation_Architecture.pdf">Isolation Architecture</a> instead.)</li>
+                <li><strong>How is the Entra ID manager hierarchy structured?</strong> Does each agency CEO sit at the top of an independent tree, or is there a shared parent?</li>
+                <li><strong>How many agencies, and how many employees per agency?</strong> (Each agency needs enough employees to meet the minimum group size threshold for &ldquo;Your group&rdquo; to display data.)</li>
+                <li><strong>Do agency CEOs want to delegate dashboard access to their VPs and directors?</strong> (Determines whether to actively configure delegation in Phase 2.)</li>
+                <li><strong>Are there shared-services teams?</strong> Where should they appear &mdash; in an agency&rsquo;s &ldquo;Your group,&rdquo; or only in the &ldquo;Your company&rdquo; view?</li>
+                <li><strong>Do you need custom analytical filters (Department, Location, Job Function)?</strong> (Determines whether to enrich with CSV org data.)</li>
+                <li><strong>Will dedicated analysts per agency run custom queries?</strong> (Determines whether to enable partitions in Phase 4.)</li>
+                <li><strong>Is there a risk that the cross-agency data-sharing posture might change (e.g., future regulation)?</strong> (Plan for possible migration to the Isolation Architecture.)</li>
+                <li><strong>What is the minimum privacy threshold (minimum group size) acceptable to all agencies?</strong> (Tenant-wide setting &mdash; all agencies must agree.)</li>
+                <li><strong>Are Copilot agents deployed across agencies?</strong> With the Agent Dashboard enabled for everyone, all leaders see tenant-wide agent data. Confirm this is acceptable.</li>
+            </ol>
+        </section>
+
+        <!-- ─── APPENDIX A ─── -->
+        <section id="appendix-a">
+            <h2>Appendix A: PowerShell Reference</h2>
+
+            <h3>A.1 Verify VFAM Feature Status</h3>
+            <pre><code># Install required module
+Install-Module -Name <a href="https://learn.microsoft.com/powershell/exchange/exchange-online-powershell-v2">ExchangeOnlineManagement</a> -Force -AllowClobber
+Connect-ExchangeOnline -UserPrincipalName admin@tenant.com
+
+# Audit current VFAM policies (should show all features ON or no disable policies)
+Get-VivaModuleFeaturePolicy -ModuleId VivaInsights
+
+# Verify specific features are enabled
+Get-VivaModuleFeaturePolicy -ModuleId VivaInsights -FeatureId AutoCxoIdentification
+Get-VivaModuleFeaturePolicy -ModuleId VivaInsights -FeatureId CopilotDashboardDelegation
+Get-VivaModuleFeaturePolicy -ModuleId VivaInsights -FeatureId AgentDashboard</code></pre>
+
+            <h3>A.2 Audit Manager Hierarchy per Agency</h3>
+            <pre><code># Requires Microsoft Graph PowerShell SDK
+Install-Module Microsoft.Graph -Scope CurrentUser
+Connect-MgGraph -Scopes "User.Read.All"
+
+# Get all users and their managers — export to CSV for review
+Get-MgUser -All -Property Id,DisplayName,UserPrincipalName,Department,Manager `
+  -ExpandProperty Manager |
+  Select-Object DisplayName, UserPrincipalName, Department,
+    @{N='ManagerUPN';E={$_.Manager.AdditionalProperties.userPrincipalName}},
+    @{N='ManagerName';E={$_.Manager.AdditionalProperties.displayName}} |
+  Export-Csv -Path "HierarchyAudit.csv" -NoTypeInformation
+
+# Find users with no manager set (potential tree breaks)
+Get-MgUser -All -Property DisplayName,UserPrincipalName,Manager `
+  -ExpandProperty Manager |
+  Where-Object { $null -eq $_.Manager } |
+  Select-Object DisplayName, UserPrincipalName |
+  Format-Table -AutoSize</code></pre>
+        </section>
+
+        <!-- ─── APPENDIX B ─── -->
+        <section id="appendix-b">
+            <h2>Appendix B: Organizational Data CSV Template</h2>
+            <p>If using CSV org data for enrichment (not required for agency-default scoping):</p>
+            <pre><code>EffectiveDate,PersonId,ManagerId,Organization,Agency,FunctionType,LevelDesignation,Location
+2026-03-01,user1@tenant.com,ceo-a@tenant.com,Engineering,Agency A,Engineering,Director,Sydney
+2026-03-01,user2@tenant.com,user1@tenant.com,Engineering,Agency A,Engineering,Manager,Melbourne
+2026-03-01,ceo-a@tenant.com,,Executive,Agency A,Executive,CEO,Sydney
+2026-03-01,user4@tenant.com,ceo-b@tenant.com,Operations,Agency B,Operations,Director,Brisbane
+2026-03-01,ceo-b@tenant.com,,Executive,Agency B,Executive,CEO,Brisbane</code></pre>
+            <div class="highlight-box">
+                <strong>Note:</strong> Unlike the Isolation Architecture where the <code>Agency</code> attribute is critical for partition filtering, here the <code>Agency</code> attribute is used for analytics enrichment only (e.g., filtering reports by agency name). Dashboard scoping is handled by the manager hierarchy.
+            </div>
+        </section>
+
+    </main>
+
+</body>
+</html>

@@ -289,6 +289,10 @@
             <p><strong>Version:</strong> 2.1 | <strong>Author:</strong> Sumit Sadhu | <strong>Published:</strong> March 2026</p>
         </header>
 
+        <div class="highlight-box" style="border-left:4px solid var(--success-color); margin-bottom:20px;font-size:0.92em;">
+            <strong>&#x1F513; Don&rsquo;t need hard data isolation?</strong> If agencies are comfortable seeing each other&rsquo;s aggregate data and just want their own dashboards as the <em>default</em> view, use the simpler <a href="Copilot_Multi_Agency_Default_Priority_Architecture.html"><strong>Multi-Agency Default-Priority Architecture</strong></a> instead. It leverages native AutoCxO, delegation, and &ldquo;Your group&rdquo; scoping &mdash; no lockdowns or partitions required.
+        </div>
+
         <div class="highlight-box" style="border-left:4px solid #0078d4; margin-bottom:20px;">
             <strong>TL;DR &mdash; Two Paths to Agency Isolation</strong>
             <p style="margin:8px 0 4px;font-size:0.92em;">Both paths share the same Phase 1 lockdown. Choose your data strategy based on your environment:</p>
@@ -307,7 +311,28 @@
                 <li><strong>Assign agency-specific analysts</strong> to their partitions only &mdash; <a href="#access-control">Section 7</a></li>
                 <li><strong>Deliver reports</strong> via Publish Reports or isolated Power BI workspaces &mdash; <a href="#runbook">Phase 4</a></li>
             </ol>
-            <p style="margin:8px 0 0;font-size:0.88em;color:#666;">Time estimate: 1&ndash;3 days depending on path chosen. Prerequisites: 50+ Copilot licences, Insights Admin role.</p>
+            <p style="margin:8px 0 0;font-size:0.88em;color:#666;">Time estimate: 1&ndash;3 days depending on path chosen.</p>
+        </div>
+
+        <div class="highlight-box" style="margin-bottom:20px;">
+            <strong>Prerequisites &amp; Licensing</strong>
+            <table style="font-size:0.9em;margin:8px 0 8px;">
+                <tr><th style="width:40%">Requirement</th><th>Details</th></tr>
+                <tr><td>50+ assigned Copilot licences (or combined Copilot + Viva Insights = 50)</td><td>Required for full dashboard and advanced analytics features</td></tr>
+                <tr><td>Insights Admin + AI Admin roles assigned</td><td>Assign via M365 Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Add-on Plan (Insights roles), or Role assignments &rarr; search &ldquo;AI Administrator&rdquo;</td></tr>
+                <tr><td>Compliance / Legal sign-off</td><td>Written approval that partition-based isolation meets regulatory requirements</td></tr>
+                <tr><td>Minimum group size agreed by all agencies</td><td>Tenant-wide setting (minimum 5) &mdash; cannot be set per-partition</td></tr>
+            </table>
+            <strong>Potential extra costs (evaluate before Phase 4):</strong>
+            <ul style="margin:4px 0 0 20px;font-size:0.9em;">
+                <li><strong>Power BI Pro/PPU:</strong> Required per viewer if delivering reports via PBI workspaces. Alternative: <strong>Power BI Premium capacity</strong> (P or F SKU) allows free-licence viewers.</li>
+                <li><strong>Viva Insights standalone:</strong> Required for agency heads who need Publish Reports access but do <strong>not</strong> have a Copilot licence (Copilot licence includes Viva Insights automatically).</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box" style="border-left:4px solid #666;margin-bottom:20px;font-size:0.9em;">
+            <strong>How to Use This Document</strong><br>
+            Read <a href="#choose-path">Section 4.1</a> to choose your data path (A or B). Then follow <a href="#runbook">Section 5</a> phases 0&ndash;4 sequentially. Refer to <a href="#access-control">&sect;7</a>&ndash;<a href="#risks">&sect;9</a> for ongoing governance. If you need to assess your environment first, start with the <a href="#discovery">Discovery Questions in Section 10</a>.
         </div>
 
         <section id="exec-summary">
@@ -553,6 +578,9 @@
         <section id="entra-attrs">
             <h2>4.2 Entra ID Attributes Reference for Viva Insights</h2>
             <p>Understanding exactly which Entra ID attributes reach Viva Insights is critical for choosing the right path. Per <a href="https://learn.microsoft.com/viva/insights/advanced/admin/org-data-overview">Microsoft Learn</a>:</p>
+            <div class="highlight-box" style="border-left:4px solid #666;font-size:0.9em;">
+                <strong>Already know your path?</strong> If you have already decided between Path A and Path B in <a href="#choose-path">Section 4.1</a>, you can skip this reference section and go directly to the <a href="#runbook">Implementation Runbook (Section 5)</a>.
+            </div>
 
             <h3>Attributes Synced from Entra ID</h3>
             <table>
@@ -612,7 +640,15 @@
             
             <div class="step-card">
                 <h4><span class="step-number">0</span> Phase 0: Pre-Flight Audit</h4>
-                <p>Before locking anything down, audit the current state. Disabling policies does not revoke existing access.</p>
+                <p>Before locking anything down, audit the current state and obtain approvals. Disabling policies does not revoke existing access.</p>
+                <div class="highlight-box" style="border-left:4px solid var(--secondary-color);">
+                    <strong>Pre-flight approvals (complete before proceeding):</strong>
+                    <ol style="margin:4px 0 0 20px;">
+                        <li>Obtain <strong>written sign-off from Compliance / Legal / DPO</strong> that the partition-based isolation strategy meets your regulatory and governance requirements.</li>
+                        <li>Confirm <strong>all agency heads and compliance officers agree</strong> on the minimum group size threshold (see <a href="#runbook">Phase 3</a>). Document the agreed number.</li>
+                        <li>Confirm <strong>role assignments</strong> are in place: AI Admin and Insights Admin roles assigned to Central IT staff via M365 Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Add-on Plan, or via Role assignments &rarr; search role name. (<a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/assign-user-roles">Learn reference</a>)</li>
+                    </ol>
+                </div>
                 <ul>
                     <li><strong>Audit VFAM policies (Admin UI):</strong> Navigate to <code>admin.microsoft.com</code> &rarr; Settings &rarr; Microsoft Viva &rarr; Viva Insights &rarr; Set up and management &rarr; <strong>Turn Advanced Insights on or off</strong>. Review the status of each feature: AutoCxoIdentification, CopilotDashboardDelegation, AgentDashboard, CopilotMetricsReport. Document the current state (On/Off, scope: Everyone or Specific users).</li>
                     <li><strong>Alternative (PowerShell):</strong> Run <code><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/viva-feature-access-management">Get-VivaModuleFeaturePolicy</a> -ModuleId VivaInsights</code> for a scripted audit of all policies.</li>
@@ -624,30 +660,51 @@
 
             <div class="step-card">
                 <h4><span class="step-number">1</span> Phase 1: Foundation (Lockdown)</h4>
-                <p>Prevent agency CEOs from being auto-identified as senior leaders and getting tenant-wide access.</p>
-                <ul>
-                    <li><strong>Disable Auto CxO Identification (Admin UI):</strong> Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Turn Advanced Insights on or off &rarr; select <strong>Auto CxO Identification</strong> &rarr; set to <strong>Off</strong> for Everyone &rarr; Save.<br>
-                    <em>Alternative (PowerShell):</em> <code>Add-VivaModuleFeaturePolicy -ModuleId VivaInsights -FeatureId AutoCxoIdentification -Name "DisableAutoEnableForAllAgencies" -IsFeatureEnabled $false -Everyone</code></li>
-                    <li><strong>Remove existing auto-enabled leaders:</strong> Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; <strong>Manage user access for Copilot Dashboard</strong> &rarr; remove any agency leaders who were auto-identified.</li>
-                    <li><strong>Disable Dashboard Delegation (Admin UI):</strong> Same &ldquo;Turn Advanced Insights on or off&rdquo; page &rarr; select <strong>Copilot Dashboard Delegation</strong> &rarr; set to <strong>Off</strong> for Everyone &rarr; Save.<br>
-                    <em>Alternative (PowerShell):</em> <code>Add-VivaModuleFeaturePolicy -ModuleId VivaInsights -FeatureId CopilotDashboardDelegation -Name "DisableDelegationForTenant" -IsFeatureEnabled $false -Everyone</code></li>
-                    <li><strong>Restrict dashboard access to Central IT:</strong> Create <a href="https://learn.microsoft.com/entra/identity/users/groups-create-rule">Entra group</a> <code>CentralIT-CopilotDashboard-Access</code>. In <strong>Manage user access for Copilot Dashboard</strong> &rarr; add this group &rarr; remove all individual agency users.</li>
-                    <li><strong>Disable Agent Dashboard (Admin UI):</strong> Same page &rarr; select <strong>Agent Dashboard</strong> &rarr; set to <strong>Off</strong> for Everyone &rarr; Save. Then create a group-scoped policy to re-enable for Central IT only.<br>
-                    <em>Alternative (PowerShell):</em> <code>Add-VivaModuleFeaturePolicy -ModuleId VivaInsights -FeatureId AgentDashboard -Name "RestrictAgentDashboard" -IsFeatureEnabled $false -Everyone</code></li>
-                    <li><strong>Disable Copilot Metrics Export (PowerShell only):</strong> This feature does not currently have an Admin UI toggle. Use PowerShell: <code>Add-VivaModuleFeaturePolicy -ModuleId VivaInsights -FeatureId CopilotMetricsReport -Name "DisableMetricsExport" -IsFeatureEnabled $false -Everyone</code></li>
-                    <li><strong>Optional &mdash; Disable Viva Insights web app for non-Central-IT users (strongest lockdown):</strong> The <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#enable-or-disable-the-viva-insights-web-app">Viva Insights web app VFAM control</a> disables the <strong>entire</strong> web app (Copilot Dashboard, Analytics Reports, and admin/analyst tools) for targeted users. Create a group-scoped policy that keeps the web app <strong>On</strong> for Central IT and agency analysts, and <strong>Off</strong> for everyone else. This is the strongest possible blanket lockdown.<br>
-                    <em>Admin UI:</em> Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Turn Advanced Insights on or off &rarr; select <strong>Viva Insights web app</strong> &rarr; Add policy &rarr; scope to the group that should <strong>not</strong> have access &rarr; set to Off.<br>
-                    <em>Note:</em> If you previously disabled the old &ldquo;Copilot Dashboard&rdquo; VFAM control, those settings now apply to the entire web app.</li>
-                </ul>
-                <div class="alert">
+                <p>Prevent agency CEOs from being auto-identified as senior leaders and getting tenant-wide access. Complete each sub-step in order. <strong>Requires AI Administrator role.</strong></p>
+
+                <div class="highlight-box" style="border-left:4px solid var(--danger-color);">
+                    <strong>Group-Scoped Policies &mdash; Protect Non-Agency Leaders</strong><br>
+                    VFAM policies set to &ldquo;Everyone&rdquo; affect the <strong>entire tenant</strong> &mdash; including non-agency executives (CFO, CISO, CIO) who may legitimately need dashboard access. To avoid this, create an <a href="https://learn.microsoft.com/entra/identity/users/groups-create-rule">Entra security group</a> called <code>AgencyUsers-NoDashboard</code> containing all agency employees. Target your disable policies at <strong>this group</strong> instead of Everyone. This preserves access for Central IT, Finance, and other non-agency stakeholders.<br>
+                    <em>All steps below use group-scoped targeting. See <a href="#appendix-a">Appendix A</a> for the full PowerShell reference.</em>
+                </div>
+
+                <p><strong>1.1 &mdash; Disable Auto CxO Identification</strong></p>
+                <p>Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Turn Advanced Insights on or off &rarr; select <strong>Auto CxO Identification</strong> &rarr; Add policy &rarr; scope to <code>AgencyUsers-NoDashboard</code> &rarr; set to <strong>Off</strong> &rarr; Save.</p>
+
+                <p><strong>1.2 &mdash; Remove existing auto-enabled agency leaders</strong></p>
+                <p>Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; <strong>Manage user access for Copilot Dashboard</strong> &rarr; remove any agency leaders who were auto-identified. Leave non-agency executives (CFO, CISO, etc.) in place if they need tenant-wide access.</p>
+
+                <p><strong>1.3 &mdash; Disable Dashboard Delegation for agency users</strong></p>
+                <p>Same &ldquo;Turn Advanced Insights on or off&rdquo; page &rarr; select <strong>Copilot Dashboard Delegation</strong> &rarr; Add policy &rarr; scope to <code>AgencyUsers-NoDashboard</code> &rarr; set to <strong>Off</strong> &rarr; Save.</p>
+
+                <p><strong>1.4 &mdash; Restrict dashboard access to Central IT</strong></p>
+                <p>Create Entra group <code>CentralIT-CopilotDashboard-Access</code>. In <strong>Manage user access for Copilot Dashboard</strong> &rarr; add this group &rarr; remove all individual agency users.</p>
+
+                <p><strong>1.5 &mdash; Disable Agent Dashboard for agency users</strong></p>
+                <p>Same page &rarr; select <strong>Agent Dashboard</strong> &rarr; Add policy &rarr; scope to <code>AgencyUsers-NoDashboard</code> &rarr; set to <strong>Off</strong> &rarr; Save. Create a second policy to re-enable for Central IT if needed.</p>
+
+                <p><strong>1.6 &mdash; Disable Copilot Metrics Export (PowerShell only)</strong></p>
+                <p>This feature does not have an Admin UI toggle. Use PowerShell:<br>
+                <code>Add-VivaModuleFeaturePolicy -ModuleId VivaInsights -FeatureId CopilotMetricsReport -Name "DisableMetricsExport" -IsFeatureEnabled $false -GroupIds AgencyUsers-NoDashboard@tenant.com</code></p>
+
+                <p><strong>1.7 &mdash; Optional: Disable Viva Insights web app for non-permitted users (strongest lockdown)</strong></p>
+                <p>The <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#enable-or-disable-the-viva-insights-web-app">Viva Insights web app VFAM control</a> disables the <strong>entire</strong> web app (Copilot Dashboard, Analytics Reports, and admin/analyst tools) for targeted users. Scope the disable policy to <code>AgencyUsers-NoDashboard</code>. This keeps the web app On for Central IT and agency analysts while blocking everyone else.</p>
+                <p><em>Note:</em> If you previously disabled the old &ldquo;Copilot Dashboard&rdquo; VFAM control, those settings now apply to the entire web app.</p>
+
+                <div class="highlight-box">
                     <strong>After Phase 1 &mdash; Verification:</strong><br>
-                    Confirm no agency leaders appear in the dashboard access list. Verify all five VFAM policies (AutoCxo, Delegation, AgentDashboard, MetricsExport, and optionally Viva Insights web app) show as disabled for agency users. Have an agency CEO attempt to access <code>insights.cloud.microsoft</code> and confirm access is denied.
+                    <ol style="margin:4px 0 0 20px;">
+                        <li>Confirm no agency leaders appear in the dashboard access list.</li>
+                        <li>Verify VFAM policies (AutoCxo, Delegation, AgentDashboard, MetricsExport, and optionally web app) show as disabled for the <code>AgencyUsers-NoDashboard</code> group.</li>
+                        <li>Have an agency CEO attempt to access <code>insights.cloud.microsoft</code> and confirm access is denied.</li>
+                        <li>Have a non-agency executive (e.g., CFO) confirm they <strong>still</strong> have dashboard access.</li>
+                    </ol>
                 </div>
             </div>
 
             <div class="step-card">
                 <h4><span class="step-number">2</span> Phase 2: Organizational Data</h4>
-                <p>Prepare the foundational data that enables partitioning. Your approach depends on which path you chose in <a href="#choose-path">Section 4.1</a>.</p>
+                <p>Prepare the foundational data that enables partitioning. Your approach depends on which path you chose in <a href="#choose-path">Section 4.1</a>. For detailed refresh cadence tables, see <a href="#org-data">Section 6: Organizational Data Strategy</a>.</p>
 
                 <h4 style="color:var(--secondary-color);margin-top:16px;">Path A: CSV Org Data Upload</h4>
                 <ul>
@@ -690,7 +747,8 @@
                     (a) <strong>Path A:</strong> You have a reliable, repeatable process for monthly org data uploads with the Agency attribute. <strong>Path B:</strong> You have verified Domain values cleanly map to agencies.<br>
                     (b) You have identified at least one <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/assign-user-roles">Insights Analyst</a> per agency.<br>
                     (c) You accept that once enabled, turning off partitions requires contacting Microsoft support and will <strong>delete all partition configurations, query results, and custom metrics</strong> created within partitions.<br>
-                    (d) You understand that privacy settings (minimum group size) are tenant-wide, not per-partition &mdash; all agencies must agree on the number.
+                    (d) You understand that privacy settings (minimum group size) are tenant-wide, not per-partition &mdash; all agencies must agree on the number.<br>
+                    (e) <strong>Export all existing Viva Insights reports and query results</strong> before enabling partitions. Download from Analysis results &rarr; select each query &rarr; Download CSV or open in Power BI. There is no built-in rollback once partitions are enabled.
                 </div>
                 <ul>
                     <li>Navigate to <code>insights.cloud.microsoft</code> &rarr; <strong>Admin</strong> &rarr; <strong>Privacy settings</strong> &rarr; <strong>Partitions</strong>. Select <strong>Enable Partitions</strong>.</li>
@@ -707,15 +765,53 @@
                 <div class="highlight-box">
                     <strong>Why agency analysts must NOT have global partition access:</strong> Analysts with global partition access automatically get Copilot Dashboard access AND Copilot Analytics Reports access &mdash; both of which show tenant-wide data across all agencies. This would defeat the entire isolation architecture.
                 </div>
-                <div class="alert">
+                <div class="highlight-box">
                     <strong>After Phase 3 &mdash; Verification:</strong><br>
                     Have each agency analyst sign in to <code>insights.cloud.microsoft</code>. Confirm they only see their agency&rsquo;s partition in the partition switcher. Have them run a test person query and verify the employee count matches their agency only.
+                </div>
+
+                <div class="highlight-box" style="border-left:4px solid var(--success-color, #107c10);">
+                    <strong>Analyst Onboarding Checklist &mdash; First Day in a Partition</strong>
+                    <p style="margin:4px 0;font-size:0.92em;">Share these steps with each agency analyst after they receive partition access:</p>
+                    <ol style="margin:4px 0 0 20px;">
+                        <li>Sign in to <code>insights.cloud.microsoft</code> with your analyst account.</li>
+                        <li>Look for the <strong>partition switcher</strong> in the top bar. Select your agency&rsquo;s partition (e.g., &ldquo;Agency A&rdquo;).</li>
+                        <li>In the left nav, select <strong>Create analysis</strong>. You should see Power BI templates (Copilot Adoption, Impact Explorer, Business Impact, etc.) and the custom person query option.</li>
+                        <li>Run a <strong>test Person Query</strong>: select a few basic Copilot metrics, set a 28-day window, and run. Verify the employee count in the results matches your agency&rsquo;s expected headcount.</li>
+                        <li>Verify you <strong>cannot</strong> see: the Copilot Dashboard in the left nav, any Admin panel, or any partition other than your own in the switcher.</li>
+                        <li>Check <strong>Analysis results</strong> &mdash; you should only see queries you or other analysts in your partition have run. No cross-agency queries should appear.</li>
+                    </ol>
+                    <p style="margin:8px 0 0;font-size:0.88em;color:#666;">If anything doesn&rsquo;t match, contact your Insights Admin to verify partition assignment and role configuration.</p>
                 </div>
             </div>
 
             <div class="step-card">
                 <h4><span class="step-number">4</span> Phase 4: Copilot Reporting</h4>
                 <p>Generate and distribute the isolated reports.</p>
+
+                <h4 style="color:var(--secondary-color);margin-top:16px;">4a &mdash; What Copilot Analytics Are Available in a Partition?</h4>
+                <p>Not all Copilot analytics surfaces are partition-scoped. Use this matrix to set expectations with agency stakeholders:</p>
+                <table>
+                    <thead>
+                        <tr><th>Analytics Surface</th><th>Available in Agency Partition?</th><th>Notes</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background-color:#f0fdf4;"><td><strong>Custom Person Queries</strong> (Copilot metrics)</td><td><strong>YES</strong> &mdash; scoped to partition employees</td><td>100+ Copilot metrics available. Results stay within the partition.</td></tr>
+                        <tr style="background-color:#f0fdf4;"><td><strong>Power BI Templates</strong> (Copilot Adoption, Impact Explorer, Business Impact, Headlines, etc.)</td><td><strong>YES</strong> &mdash; scoped to partition employees</td><td>Template queries run against partition data. Downloaded PBI file contains only partition employees.</td></tr>
+                        <tr style="background-color:#f0fdf4;"><td><strong>Custom Metrics &amp; Metric Rules</strong></td><td><strong>YES</strong> &mdash; isolated per partition</td><td>Metrics created in one partition are not visible in other partitions.</td></tr>
+                        <tr style="background-color:#f0fdf4;"><td><strong>Analysis Results</strong></td><td><strong>YES</strong> &mdash; isolated per partition</td><td>Analysts only see their own partition&rsquo;s query results.</td></tr>
+                        <tr><td>Copilot Dashboard</td><td><strong>NO</strong> &mdash; tenant-level only</td><td>Shows &ldquo;Your company&rdquo; data. Restricted to Central IT in this architecture.</td></tr>
+                        <tr><td>Copilot Analytics Reports (OOB reports)</td><td><strong>NO</strong> &mdash; requires global partition or dashboard access</td><td>Available to Central IT analysts on the global partition.</td></tr>
+                        <tr><td>Agent Dashboard</td><td><strong>NO</strong> &mdash; tenant-level only</td><td>Disabled for agency users in Phase 1.</td></tr>
+                        <tr><td>Readiness / Licence Utilisation</td><td><strong>NO</strong> &mdash; M365 Admin Center only</td><td>Available to Global Admin and AI Admin. Not partition-scoped.</td></tr>
+                        <tr><td>Sentiment (Viva Glint / CSV survey)</td><td><strong>NO</strong> &mdash; tenant-level only</td><td>Survey data is tenant-wide. Not filterable by partition.</td></tr>
+                    </tbody>
+                </table>
+                <div class="highlight-box">
+                    <strong>Key takeaway:</strong> Agency analysts get full access to <strong>Copilot adoption and impact metrics</strong> through custom queries and PBI templates, scoped to their agency&rsquo;s employees only. They do <strong>not</strong> get the interactive Copilot Dashboard, OOB Analytics Reports, or sentiment data &mdash; those remain Central IT surfaces.
+                </div>
+
+                <h4 style="color:var(--secondary-color);margin-top:16px;">4b &mdash; Deliver Reports to Agency Heads</h4>
                 <ul>
                     <li>Agency analysts run Copilot Power BI template queries within their isolated partition.</li>
                 </ul>
