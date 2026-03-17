@@ -885,6 +885,20 @@
   <tr><td><strong>Copilot Employee Experience (Glint)</strong></td><td>Combine Copilot usage with Viva Glint survey data for employee experience analysis</td><td>Viva Glint licence + Copilot licence for measured population</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/copilot-employee-experience-outcome-report">Learn more</a></td></tr>
 </table>
 
+<div class="highlight-box">
+    <strong>Which Template Should I Use? &mdash; Decision Guide</strong>
+    <table>
+        <tr><th>Stakeholder Question</th><th>Recommended Template</th><th>Why</th></tr>
+        <tr><td>&ldquo;Is Copilot paying for itself?&rdquo;</td><td><strong>Copilot Impact</strong></td><td>Assisted Hours, Assisted Value, before/after comparison, per-app breakdown</td></tr>
+        <tr><td>&ldquo;Which teams are using Copilot?&rdquo;</td><td><strong>Copilot Adoption</strong></td><td>Usage trends by group, feature adoption, intensity metrics</td></tr>
+        <tr><td>&ldquo;Give me quick executive talking points&rdquo;</td><td><strong>Copilot Headlines</strong> (preview)</td><td>Auto-scans data for power users, benchmarks, impact trends, and adoption momentum</td></tr>
+        <tr><td>&ldquo;Did Copilot actually improve our sales/HR/operations outcomes?&rdquo;</td><td><strong>Copilot Business Impact</strong></td><td>Correlates Copilot usage with your own business KPIs (requires business data upload)</td></tr>
+        <tr><td>&ldquo;How do our Copilot Studio agents perform?&rdquo;</td><td><strong>Copilot Studio Agents</strong></td><td>Agent-specific adoption, assisted hours, session outcomes, credits consumed</td></tr>
+        <tr><td>&ldquo;What do employees actually think about Copilot?&rdquo;</td><td><strong>Copilot Employee Experience (Glint)</strong></td><td>Combines Copilot usage with Viva Glint survey data (requires Glint licence)</td></tr>
+        <tr><td>&ldquo;The standard reports are too high-level&rdquo;</td><td><strong>Custom Person Query</strong></td><td>Select from 100+ Copilot metrics, apply custom filters and attributes, build your own PBI pages</td></tr>
+    </table>
+</div>
+
 <h2>6.6 Prerequisites for Accessing Reports</h2>
 
 <h3>For Viewing Out-of-the-Box &amp; Shared Reports</h3>
@@ -1142,6 +1156,12 @@
 
 <h3>Minimum Group Size</h3>
 <p>Uses the same minimum group size setting as the Copilot Dashboard. Default is 10; minimum is 5. See <a href="#s5">Section 5, Step 6</a> for configuration steps.</p>
+
+<div class="callout info">
+  <div class="callout-title">NOTE: PBI Templates vs Raw Query Export &mdash; Group Size Behaviour</div>
+  <p><strong>Power BI template reports</strong> enforce the minimum group size at the visualisation layer &mdash; groups below the threshold show suppressed data (N/A). Moving from the Dashboard to Power BI does <strong>not</strong> bypass this privacy control.</p>
+  <p><strong>Raw query exports</strong> (Analysis results &rarr; Download CSV) contain individual-level de-identified data. An analyst can aggregate this data themselves in Power BI and build custom visuals with finer granularity. However, the analyst is responsible for enforcing privacy thresholds per your organisation&rsquo;s data handling policy.</p>
+</div>
 
 <h2>7.8 Delegate Access for Agent Dashboard</h2>
 <p>If you have company-level access to the dashboards, you can delegate access. However:</p>

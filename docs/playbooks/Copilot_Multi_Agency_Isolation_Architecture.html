@@ -608,6 +608,9 @@
 
             <h3>Attributes NOT Available from Entra ID</h3>
             <p>The following Entra ID user profile fields are <strong>not</strong> synced to Viva Insights. If you need them, you must upload via CSV:</p>
+            <div class="highlight-box" style="border-left:4px solid var(--warning-border);font-size:0.9em;">
+                <strong>On-Premises Active Directory Pipeline:</strong> If your directory hierarchy starts in <strong>on-premises Active Directory</strong> and syncs to Entra via AD Connect, only the three attributes listed above (PersonId, ManagerId, Organization) reach Viva Insights. Custom on-prem attributes (extension attributes, custom schema extensions, department codes) do <strong>not</strong> flow through to Viva Insights &mdash; even if they are synced to Entra ID. You must upload these as custom attributes via CSV.
+            </div>
             <table>
                 <thead>
                     <tr><th>Entra ID Field</th><th>Status in Viva Insights</th></tr>
@@ -679,6 +682,9 @@
 
                 <p><strong>1.4 &mdash; Restrict dashboard access to Central IT</strong></p>
                 <p>Create Entra group <code>CentralIT-CopilotDashboard-Access</code>. In <strong>Manage user access for Copilot Dashboard</strong> &rarr; add this group &rarr; remove all individual agency users.</p>
+                <div class="highlight-box" style="font-size:0.9em;">
+                    <strong>Supported group types for dashboard access:</strong> Entra security groups, Microsoft 365 groups, and mail-enabled security groups. Distribution-only groups are <strong>not supported</strong>. All group members must have a Viva Insights service plan (included with Copilot licence). Changes take up to <strong>24 hours</strong> to propagate. If group-based access does not work as expected, verify: (a) all members are licensed, (b) the group type is correct, (c) 24 hours have elapsed since assignment.
+                </div>
 
                 <p><strong>1.5 &mdash; Disable Agent Dashboard for agency users</strong></p>
                 <p>Same page &rarr; select <strong>Agent Dashboard</strong> &rarr; Add policy &rarr; scope to <code>AgencyUsers-NoDashboard</code> &rarr; set to <strong>Off</strong> &rarr; Save. Create a second policy to re-enable for Central IT if needed.</p>
@@ -804,7 +810,7 @@
                         <tr><td>Copilot Analytics Reports (OOB reports)</td><td><strong>NO</strong> &mdash; requires global partition or dashboard access</td><td>Available to Central IT analysts on the global partition.</td></tr>
                         <tr><td>Agent Dashboard</td><td><strong>NO</strong> &mdash; tenant-level only</td><td>Disabled for agency users in Phase 1.</td></tr>
                         <tr><td>Readiness / Licence Utilisation</td><td><strong>NO</strong> &mdash; M365 Admin Center only</td><td>Available to Global Admin and AI Admin. Not partition-scoped.</td></tr>
-                        <tr><td>Sentiment (Viva Glint / CSV survey)</td><td><strong>NO</strong> &mdash; tenant-level only</td><td>Survey data is tenant-wide. Not filterable by partition.</td></tr>
+                        <tr><td>Sentiment (Viva Glint / CSV survey)</td><td><strong>NO</strong> &mdash; tenant-level only</td><td>Survey data is tenant-wide. Not filterable by partition. CSV survey upload inserts data at the tenant level &mdash; even if you upload one CSV per agency, results display tenant-wide on the Dashboard. To get agency-specific survey insights, run separate surveys (e.g., Microsoft Forms) per agency and present results alongside PBI reports manually.</td></tr>
                         <tr><td>Satisfaction Rate (thumbs up/down)</td><td><strong>NO</strong> &mdash; tenant-level only</td><td>Built-in sentiment signal from user reactions to Copilot responses across M365 apps. Shown on the Impact page (28-day rolling). Not partition-scoped.</td></tr>
                     </tbody>
                 </table>
@@ -891,6 +897,17 @@
                 </tbody>
             </table>
             <p><strong>Data Quality Rule:</strong> The <code>Agency</code> attribute must have 100% coverage. Missing values will exclude employees from all partitions.</p>
+
+            <div class="highlight-box">
+                <strong>Data Ownership Model for Multi-Agency CSV Management</strong>
+                <ol style="margin:4px 0 0 20px;">
+                    <li><strong>Designate one Central IT owner</strong> responsible for the consolidated CSV file across all agencies.</li>
+                    <li><strong>Establish a monthly collection process:</strong> Each agency HR team exports their employee data extract &rarr; Central IT merges all extracts into a single CSV with the <code>Agency</code> attribute populated for every row.</li>
+                    <li><strong>Validate before upload:</strong> Check that every row has a non-empty <code>Agency</code> value, that employee counts per agency match HR records, and that the <code>PersonId</code> (email) format is correct.</li>
+                    <li><strong>Upload and verify:</strong> Upload via Viva Insights web app or M365 Admin Center. After processing (up to 7 days), verify on the Data Quality page (<code>insights.cloud.microsoft</code> &rarr; Admin &rarr; Organizational data &rarr; Data Quality tab) that the <code>Agency</code> attribute has 100% coverage.</li>
+                    <li><strong>Automate if possible:</strong> Use the <a href="https://learn.microsoft.com/viva/insights/advanced/admin/import-org-data-first">API-based import</a> or <a href="https://learn.microsoft.com/viva/insights/advanced/admin/import-org-data-azure">Azure blob import</a> for automated monthly uploads with failure alerting.</li>
+                </ol>
+            </div>
             <div class="alert">
                 <strong>Data Refresh Failure Alerting (Path A):</strong><br>
                 If a monthly org data upload fails or the Agency attribute is missing for new employees, those employees silently disappear from all partitions. Nobody gets alerted.<br><br>
