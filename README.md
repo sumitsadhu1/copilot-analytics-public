@@ -2,9 +2,7 @@
 
 A comprehensive, step-by-step guide for implementing all 5 tiers of Microsoft 365 Copilot analytics — from basic licence tracking to advanced ROI analysis using Power BI.
 
-## Live Documentation
-
-**[Browse the guide →](https://sumitsadhu.github.io/copilot-analytics-guide/)**
+> **Last verified against Microsoft Learn:** March 2026
 
 ## What's Covered
 
@@ -20,6 +18,7 @@ A comprehensive, step-by-step guide for implementing all 5 tiers of Microsoft 36
 
 - **Lifecycle & Billing Playbook** — Licensing models, credit mechanics, chargeback
 - **Multi-Agency Isolation Architecture** — Partition-based data isolation for shared tenants
+- **Multi-Agency Default Priority Architecture** — Streamlined isolation setup for common deployment scenarios
 - **Advanced Collaboration Analysis** — Meeting time, focus time, wellbeing (beyond Copilot)
 - **Quick-Start Cheat Sheet** — 1-page printable checklist
 - **FAQ** — 14 common questions with direct answers
