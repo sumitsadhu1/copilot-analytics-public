@@ -159,7 +159,14 @@
     </ul>
   </li>
   <li><a href="#s4">4. Dashboard 1: M365 Admin Center Reports</a></li>
-  <li><a href="#s5">5. Dashboard 2: Viva Insights Copilot Dashboard</a></li>
+  <li><a href="#s5">5. Dashboard 2: Viva Insights Copilot Dashboard</a>
+    <ul>
+      <li><a href="#s5-3">5.3 End-to-End Dashboard Enablement</a></li>
+      <li><a href="#s5-4">5.4 Understanding Dashboard Pages</a></li>
+      <li><a href="#s5-sentiment">5.5 Sentiment &amp; Survey Configuration</a></li>
+      <li><a href="#s5-6">5.6 How to Delegate Access</a></li>
+    </ul>
+  </li>
   <li><a href="#s6">6. Dashboard 3: Copilot Analytics Reports</a></li>
   <li><a href="#s7">7. Dashboard 4: Agent Dashboard</a></li>
   <li><a href="#s8">8. Dashboard 5: Viva Insights Advanced Analytics (Power BI)</a></li>
@@ -577,7 +584,7 @@
   <tr><td>Initial dashboard data population</td><td>Up to 7 days after licenses assigned</td></tr>
 </table>
 
-<h2>5.3 End-to-End Copilot Dashboard Enablement</h2>
+<h2 id="s5-3">5.3 End-to-End Copilot Dashboard Enablement</h2>
 <p><em>Estimated Time: 2–4 hours active configuration + up to 7 days for data processing</em></p>
 <p>This section covers the complete sequence to get the Copilot Dashboard operational — from licence verification through to first data appearing. Follow each step in order.</p>
 
@@ -732,7 +739,11 @@
 </div>
 
 <div class="step">
-  <div class="step-title">Step 10: Configure Copilot Sentiment &amp; Survey Data (30–60 min)</div>
+</div>
+
+<h2 id="s5-sentiment">5.5 Sentiment &amp; Survey Configuration</h2>
+<p><em>Estimated Time: 30–60 min | Can be configured at any time after dashboard enablement</em></p>
+<div class="step">
 
   <div class="callout info">
     <div class="callout-title">Why Sentiment Matters</div>
@@ -837,7 +848,7 @@
 </div>
 
 <div class="step">
-  <div class="step-title">Step 11: Wait for Data Processing</div>
+  <div class="step-title">Step 10: Wait for Data Processing</div>
   <ul>
     <li>Initial data processing: up to 7 days after licenses assigned</li>
     <li>Ongoing refresh: daily, 28-day rolling window, ~6-day delay from current date</li>
@@ -845,7 +856,7 @@
   </ul>
 </div>
 
-<h2>5.4 Understanding Dashboard Pages</h2>
+<h2 id="s5-4">5.4 Understanding Dashboard Pages</h2>
 
 <h3>Readiness Page</h3>
 <p>Shows license assignment status and readiness for Copilot adoption. Available even with less than 50 licenses.</p>
@@ -881,10 +892,10 @@
   <li><strong>Sentiment results by group</strong> (Viva Insights customers only) &mdash; A heat map showing sentiment breakdown across organisational attributes (department, location, job function). Enables leaders to identify which groups are thriving with Copilot vs which need more support.</li>
   <li><strong>Manager team view</strong> &mdash; Managers see results from their own team only (for Pulse, Glint, and CSV user-level uploads). They can also see aggregated tenant-level results.</li>
 </ul>
-<p><strong>No survey data?</strong> The Sentiment section shows &ldquo;No survey responses available&rdquo; until you configure one of the options in Step 10 above. The <strong>Satisfaction Rate</strong> metric (thumbs up/down) on the Impact page works independently and does not require survey configuration.</p>
-<p>See <a href="#s5">Step 10</a> for the end-to-end setup guide for each survey option.</p>
+<p><strong>No survey data?</strong> The Sentiment section shows &ldquo;No survey responses available&rdquo; until you configure one of the options in <a href="#s5-sentiment">Section 5.5</a>. The <strong>Satisfaction Rate</strong> metric (thumbs up/down) on the Impact page works independently and does not require survey configuration.</p>
+<p>See <a href="#s5-sentiment">Section 5.5</a> for the end-to-end setup guide for each survey option.</p>
 
-<h2>5.5 How to Delegate Access (For Dashboard Users)</h2>
+<h2 id="s5-6">5.6 How to Delegate Access (For Dashboard Users)</h2>
 <p><strong>Method 1 — Via Settings:</strong> Viva Insights web app → Settings → Delegation → Add delegates.</p>
 <p><strong>Method 2 — Via Dashboard:</strong> On Copilot Dashboard page → Share → Add delegates.</p>
 <p><strong>Delegation Limits:</strong></p>
@@ -896,7 +907,7 @@
   <li>Agent Dashboard requires "Your company" scope for delegates</li>
 </ul>
 
-<h2>5.6 Success Criteria</h2>
+<h2>5.7 Success Criteria</h2>
 <ul class="checklist">
   <li>Can access Copilot Dashboard at <code>https://insights.cloud.microsoft/#/CopilotDashboard</code></li>
   <li>Readiness page displays license assignment data</li>
@@ -909,7 +920,7 @@
   <li>Exclusion list configured (if required for compliance)</li>
 </ul>
 
-<h2>5.7 Limitations</h2>
+<h2>5.8 Limitations</h2>
 <ul>
   <li>No user-level detail (privacy thresholds aggregate to groups)</li>
   <li>No before/after adoption comparison</li>
@@ -918,7 +929,7 @@
   <li>Sentiment filters/heat maps require Viva license or CSV upload</li>
 </ul>
 
-<h2>5.8 References</h2>
+<h2>5.9 References</h2>
 <ul>
   <li><a href="https://learn.microsoft.com/en-us/viva/insights/org-team-insights/copilot-dashboard">Microsoft Copilot Dashboard</a></li>
   <li><a href="https://learn.microsoft.com/en-us/viva/insights/advanced/admin/manage-settings-copilot-dashboard">Manage dashboard settings</a></li>
@@ -1699,7 +1710,7 @@
   <tr><td>Impact page shows no data</td><td>Less than 7 days since license assignment</td><td>Wait up to 7 days for processing</td></tr>
   <tr><td>Data suppressed (N/A)</td><td>Group size below privacy threshold</td><td>Groups must meet minimum configured size (default 10)</td></tr>
   <tr><td>Managers can&rsquo;t see team data</td><td>Manager Settings not enabled</td><td>Navigate to <code>insights.cloud.microsoft</code> &rarr; Admin &rarr; <strong>Manager Settings</strong> (under Platform Setup) &rarr; Turn on &ldquo;Grant managers scoped access&rdquo;. Wait 1 hour for propagation. Also verify the manager has a populated ManagerID in Entra ID. (See Section 5.3, Step 5)</td></tr>
-  <tr><td>Sentiment page empty</td><td>No survey data uploaded, or minimum privacy threshold not met</td><td>Configure one of the four options in Step 10. Verify: (a) total survey responses &ge; minimum group size, (b) responses per question &ge; minimum group size, (c) favorable responses per question &ge; minimum group size. The Satisfaction Rate metric on the Impact page works independently and does not require survey configuration.</td></tr>
+  <tr><td>Sentiment page empty</td><td>No survey data uploaded, or minimum privacy threshold not met</td><td>Configure one of the four options in <a href="#s5-sentiment">Section 5.5</a>. Verify: (a) total survey responses &ge; minimum group size, (b) responses per question &ge; minimum group size, (c) favorable responses per question &ge; minimum group size. The Satisfaction Rate metric on the Impact page works independently and does not require survey configuration.</td></tr>
   <tr><td>Exclusion list not working</td><td>Processing not complete</td><td>Exclusion list changes take up to 5 days to process. Check status at <code>admin.microsoft.com</code> &rarr; Settings &rarr; Microsoft Viva &rarr; Viva Insights &rarr; <strong>Unified exclusion list</strong>.</td></tr>
   <tr><td>Org data not showing</td><td>Missing EffectiveDate or wrong attribute names</td><td>Verify attribute names match exactly; include EffectiveDate. <strong>Note:</strong> M365 Admin Center uses <code>Microsoft_Organization</code> while Viva Insights uses <code>Organization</code> &mdash; they are different field names.</td></tr>
   <tr><td>Org data not showing</td><td>Upload still processing (within 7-day window)</td><td>Org data uploads take up to 7 days to process. Check status: <code>insights.cloud.microsoft</code> &rarr; Admin &rarr; <strong>Data hub</strong> &rarr; verify upload shows &ldquo;Complete&rdquo; (not &ldquo;Processing&rdquo; or &ldquo;Failed&rdquo;). If failed, re-upload with corrected CSV.</td></tr>
