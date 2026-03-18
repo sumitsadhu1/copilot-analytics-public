@@ -21,7 +21,7 @@
   .role-btn.active { background: var(--accent); color: #fff; }
 
   /* Section headers */
-  .section-title { font-size: 1.3em; color: var(--primary); font-weight: 700; margin: 30px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--primary); }
+  .section-title { font-size: 1.3em; color: var(--primary); font-weight: 700; margin: 30px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--primary); border-left: 4px solid var(--primary); padding-left: 10px; }
   .section-subtitle { font-size: 0.9em; color: var(--muted); margin: -12px 0 16px; }
 
   /* Cards */
@@ -36,7 +36,7 @@
   .card p { font-size: 0.88em; color: var(--muted); flex-grow: 1; margin-bottom: 12px; line-height: 1.5; }
   .card-meta { font-size: 0.78em; color: #999; margin-bottom: 12px; }
   .card-roles { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 12px; }
-  .card-role { font-size: 0.72em; padding: 2px 6px; border-radius: 8px; background: var(--bg); color: var(--muted); }
+  .card-role { font-size: 0.8em; padding: 2px 6px; border-radius: 8px; background: var(--bg); color: var(--muted); }
   .card a { display: inline-block; padding: 8px 16px; background: var(--accent); color: #fff; text-decoration: none; border-radius: 4px; font-size: 0.88em; font-weight: 600; text-align: center; transition: background 0.2s; }
   .card a:hover { background: var(--primary); }
   .card a.secondary { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
@@ -44,7 +44,8 @@
   .card-links { display: flex; gap: 8px; }
 
   /* Decision guide */
-  .decision { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 30px; }
+  .decision { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 30px; transition: opacity 0.2s, max-height 0.3s; }
+  .decision.hidden { opacity: 0; pointer-events: none; max-height: 0; overflow: hidden; margin: 0; padding: 0; border: none; }
   .decision h3 { color: var(--primary); margin-bottom: 12px; }
   .decision table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
   .decision th { background: var(--primary); color: #fff; padding: 10px 12px; text-align: left; }
@@ -64,6 +65,7 @@
   .search-bar::before { content: "\1F50D"; position: absolute; left: 14px; top: 14px; font-size: 1.1em; pointer-events: none; }
   .search-bar .clear-btn { position: absolute; right: 12px; top: 14px; background: none; border: none; font-size: 1.2em; cursor: pointer; color: var(--muted); display: none; }
   .search-bar .clear-btn:hover { color: var(--text); }
+  .search-bar .kbd-hint { position: absolute; right: 40px; top: 12px; font-size: 0.72em; color: var(--muted); background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 2px 6px; pointer-events: none; font-family: system-ui, sans-serif; }
   .no-results { text-align: center; color: var(--muted); padding: 30px; font-size: 0.95em; display: none; }
 
   /* Deep search results - inline */
@@ -72,14 +74,18 @@
   .search-results .sr-list { padding: 0; margin: 0; }
   .search-results .sr-item { display: block; padding: 12px 16px; margin-bottom: 10px; background: #f9fafb; border: 1px solid #e0e0e0; border-radius: 6px; text-decoration: none; color: #333; }
   .search-results .sr-item:hover { border-color: #0078d4; background: #f0f6ff; }
-  .search-results .sr-doc { font-size: 0.72em; color: #0078d4; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+  .search-results .sr-doc { font-size: 0.8em; color: #0078d4; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 2px; }
   .search-results .sr-heading { font-size: 0.95em; font-weight: 600; color: #1a1a1a; margin: 3px 0; }
   .search-results .sr-preview { font-size: 0.82em; color: #666; line-height: 1.5; margin-top: 4px; }
   .search-results .sr-preview mark { background: #fff3cd; color: #333; padding: 1px 3px; border-radius: 2px; font-weight: 600; }
 
   @media (max-width: 700px) {
     .card-grid { grid-template-columns: 1fr; }
-    .role-bar { flex-direction: column; align-items: stretch; }
+    .role-bar { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; -webkit-overflow-scrolling: touch; }
+    .role-btn { flex-shrink: 0; }
+    .decision { overflow-x: auto; }
+    .decision table { min-width: 500px; }
+    .search-bar .kbd-hint { display: none; }
   }
 </style>
 </head>
@@ -87,34 +93,36 @@
 
 <div class="header">
   <h1><strong>Copilot Analytics</strong> Documentation Hub</h1>
-  <p>Everything you need to implement, govern, and operationalise Microsoft 365 Copilot analytics — in one place.</p>
+  <p>Everything you need to implement, govern, and operationalize Microsoft 365 Copilot analytics — in one place.</p>
 </div>
 
 <div class="container">
 
 <!-- Role filter bar -->
-<div class="role-bar">
+<div class="role-bar" role="group" aria-label="Filter by role">
   <span style="font-size:0.85em;color:var(--muted);align-self:center;margin-right:8px;">I am a:</span>
-  <button class="role-btn active" onclick="filterCards('all', this)">Show All</button>
-  <button class="role-btn" onclick="filterCards('admin', this)">IT Admin</button>
-  <button class="role-btn" onclick="filterCards('leader', this)">Business Leader</button>
-  <button class="role-btn" onclick="filterCards('analyst', this)">Analyst</button>
-  <button class="role-btn" onclick="filterCards('governance', this)">Governance / Security</button>
-  <button class="role-btn" onclick="filterCards('finance', this)">Finance / Licensing</button>
+  <button class="role-btn active" aria-pressed="true" onclick="filterCards('all', this)">Show All</button>
+  <button class="role-btn" aria-pressed="false" onclick="filterCards('admin', this)">IT Admin</button>
+  <button class="role-btn" aria-pressed="false" onclick="filterCards('leader', this)">Business Leader</button>
+  <button class="role-btn" aria-pressed="false" onclick="filterCards('analyst', this)">Analyst</button>
+  <button class="role-btn" aria-pressed="false" onclick="filterCards('governance', this)">Governance / Security</button>
+  <button class="role-btn" aria-pressed="false" onclick="filterCards('finance', this)">Finance / Licensing</button>
 </div>
 
 
 <!-- Search -->
 <div class="search-bar">
-  <input type="text" id="docSearch" placeholder="Search across all documents... (e.g. sentiment, Glint, partition, hourly rate, VFAM)" autocomplete="off">
+  <input type="text" id="docSearch" aria-label="Search all documents" placeholder="Search all documents..." autocomplete="off">
+  <span class="kbd-hint">⌘K</span>
   <button class="clear-btn" id="clearSearch" onclick="clearSearch()">&#x2715;</button>
 </div>
 <div class="search-results" id="searchResults"></div>
 <div class="no-results" id="noResults">No documents match your search. Try different keywords.</div>
 
 <!-- DECISION GUIDE -->
-<div class="decision">
-  <h3>What do you need?</h3>
+<div class="decision" id="decisionGuide">
+  <h3>📋 What do you need?</h3>
+  <p style="font-size:0.88em;color:var(--muted);margin-bottom:12px;">Use this table to find the right guide for your task.</p>
   <table>
     <tr><th>If you need to...</th><th>Start here</th></tr>
     <tr><td>Set up Copilot analytics dashboards &amp; reports</td><td><a href="docs/core/Copilot_Analytics_Implementation_Guide.html">Implementation Guide</a> or <a href="docs/core/Copilot_Analytics_Setup_Companion_Guide.html">Setup Companion</a> (Customer)</td></tr>
@@ -152,7 +160,7 @@
   </div>
 
   <div class="card" data-roles="admin leader" data-keywords="setup configure dashboard enable VFAM org data roles privacy companion streamlined checklist sentiment survey ROI">
-    <span class="card-badge badge-core">GUIDE</span>
+    <span class="card-badge badge-core">CORE</span>
     <h3>Setup Companion Guide</h3>
     <p>A streamlined version of the implementation guide for IT administrators. Includes disclaimer pointing to Microsoft Learn for the latest information.</p>
     <div class="card-meta">v1.1 &bull; ~35 pages</div>
@@ -161,20 +169,13 @@
       <span class="card-role">Leaders</span>
     </div>
     <div class="card-links">
-      <a href="docs/core/Copilot_Analytics_Setup_Companion_Guide.html">HTML</a>
+      <a href="docs/core/Copilot_Analytics_Setup_Companion_Guide.html">Open Guide</a>
       <a href="artifacts/Copilot_Analytics_Setup_Companion_Guide.pdf" class="secondary">PDF</a>
     </div>
   </div>
 
-</div>
-
-<!-- PLAYBOOKS -->
-<div class="section-title">Agent Analytics</div>
-<div class="section-subtitle">Detect ungoverned agents in the Agent Dashboard &rarr; Act via M365 Admin Center quick actions. For preventive governance, see the the Copilot &amp; Agent Governance guide (separate).</div>
-<div class="card-grid">
-
   <div class="card" data-roles="admin governance leader" data-keywords="agent shadow AI detect creator type adoption metrics returning users block approve review governance studio credits agent dashboard VFAM">
-    <span class="card-badge badge-core">IN MAIN GUIDE — Section 7</span>
+    <span class="card-badge badge-core">CORE <span style="font-size:0.85em;opacity:0.7;">· SECTION 7</span></span>
     <h3>Agent Dashboard (Detect)</h3>
     <p>Adoption metrics, returning users, per-agent deep-dives, shadow AI detection via Creator Type filter. Includes the <strong>Detect → Act workflow</strong> bridging analytics to governance — quick actions in M365 Admin Center to block, approve, or review agents.</p>
     <div class="card-roles">
@@ -187,7 +188,7 @@
 
 </div>
 
-<!-- OTHER PLAYBOOKS -->
+<!-- PLAYBOOKS -->
 <div class="section-title">Playbooks</div>
 <div class="section-subtitle">Scenario-specific guides for billing, collaboration analysis, and multi-agency isolation.</div>
 <div class="card-grid">
@@ -196,7 +197,7 @@
     <span class="card-badge badge-playbook">PLAYBOOK</span>
     <h3>Lifecycle &amp; Billing</h3>
     <p>Operational guide for licence lifecycle events and billing. Covers 5 licensing models, 6 lifecycle scenarios (with analytics data impact), Copilot Credits consumption, PPAC billing config, multi-agency chargeback, and monthly/quarterly operational checklists.</p>
-    <div class="card-meta">~16 pages &bull; 9 sections</div>
+    <div class="card-meta">v1.0 &bull; ~16 pages &bull; 9 sections</div>
     <div class="card-roles">
       <span class="card-role">IT Admin</span>
       <span class="card-role">Finance</span>
@@ -212,7 +213,7 @@
     <span class="card-badge badge-playbook">PLAYBOOK</span>
     <h3>Advanced Viva Insights — Collaboration Analysis</h3>
     <p>Guide for using Viva Insights to analyse meeting time, focus time, wellbeing, and manager effectiveness — beyond Copilot. Covers 6 templates, behavioural metrics, custom queries, 3 use case scenarios, and data retention differences (27 months vs 13 months).</p>
-    <div class="card-meta">~20 pages &bull; 10 sections</div>
+    <div class="card-meta">v1.0 &bull; ~20 pages &bull; 10 sections</div>
     <div class="card-roles">
       <span class="card-role">Insights Analyst</span>
       <span class="card-role">HR / People Analytics</span>
@@ -221,10 +222,10 @@
   </div>
 
   <div class="card" data-roles="admin leader governance" data-keywords="multi-agency default priority single tenant delegation AutoCxO hierarchy Your group agency scoping dashboard access manager domain Entra report sharing">
-    <span class="card-badge badge-playbook">PLAYBOOK — ARCHITECTURE</span>
+    <span class="card-badge badge-playbook">ARCHITECTURE</span>
     <h3>Multi-Agency Default-Priority Architecture</h3>
     <p>Solution architecture for multi-agency tenants where each agency sees its own Copilot data by default, but cross-agency visibility is acceptable. Leverages native AutoCxO, delegation, and "Your group" scoping — no lockdowns or partitions required.</p>
-    <div class="card-meta">~12 pages &bull; 10 sections + appendices</div>
+    <div class="card-meta">v1.0 &bull; ~12 pages &bull; 10 sections + appendices</div>
     <div class="card-roles">
       <span class="card-role">Solution Architect</span>
       <span class="card-role">IT Admin</span>
@@ -237,10 +238,10 @@
   </div>
 
   <div class="card" data-roles="admin governance" data-keywords="partition isolation multi-agency single tenant VFAM lockdown PowerShell access control risk register org data architecture solution domain CSV agency Entra group-scoped report power bi workspace publish reports">
-    <span class="card-badge badge-playbook">PLAYBOOK — ARCHITECTURE</span>
+    <span class="card-badge badge-playbook">ARCHITECTURE</span>
     <h3>Multi-Agency Isolation Architecture</h3>
     <p>Solution architecture for deploying Copilot Dashboard in a single tenant with multiple independent agencies. Covers partition-based isolation, VFAM lockdown, PowerShell commands, access control matrix, risk register, and org data strategy.</p>
-    <div class="card-meta">~15 pages &bull; 12 sections + appendices</div>
+    <div class="card-meta">v1.0 &bull; ~15 pages &bull; 12 sections + appendices</div>
     <div class="card-roles">
       <span class="card-role">Solution Architect</span>
       <span class="card-role">IT Admin</span>
@@ -275,7 +276,7 @@
   <div class="card" data-roles="leader admin" data-keywords="questions answers licensing privacy data refresh agents billing scope common FAQ misconceptions group size survey Glint Pulse partition dashboard access">
     <span class="card-badge badge-artifact">ARTIFACT</span>
     <h3>FAQ</h3>
-    <p>15 most common questions with direct answers. Covers licensing, privacy, data refresh, agents, billing, and scope. Covers licensing, privacy, data refresh, agents, billing, and scope.</p>
+    <p>15 most common questions with direct answers. Covers licensing, privacy, data refresh, agents, billing, and scope.</p>
     <div class="card-roles">
       <span class="card-role">Pre-sales</span>
       <span class="card-role">Account Team</span>
@@ -327,8 +328,14 @@ xhr.send();
 
 function filterCards(role, btn) {
   activeRole = role;
-  document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
+  document.querySelectorAll('.role-btn').forEach(b => {
+    b.classList.remove('active');
+    b.setAttribute('aria-pressed', 'false');
+  });
+  if (btn) {
+    btn.classList.add('active');
+    btn.setAttribute('aria-pressed', 'true');
+  }
   applyFilters();
 }
 
@@ -361,7 +368,8 @@ function deepSearch(term) {
     return;
   }
 
-  var html = '<div class="sr-header">' + matches.length + ' matching section' + (matches.length > 1 ? 's' : '') + ' found across documents</div><div class="sr-list">';
+  var cappedNote = (matches.length >= 15) ? ' — showing top 15, refine your search for more' : '';
+  var html = '<div class="sr-header">' + matches.length + ' matching section' + (matches.length > 1 ? 's' : '') + ' found across documents' + cappedNote + '</div><div class="sr-list">';
   for (var j = 0; j < matches.length; j++) {
     var m = matches[j];
     var preview = m.content || '';
@@ -422,7 +430,9 @@ function applyFilters() {
     }
   }
   var decision = document.querySelector('.decision');
-  if (decision) decision.style.display = term ? 'none' : '';
+  if (decision) {
+    if (term) { decision.classList.add('hidden'); } else { decision.classList.remove('hidden'); }
+  }
   document.getElementById('noResults').style.display = (visibleCount === 0 && term && (!searchIndex || searchIndex.length === 0)) ? '' : 'none';
   deepSearch(term);
 }

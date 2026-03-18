@@ -161,6 +161,8 @@
     <a href="../../index.html" class="hub-link">&#8592; Documentation Hub</a>
     <span class="separator">/</span>
     <span class="breadcrumb">Collaboration Analysis</span>
+    <span class="separator" style="opacity:0.3">/</span>
+    <span class="breadcrumb current-section" id="currentSection" style="opacity:0.6;font-size:0.9em"></span>
   </div>
   <div class="doc-nav-right">
     <a href="../../artifacts/pdfs/Advanced_Viva_Insights_Collaboration_Guide.pdf" class="pdf-btn" title="Download PDF">&#128196; PDF</a>
@@ -663,6 +665,25 @@
     <a href="https://learn.microsoft.com">Microsoft Learn</a>. This guide does not constitute
     official Microsoft documentation or organisational policy advice.
 </div>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+<script>
+(function(){
+  var btn=document.getElementById('backToTop');
+  var secSpan=document.getElementById('currentSection');
+  var headings=document.querySelectorAll('h1');
+  window.addEventListener('scroll',function(){
+    btn.classList.toggle('visible',window.scrollY>300);
+    if(secSpan&&headings.length){
+      var cur='';
+      for(var i=0;i<headings.length;i++){
+        if(headings[i].getBoundingClientRect().top<80) cur=headings[i].textContent;
+      }
+      secSpan.textContent=cur;
+    }
+  });
+})();
+</script>
 
 </body>
 </html>

@@ -19,6 +19,7 @@
   --info: #17A2B8;
   --text: #333;
   --text-muted: #666;
+  --text-secondary: #404040;
   --bg: #fff;
   --bg-alt: #F8F9FA;
   --border: #DEE2E6;
@@ -59,7 +60,7 @@ h2 {
 }
 
 h3 {
-  color: #404040;
+  color: var(--text-secondary);
   font-size: 1.15em;
   font-weight: 600;
   margin: 20px 0 10px;
@@ -132,6 +133,7 @@ tr:nth-child(even) td { background: #F8FBFF; }
 .callout.warning { border-color: var(--warning); background: #FFF3CD; }
 .callout.danger  { border-color: var(--danger);  background: #F8D7DA; }
 .callout.info    { border-color: var(--info);     background: #D1ECF1; }
+.callout.new     { border-color: #7B2FBE;          background: #F3E8FF; }
 
 /* ─── Step Blocks ─── */
 .step {
@@ -298,6 +300,30 @@ tr:nth-child(even) td { background: #F8FBFF; }
 }
 .doc-nav-right .pdf-btn:hover { background: rgba(255,255,255,0.15); }
 body.has-nav { padding-top: 56px; }
+
+/* ─── Back to Top Button ─── */
+.back-to-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.2em;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  pointer-events: none;
+}
+.back-to-top.visible { opacity: 1; pointer-events: auto; }
+.back-to-top:hover { background: var(--accent); }
 
 /* ─── Print ─── */
 @media print {
