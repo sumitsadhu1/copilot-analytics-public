@@ -67,15 +67,15 @@
   .no-results { text-align: center; color: var(--muted); padding: 30px; font-size: 0.95em; display: none; }
 
   /* Deep search results - inline */
-  .search-results { max-width: 900px; margin: 0 auto 24px; display: none; }
-  .search-results .sr-header { padding: 10px 0; font-size: 0.85em; color: var(--accent); font-weight: 600; border-bottom: 2px solid var(--accent); margin-bottom: 12px; }
-  .search-results .sr-list { list-style: none; padding: 0; margin: 0; }
-  .search-results .sr-item { display: block; padding: 12px 16px; margin-bottom: 8px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; text-decoration: none; color: var(--text); transition: border-color 0.2s, box-shadow 0.2s; }
-  .search-results .sr-item:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-  .search-results .sr-doc { font-size: 0.72em; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-  .search-results .sr-heading { font-size: 0.95em; font-weight: 600; color: var(--text); margin: 3px 0; }
-  .search-results .sr-preview { font-size: 0.82em; color: var(--muted); line-height: 1.4; }
-  .search-results .sr-preview mark { background: #fff3cd; color: var(--text); padding: 1px 3px; border-radius: 2px; font-weight: 600; }
+  .search-results { max-width: 900px; margin: 0 auto 24px; display: none; background: #ffffff; border: 2px solid #0078d4; border-radius: 8px; padding: 16px; }
+  .search-results .sr-header { padding: 8px 0 12px; font-size: 0.9em; color: #0078d4; font-weight: 700; border-bottom: 2px solid #0078d4; margin-bottom: 12px; }
+  .search-results .sr-list { padding: 0; margin: 0; }
+  .search-results .sr-item { display: block; padding: 12px 16px; margin-bottom: 10px; background: #f9fafb; border: 1px solid #e0e0e0; border-radius: 6px; text-decoration: none; color: #333; }
+  .search-results .sr-item:hover { border-color: #0078d4; background: #f0f6ff; }
+  .search-results .sr-doc { font-size: 0.72em; color: #0078d4; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+  .search-results .sr-heading { font-size: 0.95em; font-weight: 600; color: #1a1a1a; margin: 3px 0; }
+  .search-results .sr-preview { font-size: 0.82em; color: #666; line-height: 1.5; margin-top: 4px; }
+  .search-results .sr-preview mark { background: #fff3cd; color: #333; padding: 1px 3px; border-radius: 2px; font-weight: 600; }
 
   @media (max-width: 700px) {
     .card-grid { grid-template-columns: 1fr; }
