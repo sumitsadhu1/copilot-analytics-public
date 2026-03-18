@@ -28,12 +28,13 @@
             display: flex;
         }
 
-        /* Sidebar Navigation */
-        nav {
+        /* Sidebar Navigation — scoped to avoid overriding .doc-nav */
+        .sidebar-nav {
             width: 300px;
             background-color: #ffffff;
-            height: 100vh;
+            height: calc(100vh - 44px);
             position: fixed;
+            top: 44px;
             overflow-y: auto;
             border-right: 1px solid var(--border-color);
             padding: 20px;
@@ -41,23 +42,23 @@
             box-shadow: 2px 0 5px rgba(0,0,0,0.05);
         }
 
-        nav h3 {
+        .sidebar-nav h3 {
             color: var(--primary-color);
             font-size: 1.1em;
             margin-top: 0;
         }
 
-        nav ul {
+        .sidebar-nav ul {
             list-style: none;
             padding: 0;
             margin: 0;
         }
 
-        nav li {
+        .sidebar-nav li {
             margin-bottom: 10px;
         }
 
-        nav a {
+        .sidebar-nav a {
             text-decoration: none;
             color: var(--text-color);
             font-size: 0.95em;
@@ -67,7 +68,7 @@
             transition: background-color 0.2s;
         }
 
-        nav a:hover {
+        .sidebar-nav a:hover {
             background-color: var(--bg-color);
             color: var(--primary-color);
         }
@@ -239,7 +240,7 @@
                 display: block;
                 background: #fff;
             }
-            nav {
+            .sidebar-nav {
                 display: none !important;
             }
             main {
@@ -263,7 +264,7 @@
   </div>
 </nav>
 
-    <nav>
+    <nav class="sidebar-nav">
         <h3>Solution Architecture</h3>
         <ul>
             <li><a href="#exec-summary">1. Executive Summary</a></li>
