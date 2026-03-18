@@ -732,10 +732,108 @@
 </div>
 
 <div class="step">
-  <div class="step-title">Step 10: Configure Sentiment Surveys (Optional, 30 min)</div>
-  <p><strong>Option A: Viva Glint or Viva Pulse</strong> — Requires separate licences; enables filters &amp; heat maps.</p>
-  <p><strong>Option B: CSV Upload (Viva Insights customers)</strong> — Upload to Viva Insights Admin → Survey data.</p>
-  <p><strong>Option C: Aggregated Results Upload (Non-Viva)</strong> — Admin Center → Reports → Adoption → AI assistance. Summary view only; no filters or heat maps.</p>
+  <div class="step-title">Step 10: Configure Copilot Sentiment &amp; Survey Data (30–60 min)</div>
+
+  <div class="callout info">
+    <div class="callout-title">Why Sentiment Matters</div>
+    <p>Usage metrics tell you <strong>how much</strong> Copilot is used. Sentiment tells you <strong>how employees feel about it</strong>. Leaders need both to make informed decisions about Copilot investment, enablement, and change management. The Copilot Dashboard&rsquo;s Impact page includes two distinct sentiment signals:</p>
+    <ul>
+      <li><strong>Satisfaction Rate</strong> (automatic) &mdash; Thumbs-up/down reactions to Copilot responses across M365 apps. No setup needed. Shows on the Impact page as a 28-day rolling metric.</li>
+      <li><strong>Sentiment section</strong> (requires survey data) &mdash; Shows employee responses to Microsoft&rsquo;s four recommended Copilot survey questions, compared against Microsoft&rsquo;s benchmark. Requires one of the setup options below.</li>
+    </ul>
+    <p><strong>When to do it:</strong> After the dashboard is live and users have had 2&ndash;4 weeks of Copilot experience. Survey too early and responses will reflect unfamiliarity, not impact.</p>
+  </div>
+
+  <h4 style="color:var(--accent, #0078d4);margin-top:20px;">Choose Your Sentiment Data Source</h4>
+  <table>
+    <tr><th style="width:18%">Option</th><th style="width:20%">Best For</th><th style="width:18%">Licence Required</th><th style="width:18%">Filters &amp; Heat Maps?</th><th style="width:12%">Manager Team View?</th><th style="width:14%">Setup Effort</th></tr>
+    <tr style="background-color:#f0fdf4;"><td><strong>A: Viva Glint</strong></td><td>Organisations with Viva Glint already deployed for engagement surveys</td><td>Viva Glint (part of Viva Suite or standalone)</td><td><strong>Yes</strong> &mdash; full group filters + heat maps</td><td><strong>Yes</strong> &mdash; managers see their team&rsquo;s results only</td><td>Medium</td></tr>
+    <tr style="background-color:#f0fdf4;"><td><strong>B: Viva Pulse</strong></td><td>Quick, lightweight surveys sent from the Dashboard itself</td><td>Viva Pulse (part of Viva Suite, or included with M365 Copilot licence)</td><td><strong>Yes</strong> &mdash; with Viva Insights subscription</td><td><strong>Yes</strong> &mdash; managers see their team&rsquo;s results only</td><td>Low</td></tr>
+    <tr><td><strong>C: CSV Upload</strong></td><td>Organisations using third-party survey tools (Qualtrics, SurveyMonkey, etc.) or manual surveys</td><td>Viva Insights subscription</td><td><strong>Yes</strong> &mdash; group filters + heat maps (with org data uploaded)</td><td><strong>Yes</strong> &mdash; managers see their team&rsquo;s results only</td><td>Medium</td></tr>
+    <tr><td><strong>D: Aggregated Upload</strong></td><td>Organisations without Viva Insights that want a simple summary view</td><td>None (Global Admin only)</td><td><strong>No</strong> &mdash; tenant-level summary only</td><td><strong>No</strong></td><td>Low</td></tr>
+  </table>
+
+  <div class="callout warning">
+    <div class="callout-title">Priority Rule: If You Upload Both</div>
+    <p>If you upload survey data via both CSV (.csv file) <strong>and</strong> aggregated results (Admin Center), only the <strong>CSV results</strong> are shown on the Dashboard. The aggregated results only appear if you subsequently delete the CSV data.</p>
+  </div>
+
+  <h4 style="color:var(--accent, #0078d4);margin-top:20px;">Microsoft&rsquo;s Four Recommended Copilot Survey Questions</h4>
+  <p>All survey options use the same four questions. Include these in your survey to enable comparison with Microsoft&rsquo;s global benchmarks:</p>
+  <table>
+    <tr><th style="width:15%">Question #</th><th>Statement (use verbatim)</th></tr>
+    <tr><td>1</td><td><em>Using Copilot helps improve the quality of my work or output</em></td></tr>
+    <tr><td>2</td><td><em>Using Copilot helps me spend less mental effort on mundane or repetitive tasks</em></td></tr>
+    <tr><td>3</td><td><em>Using Copilot allows me to complete tasks faster</em></td></tr>
+    <tr><td>4</td><td><em>When using Copilot I am more productive</em></td></tr>
+  </table>
+  <p>Respondents should answer on a 5-point Likert scale: Strongly Disagree, Disagree, Neutral, Agree, Strongly Agree.</p>
+
+  <h4 style="color:var(--accent, #0078d4);margin-top:20px;">Option A: Viva Glint &mdash; Copilot Impact Survey Template</h4>
+  <p><strong>Requires:</strong> Viva Glint licence (part of Viva Suite or standalone). <strong>Role:</strong> Viva Glint Admin.</p>
+  <ol>
+    <li>In the Viva Glint admin portal, create a new survey program using the <a href="https://learn.microsoft.com/viva/glint/setup/copilot-impact-template"><strong>Microsoft Copilot Impact Survey</strong> template</a>.</li>
+    <li>The template includes the four recommended questions pre-configured. You can add additional questions if needed.</li>
+    <li>Set the survey audience (all Copilot-licenced users, or specific groups).</li>
+    <li>Set the survey cadence &mdash; Microsoft recommends recurring deployment to track trends over time.</li>
+    <li>Launch the survey. Results flow automatically to the Copilot Dashboard&rsquo;s Sentiment section.</li>
+    <li>On the Dashboard, use the <strong>Survey</strong> toggle to switch between Glint, Pulse, or CSV sources (if multiple are configured).</li>
+  </ol>
+  <p><strong>What you get:</strong> Sentiment results by question (with Microsoft benchmark comparison), sentiment heat map by group (with filters by Organisation, Job Function, etc.), and manager team-level views. If you also have Viva Insights, you can use Glint&rsquo;s <a href="https://learn.microsoft.com/viva/glint/reports/cross-program-intelligence">cross-program intelligence</a> to correlate Copilot sentiment with engagement scores.</p>
+  <p><strong>Advanced:</strong> The <a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/copilot-employee-experience-outcome-report">Copilot Employee Experience (Glint) PBI template</a> in the Viva Insights analyst workbench combines Copilot usage data with Glint survey responses for deeper analysis. This is a separate report from the Dashboard Sentiment page.</p>
+
+  <h4 style="color:var(--accent, #0078d4);margin-top:20px;">Option B: Viva Pulse &mdash; Launch Directly from the Dashboard</h4>
+  <p><strong>Requires:</strong> Viva Pulse licence (included with M365 Copilot licence, Viva Suite, or Viva Workplace Analytics and Employee Feedback). <strong>Role:</strong> Any user with Dashboard access.</p>
+  <ol>
+    <li>In the Copilot Dashboard, navigate to the <strong>Impact</strong> page.</li>
+    <li>Scroll to the <strong>Sentiment</strong> section.</li>
+    <li>Select <strong>Start new Pulse survey</strong> (button at the bottom of the Sentiment section).</li>
+    <li>The <a href="https://learn.microsoft.com/viva/pulse/viva-integrations/measure-copilot-impact-in-your-organization">Copilot Impact template</a> opens in Viva Pulse with the four questions pre-loaded.</li>
+    <li>Customise audience and add optional extra questions &rarr; Send.</li>
+    <li>Results automatically appear in the Dashboard Sentiment section once responses are collected.</li>
+  </ol>
+  <p><strong>Alternative:</strong> You can also launch the Copilot Impact template from the <a href="https://go.microsoft.com/fwlink/?linkid=2259628">Viva Pulse web app</a> or the Pulse Teams app &rarr; Browse all templates &rarr; Microsoft 365 Copilot Impact.</p>
+
+  <h4 style="color:var(--accent, #0078d4);margin-top:20px;">Option C: CSV Upload &mdash; Third-Party or Manual Surveys</h4>
+  <p><strong>Requires:</strong> Viva Insights subscription. <strong>Role:</strong> Insights Administrator.</p>
+  <ol>
+    <li>Run your Copilot survey using any tool (Microsoft Forms, Qualtrics, SurveyMonkey, etc.). Include the four recommended questions using the exact wording above.</li>
+    <li>Export the results and <strong>convert to a 100-point scale</strong>:</li>
+  </ol>
+  <table style="width:60%;margin:8px 0 8px 24px;">
+    <tr><th>Survey Response</th><th>Normalised Score</th></tr>
+    <tr><td>Strongly Disagree</td><td>0</td></tr>
+    <tr><td>Disagree</td><td>25</td></tr>
+    <tr><td>Neutral</td><td>50</td></tr>
+    <tr><td>Agree</td><td>75</td></tr>
+    <tr><td>Strongly Agree</td><td>100</td></tr>
+  </table>
+  <ol start="3">
+    <li>Format the CSV file with these exact columns (questions must be in this order):</li>
+  </ol>
+  <table style="margin:8px 0 8px 24px;">
+    <tr><th>User AAD ID/Email address</th><th>Question 1</th><th>Question 2</th><th>Question 3</th><th>Question 4</th></tr>
+    <tr><td>user@tenant.com</td><td>75</td><td>25</td><td>50</td><td>100</td></tr>
+    <tr><td>user2@tenant.com</td><td>50</td><td>75</td><td></td><td>75</td></tr>
+  </table>
+  <p style="margin-left:24px;font-size:0.9em;">Leave cells blank for unanswered questions. Download the <a href="https://go.microsoft.com/fwlink/?linkid=2260529">sample CSV template</a> for reference.</p>
+  <ol start="4">
+    <li>Navigate to <code>insights.cloud.microsoft</code> &rarr; <strong>Survey data</strong> &rarr; <strong>Data connections</strong> &rarr; <strong>Manage data sources</strong>.</li>
+    <li>Under <strong>M365 Copilot Impact Survey data upload</strong>, select <strong>Start</strong>.</li>
+    <li>Enter an optional survey name and date range &rarr; browse to your CSV &rarr; <strong>Upload</strong>.</li>
+    <li>Results appear in the Dashboard Sentiment section within <strong>2 days</strong>.</li>
+  </ol>
+
+  <h4 style="color:var(--accent, #0078d4);margin-top:20px;">Option D: Aggregated Results &mdash; Admin Center Upload (No Viva Licence)</h4>
+  <p><strong>Requires:</strong> No Viva Insights licence. <strong>Role:</strong> Global Administrator.</p>
+  <ol>
+    <li>Run your Copilot survey and compute the <strong>% of users who Agreed or Strongly Agreed</strong> with each of the four questions.</li>
+    <li>Navigate to <code>admin.microsoft.com</code> &rarr; <strong>Reports</strong> &rarr; <strong>Adoption Score</strong>.</li>
+    <li>Select <strong>AI adoption score</strong> &rarr; <strong>View details</strong>.</li>
+    <li>Under <strong>Assess Copilot sentiment for your org</strong>, select <strong>Record survey results</strong>.</li>
+    <li>Enter the aggregated percentages for each question &rarr; Save.</li>
+  </ol>
+  <p><strong>Limitation:</strong> This method provides a <strong>tenant-level summary only</strong>. No group filters, no heat maps, no manager team views. If you need those, use Option A, B, or C.</p>
 </div>
 
 <div class="step">
@@ -776,8 +874,15 @@
   <p><em>These are broad approximations based on best available research. Microsoft may update the methodology.</em></p>
 </div>
 
-<h3>Sentiment Page</h3>
-<p>Displays survey response data about user perception. Requires survey platform integration. Filters and heat maps only available with Viva Insights licence or CSV upload.</p>
+<h3>Sentiment Section (within Impact Page)</h3>
+<p>Located within the Impact page, the Sentiment section displays your organisation&rsquo;s survey results alongside <a href="https://www.microsoft.com/worklab/work-trend-index/copilots-earliest-users-teach-us-about-generative-ai-at-work">Microsoft&rsquo;s benchmark data</a> from early Copilot users. It shows:</p>
+<ul>
+  <li><strong>Sentiment results by question</strong> &mdash; Your org&rsquo;s response to each of the four recommended Copilot questions, compared to Microsoft&rsquo;s benchmark percentages. Results can come from Viva Glint, Viva Pulse, or CSV upload. If multiple sources exist, a <strong>Survey</strong> toggle lets you switch between them.</li>
+  <li><strong>Sentiment results by group</strong> (Viva Insights customers only) &mdash; A heat map showing sentiment breakdown across organisational attributes (department, location, job function). Enables leaders to identify which groups are thriving with Copilot vs which need more support.</li>
+  <li><strong>Manager team view</strong> &mdash; Managers see results from their own team only (for Pulse, Glint, and CSV user-level uploads). They can also see aggregated tenant-level results.</li>
+</ul>
+<p><strong>No survey data?</strong> The Sentiment section shows &ldquo;No survey responses available&rdquo; until you configure one of the options in Step 10 above. The <strong>Satisfaction Rate</strong> metric (thumbs up/down) on the Impact page works independently and does not require survey configuration.</p>
+<p>See <a href="#s5">Step 10</a> for the end-to-end setup guide for each survey option.</p>
 
 <h2>5.5 How to Delegate Access (For Dashboard Users)</h2>
 <p><strong>Method 1 — Via Settings:</strong> Viva Insights web app → Settings → Delegation → Add delegates.</p>
@@ -1594,7 +1699,7 @@
   <tr><td>Impact page shows no data</td><td>Less than 7 days since license assignment</td><td>Wait up to 7 days for processing</td></tr>
   <tr><td>Data suppressed (N/A)</td><td>Group size below privacy threshold</td><td>Groups must meet minimum configured size (default 10)</td></tr>
   <tr><td>Managers can&rsquo;t see team data</td><td>Manager Settings not enabled</td><td>Navigate to <code>insights.cloud.microsoft</code> &rarr; Admin &rarr; <strong>Manager Settings</strong> (under Platform Setup) &rarr; Turn on &ldquo;Grant managers scoped access&rdquo;. Wait 1 hour for propagation. Also verify the manager has a populated ManagerID in Entra ID. (See Section 5.3, Step 5)</td></tr>
-  <tr><td>Sentiment page empty</td><td>No survey platform configured</td><td>Configure Viva Glint, Pulse, or upload survey data</td></tr>
+  <tr><td>Sentiment page empty</td><td>No survey data uploaded, or minimum privacy threshold not met</td><td>Configure one of the four options in Step 10. Verify: (a) total survey responses &ge; minimum group size, (b) responses per question &ge; minimum group size, (c) favorable responses per question &ge; minimum group size. The Satisfaction Rate metric on the Impact page works independently and does not require survey configuration.</td></tr>
   <tr><td>Exclusion list not working</td><td>Processing not complete</td><td>Exclusion list changes take up to 5 days to process. Check status at <code>admin.microsoft.com</code> &rarr; Settings &rarr; Microsoft Viva &rarr; Viva Insights &rarr; <strong>Unified exclusion list</strong>.</td></tr>
   <tr><td>Org data not showing</td><td>Missing EffectiveDate or wrong attribute names</td><td>Verify attribute names match exactly; include EffectiveDate. <strong>Note:</strong> M365 Admin Center uses <code>Microsoft_Organization</code> while Viva Insights uses <code>Organization</code> &mdash; they are different field names.</td></tr>
   <tr><td>Org data not showing</td><td>Upload still processing (within 7-day window)</td><td>Org data uploads take up to 7 days to process. Check status: <code>insights.cloud.microsoft</code> &rarr; Admin &rarr; <strong>Data hub</strong> &rarr; verify upload shows &ldquo;Complete&rdquo; (not &ldquo;Processing&rdquo; or &ldquo;Failed&rdquo;). If failed, re-upload with corrected CSV.</td></tr>
