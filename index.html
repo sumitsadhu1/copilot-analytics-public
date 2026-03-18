@@ -61,10 +61,20 @@
   .search-bar { max-width: 900px; margin: 0 auto 24px; position: relative; }
   .search-bar input { width: 100%; padding: 12px 16px 12px 42px; border: 2px solid var(--border); border-radius: 8px; font-size: 0.95em; font-family: 'Segoe UI', Arial, sans-serif; background: var(--card-bg); transition: border-color 0.2s; }
   .search-bar input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,120,212,0.15); }
-  .search-bar::before { content: "\1F50D"; position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 1.1em; pointer-events: none; }
-  .search-bar .clear-btn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.2em; cursor: pointer; color: var(--muted); display: none; }
+  .search-bar::before { content: "\1F50D"; position: absolute; left: 14px; top: 14px; font-size: 1.1em; pointer-events: none; }
+  .search-bar .clear-btn { position: absolute; right: 12px; top: 14px; background: none; border: none; font-size: 1.2em; cursor: pointer; color: var(--muted); display: none; }
   .search-bar .clear-btn:hover { color: var(--text); }
   .no-results { text-align: center; color: var(--muted); padding: 30px; font-size: 0.95em; display: none; }
+
+  /* Deep search results */
+  .search-results { max-width: 900px; margin: -16px auto 24px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); display: none; max-height: 420px; overflow-y: auto; }
+  .search-results .sr-header { padding: 10px 16px; font-size: 0.82em; color: var(--muted); border-bottom: 1px solid var(--border); font-weight: 600; position: sticky; top: 0; background: var(--card-bg); }
+  .search-results a.sr-item { display: block; padding: 10px 16px; text-decoration: none; color: var(--text); border-bottom: 1px solid var(--bg); transition: background 0.15s; }
+  .search-results a.sr-item:hover { background: var(--bg); }
+  .search-results .sr-doc { font-size: 0.75em; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
+  .search-results .sr-heading { font-size: 0.92em; font-weight: 600; color: var(--text); margin: 2px 0; }
+  .search-results .sr-preview { font-size: 0.82em; color: var(--muted); line-height: 1.4; }
+  .search-results .sr-preview mark { background: #fff3cd; color: var(--text); padding: 0 2px; border-radius: 2px; }
 
   @media (max-width: 700px) {
     .card-grid { grid-template-columns: 1fr; }
@@ -95,9 +105,10 @@
 
 <!-- Search -->
 <div class="search-bar">
-  <input type="text" id="docSearch" placeholder="Search documents... (e.g. VFAM, billing, DLP, focus time)" autocomplete="off">
+  <input type="text" id="docSearch" placeholder="Search across all documents... (e.g. sentiment, Glint, partition, hourly rate, VFAM)" autocomplete="off">
   <button class="clear-btn" id="clearSearch" onclick="clearSearch()">&#x2715;</button>
 </div>
+<div class="search-results" id="searchResults"></div>
 <div class="no-results" id="noResults">No documents match your search. Try different keywords.</div>
 
 <!-- DECISION GUIDE -->
@@ -288,6 +299,13 @@
 <script>
 let activeRole = 'all';
 let searchTerm = '';
+let searchIndex = [];
+
+// Load deep search index
+fetch('assets/search-index.json')
+  .then(r => r.json())
+  .then(data => { searchIndex = data; })
+  .catch(() => { console.warn('Search index not available — using card-only search'); });
 
 function filterCards(role) {
   activeRole = role;
@@ -296,17 +314,62 @@ function filterCards(role) {
   applyFilters();
 }
 
+function highlightTerm(text, term) {
+  if (!term) return text;
+  const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return text.replace(new RegExp('(' + escaped + ')', 'gi'), '<mark>$1</mark>');
+}
+
+function deepSearch(term) {
+  const resultsDiv = document.getElementById('searchResults');
+  if (!term || term.length < 2 || searchIndex.length === 0) {
+    resultsDiv.style.display = 'none';
+    return;
+  }
+  const t = term.toLowerCase();
+  const matches = searchIndex.filter(entry =>
+    entry.heading.toLowerCase().includes(t) ||
+    entry.content.toLowerCase().includes(t)
+  ).slice(0, 15); // Show top 15 results
+
+  if (matches.length === 0) {
+    resultsDiv.style.display = 'none';
+    return;
+  }
+
+  let html = '<div class="sr-header">' + matches.length + ' section' + (matches.length > 1 ? 's' : '') + ' found across documents</div>';
+  matches.forEach(m => {
+    // Truncate content preview around the match
+    let preview = m.content;
+    const idx = preview.toLowerCase().indexOf(t);
+    if (idx > 80) {
+      preview = '...' + preview.substring(idx - 50);
+    }
+    if (preview.length > 200) {
+      preview = preview.substring(0, 200) + '...';
+    }
+    preview = highlightTerm(preview, term);
+    const heading = highlightTerm(m.heading, term);
+
+    html += '<a class="sr-item" href="' + m.url + '">';
+    html += '<div class="sr-doc">' + m.doc + '</div>';
+    html += '<div class="sr-heading">' + heading + '</div>';
+    if (preview) html += '<div class="sr-preview">' + preview + '</div>';
+    html += '</a>';
+  });
+  resultsDiv.innerHTML = html;
+  resultsDiv.style.display = '';
+}
+
 function applyFilters() {
   const term = searchTerm.toLowerCase().trim();
   let visibleCount = 0;
   document.querySelectorAll('.card').forEach(card => {
-    // Role filter
     let roleMatch = true;
     if (activeRole !== 'all') {
       const roles = card.getAttribute('data-roles') || '';
       roleMatch = roles.includes(activeRole);
     }
-    // Search filter
     let searchMatch = true;
     if (term) {
       const title = (card.querySelector('h3')?.textContent || '').toLowerCase();
@@ -319,7 +382,6 @@ function applyFilters() {
     card.style.display = visible ? '' : 'none';
     if (visible) visibleCount++;
   });
-  // Show/hide section titles based on visible cards
   document.querySelectorAll('.card-grid').forEach(grid => {
     const hasVisible = Array.from(grid.querySelectorAll('.card')).some(c => c.style.display !== 'none');
     const title = grid.previousElementSibling;
@@ -331,16 +393,14 @@ function applyFilters() {
       title.style.display = hasVisible ? '' : 'none';
     }
   });
-  // Also hide/show the decision guide based on search
   const decision = document.querySelector('.decision');
-  if (decision) {
-    decision.style.display = term ? 'none' : '';
-  }
-  // No results message
+  if (decision) decision.style.display = term ? 'none' : '';
   document.getElementById('noResults').style.display = (visibleCount === 0 && term) ? '' : 'none';
+
+  // Deep search
+  deepSearch(term);
 }
 
-// Search input handler
 const searchInput = document.getElementById('docSearch');
 const clearBtn = document.getElementById('clearSearch');
 searchInput.addEventListener('input', function() {
@@ -353,9 +413,20 @@ function clearSearch() {
   searchInput.value = '';
   searchTerm = '';
   clearBtn.style.display = 'none';
+  document.getElementById('searchResults').style.display = 'none';
   applyFilters();
   searchInput.focus();
 }
+
+// Close search results when clicking outside
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.search-bar') && !e.target.closest('.search-results')) {
+    document.getElementById('searchResults').style.display = 'none';
+  }
+});
+searchInput.addEventListener('focus', function() {
+  if (searchTerm && searchTerm.length >= 2) deepSearch(searchTerm);
+});
 
 // Keyboard shortcut: Cmd/Ctrl+K to focus search
 document.addEventListener('keydown', function(e) {
