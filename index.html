@@ -94,12 +94,12 @@
 <!-- Role filter bar -->
 <div class="role-bar">
   <span style="font-size:0.85em;color:var(--muted);align-self:center;margin-right:8px;">I am a:</span>
-  <button class="role-btn active" onclick="filterCards('all')">Show All</button>
-  <button class="role-btn" onclick="filterCards('admin')">IT Admin</button>
-  <button class="role-btn" onclick="filterCards('leader')">Business Leader</button>
-  <button class="role-btn" onclick="filterCards('analyst')">Analyst</button>
-  <button class="role-btn" onclick="filterCards('governance')">Governance / Security</button>
-  <button class="role-btn" onclick="filterCards('finance')">Finance / Licensing</button>
+  <button class="role-btn active" onclick="filterCards('all', this)">Show All</button>
+  <button class="role-btn" onclick="filterCards('admin', this)">IT Admin</button>
+  <button class="role-btn" onclick="filterCards('leader', this)">Business Leader</button>
+  <button class="role-btn" onclick="filterCards('analyst', this)">Analyst</button>
+  <button class="role-btn" onclick="filterCards('governance', this)">Governance / Security</button>
+  <button class="role-btn" onclick="filterCards('finance', this)">Finance / Licensing</button>
 </div>
 
 
@@ -307,10 +307,10 @@ fetch('assets/search-index.json')
   .then(data => { searchIndex = data; })
   .catch(() => { console.warn('Search index not available — using card-only search'); });
 
-function filterCards(role) {
+function filterCards(role, btn) {
   activeRole = role;
   document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
+  if (btn) btn.classList.add('active');
   applyFilters();
 }
 
