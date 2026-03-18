@@ -66,15 +66,16 @@
   .search-bar .clear-btn:hover { color: var(--text); }
   .no-results { text-align: center; color: var(--muted); padding: 30px; font-size: 0.95em; display: none; }
 
-  /* Deep search results */
-  .search-results { max-width: 900px; margin: -16px auto 24px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.15); display: none; max-height: 420px; overflow-y: auto; position: relative; z-index: 999; }
-  .search-results .sr-header { padding: 10px 16px; font-size: 0.82em; color: var(--muted); border-bottom: 1px solid var(--border); font-weight: 600; position: sticky; top: 0; background: var(--card-bg); }
-  .search-results a.sr-item { display: block; padding: 10px 16px; text-decoration: none; color: var(--text); border-bottom: 1px solid var(--bg); transition: background 0.15s; }
-  .search-results a.sr-item:hover { background: var(--bg); }
-  .search-results .sr-doc { font-size: 0.75em; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
-  .search-results .sr-heading { font-size: 0.92em; font-weight: 600; color: var(--text); margin: 2px 0; }
+  /* Deep search results - inline */
+  .search-results { max-width: 900px; margin: 0 auto 24px; display: none; }
+  .search-results .sr-header { padding: 10px 0; font-size: 0.85em; color: var(--accent); font-weight: 600; border-bottom: 2px solid var(--accent); margin-bottom: 12px; }
+  .search-results .sr-list { list-style: none; padding: 0; margin: 0; }
+  .search-results .sr-item { display: block; padding: 12px 16px; margin-bottom: 8px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; text-decoration: none; color: var(--text); transition: border-color 0.2s, box-shadow 0.2s; }
+  .search-results .sr-item:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+  .search-results .sr-doc { font-size: 0.72em; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .search-results .sr-heading { font-size: 0.95em; font-weight: 600; color: var(--text); margin: 3px 0; }
   .search-results .sr-preview { font-size: 0.82em; color: var(--muted); line-height: 1.4; }
-  .search-results .sr-preview mark { background: #fff3cd; color: var(--text); padding: 0 2px; border-radius: 2px; }
+  .search-results .sr-preview mark { background: #fff3cd; color: var(--text); padding: 1px 3px; border-radius: 2px; font-weight: 600; }
 
   @media (max-width: 700px) {
     .card-grid { grid-template-columns: 1fr; }
@@ -299,13 +300,30 @@
 <script>
 let activeRole = 'all';
 let searchTerm = '';
-let searchIndex = [];
+let searchIndex = null;
 
-// Load deep search index
-fetch('assets/search-index.json')
-  .then(r => r.json())
-  .then(data => { searchIndex = data; })
-  .catch(() => { console.warn('Search index not available — using card-only search'); });
+// Load deep search index with explicit error handling
+var xhr = new XMLHttpRequest();
+xhr.open('GET', 'assets/search-index.json', true);
+xhr.onload = function() {
+  if (xhr.status === 200) {
+    try {
+      searchIndex = JSON.parse(xhr.responseText);
+      console.log('Search index loaded: ' + searchIndex.length + ' entries');
+    } catch(e) {
+      console.error('Search index parse error:', e);
+      searchIndex = [];
+    }
+  } else {
+    console.error('Search index load failed: status ' + xhr.status);
+    searchIndex = [];
+  }
+};
+xhr.onerror = function() {
+  console.error('Search index network error');
+  searchIndex = [];
+};
+xhr.send();
 
 function filterCards(role, btn) {
   activeRole = role;
@@ -316,93 +334,101 @@ function filterCards(role, btn) {
 
 function highlightTerm(text, term) {
   if (!term) return text;
-  const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  var escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   return text.replace(new RegExp('(' + escaped + ')', 'gi'), '<mark>$1</mark>');
 }
 
 function deepSearch(term) {
-  const resultsDiv = document.getElementById('searchResults');
-  if (!term || term.length < 2 || searchIndex.length === 0) {
+  var resultsDiv = document.getElementById('searchResults');
+  if (!term || term.length < 2 || !searchIndex || searchIndex.length === 0) {
     resultsDiv.style.display = 'none';
+    resultsDiv.innerHTML = '';
     return;
   }
-  const t = term.toLowerCase();
-  const matches = searchIndex.filter(entry =>
-    entry.heading.toLowerCase().includes(t) ||
-    entry.content.toLowerCase().includes(t)
-  ).slice(0, 15); // Show top 15 results
+  var t = term.toLowerCase();
+  var matches = [];
+  for (var i = 0; i < searchIndex.length; i++) {
+    var entry = searchIndex[i];
+    if (entry.heading.toLowerCase().indexOf(t) !== -1 || entry.content.toLowerCase().indexOf(t) !== -1) {
+      matches.push(entry);
+      if (matches.length >= 15) break;
+    }
+  }
 
   if (matches.length === 0) {
     resultsDiv.style.display = 'none';
+    resultsDiv.innerHTML = '';
     return;
   }
 
-  let html = '<div class="sr-header">' + matches.length + ' section' + (matches.length > 1 ? 's' : '') + ' found across documents</div>';
-  matches.forEach(m => {
-    // Truncate content preview around the match
-    let preview = m.content;
-    const idx = preview.toLowerCase().indexOf(t);
-    if (idx > 80) {
-      preview = '...' + preview.substring(idx - 50);
-    }
-    if (preview.length > 200) {
-      preview = preview.substring(0, 200) + '...';
-    }
+  var html = '<div class="sr-header">' + matches.length + ' matching section' + (matches.length > 1 ? 's' : '') + ' found across documents</div><div class="sr-list">';
+  for (var j = 0; j < matches.length; j++) {
+    var m = matches[j];
+    var preview = m.content || '';
+    var idx = preview.toLowerCase().indexOf(t);
+    if (idx > 80) preview = '...' + preview.substring(idx - 50);
+    if (preview.length > 200) preview = preview.substring(0, 200) + '...';
     preview = highlightTerm(preview, term);
-    const heading = highlightTerm(m.heading, term);
-
+    var heading = highlightTerm(m.heading, term);
     html += '<a class="sr-item" href="' + m.url + '">';
     html += '<div class="sr-doc">' + m.doc + '</div>';
     html += '<div class="sr-heading">' + heading + '</div>';
     if (preview) html += '<div class="sr-preview">' + preview + '</div>';
     html += '</a>';
-  });
+  }
+  html += '</div>';
   resultsDiv.innerHTML = html;
   resultsDiv.style.display = '';
 }
 
 function applyFilters() {
-  const term = searchTerm.toLowerCase().trim();
-  let visibleCount = 0;
-  document.querySelectorAll('.card').forEach(card => {
-    let roleMatch = true;
+  var term = searchTerm.toLowerCase().trim();
+  var visibleCount = 0;
+  var cards = document.querySelectorAll('.card');
+  for (var i = 0; i < cards.length; i++) {
+    var card = cards[i];
+    var roleMatch = true;
     if (activeRole !== 'all') {
-      const roles = card.getAttribute('data-roles') || '';
-      roleMatch = roles.includes(activeRole);
+      var roles = card.getAttribute('data-roles') || '';
+      roleMatch = roles.indexOf(activeRole) !== -1;
     }
-    let searchMatch = true;
+    var searchMatch = true;
     if (term) {
-      const title = (card.querySelector('h3')?.textContent || '').toLowerCase();
-      const desc = (card.querySelector('p')?.textContent || '').toLowerCase();
-      const keywords = (card.getAttribute('data-keywords') || '').toLowerCase();
-      const badges = (card.querySelector('.card-badge')?.textContent || '').toLowerCase();
-      searchMatch = title.includes(term) || desc.includes(term) || keywords.includes(term) || badges.includes(term);
+      var title = card.querySelector('h3') ? card.querySelector('h3').textContent.toLowerCase() : '';
+      var desc = card.querySelector('p') ? card.querySelector('p').textContent.toLowerCase() : '';
+      var keywords = (card.getAttribute('data-keywords') || '').toLowerCase();
+      var badges = card.querySelector('.card-badge') ? card.querySelector('.card-badge').textContent.toLowerCase() : '';
+      searchMatch = title.indexOf(term) !== -1 || desc.indexOf(term) !== -1 || keywords.indexOf(term) !== -1 || badges.indexOf(term) !== -1;
     }
-    const visible = roleMatch && searchMatch;
+    var visible = roleMatch && searchMatch;
     card.style.display = visible ? '' : 'none';
     if (visible) visibleCount++;
-  });
-  document.querySelectorAll('.card-grid').forEach(grid => {
-    const hasVisible = Array.from(grid.querySelectorAll('.card')).some(c => c.style.display !== 'none');
-    const title = grid.previousElementSibling;
-    const subtitle = title?.previousElementSibling;
-    if (title?.classList.contains('section-subtitle')) {
-      title.style.display = hasVisible ? '' : 'none';
-      if (subtitle?.classList.contains('section-title')) subtitle.style.display = hasVisible ? '' : 'none';
-    } else if (title?.classList.contains('section-title')) {
-      title.style.display = hasVisible ? '' : 'none';
+  }
+  var grids = document.querySelectorAll('.card-grid');
+  for (var g = 0; g < grids.length; g++) {
+    var grid = grids[g];
+    var gridCards = grid.querySelectorAll('.card');
+    var hasVisible = false;
+    for (var c = 0; c < gridCards.length; c++) {
+      if (gridCards[c].style.display !== 'none') { hasVisible = true; break; }
     }
-  });
-  const decision = document.querySelector('.decision');
+    var titleEl = grid.previousElementSibling;
+    var subtitleEl = titleEl ? titleEl.previousElementSibling : null;
+    if (titleEl && titleEl.classList.contains('section-subtitle')) {
+      titleEl.style.display = hasVisible ? '' : 'none';
+      if (subtitleEl && subtitleEl.classList.contains('section-title')) subtitleEl.style.display = hasVisible ? '' : 'none';
+    } else if (titleEl && titleEl.classList.contains('section-title')) {
+      titleEl.style.display = hasVisible ? '' : 'none';
+    }
+  }
+  var decision = document.querySelector('.decision');
   if (decision) decision.style.display = term ? 'none' : '';
-  document.getElementById('noResults').style.display = (visibleCount === 0 && term) ? '' : 'none';
-
-  // Deep search
+  document.getElementById('noResults').style.display = (visibleCount === 0 && term && (!searchIndex || searchIndex.length === 0)) ? '' : 'none';
   deepSearch(term);
 }
 
-const searchInput = document.getElementById('docSearch');
-const clearBtn = document.getElementById('clearSearch');
+var searchInput = document.getElementById('docSearch');
+var clearBtn = document.getElementById('clearSearch');
 searchInput.addEventListener('input', function() {
   searchTerm = this.value;
   clearBtn.style.display = searchTerm ? '' : 'none';
@@ -414,21 +440,11 @@ function clearSearch() {
   searchTerm = '';
   clearBtn.style.display = 'none';
   document.getElementById('searchResults').style.display = 'none';
+  document.getElementById('searchResults').innerHTML = '';
   applyFilters();
   searchInput.focus();
 }
 
-// Close search results when clicking outside
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.search-bar') && !e.target.closest('.search-results')) {
-    document.getElementById('searchResults').style.display = 'none';
-  }
-});
-searchInput.addEventListener('focus', function() {
-  if (searchTerm && searchTerm.length >= 2) deepSearch(searchTerm);
-});
-
-// Keyboard shortcut: Cmd/Ctrl+K to focus search
 document.addEventListener('keydown', function(e) {
   if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
     e.preventDefault();
