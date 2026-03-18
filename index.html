@@ -21,7 +21,7 @@
   .role-btn.active { background: var(--accent); color: #fff; }
 
   /* Section headers */
-  .section-title { font-size: 1.3em; color: var(--primary); font-weight: 700; margin: 30px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--primary); border-left: 4px solid var(--primary); padding-left: 10px; }
+  .section-title { font-size: 1.3em; color: var(--primary); font-weight: 700; margin: 30px 0 16px; border-left: 4px solid var(--primary); padding-left: 10px; }
   .section-subtitle { font-size: 0.9em; color: var(--muted); margin: -12px 0 16px; }
 
   /* Cards */
@@ -32,6 +32,7 @@
   .badge-core { background: #E8F4FD; color: var(--accent); }
   .badge-playbook { background: #FFF3CD; color: #8A6D3B; }
   .badge-artifact { background: #D4EDDA; color: var(--success); }
+  .badge-architecture { background: #E0F0F5; color: #006B6B; }
   .card h3 { font-size: 1.05em; color: var(--primary); margin-bottom: 6px; }
   .card p { font-size: 0.88em; color: var(--muted); flex-grow: 1; margin-bottom: 12px; line-height: 1.5; }
   .card-meta { font-size: 0.78em; color: #999; margin-bottom: 12px; }
@@ -44,7 +45,7 @@
   .card-links { display: flex; gap: 8px; }
 
   /* Decision guide */
-  .decision { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 30px; transition: opacity 0.2s, max-height 0.3s; }
+  .decision { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 30px; max-height: 800px; transition: opacity 0.2s, max-height 0.3s; }
   .decision.hidden { opacity: 0; pointer-events: none; max-height: 0; overflow: hidden; margin: 0; padding: 0; border: none; }
   .decision h3 { color: var(--primary); margin-bottom: 12px; }
   .decision table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
@@ -60,7 +61,7 @@
 
   /* Search bar */
   .search-bar { max-width: 900px; margin: 0 auto 24px; position: relative; }
-  .search-bar input { width: 100%; padding: 12px 16px 12px 42px; border: 2px solid var(--border); border-radius: 8px; font-size: 0.95em; font-family: 'Segoe UI', Arial, sans-serif; background: var(--card-bg); transition: border-color 0.2s; }
+  .search-bar input { width: 100%; padding: 12px 80px 12px 42px; border: 2px solid var(--border); border-radius: 8px; font-size: 0.95em; font-family: 'Segoe UI', Arial, sans-serif; background: var(--card-bg); transition: border-color 0.2s; }
   .search-bar input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,120,212,0.15); }
   .search-bar::before { content: "\1F50D"; position: absolute; left: 14px; top: 14px; font-size: 1.1em; pointer-events: none; }
   .search-bar .clear-btn { position: absolute; right: 12px; top: 14px; background: none; border: none; font-size: 1.2em; cursor: pointer; color: var(--muted); display: none; }
@@ -86,6 +87,7 @@
     .decision { overflow-x: auto; }
     .decision table { min-width: 500px; }
     .search-bar .kbd-hint { display: none; }
+    .search-bar input { padding-right: 40px; }
   }
 </style>
 </head>
@@ -222,7 +224,7 @@
   </div>
 
   <div class="card" data-roles="admin leader governance" data-keywords="multi-agency default priority single tenant delegation AutoCxO hierarchy Your group agency scoping dashboard access manager domain Entra report sharing">
-    <span class="card-badge badge-playbook">ARCHITECTURE</span>
+    <span class="card-badge badge-architecture">ARCHITECTURE</span>
     <h3>Multi-Agency Default-Priority Architecture</h3>
     <p>Solution architecture for multi-agency tenants where each agency sees its own Copilot data by default, but cross-agency visibility is acceptable. Leverages native AutoCxO, delegation, and "Your group" scoping — no lockdowns or partitions required.</p>
     <div class="card-meta">v1.0 &bull; ~12 pages &bull; 10 sections + appendices</div>
@@ -238,7 +240,7 @@
   </div>
 
   <div class="card" data-roles="admin governance" data-keywords="partition isolation multi-agency single tenant VFAM lockdown PowerShell access control risk register org data architecture solution domain CSV agency Entra group-scoped report power bi workspace publish reports">
-    <span class="card-badge badge-playbook">ARCHITECTURE</span>
+    <span class="card-badge badge-architecture">ARCHITECTURE</span>
     <h3>Multi-Agency Isolation Architecture</h3>
     <p>Solution architecture for deploying Copilot Dashboard in a single tenant with multiple independent agencies. Covers partition-based isolation, VFAM lockdown, PowerShell commands, access control matrix, risk register, and org data strategy.</p>
     <div class="card-meta">v1.0 &bull; ~15 pages &bull; 12 sections + appendices</div>
@@ -268,7 +270,7 @@
       <span class="card-role">Analyst</span>
     </div>
     <div class="card-links">
-      <a href="artifacts/Copilot_Analytics_QuickStart_CheatSheet.html">Open</a>
+      <a href="artifacts/Copilot_Analytics_QuickStart_CheatSheet.html">Open Cheat Sheet</a>
       <a href="artifacts/pdfs/Copilot_Analytics_QuickStart_CheatSheet.pdf" class="secondary">PDF</a>
     </div>
   </div>
@@ -439,9 +441,11 @@ function applyFilters() {
 
 var searchInput = document.getElementById('docSearch');
 var clearBtn = document.getElementById('clearSearch');
+var kbdHint = document.querySelector('.kbd-hint');
 searchInput.addEventListener('input', function() {
   searchTerm = this.value;
   clearBtn.style.display = searchTerm ? '' : 'none';
+  if (kbdHint) kbdHint.style.display = searchTerm ? 'none' : '';
   applyFilters();
 });
 
@@ -449,6 +453,7 @@ function clearSearch() {
   searchInput.value = '';
   searchTerm = '';
   clearBtn.style.display = 'none';
+  if (kbdHint) kbdHint.style.display = '';
   document.getElementById('searchResults').style.display = 'none';
   document.getElementById('searchResults').innerHTML = '';
   applyFilters();

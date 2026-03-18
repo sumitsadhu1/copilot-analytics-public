@@ -326,10 +326,13 @@ body.has-nav { padding-top: 56px; }
 .back-to-top:hover { background: var(--accent); }
 
 /* ─── Print ─── */
+/* ─── Scroll-spy current section label ─── */
+.doc-nav-left .current-section { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
 @media print {
   body { max-width: 100%; padding: 0; }
   h1 { page-break-before: always; }
   .callout, table, .step, .step-card { break-inside: avoid; }
-  nav, .doc-nav { display: none; }
+  nav, .doc-nav, .back-to-top { display: none; }
   body.has-nav { padding-top: 0; }
 }
