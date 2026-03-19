@@ -567,16 +567,17 @@ body.has-sidebar header h1 {
 
 /* Diagram container (architecture pages) */
 .diagram-container {
-  background: #1E1E2E;
-  color: #89B4FA;
+  background: #282C34;
+  color: #61AFEF;
   padding: 20px;
   border-radius: var(--radius-md);
-  font-family: 'Cascadia Code', 'Consolas', monospace;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
   white-space: pre;
   overflow-x: auto;
-  line-height: 1.25;
+  line-height: 1.2;
   margin: 20px 0;
   box-shadow: var(--shadow-sm);
+  font-size: 0.9em;
 }
 
 /* Guide selector (Default Priority page) */
