@@ -274,38 +274,6 @@
   .footer a { color: var(--accent-sky); text-decoration: none; }
   .footer a:hover { text-decoration: underline; }
 
-  /* Search bar */
-  .search-bar { max-width: 900px; margin: 0 auto 24px; position: relative; }
-  .search-bar input {
-    width: 100%;
-    padding: 13px 80px 13px 44px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    font-size: 0.95em;
-    font-family: Inter, -apple-system, 'Segoe UI', sans-serif;
-    background: var(--surface);
-    transition: border-color var(--transition), box-shadow var(--transition);
-    color: var(--text);
-  }
-  .search-bar input::placeholder { color: var(--muted); }
-  .search-bar input:focus { outline: none; border-color: var(--accent-sky); box-shadow: 0 0 0 3px rgba(14,165,233,0.12); }
-  .search-bar::before { content: "\1F50D"; position: absolute; left: 15px; top: 14px; font-size: 1.1em; pointer-events: none; }
-  .search-bar .clear-btn { position: absolute; right: 12px; top: 14px; background: none; border: none; font-size: 1.2em; cursor: pointer; color: var(--muted); display: none; transition: color var(--transition); }
-  .search-bar .clear-btn:hover { color: var(--text); }
-  .search-bar .kbd-hint {
-    position: absolute;
-    right: 40px;
-    top: 12px;
-    font-size: 0.7em;
-    color: var(--muted);
-    background: var(--surface-strong);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 3px 7px;
-    pointer-events: none;
-    font-family: system-ui, sans-serif;
-    font-weight: 500;
-  }
   .no-results { text-align: center; color: var(--text-secondary); padding: 30px; font-size: 0.95em; display: none; }
 
   /* Deep search results */
@@ -345,6 +313,63 @@
   .search-results .sr-preview { font-size: 0.82em; color: var(--text-secondary); line-height: 1.55; margin-top: 4px; }
   .search-results .sr-preview mark { background: rgba(56,189,248,0.14); color: var(--text); padding: 1px 4px; border-radius: 3px; font-weight: 600; }
 
+  /* Topic Navigator */
+  .topic-nav {
+    max-width: 900px;
+    margin: 0 auto 28px;
+  }
+  .topic-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .topic-label {
+    font-size: 0.82em;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .topic-clear {
+    font-size: 0.78em;
+    color: var(--accent-sky);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: opacity var(--transition);
+  }
+  .topic-clear:hover { opacity: 0.7; }
+  .topic-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .topic-pill {
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--surface);
+    cursor: pointer;
+    font-size: 0.82em;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all var(--transition);
+    font-family: inherit;
+  }
+  .topic-pill:hover {
+    border-color: var(--border-strong);
+    color: var(--text);
+    background: var(--surface-hover);
+  }
+  .topic-pill.active {
+    border-color: var(--accent-sky);
+    background: var(--accent-sky);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(14,165,233,0.2);
+  }
+
   @media (max-width: 700px) {
     .header { padding: 48px 20px 56px; }
     .header h1 { font-size: 1.8em; }
@@ -353,8 +378,8 @@
     .role-btn { flex-shrink: 0; }
     .decision { overflow-x: auto; }
     .decision table { min-width: 500px; }
-    .search-bar .kbd-hint { display: none; }
-    .search-bar input { padding-right: 40px; }
+    .topic-pills { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .topic-pill { flex-shrink: 0; }
     .container { padding: 24px 16px; }
   }
 </style>
@@ -380,14 +405,34 @@
 </div>
 
 
-<!-- Search -->
-<div class="search-bar">
-  <input type="text" id="docSearch" aria-label="Search all documents" placeholder="Search all documents..." autocomplete="off">
-  <span class="kbd-hint">⌘K</span>
-  <button class="clear-btn" id="clearSearch" onclick="clearSearch()">&#x2715;</button>
+<!-- Topic Navigator -->
+<div class="topic-nav" role="navigation" aria-label="Browse by topic">
+  <div class="topic-header">
+    <span class="topic-label">Explore topics</span>
+    <button class="topic-clear" id="topicClear" style="display:none" onclick="clearTopic()">Clear &times;</button>
+  </div>
+  <div class="topic-pills" id="topicPills">
+    <button class="topic-pill" data-topic="dashboard">Dashboard</button>
+    <button class="topic-pill" data-topic="partition">Partitions</button>
+    <button class="topic-pill" data-topic="assisted hours">Assisted Hours</button>
+    <button class="topic-pill" data-topic="Power BI">Power BI</button>
+    <button class="topic-pill" data-topic="agent">Agents</button>
+    <button class="topic-pill" data-topic="VFAM">VFAM</button>
+    <button class="topic-pill" data-topic="org data">Org Data</button>
+    <button class="topic-pill" data-topic="sentiment">Sentiment</button>
+    <button class="topic-pill" data-topic="delegation">Delegation</button>
+    <button class="topic-pill" data-topic="billing">Billing</button>
+    <button class="topic-pill" data-topic="ROI">ROI</button>
+    <button class="topic-pill" data-topic="multi-agency">Multi-Agency</button>
+    <button class="topic-pill" data-topic="privacy">Privacy</button>
+    <button class="topic-pill" data-topic="template">Templates</button>
+    <button class="topic-pill" data-topic="meeting time">Meetings &amp; Focus</button>
+    <button class="topic-pill" data-topic="licence">Licensing</button>
+  </div>
 </div>
+<input type="hidden" id="docSearch" value="">
 <div class="search-results" id="searchResults"></div>
-<div class="no-results" id="noResults">No documents match your search. Try different keywords.</div>
+<div class="no-results" id="noResults">No matching sections found. Try a different topic.</div>
 
 <!-- DECISION GUIDE -->
 <div class="decision" id="decisionGuide">
@@ -709,34 +754,46 @@ function applyFilters() {
   deepSearch(term);
 }
 
+// Topic pill navigation
 var searchInput = document.getElementById('docSearch');
-var clearBtn = document.getElementById('clearSearch');
-var kbdHint = document.querySelector('.kbd-hint');
-searchInput.addEventListener('input', function() {
-  searchTerm = this.value;
-  clearBtn.style.display = searchTerm ? '' : 'none';
-  if (kbdHint) kbdHint.style.display = searchTerm ? 'none' : '';
+var topicClearBtn = document.getElementById('topicClear');
+var activeTopic = null;
+
+document.getElementById('topicPills').addEventListener('click', function(e) {
+  var pill = e.target.closest('.topic-pill');
+  if (!pill) return;
+  var topic = pill.getAttribute('data-topic');
+
+  // Toggle off if clicking active pill
+  if (activeTopic === topic) {
+    clearTopic();
+    return;
+  }
+
+  // Activate pill
+  activeTopic = topic;
+  var pills = document.querySelectorAll('.topic-pill');
+  for (var i = 0; i < pills.length; i++) pills[i].classList.remove('active');
+  pill.classList.add('active');
+  topicClearBtn.style.display = '';
+
+  // Set search term and trigger deep search + card filter
+  searchTerm = topic;
+  searchInput.value = topic;
   applyFilters();
 });
 
-function clearSearch() {
-  searchInput.value = '';
+function clearTopic() {
+  activeTopic = null;
   searchTerm = '';
-  clearBtn.style.display = 'none';
-  if (kbdHint) kbdHint.style.display = '';
+  searchInput.value = '';
+  var pills = document.querySelectorAll('.topic-pill');
+  for (var i = 0; i < pills.length; i++) pills[i].classList.remove('active');
+  topicClearBtn.style.display = 'none';
   document.getElementById('searchResults').style.display = 'none';
   document.getElementById('searchResults').innerHTML = '';
   applyFilters();
-  searchInput.focus();
 }
-
-document.addEventListener('keydown', function(e) {
-  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-    e.preventDefault();
-    searchInput.focus();
-    searchInput.select();
-  }
-});
 
 function toggleDecision() {
   var d = document.getElementById('decisionGuide');
