@@ -228,7 +228,11 @@
     box-shadow: var(--shadow-card);
   }
   .decision.hidden { opacity: 0; pointer-events: none; max-height: 0; overflow: hidden; margin: 0; padding: 0; border: none; }
-  .decision h3 { color: var(--text); font-weight: 650; margin-bottom: 6px; font-size: 1.08em; }
+  .decision h3 { color: var(--text); font-weight: 650; margin-bottom: 6px; font-size: 1.08em; cursor: pointer; display: flex; align-items: center; justify-content: space-between; }
+  .decision h3 .toggle-icon { font-size: 0.7em; color: var(--muted); transition: transform var(--transition); }
+  .decision.collapsed h3 .toggle-icon { transform: rotate(-90deg); }
+  .decision .decision-body { overflow: hidden; max-height: 600px; opacity: 1; transition: max-height 0.35s ease, opacity 0.25s ease, margin 0.3s ease; margin-top: 12px; }
+  .decision.collapsed .decision-body { max-height: 0; opacity: 0; margin-top: 0; }
   .decision table { width: 100%; border-collapse: collapse; font-size: 0.88em; margin-top: 12px; }
   .decision th {
     background: linear-gradient(135deg, var(--hero-start), var(--hero-mid));
@@ -375,7 +379,8 @@
 
 <!-- DECISION GUIDE -->
 <div class="decision" id="decisionGuide">
-  <h3>📋 What do you need?</h3>
+  <h3 onclick="toggleDecision()">📋 What do you need? <span class="toggle-icon">▼</span></h3>
+  <div class="decision-body">
   <p style="font-size:0.88em;color:var(--muted);margin-bottom:12px;">Use this table to find the right guide for your task.</p>
   <table>
     <tr><th>If you need to...</th><th>Start here</th></tr>
@@ -389,6 +394,7 @@
     <tr><td>Get a quick-start checklist for implementation</td><td><a href="artifacts/Copilot_Analytics_QuickStart_CheatSheet.html">Quick-Start Cheat Sheet</a></td></tr>
     <tr><td>Answer common questions</td><td><a href="artifacts/Copilot_Analytics_FAQ.html">FAQ</a></td></tr>
   </table>
+  </div>
 </div>
 
 <!-- CORE GUIDES -->
@@ -719,6 +725,11 @@ document.addEventListener('keydown', function(e) {
     searchInput.select();
   }
 });
+
+function toggleDecision() {
+  var d = document.getElementById('decisionGuide');
+  if (d) d.classList.toggle('collapsed');
+}
 </script>
 
 </body>
