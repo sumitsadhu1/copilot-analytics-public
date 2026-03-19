@@ -6,295 +6,11 @@
     <title>Solution Architecture: Copilot Analytics with Agency-Default Views for Multi-Agency Single Tenant</title>
     <link rel="stylesheet" href="../../assets/docs-style.css">
 <style>
-        :root {
-            --primary-color: #005a9e;
-            --secondary-color: #0078d4;
-            --bg-color: #f3f2f1;
-            --text-color: #323130;
-            --border-color: #edebe9;
-            --success-color: #107c10;
-            --danger-color: #a4262c;
-            --warning-bg: #fff4ce;
-            --warning-border: #d83b01;
-        }
-
-        body {
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--bg-color);
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
-
-        /* Sidebar Navigation — scoped to avoid overriding .doc-nav */
-        .sidebar-nav {
-            width: 300px;
-            background-color: #ffffff;
-            height: calc(100vh - 44px);
-            position: fixed;
-            top: 44px;
-            overflow-y: auto;
-            border-right: 1px solid var(--border-color);
-            padding: 20px;
-            box-sizing: border-box;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
-        }
-
-        .sidebar-nav h3 {
-            color: var(--primary-color);
-            font-size: 1.1em;
-            margin-top: 0;
-        }
-
-        .sidebar-nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .sidebar-nav li {
-            margin-bottom: 10px;
-        }
-
-        .sidebar-nav a {
-            text-decoration: none;
-            color: var(--text-color);
-            font-size: 0.95em;
-            display: block;
-            padding: 5px 8px;
-            border-radius: 4px;
-            transition: background-color 0.2s;
-        }
-
-        .sidebar-nav a:hover {
-            background-color: var(--bg-color);
-            color: var(--primary-color);
-        }
-
-        /* Main Content */
-        main {
-            margin-left: 300px;
-            padding: 40px;
-            max-width: 1000px;
-            background-color: #ffffff;
-            min-height: 100vh;
-            box-sizing: border-box;
-            box-shadow: 0 0 10px rgba(0,0,0,0.05);
-        }
-
-        header {
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-        }
-
-        h1 {
-            color: var(--primary-color);
-            font-size: 2.2em;
-            margin: 0 0 10px 0;
-        }
-
-        h2 {
-            color: var(--secondary-color);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 8px;
-            margin-top: 40px;
-        }
-
-        h3 {
-            color: #444;
-            margin-top: 25px;
-        }
-
-        /* Callouts & Alerts */
-        .alert {
-            padding: 15px 20px;
-            background-color: var(--warning-bg);
-            border-left: 5px solid var(--warning-border);
-            margin: 20px 0;
-            border-radius: 0 4px 4px 0;
-        }
-
-        .alert strong {
-            color: var(--warning-border);
-        }
-
-        .highlight-box {
-            background-color: #f0f6ff;
-            border: 1px solid #cce3ff;
-            padding: 20px;
-            border-radius: 6px;
-            margin: 20px 0;
-        }
-
-        /* Tables */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 0.95em;
-        }
-
-        th, td {
-            border: 1px solid var(--border-color);
-            padding: 12px 15px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #faf9f8;
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        tr:nth-child(even) {
-            background-color: #fdfdfd;
-        }
-
-        /* Status Badges */
-        .pass { color: var(--success-color); font-weight: bold; }
-        .fail { color: var(--danger-color); font-weight: bold; }
-        .badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.85em;
-            font-weight: 600;
-        }
-        .badge-p0 { background-color: #fde7e9; color: var(--danger-color); }
-        .badge-p1 { background-color: #fff4ce; color: #8a8886; }
-        .badge-p2 { background-color: #e1dfdd; color: #323130; }
-
-        /* Code & Preformatted */
-        pre {
-            background-color: #282c34;
-            color: #abb2bf;
-            padding: 15px;
-            border-radius: 6px;
-            overflow-x: auto;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.9em;
-            line-height: 1.4;
-        }
-
-        code {
-            font-family: 'Consolas', 'Monaco', monospace;
-            background-color: #f3f2f1;
-            padding: 2px 5px;
-            border-radius: 3px;
-            color: #d83b01;
-        }
-
-        pre code {
-            background-color: transparent;
-            color: inherit;
-            padding: 0;
-        }
-
-        /* Architecture Diagram Styling */
-        .diagram-container {
-            background-color: #282c34;
-            color: #61afef;
-            padding: 20px;
-            border-radius: 8px;
-            font-family: monospace;
-            white-space: pre;
-            overflow-x: auto;
-            line-height: 1.2;
-            margin: 20px 0;
-        }
-
-        /* Runbook Steps */
-        .step-card {
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 20px;
-            margin-bottom: 20px;
-            background: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        }
-        .step-card h4 {
-            margin-top: 0;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .step-number {
-            background: var(--primary-color);
-            color: white;
-            width: 24px;
-            height: 24px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-size: 0.8em;
-        }
-
-        /* Comparison Banner */
-        .guide-selector {
-            display: flex;
-            gap: 12px;
-            margin: 20px 0;
-        }
-        .guide-selector a {
-            flex: 1;
-            display: block;
-            padding: 14px 18px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 0.92em;
-            text-align: center;
-            transition: transform 0.15s;
-        }
-        .guide-selector a:hover {
-            transform: translateY(-2px);
-        }
-        .guide-selector .current {
-            background: #e8f4fd;
-            border: 2px solid var(--secondary-color);
-            color: var(--secondary-color);
-            font-weight: 700;
-            cursor: default;
-        }
-        .guide-selector .other {
-            background: #f3f2f1;
-            border: 2px solid var(--border-color);
-            color: var(--text-color);
-            font-weight: 600;
-        }
-        .guide-selector .other:hover {
-            border-color: var(--secondary-color);
-        }
-
-        /* ─── Print overrides for sidebar layout ─── */
-        @media print {
-            body {
-                display: block;
-                background: #fff;
-            }
-            .sidebar-nav {
-                display: none !important;
-            }
-            main {
-                margin-left: 0;
-                padding: 0;
-                max-width: 100%;
-                box-shadow: none;
-            }
-            /* Remove link styling in PDF — show as plain text */
-            a[href] {
-                color: inherit !important;
-                text-decoration: none !important;
-                pointer-events: none;
-            }
-        }
-    </style>
+  /* Page-specific: code color for architecture page */
+  code { color: var(--warning); }
+</style>
 </head>
-<body class="has-nav">
+<body class="has-nav has-sidebar">
 <nav class="doc-nav">
   <div class="doc-nav-left">
     <a href="../../index.html" class="hub-link">&#8592; Documentation Hub</a>
@@ -308,7 +24,10 @@
   </div>
 </nav>
 
-    <nav class="sidebar-nav">
+<button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle navigation">&#9776;</button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <nav class="sidebar-nav" id="sidebarNav">
         <h3>Solution Architecture</h3>
         <ul>
             <li><a href="#which-guide">Which Guide Do I Need?</a></li>
@@ -342,7 +61,7 @@
             <p>There are <strong>two</strong> multi-agency architecture guides. Choose based on your data-sharing posture:</p>
             <div class="guide-selector">
                 <span class="current">&#9654; You are here<br><strong>Default-Priority (Open)</strong><br><span style="font-size:0.82em;font-weight:400;">Agencies see their own data by default; cross-agency visibility is acceptable</span></span>
-                <a class="other" href="../../artifacts/pdfs/Copilot_Multi_Agency_Isolation_Architecture.pdf">Go to<br><strong>Isolation Architecture</strong><br><span style="font-size:0.82em;">Agency A <em>cannot</em> see Agency B&rsquo;s data (regulatory/sovereign requirement)</span></a>
+                <a class="other" href="Copilot_Multi_Agency_Isolation_Architecture.html">Go to<br><strong>Isolation Architecture</strong><br><span style="font-size:0.82em;">Agency A <em>cannot</em> see Agency B&rsquo;s data (regulatory/sovereign requirement)</span></a>
             </div>
             <table>
                 <thead>
@@ -358,7 +77,7 @@
                 </tbody>
             </table>
             <div class="highlight-box" style="border-left:4px solid var(--success-color);">
-                <strong>Decision shortcut:</strong> If any agency has stated &ldquo;we must not see other agencies&rsquo; data&rdquo; as a compliance or regulatory requirement, use the <a href="../../artifacts/pdfs/Copilot_Multi_Agency_Isolation_Architecture.pdf">Isolation Architecture</a> guide. If the requirement is &ldquo;we want to see <em>our</em> data first and by default,&rdquo; you are in the right place.
+                <strong>Decision shortcut:</strong> If any agency has stated &ldquo;we must not see other agencies&rsquo; data&rdquo; as a compliance or regulatory requirement, use the <a href="Copilot_Multi_Agency_Isolation_Architecture.html">Isolation Architecture</a> guide. If the requirement is &ldquo;we want to see <em>our</em> data first and by default,&rdquo; you are in the right place.
             </div>
         </section>
 
@@ -393,7 +112,7 @@
 
             <div class="highlight-box" style="border-left:4px solid var(--success-color);">
                 <strong>Key Difference from the Isolation Architecture:</strong><br>
-                The <a href="../../artifacts/pdfs/Copilot_Multi_Agency_Isolation_Architecture.pdf">Isolation Architecture</a> disables native dashboard features (AutoCxO, Delegation, Agent Dashboard) to prevent cross-agency visibility. This guide <strong>embraces</strong> those features &mdash; they naturally scope data to the viewer&rsquo;s management hierarchy, which is exactly the &ldquo;agency-default&rdquo; experience.
+                The <a href="Copilot_Multi_Agency_Isolation_Architecture.html">Isolation Architecture</a> disables native dashboard features (AutoCxO, Delegation, Agent Dashboard) to prevent cross-agency visibility. This guide <strong>embraces</strong> those features &mdash; they naturally scope data to the viewer&rsquo;s management hierarchy, which is exactly the &ldquo;agency-default&rdquo; experience.
             </div>
 
             <div class="highlight-box">
@@ -488,7 +207,7 @@
                         <td>Disable all native features, partition-only reporting.</td>
                         <td class="pass">&#x2705; Pass</td>
                         <td class="fail">&#x274C; Overkill</td>
-                        <td><strong>NOT REQUIRED.</strong> Over-engineers when isolation isn&rsquo;t needed. See <a href="../../artifacts/pdfs/Copilot_Multi_Agency_Isolation_Architecture.pdf">Isolation guide</a> if needed.</td>
+                        <td><strong>NOT REQUIRED.</strong> Over-engineers when isolation isn&rsquo;t needed. See <a href="Copilot_Multi_Agency_Isolation_Architecture.html">Isolation guide</a> if needed.</td>
                     </tr>
                 </tbody>
             </table>
@@ -553,7 +272,7 @@
 
             <div class="highlight-box">
                 <strong>What about &ldquo;Your company&rdquo;?</strong><br>
-                Agency leaders <em>can</em> toggle to &ldquo;Your company&rdquo; and see aggregate data across all agencies. In this architecture, that is explicitly acceptable (FR-06). If it is not acceptable, use the <a href="../../artifacts/pdfs/Copilot_Multi_Agency_Isolation_Architecture.pdf">Isolation Architecture</a> instead.
+                Agency leaders <em>can</em> toggle to &ldquo;Your company&rdquo; and see aggregate data across all agencies. In this architecture, that is explicitly acceptable (FR-06). If it is not acceptable, use the <a href="Copilot_Multi_Agency_Isolation_Architecture.html">Isolation Architecture</a> instead.
             </div>
         </section>
 
@@ -1069,7 +788,7 @@ Two independent trees =            &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x25
                     <tr>
                         <td>Agency later requires hard isolation (regulatory change)</td>
                         <td>Medium</td>
-                        <td>Migrate to the <a href="../../artifacts/pdfs/Copilot_Multi_Agency_Isolation_Architecture.pdf">Isolation Architecture</a>. The partition structure (if created in Phase 4) carries over. The main change is adding the Phase 1 lockdown (disable AutoCxO, Delegation, Agent Dashboard for agency users).</td>
+                        <td>Migrate to the <a href="Copilot_Multi_Agency_Isolation_Architecture.html">Isolation Architecture</a>. The partition structure (if created in Phase 4) carries over. The main change is adding the Phase 1 lockdown (disable AutoCxO, Delegation, Agent Dashboard for agency users).</td>
                     </tr>
                 </tbody>
             </table>
@@ -1079,7 +798,7 @@ Two independent trees =            &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x25
         <section id="discovery">
             <h2>10. Discovery Questions for Customer</h2>
             <ol>
-                <li><strong>Is cross-agency data visibility acceptable, or is hard isolation required?</strong> (If isolation is required, use the <a href="../../artifacts/pdfs/Copilot_Multi_Agency_Isolation_Architecture.pdf">Isolation Architecture</a> instead.)</li>
+                <li><strong>Is cross-agency data visibility acceptable, or is hard isolation required?</strong> (If isolation is required, use the <a href="Copilot_Multi_Agency_Isolation_Architecture.html">Isolation Architecture</a> instead.)</li>
                 <li><strong>How is the Entra ID manager hierarchy structured?</strong> Does each agency CEO sit at the top of an independent tree, or is there a shared parent?</li>
                 <li><strong>How many agencies, and how many employees per agency?</strong> (Each agency needs enough employees to meet the minimum group size threshold for &ldquo;Your group&rdquo; to display data.)</li>
                 <li><strong>Do agency CEOs want to delegate dashboard access to their VPs and directors?</strong> (Determines whether to actively configure delegation in Phase 2.)</li>
@@ -1164,7 +883,28 @@ Get-MgUser -All -Property DisplayName,UserPrincipalName,Manager `
     }
   });
 })();
+<script>
+(function(){
+  var toggle = document.getElementById('sidebarToggle');
+  var sidebar = document.getElementById('sidebarNav');
+  var overlay = document.getElementById('sidebarOverlay');
+  if (toggle && sidebar && overlay) {
+    toggle.addEventListener('click', function() {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('open');
+    });
+    overlay.addEventListener('click', function() {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('open');
+    });
+    sidebar.addEventListener('click', function(e) {
+      if (e.target.tagName === 'A') {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('open');
+      }
+    });
+  }
+})();
 </script>
-
 </body>
 </html>

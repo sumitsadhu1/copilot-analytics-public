@@ -6,24 +6,31 @@
 <title>Copilot Analytics — Quick-Start Cheat Sheet</title>
 <link rel="stylesheet" href="../assets/docs-style.css">
 <style>
+  /* Cheat sheet: intentionally compact for A4 print */
   @page { size: A4; margin: 12mm; }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 8.5pt; color: #222; max-width: 210mm; margin: 0 auto; padding: 10px; line-height: 1.35; }
-  h1 { font-size: 14pt; color: #1F4E79; text-align: center; margin-bottom: 2px; }
-  .subtitle { text-align: center; font-size: 8pt; color: #666; margin-bottom: 8px; border-bottom: 2px solid #1F4E79; padding-bottom: 6px; }
-  h2 { font-size: 9.5pt; color: #1F4E79; margin: 8px 0 3px; padding: 2px 6px; background: #E8F0FE; border-radius: 3px; }
+  body { font-size: 8.5pt; max-width: 210mm; padding: 10px; line-height: 1.35; }
+  h1 { font-size: 14pt; text-align: center; margin-bottom: 2px; border-bottom: none; }
+  .subtitle { text-align: center; font-size: 8pt; margin-bottom: 8px; border-bottom: 2px solid var(--primary); padding-bottom: 6px; }
+  h2 { font-size: 9.5pt; margin: 8px 0 3px; padding: 2px 6px; background: #EDF2F7; border-radius: 3px; border-bottom: none; }
   .cols { display: flex; gap: 10px; }
   .col { flex: 1; }
   ul { list-style: none; padding: 0; margin: 0 0 4px; }
   ul li { padding: 2px 0 2px 14px; position: relative; font-size: 8pt; }
-  ul li::before { content: "☐"; position: absolute; left: 0; font-weight: 700; color: #28A745; }
-  table { width: 100%; border-collapse: collapse; font-size: 7.5pt; margin: 2px 0 6px; }
-  th { background: #1F4E79; color: #fff; padding: 3px 5px; text-align: left; font-size: 7.5pt; }
-  td { padding: 2px 5px; border: 1px solid #ddd; }
-  tr:nth-child(even) td { background: #F5F8FC; }
-  code { background: #EEF2F7; padding: 0 3px; border-radius: 2px; font-family: 'Cascadia Code', Consolas, monospace; font-size: 7.5pt; }
-  .footer { text-align: center; font-size: 7pt; color: #999; margin-top: 6px; border-top: 1px solid #ddd; padding-top: 4px; }
-  .warn { background: #FFF3CD; border-left: 3px solid #FFC107; padding: 3px 6px; font-size: 7.5pt; margin: 4px 0; border-radius: 2px; }
+  ul li::before { content: "☐"; position: absolute; left: 0; font-weight: 700; color: var(--success); }
+  table { font-size: 7.5pt; margin: 2px 0 6px; }
+  th { font-size: 7.5pt; padding: 3px 5px; }
+  td { padding: 2px 5px; }
+  code { font-size: 7.5pt; padding: 0 3px; }
+  .footer { text-align: center; font-size: 7pt; color: var(--text-muted); margin-top: 6px; border-top: 1px solid var(--border); padding-top: 4px; }
+  .warn { background: #FFF8EC; border-left: 3px solid var(--warning); padding: 3px 6px; font-size: 7.5pt; margin: 4px 0; border-radius: 3px; }
+  /* Mobile: let it breathe */
+  @media (max-width: 768px) {
+    body { max-width: 100%; font-size: 14px; }
+    .cols { flex-direction: column; }
+    h1 { font-size: 1.4em; }
+    h2 { font-size: 1em; }
+    ul li, td, th, code { font-size: inherit; }
+  }
 </style>
 </head>
 <body class="has-nav">

@@ -6,253 +6,11 @@
     <title>Solution Architecture: Copilot Dashboard & Analytics for Multi-Agency Single Tenant</title>
     <link rel="stylesheet" href="../../assets/docs-style.css">
 <style>
-        :root {
-            --primary-color: #005a9e;
-            --secondary-color: #0078d4;
-            --bg-color: #f3f2f1;
-            --text-color: #323130;
-            --border-color: #edebe9;
-            --success-color: #107c10;
-            --danger-color: #a4262c;
-            --warning-bg: #fff4ce;
-            --warning-border: #d83b01;
-        }
-
-        body {
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--bg-color);
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
-
-        /* Sidebar Navigation — scoped to avoid overriding .doc-nav */
-        .sidebar-nav {
-            width: 300px;
-            background-color: #ffffff;
-            height: calc(100vh - 44px);
-            position: fixed;
-            top: 44px;
-            overflow-y: auto;
-            border-right: 1px solid var(--border-color);
-            padding: 20px;
-            box-sizing: border-box;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
-        }
-
-        .sidebar-nav h3 {
-            color: var(--primary-color);
-            font-size: 1.1em;
-            margin-top: 0;
-        }
-
-        .sidebar-nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .sidebar-nav li {
-            margin-bottom: 10px;
-        }
-
-        .sidebar-nav a {
-            text-decoration: none;
-            color: var(--text-color);
-            font-size: 0.95em;
-            display: block;
-            padding: 5px 8px;
-            border-radius: 4px;
-            transition: background-color 0.2s;
-        }
-
-        .sidebar-nav a:hover {
-            background-color: var(--bg-color);
-            color: var(--primary-color);
-        }
-
-        /* Main Content */
-        main {
-            margin-left: 300px;
-            padding: 40px;
-            max-width: 1000px;
-            background-color: #ffffff;
-            min-height: 100vh;
-            box-sizing: border-box;
-            box-shadow: 0 0 10px rgba(0,0,0,0.05);
-        }
-
-        header {
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-        }
-
-        h1 {
-            color: var(--primary-color);
-            font-size: 2.2em;
-            margin: 0 0 10px 0;
-        }
-
-        h2 {
-            color: var(--secondary-color);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 8px;
-            margin-top: 40px;
-        }
-
-        h3 {
-            color: #444;
-            margin-top: 25px;
-        }
-
-        /* Callouts & Alerts */
-        .alert {
-            padding: 15px 20px;
-            background-color: var(--warning-bg);
-            border-left: 5px solid var(--warning-border);
-            margin: 20px 0;
-            border-radius: 0 4px 4px 0;
-        }
-
-        .alert strong {
-            color: var(--warning-border);
-        }
-
-        .highlight-box {
-            background-color: #f0f6ff;
-            border: 1px solid #cce3ff;
-            padding: 20px;
-            border-radius: 6px;
-            margin: 20px 0;
-        }
-
-        /* Tables */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 0.95em;
-        }
-
-        th, td {
-            border: 1px solid var(--border-color);
-            padding: 12px 15px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #faf9f8;
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        tr:nth-child(even) {
-            background-color: #fdfdfd;
-        }
-
-        /* Status Badges */
-        .pass { color: var(--success-color); font-weight: bold; }
-        .fail { color: var(--danger-color); font-weight: bold; }
-        .badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.85em;
-            font-weight: 600;
-        }
-        .badge-p0 { background-color: #fde7e9; color: var(--danger-color); }
-        .badge-p1 { background-color: #fff4ce; color: #8a8886; }
-        .badge-p2 { background-color: #e1dfdd; color: #323130; }
-
-        /* Code & Preformatted */
-        pre {
-            background-color: #282c34;
-            color: #abb2bf;
-            padding: 15px;
-            border-radius: 6px;
-            overflow-x: auto;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.9em;
-            line-height: 1.4;
-        }
-
-        code {
-            font-family: 'Consolas', 'Monaco', monospace;
-            background-color: #f3f2f1;
-            padding: 2px 5px;
-            border-radius: 3px;
-            color: #d83b01;
-        }
-
-        pre code {
-            background-color: transparent;
-            color: inherit;
-            padding: 0;
-        }
-
-        /* Architecture Diagram Styling */
-        .diagram-container {
-            background-color: #282c34;
-            color: #61afef;
-            padding: 20px;
-            border-radius: 8px;
-            font-family: monospace;
-            white-space: pre;
-            overflow-x: auto;
-            line-height: 1.2;
-            margin: 20px 0;
-        }
-
-        /* Runbook Steps */
-        .step-card {
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 20px;
-            margin-bottom: 20px;
-            background: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        }
-        .step-card h4 {
-            margin-top: 0;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .step-number {
-            background: var(--primary-color);
-            color: white;
-            width: 24px;
-            height: 24px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-size: 0.8em;
-        }
-
-        /* ─── Print overrides for sidebar layout ─── */
-        @media print {
-            body {
-                display: block;
-                background: #fff;
-            }
-            .sidebar-nav {
-                display: none !important;
-            }
-            main {
-                margin-left: 0;
-                padding: 0;
-                max-width: 100%;
-                box-shadow: none;
-            }
-        }
-    </style>
+  /* Page-specific: code color for architecture page */
+  code { color: var(--warning); }
+</style>
 </head>
-<body class="has-nav">
+<body class="has-nav has-sidebar">
 <nav class="doc-nav">
   <div class="doc-nav-left">
     <a href="../../index.html" class="hub-link">&#8592; Documentation Hub</a>
@@ -266,7 +24,10 @@
   </div>
 </nav>
 
-    <nav class="sidebar-nav">
+<button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle navigation">&#9776;</button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <nav class="sidebar-nav" id="sidebarNav">
         <h3>Solution Architecture</h3>
         <ul>
             <li><a href="#exec-summary">1. Executive Summary</a></li>
@@ -1262,5 +1023,28 @@ Get-VivaModuleFeaturePolicy -ModuleId VivaInsights</code></pre>
 })();
 </script>
 
+<script>
+(function(){
+  var toggle = document.getElementById('sidebarToggle');
+  var sidebar = document.getElementById('sidebarNav');
+  var overlay = document.getElementById('sidebarOverlay');
+  if (toggle && sidebar && overlay) {
+    toggle.addEventListener('click', function() {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('open');
+    });
+    overlay.addEventListener('click', function() {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('open');
+    });
+    sidebar.addEventListener('click', function(e) {
+      if (e.target.tagName === 'A') {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('open');
+      }
+    });
+  }
+})();
+</script>
 </body>
 </html>
