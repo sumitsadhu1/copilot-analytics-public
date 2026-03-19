@@ -1,57 +1,61 @@
 /*
  * Copilot Analytics Documentation — Shared Style System
- * Version: 2.0 | March 2026
+ * Version: 3.0 | March 2026
  *
  * Apply to all documents via: <link rel="stylesheet" href="../../assets/docs-style.css">
  * (adjust relative path based on document location)
  *
- * Unified Fluent-inspired design across all page layouts:
- *   - Single-column docs (core guides, playbooks, artifacts)
- *   - Sidebar docs (architecture guides)
+ * Design aligned with FastTrack (microsoft.github.io/FastTrack/) light theme:
+ *   - Inter / Segoe UI font stack
+ *   - Sky blue / violet accent colors
+ *   - Glass surface cards
+ *   - Subtle gradient backgrounds
  */
 
 /* ─── Design Tokens ─── */
 :root {
-  --primary: #1B3A5C;
-  --primary-light: #264F78;
-  --secondary: #2B6CB0;
-  --accent: #0078D4;
-  --accent-hover: #106EBE;
-  --success: #107C10;
-  --warning: #CA5010;
-  --danger: #C4314B;
-  --info: #0099BC;
-  --text: #242424;
-  --text-secondary: #616161;
-  --text-muted: #707070;
-  --bg: #FFFFFF;
-  --bg-alt: #F5F5F5;
-  --bg-subtle: #FAFAFA;
-  --border: #E0E0E0;
-  --border-subtle: #F0F0F0;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-  --shadow-md: 0 2px 8px rgba(0,0,0,0.08);
-  --shadow-lg: 0 4px 16px rgba(0,0,0,0.10);
-  --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --primary: #0f172a;
+  --primary-light: #1e3a5f;
+  --secondary: #0284c7;
+  --accent: #0284c7;
+  --accent-hover: #0369a1;
+  --accent-violet: #7c3aed;
+  --success: #047857;
+  --warning: #b45309;
+  --danger: #dc2626;
+  --info: #0284c7;
+  --text: rgba(0, 0, 0, 0.87);
+  --text-secondary: rgba(0, 0, 0, 0.55);
+  --text-muted: rgba(0, 0, 0, 0.4);
+  --bg: #fafafa;
+  --bg-alt: rgba(0, 0, 0, 0.025);
+  --bg-subtle: rgba(255, 255, 255, 0.74);
+  --border: rgba(0, 0, 0, 0.08);
+  --border-subtle: rgba(0, 0, 0, 0.05);
+  --border-strong: rgba(0, 0, 0, 0.14);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.04), 0 12px 32px rgba(0,0,0,0.08);
+  --shadow-lg: 0 24px 80px rgba(15, 23, 42, 0.08);
+  --transition: 220ms ease;
   /* Aliases for architecture pages that use --*-color tokens */
-  --primary-color: #1B3A5C;
-  --secondary-color: #0078D4;
-  --bg-color: #F5F5F5;
-  --text-color: #242424;
-  --border-color: #E0E0E0;
-  --success-color: #107C10;
-  --danger-color: #C4314B;
-  --warning-bg: #FFF4CE;
-  --warning-border: #CA5010;
+  --primary-color: #0f172a;
+  --secondary-color: #0284c7;
+  --bg-color: #fafafa;
+  --text-color: rgba(0, 0, 0, 0.87);
+  --border-color: rgba(0, 0, 0, 0.08);
+  --success-color: #047857;
+  --danger-color: #dc2626;
+  --warning-bg: rgba(245,158,11,0.10);
+  --warning-border: #b45309;
 }
 
 /* ─── Base ─── */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: 'Segoe UI Variable', 'Segoe UI', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: var(--text);
   line-height: 1.65;
   max-width: 960px;
@@ -67,10 +71,10 @@ h1 {
   color: var(--primary);
   font-size: 1.8em;
   font-weight: 700;
-  border-bottom: 3px solid var(--primary);
+  border-bottom: 2px solid var(--border-strong);
   padding-bottom: 10px;
   margin: 40px 0 16px;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   page-break-before: always;
 }
 h1:first-of-type { page-break-before: avoid; }
@@ -106,16 +110,17 @@ a { color: var(--accent); transition: color var(--transition); }
 a:hover { color: var(--accent-hover); }
 
 code {
-  background: #EDF2F7;
+  background: rgba(0,0,0,0.04);
   padding: 2px 6px;
   border-radius: 4px;
   font-family: 'Cascadia Code', 'Consolas', 'Monaco', monospace;
   font-size: 0.88em;
+  border: 1px solid var(--border);
 }
 
 pre {
-  background: #1E1E2E;
-  color: #CDD6F4;
+  background: #1e293b;
+  color: #e2e8f0;
   padding: 16px;
   border-radius: var(--radius-sm);
   overflow-x: auto;
@@ -124,6 +129,7 @@ pre {
   line-height: 1.5;
   margin: 12px 0 20px;
   box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(0,0,0,0.1);
 }
 pre code { background: transparent; color: inherit; padding: 0; }
 
@@ -137,21 +143,22 @@ table {
   overflow: hidden;
 }
 th {
-  background: linear-gradient(135deg, var(--primary), var(--primary-light));
-  color: #fff;
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--text);
   padding: 11px 14px;
   text-align: left;
-  font-weight: 600;
+  font-weight: 650;
   font-size: 0.93em;
+  border-bottom: 1px solid var(--border-strong);
 }
 td {
   padding: 9px 14px;
-  border: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border);
   vertical-align: top;
   color: var(--text-secondary);
 }
-tr:nth-child(even) td { background: var(--bg-subtle); }
-tr:hover td { background: rgba(0,120,212,0.03); }
+tr:nth-child(even) td { background: var(--bg-alt); }
+tr:hover td { background: rgba(56,189,248,0.06); }
 
 /* ─── Callout Boxes ─── */
 .callout {
@@ -163,11 +170,11 @@ tr:hover td { background: rgba(0,120,212,0.03); }
   line-height: 1.6;
 }
 .callout-title { font-weight: 700; margin-bottom: 6px; }
-.callout.tip     { border-color: var(--success); background: #E6F4E6; }
-.callout.warning { border-color: var(--warning); background: #FFF8EC; }
-.callout.danger  { border-color: var(--danger);  background: #FDE7E9; }
-.callout.info    { border-color: var(--info);     background: #E1F5FE; }
-.callout.new     { border-color: #7B2FBE;        background: #F3E8FF; }
+.callout.tip     { border-color: var(--success); background: rgba(16,185,129,0.08); }
+.callout.warning { border-color: var(--warning); background: rgba(245,158,11,0.08); }
+.callout.danger  { border-color: var(--danger);  background: rgba(220,38,38,0.06); }
+.callout.info    { border-color: var(--info);     background: rgba(56,189,248,0.08); }
+.callout.new     { border-color: #7B2FBE;        background: rgba(139,92,246,0.06); }
 .callout.new .callout-title { color: #7B2FBE; }
 
 /* Alternate callout class names (used by playbooks) */
@@ -280,7 +287,7 @@ tr:hover td { background: rgba(0,120,212,0.03); }
 /* ─── Alert Box (for architecture docs) ─── */
 .alert {
   padding: 16px 20px;
-  background: #FFF8EC;
+  background: rgba(245,158,11,0.08);
   border-left: 4px solid var(--warning);
   margin: 20px 0;
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
@@ -289,8 +296,8 @@ tr:hover td { background: rgba(0,120,212,0.03); }
 .alert strong { color: var(--warning); }
 
 .highlight-box {
-  background: #EBF3FE;
-  border: 1px solid #C5DCFA;
+  background: rgba(56,189,248,0.06);
+  border: 1px solid rgba(14,165,233,0.15);
   padding: 18px 20px;
   border-radius: var(--radius-sm);
   margin: 20px 0;
@@ -336,7 +343,7 @@ tr:hover td { background: rgba(0,120,212,0.03); }
   gap: 10px;
 }
 .step-number {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background: var(--accent);
   color: white;
   width: 26px; height: 26px;
   display: inline-flex;
@@ -409,19 +416,22 @@ hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
   left: 0;
   right: 0;
   z-index: 1000;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-  color: #fff;
+  background: rgba(250, 250, 250, 0.82);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  color: var(--text);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
   height: 48px;
   font-size: 0.88em;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.05);
+  border-bottom: 1px solid var(--border);
   -webkit-font-smoothing: antialiased;
 }
-.doc-nav a { color: #fff; text-decoration: none; transition: opacity var(--transition); }
-.doc-nav a:hover { text-decoration: underline; opacity: 0.9; color: #fff; }
+.doc-nav a { color: var(--text); text-decoration: none; transition: opacity var(--transition); }
+.doc-nav a:hover { text-decoration: underline; opacity: 0.8; color: var(--text); }
 .doc-nav-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
 .doc-nav-left .hub-link { font-weight: 600; white-space: nowrap; }
 .doc-nav-left .separator { opacity: 0.5; }
@@ -429,12 +439,14 @@ hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
 .doc-nav-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
 .doc-nav-right .pdf-btn {
   padding: 5px 14px;
-  border: 1px solid rgba(255,255,255,0.4);
+  border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   font-size: 0.88em;
   transition: background var(--transition);
+  background: var(--bg-alt);
+  color: var(--text-secondary);
 }
-.doc-nav-right .pdf-btn:hover { background: rgba(255,255,255,0.15); }
+.doc-nav-right .pdf-btn:hover { background: var(--border); }
 body.has-nav { padding-top: 60px; }
 
 /* ─── Scroll-spy current section label ─── */
@@ -503,7 +515,9 @@ body.has-sidebar.has-nav { padding-top: 0; }
 
 .sidebar-nav {
   width: 280px;
-  background: var(--bg);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
   height: calc(100vh - 48px);
   position: fixed;
   top: 48px;
@@ -512,7 +526,7 @@ body.has-sidebar.has-nav { padding-top: 0; }
   border-right: 1px solid var(--border);
   padding: 20px;
   box-sizing: border-box;
-  box-shadow: 2px 0 8px rgba(0,0,0,0.04);
+  box-shadow: none;
   z-index: 100;
   transition: transform var(--transition);
 }
@@ -567,8 +581,8 @@ body.has-sidebar header h1 {
 
 /* Diagram container (architecture pages) */
 .diagram-container {
-  background: #282C34;
-  color: #61AFEF;
+  background: #1e293b;
+  color: #7dd3fc;
   padding: 20px;
   border-radius: var(--radius-md);
   font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
@@ -578,6 +592,7 @@ body.has-sidebar header h1 {
   margin: 20px 0;
   box-shadow: var(--shadow-sm);
   font-size: 0.9em;
+  border: 1px solid rgba(0,0,0,0.1);
 }
 
 /* Guide selector (Default Priority page) */
