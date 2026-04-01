@@ -420,6 +420,11 @@
   <tr><td>Viva Insights Service Plan</td><td>Automatically included with every Copilot license (no additional cost)</td></tr>
 </table>
 
+<div class="callout info">
+  <div class="callout-title">NOTE: Copilot Licence = Full Viva Insights Access</div>
+  <p>Every M365 Copilot licence includes the <strong>Viva Insights service plan at no additional cost</strong>. This covers <strong>all</strong> Viva Insights capabilities — including behavioural collaboration metrics (meeting time, focus time, email, chat), Copilot Dashboard, Copilot Analytics Reports, Agent Dashboard, and Advanced Analytics (Power BI). There is no separate &ldquo;premium&rdquo; tier to purchase for behavioural data if you already have Copilot licences. The only requirement is enabling the <code>TenantPolicyForBehavioralExperiences</code> VFAM policy (see Section 5.3).</p>
+</div>
+
 <div class="callout warning">
   <div class="callout-title">WARNING: 50-License Threshold</div>
   Organizations with fewer than 50 Copilot licenses will only see tenant-level adoption metrics. Group-level filtering and the full Impact page require meeting the 50-license threshold. This threshold can be achieved through a <strong>combination</strong> of Copilot and Viva Insights licenses (e.g., 30 Copilot + 20 Viva Insights = 50).
@@ -836,6 +841,7 @@
   <li>No user-level detail (privacy thresholds aggregate to groups)</li>
   <li>No before/after adoption comparison</li>
   <li>28-day rolling window limits historical trend analysis</li>
+  <li><strong>No dynamic drill-down through management layers</strong> — the dashboard filters by organisation/department using org data attributes, but does not support drilling from VP → Director → Manager. For manager-level team views, enable Manager Settings (Section 5.3 Step 5). For custom hierarchical reporting, use Power BI templates in Tier 5.</li>
   <li>Limited export capabilities</li>
   <li>Sentiment filters/heat maps require Viva license or CSV upload</li>
 </ul>
@@ -1237,6 +1243,11 @@
   <li>Historical data beyond 28-day rolling window is required</li>
 </ul>
 
+<div class="callout info">
+  <div class="callout-title">NOTE: Other Usage Data Sources</div>
+  <p>Some organisations use <strong>M365 Audit Logs (Purview)</strong> or the <strong>Microsoft 365 Usage Analytics</strong> content pack for per-app usage telemetry. These are separate data pipelines from Viva Insights — they provide app-level interaction data but lack the ROI calculations (Assisted Hours/Value), behavioural comparisons, and privacy aggregation that Viva Insights provides. Community-built Power BI dashboards using Purview audit data exist but are not covered by this guide.</p>
+</div>
+
 <h2>8.2 Prerequisites</h2>
 
 <h3>Licensing Requirements</h3>
@@ -1557,6 +1568,12 @@
     <li><strong>Use CSV upload (Option A)</strong> for everything else — universal compatibility, lowest technical barrier.</li>
   </ul>
   <p>For HRIS connector setup details, see: <a href="https://learn.microsoft.com/viva/import-org-data-success-factors">SAP SuccessFactors</a> | <a href="https://learn.microsoft.com/viva/import-org-data-workday">Workday</a> | <a href="https://learn.microsoft.com/viva/import-org-data-azure">Azure Blob Storage</a> | <a href="https://learn.microsoft.com/viva/import-org-data-api">API-based import</a></p>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">TIP: Bypass On-Premises AD for Viva Insights</div>
+  <p>If your HRIS data currently flows through a pipeline like <strong>SAP SuccessFactors → middleware → on-premises AD → Entra ID</strong>, be aware that Viva Insights only picks up 3 attributes from Entra (PersonId, ManagerId, Organization). Custom fields stored in Entra <code>extensionAttributes</code> (e.g., Business Unit in extensionAttribute11) are <strong>not synced</strong> to Viva Insights.</p>
+  <p><strong>Solution:</strong> Use the SAP SuccessFactors or Workday connector (Options C/D) to send data <strong>directly</strong> from your HRIS to M365 — bypassing the on-premises AD pipeline entirely for Viva Insights purposes. This gives you access to all mapped attributes without relying on AD extension attributes.</p>
 </div>
 
 <div class="callout info">
