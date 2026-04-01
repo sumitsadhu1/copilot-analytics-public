@@ -793,11 +793,84 @@
 
 <h2 id="s5-4">5.4 Understanding Dashboard Pages</h2>
 
+<p>The Copilot Dashboard has four main pages plus a Sentiment section. This reference defines every metric shown and explains the data dependencies behind each view.</p>
+
 <h3>Readiness Page</h3>
 <p>Shows license assignment status and readiness for Copilot adoption. Available even with less than 50 licenses.</p>
+<table>
+  <tr><th>What You See</th><th>What It Means</th></tr>
+  <tr><td>Assigned licences count</td><td>Number of M365 Copilot licences currently assigned to users (not purchased)</td></tr>
+  <tr><td>Assignment trend chart</td><td>How licence assignments have changed over time</td></tr>
+</table>
 
 <h3>Adoption Page</h3>
-<p>Displays group-level usage trends, active user counts, usage intensity, and consistent usage metrics. Supports internal and external benchmark comparisons. Requires 50+ assigned licenses for group filtering.</p>
+<p>Displays group-level usage trends across all Copilot surfaces. Requires 50+ assigned licenses for group filtering.</p>
+
+<h4>Adoption Metrics Defined</h4>
+<table>
+  <tr><th>Metric</th><th>Definition</th><th>Data Source</th></tr>
+  <tr><td><strong>Active Copilot users</strong></td><td>Users with at least one intentional Copilot interaction in the 28-day rolling window</td><td>M365 signals (automatic)</td></tr>
+  <tr><td><strong>Copilot Actions Taken</strong></td><td>Total count of Copilot interactions across all M365 apps in the 28-day window. Includes prompts, summaries, drafts, and other Copilot-assisted actions. Does not include agent interactions (tracked separately on Agent Dashboard).</td><td>M365 signals (automatic)</td></tr>
+  <tr><td><strong>Usage intensity</strong></td><td>Average number of Copilot actions per active user in the 28-day window. Higher intensity indicates deeper usage beyond initial exploration.</td><td>Dashboard calculated</td></tr>
+  <tr><td><strong>Consistent usage</strong></td><td>Users active in both the current and previous 28-day period. Indicates sustained adoption rather than one-time trial.</td><td>Dashboard calculated</td></tr>
+  <tr><td><strong>Internal benchmark</strong></td><td>Your organisation&rsquo;s current metrics compared to your own historical metrics. Shows whether adoption is trending up or down.</td><td>Dashboard calculated</td></tr>
+  <tr><td><strong>External benchmark</strong></td><td>Your organisation compared to anonymised similar-size organisations. Toggle &ldquo;Show benchmarks&rdquo; to enable.</td><td>Microsoft aggregate</td></tr>
+</table>
+
+<h4>Adoption by App Breakdown</h4>
+<p>The dashboard shows per-app adoption as a table with the following app rows:</p>
+<table>
+  <tr><th>App Row</th><th>What It Measures</th></tr>
+  <tr><td><strong>Teams</strong></td><td>Copilot interactions within Teams (meeting summaries, chat prompts, etc.)</td></tr>
+  <tr><td><strong>Outlook</strong></td><td>Copilot email drafts, email summaries, email thread summaries</td></tr>
+  <tr><td><strong>Word</strong></td><td>Draft in Word, Rewrite, Summarize document</td></tr>
+  <tr><td><strong>PowerPoint</strong></td><td>Create presentation, Summarize presentation</td></tr>
+  <tr><td><strong>Excel</strong></td><td>Copilot analysis, formula suggestions, data insights</td></tr>
+  <tr><td><strong>Copilot Chat (work)</strong></td><td>Chat prompts grounded in <strong>tenant data</strong> (SharePoint, Graph). Uses work context. Requires M365 Copilot licence.</td></tr>
+  <tr><td><strong>Copilot Chat (web)</strong></td><td>Chat prompts grounded in <strong>web data only</strong>. No work context. Also requires M365 Copilot licence to appear here.</td></tr>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">NOTE: Copilot Chat (work) vs Copilot Chat (web)</div>
+  <p>The dashboard shows these as <strong>two separate rows</strong>. &ldquo;Work&rdquo; uses tenant data for answers (SharePoint, Graph, emails) while &ldquo;Web&rdquo; uses internet data only. Both rows track <strong>licensed M365 Copilot users only</strong>. E3/E5 users accessing the free Copilot Chat at copilot.microsoft.com without the paid add-on are <strong>not tracked</strong> in either row. See <a href="#s2-2">Section 2.2 (Out of Scope)</a> for details on this analytics gap.</p>
+</div>
+
+<h4>&ldquo;View by&rdquo; Options and Data Dependencies</h4>
+<p>The Adoption page lets you change how the per-app table is split using the &ldquo;View by&rdquo; dropdown. Each option has different data requirements:</p>
+<table>
+  <tr><th>View By</th><th>What It Splits On</th><th>Data Requirement</th><th>If Data Missing or Low Quality</th></tr>
+  <tr><td><strong>Group</strong></td><td>Direct reports of the scoped leader. Breaks the table into columns per sub-group (e.g., each VP&rsquo;s team).</td><td>Clean multi-layer <code>ManagerEmail</code> hierarchy in uploaded org data. Each intermediate manager must exist as a row in the dataset.</td><td>All users appear under a single person (the CEO). No sub-group breakdown is possible.</td></tr>
+  <tr><td><strong>Job Function</strong></td><td><code>FunctionType</code> / <code>Microsoft_JobDiscipline</code> attribute values</td><td>Org data with Job Function populated for employees</td><td>Column doesn&rsquo;t appear, or shows only employees with values</td></tr>
+  <tr><td><strong>Organization</strong></td><td><code>Organization</code> / <code>Microsoft_Organization</code> attribute values (Department)</td><td>Org data or Entra ID Department field</td><td>Only Entra Department values shown (if no CSV uploaded)</td></tr>
+</table>
+
+<div class="callout warning">
+  <div class="callout-title">WARNING: &ldquo;View by: Group&rdquo; Shows Only One Person?</div>
+  <p>If the Group view shows the entire organisation under a single leader&rsquo;s name with no sub-group breakdown, the uploaded manager hierarchy is either <strong>flat</strong> (most employees report directly to the CEO in the data) or <strong>broken</strong> (intermediate managers are referenced in <code>ManagerEmail</code> but don&rsquo;t exist as rows in the dataset).</p>
+  <p><strong>Fix:</strong> Verify the CSV contains a row for every intermediate manager (VPs, Directors). Every <code>Microsoft_ManagerEmail</code> value must match a <code>Microsoft_PersonEmail</code> in the same file. See <a href="#s10-org-data">Section 10.7</a> for the full troubleshooting guide.</p>
+</div>
+
+<h4>Scope Filter Behaviour</h4>
+<p>The <strong>Scope</strong> dropdown at the top of the dashboard determines whose data is displayed:</p>
+<table>
+  <tr><th>Scope</th><th>What It Shows</th><th>Who Gets This Scope</th></tr>
+  <tr><td><strong>Your company</strong></td><td>All employees in the tenant</td><td>Senior leaders auto-identified via AutoCxO, or delegates given &ldquo;Your company&rdquo; scope</td></tr>
+  <tr><td><strong>&lt;Leader Name&gt;</strong></td><td>All employees in that leader&rsquo;s management chain</td><td>Auto-identified leaders. The dropdown lists leaders whose hierarchy the viewer can access.</td></tr>
+  <tr><td><strong>Your group</strong></td><td>Default view &mdash; the viewer&rsquo;s own management chain</td><td>Leaders and managers with dashboard access</td></tr>
+</table>
+<p><strong>Why might the scope filter show only one leader name?</strong> This happens when only one person sits at the top of the uploaded manager hierarchy with a clean downward chain. Other leaders whose <code>ManagerEmail</code> chains are broken (pointing to managers not in the dataset) won&rsquo;t form valid trees and won&rsquo;t appear as selectable scope entries. Fix the hierarchy data to see more leaders.</p>
+
+<h4>Suppressed Values (&ldquo;&ndash;&ndash;&rdquo;)</h4>
+<p>A <strong>&ldquo;&ndash;&ndash;&rdquo;</strong> in any cell means the group for that combination (e.g., a specific Job Function × App) falls below the <strong>minimum group size threshold</strong> (default 10). This is privacy protection working as designed &mdash; not an error. To see data for smaller groups, the admin can reduce the minimum group size (minimum 5) in Privacy Settings, subject to organisational privacy policies.</p>
+
+<h4>Known Metric Underreporting Periods</h4>
+<p>Microsoft has acknowledged two data collection issues that caused underreporting on the dashboard. No customer action is needed &mdash; data auto-corrects for periods after the affected windows.</p>
+<table>
+  <tr><th>Affected Metrics</th><th>Affected Period</th><th>Impact</th></tr>
+  <tr><td><strong>Email features</strong> (Generate email draft, Summarize email thread)</td><td>July 1, 2025 &ndash; February 18, 2026</td><td>Outlook active user counts and email-related Assisted Hours are lower than actual for this period</td></tr>
+  <tr><td><strong>Meeting features</strong> (Meeting summaries, Intelligent Recap)</td><td>September 6 &ndash; November 3, 2025</td><td>Teams meeting summary counts and related Assisted Hours are lower than actual for this period</td></tr>
+</table>
+<p>If you see unexpectedly low Outlook or Teams metrics for these periods, the underreporting is the cause &mdash; not a configuration issue. The dashboard may display a yellow warning banner for the email issue.</p>
 
 <h3>Impact Page</h3>
 <p>Shows four top-level metrics: <strong>Copilot Actions Taken</strong>, <strong>Copilot Assisted Hours</strong>, <strong>Copilot Assisted Value</strong>, and <strong>Satisfaction Rate</strong>. This is the primary ROI and impact measurement page. A six-month trendline shows weekly snapshots of each metric (selectable via the Metric dropdown). Each metric is calculated over a <strong>28-day rolling window</strong> with up to a 6-day data delay.</p>
@@ -1677,6 +1750,38 @@
   <li>By default, Entra ID data takes precedence over org data in the M365 User Profile. You can <a href="https://learn.microsoft.com/viva/manage-data-precedence">override this precedence</a> if needed.</li>
 </ul>
 
+<h2>9.7 Data Freshness Monitoring</h2>
+<p>Org data has <strong>no automatic staleness alerting</strong> — if an upload fails or a connector sync stops, nobody gets notified. Use the monitoring points below to ensure data stays current.</p>
+
+<h3>Where to Check Data Freshness</h3>
+<table>
+  <tr><th>Monitoring Point</th><th>Where</th><th>What to Check</th></tr>
+  <tr><td><strong>Upload / connector status</strong></td><td>M365 Admin Center → Setup → Organizational Data in M365 → Data Connections</td><td>Status = “Success” or “In use.” Last import date. For HRIS connectors, verify date matches sync schedule (weekly/monthly).</td></tr>
+  <tr><td><strong>Data freshness indicator</strong></td><td>Viva Insights web app → Admin → Data hub</td><td>Green indicator = data uploaded within past week. Shows “Days since last refreshed.”</td></tr>
+  <tr><td><strong>Attribute quality scores</strong></td><td>Viva Insights → Organizational data → Data quality tab</td><td>Per-attribute completeness &gt;95%. Manager tree count should be low (ideally matching the number of top-level leaders, not thousands).</td></tr>
+  <tr><td><strong>Dashboard spot-check</strong></td><td>Copilot Dashboard → Adoption page</td><td>Organization and Job Function filter values match current org chart. New employees appear.</td></tr>
+</table>
+
+<h3>Signs of Stale Data</h3>
+<table>
+  <tr><th>Symptom on Dashboard</th><th>Likely Cause</th></tr>
+  <tr><td>New employees don’t appear in any group filter</td><td>They’re not in the latest org data upload</td></tr>
+  <tr><td>&ldquo;View by: Group&rdquo; shows only one leader’s name</td><td>Manager hierarchy is flat or broken — see <a href="#s10-org-data">Section 10.7</a></td></tr>
+  <tr><td>Department or Job Function filters show old values</td><td>Org data hasn’t been refreshed since the last reorg</td></tr>
+  <tr><td>Employee counts don’t match HR headcount</td><td>Missing rows in the CSV, or new hires added since last upload</td></tr>
+  <tr><td>Data hub shows “&gt;30 days” since refresh</td><td>Upload cadence has lapsed — trigger a new upload immediately</td></tr>
+</table>
+
+<h3>Recommended Monitoring Cadence</h3>
+<table>
+  <tr><th>Cadence</th><th>Task</th><th>Who</th></tr>
+  <tr><td>After every upload</td><td>Check processing status and data quality scores</td><td>Org Data Source Admin</td></tr>
+  <tr><td>Weekly (HRIS connectors)</td><td>Verify last import date matches sync schedule</td><td>Org Data Source Admin</td></tr>
+  <tr><td>Monthly (CSV uploads)</td><td>Upload fresh data, verify “Success,” check Data Quality tab</td><td>Org Data Source Admin</td></tr>
+  <tr><td>Monthly</td><td>Spot-check dashboard filters match current org chart</td><td>Business Leader</td></tr>
+  <tr><td>Quarterly</td><td>Full data quality audit — download manager completeness+log, verify tree count, check all attributes &gt;95%</td><td>Insights Admin</td></tr>
+</table>
+
 <!-- ═══════════════════════ 10. TROUBLESHOOTING ═══════════════════════ -->
 <h1 id="s10">10. Troubleshooting Common Issues</h1>
 
@@ -1759,7 +1864,30 @@
   For issues not resolved by these steps, engage Microsoft Support via the Admin Center Help and Support section. Have tenant ID, license counts, and specific error messages ready.
 </div>
 
-<!-- ═══════════════════════ 11. PRIVACY ═══════════════════════ -->
+<h2 id="s10-org-data">10.7 Organizational Data &amp; Hierarchy Issues</h2>
+<p>Data quality issues in the uploaded org data are the most common cause of dashboard display problems. Use this table to diagnose and fix.</p>
+<table>
+  <tr><th>Symptom</th><th>Root Cause</th><th>Resolution</th></tr>
+  <tr><td>&ldquo;View by: Group&rdquo; shows only one leader with all users underneath</td><td>Flat hierarchy — most employees report directly to the CEO in the uploaded data, with no intermediate managers (VPs, Directors) as separate rows</td><td>Ensure the CSV contains a row for every intermediate manager. Every <code>ManagerEmail</code> value must match a <code>PersonEmail</code> row in the same file. Re-upload after fixing the hierarchy chains (CEO → VP → Director → Staff).</td></tr>
+  <tr><td>Scope dropdown shows only one leader name instead of multiple senior leaders</td><td>Only one person has a clean top-of-tree downward hierarchy. Other leaders’ <code>ManagerEmail</code> chains are broken.</td><td>Verify each senior leader appears as a <code>PersonEmail</code> row and their own <code>ManagerEmail</code> is either blank (top-of-tree), or points to a valid higher-level leader. Fix dangling references.</td></tr>
+  <tr><td>Manager hierarchy tree count is thousands (e.g., 3,000+ trees for 1,000 employees)</td><td>Many <code>ManagerEmail</code> values reference people who are <strong>not in the uploaded dataset</strong>. Each orphaned employee becomes its own 1-person tree.</td><td>Ensure every manager referenced in <code>ManagerEmail</code> also exists as a <code>PersonEmail</code> row. Download the manager completeness log from the Data Quality page to identify mismatches.</td></tr>
+  <tr><td>&ldquo;Microsoft_ManagerEmail doesn’t meet data completeness&rdquo;</td><td>Employees with blank or missing manager field in the uploaded data</td><td>Download the completeness log, identify employees missing manager data, fill in the correct <code>ManagerEmail</code>, and re-upload.</td></tr>
+  <tr><td>Dashboard shows &ldquo;&ndash;&ndash;&rdquo; for most Job Function or Organization cells</td><td>Groups fall below the minimum group size threshold (default 10). This is privacy protection, not an error.</td><td>Expected behaviour. Options: (a) reduce minimum group size in Privacy Settings (minimum 5, subject to organisational policy), or (b) accept that small groups are suppressed.</td></tr>
+  <tr><td>Org data uploaded but dashboard still shows only Entra ID Department values</td><td>Upload is still processing, or upload failed silently</td><td>Check upload status: M365 Admin Center → Organizational Data → Data Connections (status should be “Success”). Or Viva Insights → Admin → Organizational data → Data connections tab. Processing takes up to 7 days (legacy) or up to 3 days (M365 Admin Center).</td></tr>
+  <tr><td>Outlook or email-related adoption metrics seem unexpectedly low</td><td>Known Microsoft data issue: email draft and summarize counts were under-reported from July 1, 2025 through February 18, 2026</td><td>No customer action needed. Data auto-corrects for periods after February 18, 2026. The dashboard may display a yellow warning banner.</td></tr>
+  <tr><td>Meeting summary counts seem low for a specific period</td><td>Known Microsoft data issue: meeting metrics were under-reported from September 6 through November 3, 2025</td><td>No customer action needed. Data auto-corrects for periods after November 3, 2025.</td></tr>
+</table>
+
+<div class="callout tip">
+  <div class="callout-title">TIP: Hierarchy Health Quick Check</div>
+  <p>In the Viva Insights Data Quality page, check the <strong>Manager hierarchy snapshots</strong> section. Key indicators:</p>
+  <ul>
+    <li><strong>Tree count</strong> should be low (ideally = number of top-level leaders, e.g., 1–5 trees for a single-CEO organisation)</li>
+    <li><strong>Largest tree size %</strong> should be high (e.g., &gt;90% means most employees are in one connected hierarchy)</li>
+    <li><strong>Missing ManagerEmail count</strong> should be 0 or near-zero</li>
+    <li><strong>Unmatched ManagerEmail count</strong> should be 0 (all referenced managers exist as employees in the dataset)</li>
+  </ul>
+</div>
 <h1 id="s11">11. Data Privacy &amp; Compliance</h1>
 
 <h2>11.1 Privacy Thresholds</h2>

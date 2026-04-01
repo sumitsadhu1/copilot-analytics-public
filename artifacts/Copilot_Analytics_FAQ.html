@@ -136,35 +136,52 @@
   <div class="faq-a"><strong>Yes — multiple options exist:</strong> (1) <strong>HRIS connectors</strong> (SAP SuccessFactors, Workday) auto-sync on a schedule. (2) <strong>Azure Blob Storage connector</strong> — drop a CSV into an Azure blob and it’s picked up automatically. (3) <strong>API-based import</strong> (preview) — push data via REST API using a PowerShell script, C# solution, or Azure Data Factory pipeline. Microsoft provides sample code at <a href="https://github.com/microsoft/orgdata_apibasedimport">github.com/microsoft/orgdata_apibasedimport</a>. The API-based approach also supports <strong>incremental refresh</strong> — you can add new hires without re-uploading all employees.</div>
 </div>
 
+<h2 style="color:#1F4E79;margin-top:32px;border-left:4px solid #1F4E79;padding-left:12px;">Dashboard Interpretation</h2>
+
+<div class="faq">
+  <div class="faq-q" data-num="18">Why does &ldquo;View by: Group&rdquo; show only one person&rsquo;s name instead of sub-groups?</div>
+  <div class="faq-a">The Group view uses the uploaded manager hierarchy. If most employees report directly to the top-level leader in the org data (flat hierarchy), the dashboard cannot split into sub-groups. <strong>Fix:</strong> Ensure intermediate managers (VPs, Directors) exist as rows in your data file with correct <code>ManagerEmail</code> chains. Every <code>ManagerEmail</code> value must match a <code>PersonEmail</code> in the same file. Also check the Data Quality page &mdash; if the manager tree count is in the thousands (e.g., 3,000 trees for 1,000 employees), most hierarchy chains are broken.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="19">What&rsquo;s the difference between &ldquo;Copilot Chat (work)&rdquo; and &ldquo;Copilot Chat (web)&rdquo; on the dashboard?</div>
+  <div class="faq-a"><strong>Copilot Chat (work)</strong> uses tenant data (SharePoint, Graph) for grounding &mdash; it&rsquo;s the work-connected experience. <strong>Copilot Chat (web)</strong> uses web data only &mdash; no work context. Both appear as <strong>separate rows</strong> in the Adoption by App table. Both require an M365 Copilot licence to be tracked. E3/E5 users without the Copilot add-on who use copilot.microsoft.com are <strong>not tracked</strong> by either row.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="20">The dashboard shows a yellow banner about email data being under-reported. What does this mean?</div>
+  <div class="faq-a">Microsoft has acknowledged that email draft and summarize email thread metrics were under-reported from <strong>July 1, 2025 through February 18, 2026</strong>. This affects Outlook adoption numbers and email-related Assisted Hours for that period. A separate meeting underreporting issue affected <strong>September 6 through November 3, 2025</strong>. No customer action is needed &mdash; the data auto-corrects for periods after the affected windows.</div>
+</div>
+
 <h2 style="color:#1F4E79;margin-top:32px;border-left:4px solid #1F4E79;padding-left:12px;">Common Misconceptions</h2>
 
 <div class="faq">
-  <div class="faq-q" data-num="18">Copilot data is only available in the global partition, not in individual partitions — true?</div>
+  <div class="faq-q" data-num="21">Copilot data is only available in the global partition, not in individual partitions — true?</div>
   <div class="faq-a"><strong>Incorrect.</strong> The interactive <strong>Copilot Dashboard</strong> is tenant-level only and not partition-scoped. However, all 100+ Copilot metrics (adoption, impact, assisted hours, per-app actions) <strong>are</strong> available in individual partitions via custom person queries and Power BI template queries. Partitioned analysts get scoped Copilot data — they just access it through the analyst workbench, not the Dashboard.</div>
 </div>
 
 <div class="faq">
-  <div class="faq-q" data-num="19">Can I use Power BI to bypass the minimum group size and see data for small teams?</div>
+  <div class="faq-q" data-num="22">Can I use Power BI to bypass the minimum group size and see data for small teams?</div>
   <div class="faq-a"><strong>No.</strong> Power BI template reports from Viva Insights enforce the same minimum group size threshold as the Dashboard. The privacy control is applied at the data aggregation layer, not the UI layer. Moving to Power BI does not circumvent it. For finer granularity, you can export raw query results as CSV and build custom PBI visuals — but you are then responsible for enforcing privacy thresholds per your organisation's data handling policy.</div>
 </div>
 
 <div class="faq">
-  <div class="faq-q" data-num="20">Security groups can’t be used for dashboard access — I can only add individuals?</div>
+  <div class="faq-q" data-num="23">Security groups can’t be used for dashboard access — I can only add individuals?</div>
   <div class="faq-a"><strong>Incorrect.</strong> Microsoft Learn confirms that dashboard access supports <strong>Entra security groups, Microsoft 365 groups, and mail-enabled security groups</strong>. If group-based access doesn't work, check: (a) all group members have a Viva Insights service plan, (b) the group is one of the supported types (not a distribution-only group), (c) 24 hours have elapsed since assignment. See <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#manage-access-to-the-viva-insights-web-app-for-individual-users-and-groups">Learn reference</a>.</div>
 </div>
 
 <div class="faq">
-  <div class="faq-q" data-num="21">Published reports can only be shared with individual users, not groups?</div>
+  <div class="faq-q" data-num="24">Published reports can only be shared with individual users, not groups?</div>
   <div class="faq-a"><strong>Partially incorrect.</strong> For built-in Viva Insights PBI reports, &ldquo;Unfiltered&rdquo; targets dashboard-access holders and &ldquo;Filtered&rdquo; targets enabled managers — these are predefined audiences. However, for <strong>custom report publishing</strong>, you can target <strong>specific users or groups</strong> (security groups and mail-enabled security groups are supported). See <a href="https://learn.microsoft.com/viva/insights/advanced/analyst/publish-reports">Learn reference</a>.</div>
 </div>
 
 <div class="faq">
-  <div class="faq-q" data-num="22">On-premises Active Directory extension attributes automatically flow to Viva Insights through Entra sync?</div>
+  <div class="faq-q" data-num="25">On-premises Active Directory extension attributes automatically flow to Viva Insights through Entra sync?</div>
   <div class="faq-a"><strong>No.</strong> Only three attributes from Entra ID sync to Viva Insights: PersonId (UPN), ManagerId, and Organization (from the Department field). Extension attributes (extensionAttribute1-15), Company, Division, JobTitle, City, and Country are <strong>not synced</strong> — even if they are populated in Entra via AD Connect. To use these attributes in Viva Insights, upload them via CSV or configure an HRIS connector.</div>
 </div>
 
 <div class="faq">
-  <div class="faq-q" data-num="23">CSV upload is the only way to get organizational data into Viva Insights — true?</div>
+  <div class="faq-q" data-num="26">CSV upload is the only way to get organizational data into Viva Insights — true?</div>
   <div class="faq-a"><strong>Incorrect.</strong> As of 2026, there are <strong>six ways</strong> to ingest organizational data: (1) Entra ID (automatic, default), (2) CSV upload via M365 Admin Center, (3) SAP SuccessFactors native connector, (4) Workday native connector, (5) Azure Blob Storage connector, and (6) API-based import (preview). For details, see <a href="https://learn.microsoft.com/viva/organizational-data">Organizational Data in Microsoft 365</a>. Microsoft is also migrating all tenants to the M365 Admin Center as the single upload point by mid-2026, replacing the Viva Insights web app upload path.</div>
 </div>
 
@@ -180,7 +197,7 @@
 </div>
 
 <div class="footer">
-  Microsoft 365 Copilot Analytics — FAQ v1.1 &bull; April 2026<br>
+  Microsoft 365 Copilot Analytics — FAQ v1.2 &bull; April 2026<br>
   Community Reference Guide
 </div>
 
