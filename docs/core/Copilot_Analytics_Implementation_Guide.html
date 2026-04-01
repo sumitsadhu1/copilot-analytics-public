@@ -179,10 +179,29 @@
 <h3>Out of Scope</h3>
 <ul>
   <li>Other Copilot products: Copilot for Sales, Copilot for Service, GitHub Copilot, Security Copilot</li>
+  <li><strong>Copilot Chat usage by unlicensed users</strong> — users with M365 E3/E5 (without the paid Copilot add-on) can access Copilot Chat at copilot.microsoft.com, but their usage is <strong>not tracked</strong> by any of the 5 analytics tiers in this guide. See the callout below.</li>
   <li>Custom Power BI report development beyond Microsoft-provided templates</li>
   <li>Third-party analytics integrations</li>
   <li>Broader Viva Insights productivity metrics independent of Copilot (meeting time, focus time, after-hours work, collaboration network analysis)</li>
 </ul>
+
+<div class="callout warning">
+  <div class="callout-title">IMPORTANT: Copilot Chat (Free) Users Are Invisible to Copilot Analytics</div>
+  <p>All M365 E3/E5 users can access <strong>Copilot Chat</strong> (web-based AI chat at copilot.microsoft.com) without the paid M365 Copilot add-on licence. However, these users are <strong>not tracked</strong> by any analytics surface documented in this guide:</p>
+  <ul>
+    <li><strong>Copilot Dashboard</strong> — only measures users with M365 Copilot licences assigned</li>
+    <li><strong>Admin Center Copilot Usage Report</strong> — only shows licensed Copilot users</li>
+    <li><strong>Viva Insights / Advanced Analytics</strong> — Copilot metrics require Copilot licences on the measured population</li>
+  </ul>
+  <p><strong>Why this matters:</strong> Many organisations roll out free Copilot Chat to all E3/E5 users as a precursor to paid Copilot adoption. Leaders want to understand free Copilot Chat usage to build the business case for purchasing paid licences — but none of the 5 analytics tiers provide this data.</p>
+  <p><strong>Possible workarounds:</strong></p>
+  <ul>
+    <li><strong>M365 Audit Logs (Purview):</strong> Copilot Chat interactions may generate audit log entries that can be queried via Purview Compliance Portal or the Office 365 Management Activity API. This provides raw interaction data (not aggregated dashboards) and requires a separate analytics pipeline.</li>
+    <li><strong>Microsoft 365 Usage Analytics:</strong> The M365 Usage Analytics content pack in Power BI may surface some Copilot Chat activity data for all users, but telemetry depth varies.</li>
+    <li><strong>Copilot Chat Admin Report:</strong> Check Admin Center → Reports → Usage for any “Copilot Chat” specific report — Microsoft may add dedicated reporting for free Copilot Chat usage independently of the Copilot Dashboard.</li>
+  </ul>
+  <p>These workarounds are outside the scope of this guide. If tracking free Copilot Chat adoption is a priority, consider it as a separate analytics workstream using audit log data.</p>
+</div>
 
 <div class="callout warning">
   <div class="callout-title">WARNING: Customer Wants Productivity Metrics Beyond Copilot?</div>
