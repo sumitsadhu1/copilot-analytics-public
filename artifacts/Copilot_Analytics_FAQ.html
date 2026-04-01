@@ -123,31 +123,49 @@
   <div class="faq-a"><strong>Yes, but through a separate workstream.</strong> Copilot Analytics covers Copilot-specific adoption, impact, and ROI. Broader Viva Insights productivity metrics (meeting time, focus time, after-hours, collaboration networks) use the same Viva Insights licence and analyst role but are configured through the Advanced Analysis workbench with different queries and templates. The organizational data and privacy settings you configure for Copilot Analytics carry over to the broader Viva Insights analysis.</div>
 </div>
 
+<!-- ─── ORG DATA ─── -->
+<div class="category">Organizational Data</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="16">Do I need to manually prepare and upload a CSV if we use SAP SuccessFactors or Workday?</div>
+  <div class="faq-a"><strong>No.</strong> Microsoft provides native HRIS connectors for both <a href="https://learn.microsoft.com/viva/import-org-data-success-factors">SAP SuccessFactors</a> and <a href="https://learn.microsoft.com/viva/import-org-data-workday">Workday</a> (Workday limited to ≤100K users). These connectors pull employee data directly from your HRIS on a weekly or monthly schedule — no CSV preparation needed. Configure them in the M365 Admin Center under <strong>Organizational Data in Microsoft 365</strong>. For Workday organisations with &gt;100K users, use the Workday RaaS → Azure Blob Storage path instead.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="17">Can I automate organizational data uploads instead of manually uploading a CSV every month?</div>
+  <div class="faq-a"><strong>Yes — multiple options exist:</strong> (1) <strong>HRIS connectors</strong> (SAP SuccessFactors, Workday) auto-sync on a schedule. (2) <strong>Azure Blob Storage connector</strong> — drop a CSV into an Azure blob and it’s picked up automatically. (3) <strong>API-based import</strong> (preview) — push data via REST API using a PowerShell script, C# solution, or Azure Data Factory pipeline. Microsoft provides sample code at <a href="https://github.com/microsoft/orgdata_apibasedimport">github.com/microsoft/orgdata_apibasedimport</a>. The API-based approach also supports <strong>incremental refresh</strong> — you can add new hires without re-uploading all employees.</div>
+</div>
+
 <h2 style="color:#1F4E79;margin-top:32px;border-left:4px solid #1F4E79;padding-left:12px;">Common Misconceptions</h2>
 
 <div class="faq">
-  <div class="faq-q" data-num="16">Copilot data is only available in the global partition, not in individual partitions — true?</div>
+  <div class="faq-q" data-num="18">Copilot data is only available in the global partition, not in individual partitions — true?</div>
   <div class="faq-a"><strong>Incorrect.</strong> The interactive <strong>Copilot Dashboard</strong> is tenant-level only and not partition-scoped. However, all 100+ Copilot metrics (adoption, impact, assisted hours, per-app actions) <strong>are</strong> available in individual partitions via custom person queries and Power BI template queries. Partitioned analysts get scoped Copilot data — they just access it through the analyst workbench, not the Dashboard.</div>
 </div>
 
 <div class="faq">
-  <div class="faq-q" data-num="17">Can I use Power BI to bypass the minimum group size and see data for small teams?</div>
+  <div class="faq-q" data-num="19">Can I use Power BI to bypass the minimum group size and see data for small teams?</div>
   <div class="faq-a"><strong>No.</strong> Power BI template reports from Viva Insights enforce the same minimum group size threshold as the Dashboard. The privacy control is applied at the data aggregation layer, not the UI layer. Moving to Power BI does not circumvent it. For finer granularity, you can export raw query results as CSV and build custom PBI visuals — but you are then responsible for enforcing privacy thresholds per your organisation's data handling policy.</div>
 </div>
 
 <div class="faq">
-  <div class="faq-q" data-num="18">Security groups can't be used for dashboard access — I can only add individuals?</div>
+  <div class="faq-q" data-num="20">Security groups can’t be used for dashboard access — I can only add individuals?</div>
   <div class="faq-a"><strong>Incorrect.</strong> Microsoft Learn confirms that dashboard access supports <strong>Entra security groups, Microsoft 365 groups, and mail-enabled security groups</strong>. If group-based access doesn't work, check: (a) all group members have a Viva Insights service plan, (b) the group is one of the supported types (not a distribution-only group), (c) 24 hours have elapsed since assignment. See <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#manage-access-to-the-viva-insights-web-app-for-individual-users-and-groups">Learn reference</a>.</div>
 </div>
 
 <div class="faq">
-  <div class="faq-q" data-num="19">Published reports can only be shared with individual users, not groups?</div>
+  <div class="faq-q" data-num="21">Published reports can only be shared with individual users, not groups?</div>
   <div class="faq-a"><strong>Partially incorrect.</strong> For built-in Viva Insights PBI reports, &ldquo;Unfiltered&rdquo; targets dashboard-access holders and &ldquo;Filtered&rdquo; targets enabled managers — these are predefined audiences. However, for <strong>custom report publishing</strong>, you can target <strong>specific users or groups</strong> (security groups and mail-enabled security groups are supported). See <a href="https://learn.microsoft.com/viva/insights/advanced/analyst/publish-reports">Learn reference</a>.</div>
 </div>
 
 <div class="faq">
-  <div class="faq-q" data-num="20">On-premises Active Directory extension attributes automatically flow to Viva Insights through Entra sync?</div>
-  <div class="faq-a"><strong>No.</strong> Only three attributes from Entra ID sync to Viva Insights: PersonId (UPN), ManagerId, and Organization (from the Department field). Extension attributes (extensionAttribute1-15), Company, Division, JobTitle, City, and Country are <strong>not synced</strong> — even if they are populated in Entra via AD Connect. To use these attributes in Viva Insights, upload them via CSV.</div>
+  <div class="faq-q" data-num="22">On-premises Active Directory extension attributes automatically flow to Viva Insights through Entra sync?</div>
+  <div class="faq-a"><strong>No.</strong> Only three attributes from Entra ID sync to Viva Insights: PersonId (UPN), ManagerId, and Organization (from the Department field). Extension attributes (extensionAttribute1-15), Company, Division, JobTitle, City, and Country are <strong>not synced</strong> — even if they are populated in Entra via AD Connect. To use these attributes in Viva Insights, upload them via CSV or configure an HRIS connector.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="23">CSV upload is the only way to get organizational data into Viva Insights — true?</div>
+  <div class="faq-a"><strong>Incorrect.</strong> As of 2026, there are <strong>six ways</strong> to ingest organizational data: (1) Entra ID (automatic, default), (2) CSV upload via M365 Admin Center, (3) SAP SuccessFactors native connector, (4) Workday native connector, (5) Azure Blob Storage connector, and (6) API-based import (preview). For details, see <a href="https://learn.microsoft.com/viva/organizational-data">Organizational Data in Microsoft 365</a>. Microsoft is also migrating all tenants to the M365 Admin Center as the single upload point by mid-2026, replacing the Viva Insights web app upload path.</div>
 </div>
 
 <div class="callout">
@@ -162,7 +180,7 @@
 </div>
 
 <div class="footer">
-  Microsoft 365 Copilot Analytics — FAQ v1.0 &bull; March 2026<br>
+  Microsoft 365 Copilot Analytics — FAQ v1.1 &bull; April 2026<br>
   Community Reference Guide
 </div>
 

@@ -120,22 +120,39 @@
   <tr><td>Exclusion list remove</td><td>Up to 3 days</td></tr>
 </table>
 
-<h2>Org Data CSV — Required Fields</h2>
+<h2>Org Data — Sources &amp; Required Fields</h2>
+
+<div class="warn">
+  <strong>Migration Notice:</strong> By mid-2026 all tenants will use the <strong>M365 Admin Center</strong> for org data uploads (not Viva Insights web app). Use <code>Microsoft_*</code> column names. Do NOT include <code>EffectiveDate</code> as a column.
+</div>
+
 <table>
-  <tr><th>Viva Insights</th><th>M365 Admin Center</th><th>Req?</th></tr>
+  <tr><th>Source</th><th>Status</th><th>Best For</th></tr>
+  <tr><td>CSV Upload (M365 Admin Center)</td><td>GA — Primary</td><td>Any HRIS. Incremental merge.</td></tr>
+  <tr><td>SAP SuccessFactors Connector</td><td>GA</td><td>SAP SF orgs. No CSV needed.</td></tr>
+  <tr><td>Workday Connector</td><td>GA</td><td>Workday orgs (≤100K users).</td></tr>
+  <tr><td>Azure Blob Storage</td><td>GA</td><td>Automated CSV drop.</td></tr>
+  <tr><td>API-Based Import</td><td>Preview</td><td>Custom HRIS. Incremental refresh.</td></tr>
+  <tr><td>CSV Upload (Viva Insights)</td><td>Deprecated</td><td>Legacy — retiring mid-2026.</td></tr>
+</table>
+
+<table>
+  <tr><th>Legacy Name</th><th>M365 Admin Center Name</th><th>Req?</th></tr>
   <tr><td>PersonId</td><td>Microsoft_PersonEmail</td><td>Yes</td></tr>
   <tr><td>ManagerId</td><td>Microsoft_ManagerEmail</td><td>Yes</td></tr>
   <tr><td>Organization</td><td>Microsoft_Organization</td><td>Yes</td></tr>
-  <tr><td>EffectiveDate</td><td>N/A</td><td>Rec.</td></tr>
+  <tr><td>EffectiveDate</td><td>N/A (date picker)</td><td>No*</td></tr>
   <tr><td>FunctionType</td><td>Microsoft_JobDiscipline</td><td>Opt.</td></tr>
 </table>
+<p style="font-size:0.8em;color:#666;">* EffectiveDate not needed in M365 Admin Center uploads — handled via UI date picker. Still required for legacy Viva Insights uploads.</p>
 
 <h2>Roles Needed</h2>
 <table>
   <tr><th>Role</th><th>What They Do</th></tr>
   <tr><td>Global Admin</td><td>Assign licences &amp; roles</td></tr>
   <tr><td>AI Admin</td><td>Dashboard access, VFAM, exclusion lists</td></tr>
-  <tr><td>Insights Admin</td><td>Org data, privacy, manager settings</td></tr>
+  <tr><td>Insights Admin</td><td>Org data (legacy), privacy, manager settings</td></tr>
+  <tr><td>Org Data Source Admin</td><td>Org data uploads via M365 Admin Center (post-migration)</td></tr>
   <tr><td>Insights Analyst</td><td>Queries, Power BI, advanced analysis</td></tr>
 </table>
 

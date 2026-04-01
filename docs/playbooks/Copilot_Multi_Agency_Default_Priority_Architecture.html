@@ -164,6 +164,7 @@
                     <tr><td>FR-04</td><td>Central IT retains tenant-wide visibility for licence management and governance</td><td><span class="badge badge-p1">P1 &mdash; Should Have</span></td></tr>
                     <tr><td>FR-05</td><td>Agency-level analysts can run custom Copilot queries scoped to their agency</td><td><span class="badge badge-p2">P2 &mdash; Nice to Have</span></td></tr>
                     <tr><td>FR-06</td><td>Cross-agency aggregate visibility (e.g., &ldquo;Your company&rdquo; toggle) is acceptable if available</td><td><span class="badge badge-p2">P2 &mdash; Acceptable</span></td></tr>
+                    <tr><td>FR-07</td><td>CIO / Secretary-General gets a consolidated cross-agency view comparing adoption, impact, and ROI across all agencies</td><td><span class="badge badge-p1">P1 &mdash; Should Have</span></td></tr>
                 </tbody>
             </table>
 
@@ -350,7 +351,17 @@ Two independent trees =            └────┬───┘
                     <tr>
                         <td><strong>CSV Org Data Upload</strong></td>
                         <td>Custom attributes: <code>Agency</code>, <code>FunctionType</code>, <code>Location</code>, <code>LevelDesignation</code>, <code>CostCentre</code>, etc.</td>
-                        <td>When you need filters beyond Entra defaults (e.g., filter by job function within an agency dashboard view).</td>
+                        <td>When you need filters beyond Entra defaults (e.g., filter by job function within an agency dashboard view). Upload via M365 Admin Center (post-migration) or Viva Insights web app (legacy).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>HRIS Connectors</strong> (SAP SuccessFactors, Workday)</td>
+                        <td>Same attributes as CSV, pulled directly from source HRIS. Auto-sync weekly or monthly.</td>
+                        <td>When your organisation uses SAP SuccessFactors or Workday and wants to eliminate manual CSV preparation. <a href="https://learn.microsoft.com/viva/import-org-data-success-factors">SAP SF</a> | <a href="https://learn.microsoft.com/viva/import-org-data-workday">Workday</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>API-Based Import</strong> (Preview)</td>
+                        <td>Same attributes as CSV, pushed programmatically via REST API.</td>
+                        <td>When you have a custom HRIS or data warehouse and want automated ingestion with incremental refresh support. <a href="https://learn.microsoft.com/viva/import-org-data-api">Learn more</a></td>
                     </tr>
                 </tbody>
             </table>
@@ -467,8 +478,8 @@ Two independent trees =            └────┬───┘
             </div>
 
             <div class="step-card">
-                <h4><span class="step-number">4</span> Phase 4: Partitions for Analyst Deep Dives (Optional)</h4>
-                <p>If your organisation has designated analysts per agency who need to run custom queries, partitions provide focused workspaces. This phase is <strong>optional</strong> &mdash; skip it if dashboard views and published reports are sufficient.</p>
+                <h4><span class="step-number">4</span> Phase 4: Partitions for Analyst Deep Dives (Optional — Mandatory for CIO Reporting)</h4>
+                <p>If your organisation has designated analysts per agency who need to run custom queries, partitions provide focused workspaces. This phase is <strong>optional for agency-level reporting</strong> (dashboard views and published reports may suffice), but <strong>mandatory if the CIO requires cross-agency comparison reports</strong> — the global partition is the only way to query across all agencies. See <a href="#cio-reporting">Section 6.2</a>.</p>
 
                 <div class="alert">
                     <strong>Before Enabling Partitions:</strong><br>
@@ -633,6 +644,47 @@ Two independent trees =            └────┬───┘
             </div>
         </section>
 
+        <!-- ─── 6.2 CIO CROSS-AGENCY REPORTING ─── -->
+        <section id="cio-reporting">
+            <h3>6.2 Cross-Agency Impact &amp; Adoption Analysis (CIO View)</h3>
+            <p>A CIO or Secretary-General sitting <strong>above all agencies</strong> needs a consolidated cross-agency view that the Copilot Dashboard does not natively provide. The dashboard shows either &ldquo;Your group&rdquo; (one agency) or &ldquo;Your company&rdquo; (blended tenant aggregate) &mdash; neither provides side-by-side agency comparison.</p>
+
+            <h4>What the CIO Needs vs. What the Dashboard Provides</h4>
+            <table>
+                <thead>
+                    <tr><th>CIO Need</th><th>Dashboard Support</th><th>Solution</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Cross-agency side-by-side comparison</td><td>&#x274C; None</td><td>Global partition analyst runs Copilot person query grouped by <code>Agency</code> attribute → builds cross-agency PBI report</td></tr>
+                    <tr><td>Feature adoption depth per agency</td><td>&#x274C; None (per-app breakdown exists but not compared across groups)</td><td>M365 Copilot Adoption PBI template via global partition, grouped by <code>Agency</code></td></tr>
+                    <tr><td>Behavioral impact per agency (meeting time, focus time changes)</td><td>&#x274C; None</td><td>Custom person queries with Copilot + collaboration metrics, grouped by <code>Agency</code></td></tr>
+                    <tr><td>Consolidated executive roll-up report</td><td>&#x274C; None</td><td>Custom PBI dashboard: agency scorecards ranked by adoption %, Assisted Hours, feature depth</td></tr>
+                    <tr><td>Cross-agency benchmarking</td><td>&#x274C; None</td><td>PBI with internal percentile calculations per agency</td></tr>
+                </tbody>
+            </table>
+
+            <div class="highlight-box">
+                <strong>CIO Reporting Architecture</strong>
+                <ol style="margin:8px 0 0 20px;">
+                    <li><strong>Phase 4 (partitions) is mandatory for CIO reporting</strong> &mdash; the global partition is the CIO's primary data source. Without partitions, cross-agency comparison is impossible.</li>
+                    <li><strong>Designate a Central IT analyst on the global partition</strong> as the CIO&rsquo;s primary reporting resource. This analyst runs queries across all employees, grouped by the <code>Agency</code> org data attribute.</li>
+                    <li><strong>Recommended PBI executive dashboard structure:</strong>
+                        <ul style="margin:4px 0 0 16px;">
+                            <li><strong>Page 1 &mdash; Agency Scorecard:</strong> Ranked table of agencies by adoption %, Assisted Hours, and Assisted Value</li>
+                            <li><strong>Page 2 &mdash; Feature Adoption Heatmap:</strong> Agency × M365 App matrix showing per-app adoption intensity</li>
+                            <li><strong>Page 3 &mdash; Behavioral Impact:</strong> Before/after comparison of meeting time, focus time, email time per agency</li>
+                            <li><strong>Page 4 &mdash; Trends:</strong> Monthly adoption and Assisted Hours trendlines per agency (requires monthly query snapshots)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Deliver via Power BI workspace</strong> with CIO as Viewer. Refresh monthly.</li>
+                </ol>
+            </div>
+
+            <div class="alert">
+                <strong>Product Limitation:</strong> All CIO cross-agency views require a Central IT analyst to build custom PBI reports. The Copilot Dashboard itself has no &ldquo;compare groups&rdquo; or &ldquo;segment by attribute&rdquo; capability. This is a platform limitation, not a configuration gap.
+            </div>
+        </section>
+
         <!-- ─── 7. ACCESS CONTROL ─── -->
         <section id="access-control">
             <h2>7. Access Control Matrix</h2>
@@ -681,6 +733,13 @@ Two independent trees =            └────┬───┘
                         <td>&ldquo;Your company&rdquo;</td>
                         <td>Global + any agency partitions as needed</td>
                         <td>No</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CIO / Secretary-General</strong></td>
+                        <td>&#x2705; Auto-granted (if top of hierarchy) or via delegation</td>
+                        <td>&ldquo;Your company&rdquo;</td>
+                        <td>N/A (dashboard user). Cross-agency PBI reports delivered by Central IT analyst via global partition.</td>
+                        <td>Yes</td>
                     </tr>
                 </tbody>
             </table>

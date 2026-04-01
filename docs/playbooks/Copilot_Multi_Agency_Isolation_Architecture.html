@@ -272,7 +272,7 @@
                     <tr>
                         <td><strong>CSV Org Data Upload</strong></td>
                         <td>All of the above, plus up to 105 custom attributes: <code>Agency</code>, <code>FunctionType</code>, <code>Location</code>, <code>LevelDesignation</code>, <code>CostCentre</code>, etc.</td>
-                        <td>Prepare and upload CSV via Viva Insights web app or M365 Admin Center</td>
+                        <td>Prepare and upload CSV via M365 Admin Center (post-migration) or Viva Insights web app (legacy). Alternatively, use an <strong>HRIS connector</strong> (SAP SuccessFactors, Workday) or <strong>API-based import</strong> to automate ingestion.</td>
                     </tr>
                 </tbody>
             </table>
@@ -480,8 +480,8 @@
                 <ul>
                     <li>Create a consolidated CSV file containing ALL employees across ALL agencies.</li>
                     <li>Include the critical custom attribute: <code>Agency</code> (e.g., "Agency A", "Agency B").</li>
-                    <li>Include required fields: <code>EffectiveDate</code>, <code>PersonId</code>, <code>ManagerId</code>, <code>Organization</code>.</li>
-                    <li>Upload via Viva Insights web app or M365 Admin Center.</li>
+                    <li>Include required fields: <code>Microsoft_PersonEmail</code>, <code>Microsoft_ManagerEmail</code>, <code>Microsoft_Organization</code> (M365 Admin Center names) or <code>PersonId</code>, <code>ManagerId</code>, <code>Organization</code>, <code>EffectiveDate</code> (legacy Viva Insights names).</li>
+                    <li>Upload via M365 Admin Center (post-migration) or Viva Insights web app (legacy). Alternatively, if your HRIS supports it, configure a <strong>SAP SuccessFactors or Workday connector</strong> with the <code>Agency</code> attribute mapped, or use the <strong>API-based import</strong> for automated ingestion.</li>
                 </ul>
                 <div class="alert">
                     <strong>Path A Verification:</strong><br>
@@ -645,13 +645,13 @@
                 <tbody>
                     <tr>
                         <td>Employee hierarchy (ManagerId)</td>
-                        <td>Centralized HR or per-agency HR feeds (CSV)</td>
-                        <td>Monthly (minimum)</td>
+                        <td>Centralized HR or per-agency HR feeds (CSV), HRIS connector, or API-based import</td>
+                        <td>Monthly (minimum). HRIS connectors support weekly auto-sync.</td>
                     </tr>
                     <tr>
                         <td>Custom attributes (Agency, FunctionType)</td>
-                        <td>HR system (via CSV)</td>
-                        <td>Monthly</td>
+                        <td>HR system (via CSV, HRIS connector, or API)</td>
+                        <td>Monthly. If using API-based import, <strong>incremental refresh</strong> is supported — add new hires without re-uploading all employees.</td>
                     </tr>
                     <tr>
                         <td>Copilot usage data</td>

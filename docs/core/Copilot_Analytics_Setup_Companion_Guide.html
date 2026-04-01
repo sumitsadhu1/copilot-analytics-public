@@ -252,6 +252,7 @@
   <tr><td>Enable/disable Advanced Analysis (VFAM)</td><td class="raci-n">–</td><td class="raci-y">R/A</td><td class="raci-n">–</td><td class="raci-n">–</td><td class="raci-n">–</td></tr>
   <tr><td>Configure Manager Settings</td><td class="raci-n">–</td><td class="raci-n">C</td><td class="raci-y">R/A</td><td class="raci-n">–</td><td class="raci-n">I</td></tr>
   <tr><td>Upload organizational data</td><td class="raci-n">C</td><td class="raci-n">–</td><td class="raci-y">R/A</td><td class="raci-n">–</td><td class="raci-n">I</td></tr>
+  <tr><td>Upload org data (post-migration via M365 Admin Center)</td><td class="raci-y">C</td><td class="raci-n">–</td><td class="raci-n">C</td><td class="raci-n">–</td><td class="raci-n">I</td></tr>
   <tr><td>Configure privacy / group size</td><td class="raci-n">–</td><td class="raci-y">C</td><td class="raci-y">R/A</td><td class="raci-n">–</td><td class="raci-n">I</td></tr>
   <tr><td>Create exclusion lists</td><td class="raci-n">–</td><td class="raci-y">R/A</td><td class="raci-n">–</td><td class="raci-n">–</td><td class="raci-n">C</td></tr>
   <tr><td>Run Advanced Analytics queries</td><td class="raci-n">–</td><td class="raci-n">–</td><td class="raci-n">C</td><td class="raci-y">R/A</td><td class="raci-n">I</td></tr>
@@ -1237,53 +1238,78 @@
 
 <p>This section consolidates organizational data guidance for all tiers. Upload once; the data serves the Copilot Dashboard, Analytics Reports, Agent Dashboard, and Advanced Analytics.</p>
 
+<div class="callout warning">
+  <div class="callout-title">IMPORTANT: Organizational Data Upload Migration (April 2026)</div>
+  <p>Microsoft is migrating all tenants from the Viva Insights web app to the <strong>M365 Admin Center</strong> as the single upload point for organizational data. <strong>By mid-2026, all tenants will be migrated.</strong> After migration, you can no longer upload org data through the Viva Insights web app.</p>
+  <ul>
+    <li>The new platform is called <strong>Organizational Data in Microsoft 365</strong>: <code>admin.microsoft.com</code> → Setup → Migration and imports → Organizational Data in Microsoft 365.</li>
+    <li>A new role — <strong>Organizational Data Source Administrator</strong> — manages uploads.</li>
+    <li>The platform also supports <strong>HRIS connectors</strong> (SAP SuccessFactors, Workday), <strong>Azure Blob Storage</strong>, and <strong>API-based import</strong> — eliminating manual CSV uploads for many organisations.</li>
+    <li>Data uploaded via this platform serves <strong>multiple M365 apps</strong> (Copilot Dashboard, Viva Insights, M365 User Profile) — not just Viva Insights.</li>
+  </ul>
+</div>
+
 <h2>9.1 Upload Methods</h2>
+
 <table>
-  <tr><th>Method</th><th>Who Uploads</th><th>Best For</th></tr>
-  <tr><td><strong>Option A:</strong> Viva Insights web app</td><td>Insights Administrator</td><td>Customers WITH Viva Insights licences (recommended — richer attribute support)</td></tr>
-  <tr><td><strong>Option B:</strong> M365 Admin Center</td><td>Global Admin</td><td>Customers WITHOUT Viva Insights licences</td></tr>
+  <tr><th>Method</th><th>Who Manages</th><th>Status</th><th>Best For</th></tr>
+  <tr><td><strong>Option A:</strong> CSV Upload — M365 Admin Center</td><td>Org Data Source Administrator or Global Admin</td><td>GA</td><td>Primary path after migration. Supports incremental merge.</td></tr>
+  <tr><td><strong>Option B:</strong> CSV Upload — Viva Insights web app</td><td>Insights Administrator</td><td>Deprecated (mid-2026)</td><td>Legacy path. Use only if your tenant has not yet been migrated.</td></tr>
+  <tr><td><strong>Option C:</strong> SAP SuccessFactors Connector</td><td>Global Admin + SAP SF Admin</td><td>GA</td><td>No CSV needed. Auto-sync weekly or monthly. <a href="https://learn.microsoft.com/viva/import-org-data-success-factors">Learn more</a></td></tr>
+  <tr><td><strong>Option D:</strong> Workday Connector</td><td>Global Admin + Workday Admin</td><td>GA</td><td>≤100K users. For larger orgs, use Workday RaaS → Azure Blob Storage. <a href="https://learn.microsoft.com/viva/import-org-data-workday">Learn more</a></td></tr>
+  <tr><td><strong>Option E:</strong> Azure Blob Storage</td><td>Global Admin + Data Engineer</td><td>GA</td><td>Automated CSV drop. <a href="https://learn.microsoft.com/viva/import-org-data-azure">Learn more</a></td></tr>
+  <tr><td><strong>Option F:</strong> API-Based Import</td><td>Global Admin + Developer</td><td>Preview</td><td>Programmatic push. Supports incremental refresh. <a href="https://learn.microsoft.com/viva/import-org-data-api">Learn more</a></td></tr>
 </table>
 
 <div class="callout info">
   <div class="callout-title">NOTE: Merged Uploads</div>
-  If both methods are used, the dashboard merges the uploads and prioritises the more recent data.
+  In the M365 Admin Center, new uploads are <strong>incremental by default</strong> — they merge with existing data rather than replacing it.
 </div>
 
 <h2>9.2 Attribute Mapping</h2>
+<p>When uploading via the M365 Admin Center (post-migration), use the <code>Microsoft_*</code> attribute names. If still on the Viva Insights web app, use the legacy names.</p>
 <table>
-  <tr><th>Viva Insights Attribute</th><th>M365 Admin Center Attribute</th><th>Required?</th></tr>
+  <tr><th>Legacy Name (Viva Insights)</th><th>M365 Admin Center Name</th><th>Required?</th></tr>
   <tr><td><code>PersonId</code></td><td><code>Microsoft_PersonEmail</code></td><td>Required</td></tr>
   <tr><td><code>ManagerId</code></td><td><code>Microsoft_ManagerEmail</code></td><td>Required</td></tr>
   <tr><td><code>Organization</code></td><td><code>Microsoft_Organization</code></td><td>Required</td></tr>
-  <tr><td><code>EffectiveDate</code></td><td>N/A</td><td>Recommended (set earlier than upload date)</td></tr>
+  <tr><td><code>EffectiveDate</code></td><td>N/A — handled via date picker in M365 Admin Center</td><td>Required (Viva Insights) / Not needed (M365 Admin Center)</td></tr>
   <tr><td><code>FunctionType</code></td><td><code>Microsoft_JobDiscipline</code></td><td>Optional (enables Job Function filter)</td></tr>
-  <tr><td><code>LevelDesignation</code></td><td>N/A</td><td>Optional (enables level views)</td></tr>
-  <tr><td><code>Location</code></td><td>N/A</td><td>Optional (enables location filter)</td></tr>
-  <tr><td>Custom attributes (e.g., <code>BusinessUnit</code>)</td><td>N/A</td><td>Optional (up to 105 total attributes)</td></tr>
+  <tr><td><code>LevelDesignation</code></td><td><code>Microsoft_LevelDesignation</code></td><td>Optional (enables level views)</td></tr>
+  <tr><td><code>Location</code></td><td><code>Microsoft_CompanyOfficeLocation</code></td><td>Optional (enables location filter)</td></tr>
+  <tr><td>Custom attributes (e.g., <code>BusinessUnit</code>)</td><td>Custom (same name)</td><td>Optional (up to 105 total attributes)</td></tr>
 </table>
 
-<h2>9.3 Upload Steps (Option A — Viva Insights)</h2>
+<h2>9.3 Upload Steps (Option A — M365 Admin Center)</h2>
+<p>This is the <strong>primary path</strong> for tenants migrated to Organizational Data in Microsoft 365.</p>
 <ol>
-  <li>Prepare CSV: UTF-8 encoded, &lt;1 GB, include all required columns + custom attributes</li>
-  <li>Navigate to <code>https://insights.cloud.microsoft</code> → Admin → Data hub → .csv upload → Start</li>
-  <li>Upload file, map fields to Viva Insights attributes</li>
-  <li>Validate and submit — wait up to 7 days for processing</li>
+  <li>Ensure the <strong>Organizational Data Source Administrator</strong> role is assigned.</li>
+  <li>Prepare CSV: UTF-8 encoded, &lt;1 GB. Use <code>Microsoft_*</code> attribute names. Do <strong>not</strong> include <code>EffectiveDate</code>. No spaces in column headers.</li>
+  <li>Navigate to <code>admin.microsoft.com</code> → Setup → Migration and imports → Organizational Data in Microsoft 365 → Data Connections.</li>
+  <li>Select apps to share data with, upload file, map attributes, validate and submit.</li>
+  <li>Processing takes a few hours, up to 3 days for full availability.</li>
 </ol>
 
-<h2>9.4 Upload Steps (Option B — M365 Admin Center)</h2>
+<h2>9.4 Upload Steps (Option B — Viva Insights Web App — Legacy)</h2>
+<div class="callout warning">
+  <div class="callout-title">DEPRECATED</div>
+  <p>This path is being retired by mid-2026. Use only if your tenant has not yet received a migration notification.</p>
+</div>
 <ol>
-  <li>Prepare CSV with <code>Microsoft_*</code> attribute names</li>
-  <li>Navigate to <code>https://admin.microsoft.com</code> → Settings → Org settings → Organization profile → Organizational data</li>
-  <li>Upload CSV file — wait up to 7 days for processing</li>
+  <li>Prepare CSV: UTF-8 encoded, &lt;1 GB, include <code>EffectiveDate</code> set earlier than upload date.</li>
+  <li>Navigate to <code>https://insights.cloud.microsoft</code> → Admin → Data hub → .csv upload → Start</li>
+  <li>Upload file, map fields, validate and submit — wait up to 7 days for processing</li>
 </ol>
 
 <h2>9.5 Key Guidance</h2>
 <ul>
   <li>Upload data for <strong>every employee</strong> to ensure Scope filters are accurate</li>
-  <li>Do <strong>not</strong> upload a <code>TimeZone</code> column (will cause an error)</li>
-  <li>Include <code>EffectiveDate</code> set to a date <strong>earlier</strong> than the upload date to avoid delays</li>
-  <li>If both Insights Admin and Global Admin upload data, the dashboard prioritises the most recent upload</li>
-  <li>Org data permanently changes the data source from Entra ID to the file — refresh regularly</li>
+  <li>Do <strong>not</strong> upload a <code>TimeZone</code> column (will cause an error — TimeZone is system-generated)</li>
+  <li><strong>M365 Admin Center:</strong> Do not include <code>EffectiveDate</code> as a CSV column — use the date picker instead. Column headers must not contain spaces.</li>
+  <li><strong>Viva Insights (legacy):</strong> Include <code>EffectiveDate</code> set earlier than the upload date</li>
+  <li>In the M365 Admin Center, new uploads are <strong>incremental by default</strong> — they merge with existing data rather than replacing it</li>
+  <li>If using HRIS connectors (SAP SuccessFactors, Workday), no CSV preparation is needed — the connector pulls data directly from your HRIS</li>
+  <li>Data uploaded via the M365 Admin Center serves multiple M365 apps — attributes are classified as Public, Confidential, or Custom with per-app access controls</li>
 </ul>
 
 <!-- ═══════════════════════ 10. TROUBLESHOOTING ═══════════════════════ -->
