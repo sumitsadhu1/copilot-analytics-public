@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Configuration — Copilot Analytics</title>
+<link rel="stylesheet" href="../assets/docs-style.css">
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Setup</span>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Privacy Configuration</span>
+  </div>
+  <div class="doc-nav-right">
+    <a href="../artifacts/pdfs/Privacy_Configuration.pdf" class="pdf-btn" title="Download PDF">&#128196; PDF</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ COVER PAGE ═══════════════════════ -->
+<div class="cover">
+  <h1>Microsoft 365 Copilot Analytics</h1>
+  <div class="subtitle">Privacy Configuration Guide</div>
+  <div class="sub2">Privacy thresholds, exclusion lists, data residency &amp; compliance controls</div>
+</div>
+
+<table>
+  <tr><th>Document Property</th><th>Value</th></tr>
+  <tr><td>Layer</td><td>2 &mdash; Setup</td></tr>
+  <tr><td>Audience</td><td>IT Admin / Governance</td></tr>
+  <tr><td>Version</td><td>4.0</td></tr>
+  <tr><td>Published</td><td>April 2026</td></tr>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">How This Document Fits</div>
+  <p>This is a <strong>Layer 2 &mdash; Setup</strong> document. It covers the privacy and compliance settings that govern how Copilot Analytics data is collected, stored, and displayed. Configure these settings <em>before</em> enabling dashboards or running queries.</p>
+  <table>
+    <tr><th>Layer</th><th>Purpose</th><th>Who Reads</th></tr>
+    <tr><td><a href="../1-strategy/executive-briefing.html">1 &mdash; Strategy</a></td><td>Decide what to implement</td><td>CIO, SA, Business Leaders</td></tr>
+    <tr><td><strong>2 &mdash; Setup</strong> (you are here)</td><td>Configure and deploy</td><td>IT Admin, Insights Admin</td></tr>
+    <tr><td><a href="../3-operate/dashboard-guide.html">3 &mdash; Operate</a></td><td>Use dashboards and reports daily</td><td>Leaders, Analysts, Managers</td></tr>
+    <tr><td><a href="../4-reference/troubleshooting.html">4 &mdash; Reference</a></td><td>Look up details and fix issues</td><td>Everyone (as needed)</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════════════════ TOC ═══════════════════════ -->
+<h1 id="toc">Table of Contents</h1>
+<ol>
+  <li><a href="#privacy-thresholds">Privacy Thresholds</a></li>
+  <li><a href="#exclusion-lists">Exclusion Lists</a></li>
+  <li><a href="#data-residency">Data Residency</a></li>
+  <li><a href="#gdpr">GDPR and Regional Compliance</a></li>
+  <li><a href="#data-retention">Data Retention</a></li>
+  <li><a href="#next">What to Read Next</a></li>
+</ol>
+
+<!-- ═══════════════════════ 1. PRIVACY THRESHOLDS ═══════════════════════ -->
+<h1 id="privacy-thresholds">1. Privacy Thresholds</h1>
+
+<p>Privacy thresholds ensure that no individual user&rsquo;s behaviour is identifiable in aggregated results. Any group below the configured minimum has its data suppressed entirely.</p>
+
+<table>
+  <tr><th>Setting</th><th>Default</th><th>Configurable Range</th></tr>
+  <tr><td>Minimum group size</td><td>10 users</td><td>5&ndash;unlimited (lowest allowed = 5)</td></tr>
+</table>
+
+<h2>How Thresholds Work</h2>
+<ul>
+  <li><strong>Data suppression:</strong> Results for groups below the threshold are suppressed &mdash; they show as blank or &ldquo;insufficient data&rdquo; rather than displaying potentially identifiable information.</li>
+  <li><strong>No individual visibility:</strong> No individual user behaviour is ever visible in the Copilot Dashboard, Power BI reports, or query results.</li>
+  <li><strong>Differential privacy:</strong> Automatically applied to aggregated results. Small amounts of statistical noise are added so that any single person&rsquo;s data cannot be reverse-engineered from the output.</li>
+  <li><strong>Distribution masking:</strong> Hides results where &ldquo;almost all&rdquo; or &ldquo;almost none&rdquo; of the users fit a particular profile, preventing inference about individuals in near-unanimous groups.</li>
+</ul>
+
+<div class="callout warn">
+  <div class="callout-title">Minimum Team Size vs Minimum Group Size &mdash; They Are Different</div>
+  <p>These two settings apply in different contexts and are configured in different places. Both have a minimum of 5.</p>
+  <table>
+    <tr><th>Setting</th><th>Where Configured</th><th>What It Controls</th><th>Who It Counts</th></tr>
+    <tr>
+      <td><strong>Minimum team size</strong></td>
+      <td>Viva Insights &rarr; Admin &rarr; <strong>Manager settings</strong></td>
+      <td>Manager-facing insights (My Team tab, Copilot Dashboard manager view)</td>
+      <td><strong>Includes the manager</strong> in the headcount</td>
+    </tr>
+    <tr>
+      <td><strong>Minimum group size</strong></td>
+      <td>Viva Insights &rarr; Admin &rarr; <strong>Privacy settings</strong></td>
+      <td>Copilot Dashboard aggregated views, Power BI query results</td>
+      <td><strong>Does not</strong> include the viewer in the headcount</td>
+    </tr>
+  </table>
+  <p><strong>Example:</strong> If both are set to 5, a manager with exactly 4 direct reports will see their team data (4 reports + 1 manager = 5, meeting the team size threshold), but an analyst filtering a dashboard to a group of 4 users will see suppressed data (4 &lt; 5, below the group size threshold).</p>
+</div>
+
+<!-- ═══════════════════════ 2. EXCLUSION LISTS ═══════════════════════ -->
+<h1 id="exclusion-lists">2. Exclusion Lists</h1>
+
+<p>Exclusion lists remove specific users from all Copilot Analytics and Viva Insights reporting. Excluded users&rsquo; activity data is not collected, processed, or displayed anywhere.</p>
+
+<h2>What Gets Excluded</h2>
+<ul>
+  <li>Copilot Dashboard &mdash; excluded users do not appear in any dashboard metric</li>
+  <li>Viva Insights behavioural reports (collaboration hours, meeting patterns, etc.)</li>
+  <li>M365 Copilot Chat (web) usage data</li>
+  <li>Advanced Analytics query results (Power BI person queries, meeting queries, etc.)</li>
+</ul>
+
+<h2>How to Upload</h2>
+<table>
+  <tr><th>Method</th><th>Steps</th></tr>
+  <tr>
+    <td><strong>CSV upload</strong></td>
+    <td>Prepare a CSV with user email addresses &rarr; Viva Insights web app &rarr; Admin &rarr; Privacy settings &rarr; Exclusions &rarr; Upload CSV</td>
+  </tr>
+  <tr>
+    <td><strong>Entra ID groups</strong></td>
+    <td>Create or select an Entra security group containing users to exclude &rarr; Viva Insights web app &rarr; Admin &rarr; Privacy settings &rarr; Exclusions &rarr; Select group</td>
+  </tr>
+</table>
+
+<h2>Processing Times</h2>
+<table>
+  <tr><th>Action</th><th>Time to Take Effect</th></tr>
+  <tr><td>Adding users to exclusion list</td><td>Up to <strong>5 days</strong></td></tr>
+  <tr><td>Removing users from exclusion list</td><td>Up to <strong>3 days</strong></td></tr>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">Plan Exclusions Before Dashboard Launch</div>
+  <p>Because exclusions take up to 5 days to apply, configure your exclusion lists <strong>before</strong> enabling the Copilot Dashboard (VFAM). This avoids a window where excluded users&rsquo; data briefly appears in reports.</p>
+</div>
+
+<!-- ═══════════════════════ 3. DATA RESIDENCY ═══════════════════════ -->
+<h1 id="data-residency">3. Data Residency</h1>
+
+<p>Copilot Analytics data is processed and stored in the <strong>same geographic region</strong> as your Microsoft 365 tenant. No additional configuration is required for data residency &mdash; it follows your tenant&rsquo;s existing data location settings.</p>
+
+<h2>Verification Steps</h2>
+<ol>
+  <li>Go to <strong>M365 Admin Centre &rarr; Settings &rarr; Org settings &rarr; Organization profile &rarr; Data location</strong>.</li>
+  <li>Confirm the listed region meets your compliance and regulatory requirements.</li>
+  <li>If your organisation has specific data sovereignty requirements, consult your compliance team to verify that the tenant region satisfies them.</li>
+</ol>
+
+<!-- ═══════════════════════ 4. GDPR ═══════════════════════ -->
+<h1 id="gdpr">4. GDPR and Regional Compliance</h1>
+
+<p>Microsoft 365 Copilot Analytics is designed with GDPR compliance in mind. The following controls support regulatory requirements:</p>
+
+<ul>
+  <li><strong>User opt-out:</strong> Individual users can opt out of Viva Insights personal experiences via their settings. Exclusion lists (Section 2) provide admin-level opt-out for organisational compliance.</li>
+  <li><strong>Data minimisation:</strong> Only aggregated, de-identified data is surfaced in dashboards and reports. Differential privacy and distribution masking (Section 1) further protect individual data.</li>
+  <li><strong>Org data handling:</strong> If you upload organisational data (CSV with attributes like Department, Agency, Location), ensure the upload process follows your organisation&rsquo;s data handling policies. Do not include sensitive personal data in org data attributes.</li>
+  <li><strong>Data subject requests:</strong> Standard Microsoft 365 Data Subject Request (DSR) tools apply to Viva Insights data. Use the M365 Admin Centre to process access, export, or deletion requests.</li>
+</ul>
+
+<div class="callout info">
+  <div class="callout-title">Regional Considerations</div>
+  <p>Some regions may have additional requirements beyond GDPR (e.g., UK-GDPR, Australia Privacy Act). Work with your legal and compliance teams to confirm that your privacy threshold settings, exclusion lists, and org data handling meet local regulations.</p>
+</div>
+
+<!-- ═══════════════════════ 5. DATA RETENTION ═══════════════════════ -->
+<h1 id="data-retention">5. Data Retention</h1>
+
+<p>Different analytics surfaces retain data for different periods. Plan your reporting cadence accordingly &mdash; if you need long-term trends, use Advanced Analytics with Power BI snapshots.</p>
+
+<table>
+  <tr><th>Data Source</th><th>Retention Period</th><th>Notes</th></tr>
+  <tr>
+    <td>Admin Centre Reports</td>
+    <td>Up to <strong>180 days</strong></td>
+    <td>M365 Admin Centre &rarr; Reports &rarr; Usage</td>
+  </tr>
+  <tr>
+    <td>Copilot Dashboard</td>
+    <td><strong>28-day</strong> rolling window</td>
+    <td>Always shows the most recent 28 days; no historical access</td>
+  </tr>
+  <tr>
+    <td>Advanced Analytics &mdash; Collaboration metrics</td>
+    <td>Up to <strong>27 months</strong></td>
+    <td>Starts at 13 months; grows weekly as data accumulates</td>
+  </tr>
+  <tr>
+    <td>Advanced Analytics &mdash; Copilot metrics</td>
+    <td>Up to <strong>13 months</strong></td>
+    <td>Copilot-specific metrics (Assisted Hours, actions, etc.)</td>
+  </tr>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">Monthly Snapshots for Long-Term Trends</div>
+  <p>The Copilot Dashboard&rsquo;s 28-day rolling window means historical data is not preserved. To track trends over time, schedule monthly Power BI report refreshes and save snapshots. See the <a href="../3-operate/analyst-playbook.html">Analyst Playbook</a> for snapshot scheduling guidance.</p>
+</div>
+
+<!-- ═══════════════════════ 6. WHAT TO READ NEXT ═══════════════════════ -->
+<h1 id="next">6. What to Read Next</h1>
+
+<table>
+  <tr><th>Document</th><th>When to Use</th></tr>
+  <tr><td><a href="admin-setup.html"><strong>Admin Setup Guide</strong></a></td><td>Configure all five analytics tiers &mdash; roles, licences, VFAM, org data, and partitions</td></tr>
+  <tr><td><a href="../4-reference/troubleshooting.html"><strong>Troubleshooting Guide</strong></a></td><td>Fix common issues: missing data, dashboard not appearing, suppressed metrics</td></tr>
+  <tr><td><a href="data-onboarding.html"><strong>Data Onboarding Guide</strong></a></td><td>Upload and validate organisational data (CSV attributes, Entra sync)</td></tr>
+  <tr><td><a href="../3-operate/dashboard-guide.html"><strong>Dashboard Guide</strong></a></td><td>Understand each dashboard page and how to interpret the metrics</td></tr>
+</table>
+
+<!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
+<hr>
+<p style="font-size:0.85em; color:var(--text-muted); margin-top:32px;">
+  <strong>Disclaimer:</strong> This document is provided for informational purposes only and reflects Microsoft 365 capabilities as of April 2026. Microsoft may change features, interfaces, and availability without notice. Always verify current guidance on <a href="https://learn.microsoft.com">Microsoft Learn</a>. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
+</p>
+
+<!-- Back to Top -->
+<a href="#" id="back-to-top" style="
+  position:fixed; bottom:32px; right:32px; background:var(--accent,#0078d4); color:#fff;
+  border:none; border-radius:50%; width:44px; height:44px; font-size:22px;
+  text-align:center; line-height:44px; text-decoration:none; cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,0.18); display:none; z-index:999;
+" title="Back to top">&uarr;</a>
+<script>
+(function(){
+  var btn = document.getElementById('back-to-top');
+  window.addEventListener('scroll', function(){
+    btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+  btn.addEventListener('click', function(e){
+    e.preventDefault();
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+})();
+</script>
+
+</body>
+</html>

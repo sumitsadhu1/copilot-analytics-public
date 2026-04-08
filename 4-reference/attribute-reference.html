@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attribute Reference — Copilot Analytics</title>
+<link rel="stylesheet" href="../assets/docs-style.css">
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Reference</span>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Attribute Reference</span>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ COVER PAGE ═══════════════════════ -->
+<div class="cover">
+  <h1>Microsoft 365 Copilot Analytics</h1>
+  <div class="subtitle">Attribute Reference</div>
+  <div class="sub2">Complete attribute mapping, data classification, and naming conventions for organisational data</div>
+</div>
+
+<table>
+  <tr><th>Document Property</th><th>Value</th></tr>
+  <tr><td>Layer</td><td>4 &mdash; Reference</td></tr>
+  <tr><td>Audience</td><td>IT Admin, Insights Admin</td></tr>
+  <tr><td>Version</td><td>4.0</td></tr>
+  <tr><td>Published</td><td>April 2026</td></tr>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">How This Document Fits</div>
+  <p>This is a <strong>Layer 4 &mdash; Reference</strong> document. Use it when preparing CSV uploads or configuring HRIS connectors. For the step-by-step upload process, see the <a href="../2-setup/data-onboarding.html">Data Onboarding Guide</a>.</p>
+  <table>
+    <tr><th>Layer</th><th>Purpose</th><th>Who Reads</th></tr>
+    <tr><td><a href="../1-strategy/executive-briefing.html">1 &mdash; Strategy</a></td><td>Decide what to implement</td><td>CIO, SA, Business Leaders</td></tr>
+    <tr><td><a href="../2-setup/admin-setup.html">2 &mdash; Setup</a></td><td>Configure and deploy</td><td>IT Admin, Insights Admin</td></tr>
+    <tr><td><a href="../3-operate/dashboard-guide.html">3 &mdash; Operate</a></td><td>Use dashboards and reports daily</td><td>Leaders, Analysts, Managers</td></tr>
+    <tr><td><strong>4 &mdash; Reference</strong> (you are here)</td><td>Look up details and fix issues</td><td>Everyone (as needed)</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════════════════ TOC ═══════════════════════ -->
+<h1 id="toc">Table of Contents</h1>
+<ol>
+  <li><a href="#attribute-mapping">Attribute Mapping Table</a></li>
+  <li><a href="#data-classification">Data Classification</a></li>
+  <li><a href="#naming-conventions">Naming Conventions</a></li>
+  <li><a href="#reserved-names">Reserved Attribute Names</a></li>
+  <li><a href="#learn-references">Microsoft Learn References</a></li>
+</ol>
+
+<!-- ═══════════════════════ 1. ATTRIBUTE MAPPING ═══════════════════════ -->
+<h1 id="attribute-mapping">1. Attribute Mapping Table</h1>
+
+<p>This table maps legacy Viva Insights attribute names to the new M365 Admin Center naming convention (MODIS). Use this when migrating from the legacy upload path or preparing a new CSV.</p>
+
+<table>
+  <tr><th>Legacy Name (Viva Insights)</th><th>M365 Admin Center Name</th><th>Required?</th><th>Description / Notes</th></tr>
+  <tr>
+    <td><code>PersonId</code></td>
+    <td><code>Microsoft_PersonEmail</code></td>
+    <td><strong>Required</strong></td>
+    <td>Employee&rsquo;s primary email address (UPN). Must match Entra ID. Every row must have a value.</td>
+  </tr>
+  <tr>
+    <td><code>ManagerId</code></td>
+    <td><code>Microsoft_ManagerEmail</code></td>
+    <td><strong>Required</strong></td>
+    <td>Manager&rsquo;s email address. Must exist in Entra ID or upload causes orphan warnings. Every <code>ManagerEmail</code> value should match a <code>PersonEmail</code> in the same file.</td>
+  </tr>
+  <tr>
+    <td><code>Organization</code></td>
+    <td><code>Microsoft_Organization</code></td>
+    <td><strong>Required</strong></td>
+    <td>Department or organisational unit. Drives the Organisation filter on dashboards.</td>
+  </tr>
+  <tr>
+    <td><code>EffectiveDate</code></td>
+    <td>N/A (date picker in UI)</td>
+    <td>Required (legacy) / Not needed (new)</td>
+    <td>Legacy path: include in CSV, must be earlier than upload date. New M365 Admin Center path: the date is selected via the UI instead.</td>
+  </tr>
+  <tr>
+    <td><code>FunctionType</code></td>
+    <td><code>Microsoft_JobDiscipline</code></td>
+    <td>Optional</td>
+    <td>Drives the Job Function filter on the Copilot Dashboard.</td>
+  </tr>
+  <tr>
+    <td><code>LevelDesignation</code></td>
+    <td><code>Microsoft_LevelDesignation</code></td>
+    <td>Optional</td>
+    <td>Enables level-based views and analysis (e.g., IC vs Manager vs Director).</td>
+  </tr>
+  <tr>
+    <td><code>Location</code></td>
+    <td><code>Microsoft_CompanyOfficeLocation</code></td>
+    <td>Optional</td>
+    <td>Drives the Location filter on the Copilot Dashboard.</td>
+  </tr>
+  <tr>
+    <td><code>HireDate</code></td>
+    <td><code>Microsoft_HireDate</code></td>
+    <td>Optional</td>
+    <td>Used for tenure-based analysis and before/after cohort segmentation (format: YYYY-MM-DD).</td>
+  </tr>
+  <tr>
+    <td><code>HourlyRate</code></td>
+    <td><code>Microsoft_HourlyRate</code></td>
+    <td>Optional</td>
+    <td><strong>Confidential.</strong> Required for per-employee Assisted Value calculation. Set access classification to <strong>Confidential</strong>. If not provided, the dashboard uses the global default ($72/hour).</td>
+  </tr>
+  <tr>
+    <td><code>Layer</code></td>
+    <td><code>Microsoft_Layer</code></td>
+    <td>Optional</td>
+    <td>Hierarchy depth from the top. Auto-derived from manager hierarchy if not explicitly uploaded.</td>
+  </tr>
+  <tr>
+    <td><code>SupervisorIndicator</code></td>
+    <td><code>Microsoft_SupervisorIndicator</code></td>
+    <td>Optional</td>
+    <td>Indicates whether the employee is a manager (has direct reports). Auto-derived if not uploaded.</td>
+  </tr>
+  <tr>
+    <td>Custom (e.g., <code>BusinessUnit</code>)</td>
+    <td>Custom (same name)</td>
+    <td>Optional</td>
+    <td>Up to 105 total attributes (reserved + custom). Use for Agency, Cost Centre, Region, Project, etc.</td>
+  </tr>
+</table>
+
+<!-- ═══════════════════════ 2. DATA CLASSIFICATION ═══════════════════════ -->
+<h1 id="data-classification">2. Data Classification</h1>
+
+<p>When uploading organisational data, each attribute is assigned an access classification that controls which applications and roles can read the data.</p>
+
+<table>
+  <tr><th>Classification</th><th>Visibility</th><th>Example Attributes</th></tr>
+  <tr>
+    <td><strong>Public</strong></td>
+    <td>Visible to all users and all apps that consume Viva Insights data.</td>
+    <td><code>Organization</code>, <code>Location</code>, <code>LevelDesignation</code></td>
+  </tr>
+  <tr>
+    <td><strong>Confidential</strong></td>
+    <td>Visible only to apps and roles you explicitly choose. Not available for dashboard filters.</td>
+    <td><code>HourlyRate</code>, <code>CostCentre</code></td>
+  </tr>
+  <tr>
+    <td><strong>Custom</strong></td>
+    <td>You choose which apps and roles can access the attribute (per-attribute granularity).</td>
+    <td>Any custom attribute where selective access is needed.</td>
+  </tr>
+</table>
+
+<div class="callout">
+  <div class="callout-title">Best Practice</div>
+  <p>Set <code>HourlyRate</code> and any compensation-related attributes to <strong>Confidential</strong>. Set demographic attributes like <code>Organization</code>, <code>Location</code>, and <code>FunctionType</code> to <strong>Public</strong> so they are available as dashboard filters.</p>
+</div>
+
+<!-- ═══════════════════════ 3. NAMING CONVENTIONS ═══════════════════════ -->
+<h1 id="naming-conventions">3. Naming Conventions</h1>
+
+<table>
+  <tr><th>Rule</th><th>Details</th></tr>
+  <tr>
+    <td>Use underscores, not spaces</td>
+    <td>Column names must not contain spaces. Use <code>Business_Unit</code> or <code>BusinessUnit</code>, not <code>Business Unit</code>.</td>
+  </tr>
+  <tr>
+    <td>No <code>Microsoft_</code> prefix for custom attributes</td>
+    <td>The <code>Microsoft_</code> prefix is reserved for system attributes. Custom columns using this prefix will cause validation errors.</td>
+  </tr>
+  <tr>
+    <td>Case sensitivity</td>
+    <td>Attribute names are <strong>case-insensitive</strong> during upload but are stored as provided. Use consistent casing for clarity.</td>
+  </tr>
+  <tr>
+    <td>Maximum length</td>
+    <td>Attribute names should not exceed 128 characters.</td>
+  </tr>
+  <tr>
+    <td>Total attribute limit</td>
+    <td>Maximum of <strong>105 total attributes</strong> per upload (reserved system attributes + your custom attributes combined).</td>
+  </tr>
+  <tr>
+    <td>Avoid special characters</td>
+    <td>Use only letters, numbers, and underscores. Avoid hyphens, periods, and other special characters in attribute names.</td>
+  </tr>
+</table>
+
+<!-- ═══════════════════════ 4. RESERVED ATTRIBUTE NAMES ═══════════════════════ -->
+<h1 id="reserved-names">4. Reserved Attribute Names</h1>
+
+<p>The following attribute names are reserved by the system and <strong>cannot be used for custom attributes</strong>. If you need a similar concept, use a different name (e.g., <code>Agency_Location</code> instead of <code>Location</code>).</p>
+
+<table>
+  <tr><th>Reserved Name (Legacy)</th><th>Reserved Name (M365 Admin Center)</th></tr>
+  <tr><td><code>PersonId</code></td><td><code>Microsoft_PersonEmail</code></td></tr>
+  <tr><td><code>ManagerId</code></td><td><code>Microsoft_ManagerEmail</code></td></tr>
+  <tr><td><code>Organization</code></td><td><code>Microsoft_Organization</code></td></tr>
+  <tr><td><code>EffectiveDate</code></td><td>N/A (UI-based)</td></tr>
+  <tr><td><code>FunctionType</code></td><td><code>Microsoft_JobDiscipline</code></td></tr>
+  <tr><td><code>LevelDesignation</code></td><td><code>Microsoft_LevelDesignation</code></td></tr>
+  <tr><td><code>Location</code></td><td><code>Microsoft_CompanyOfficeLocation</code></td></tr>
+  <tr><td><code>HireDate</code></td><td><code>Microsoft_HireDate</code></td></tr>
+  <tr><td><code>HourlyRate</code></td><td><code>Microsoft_HourlyRate</code></td></tr>
+  <tr><td><code>Layer</code></td><td><code>Microsoft_Layer</code></td></tr>
+  <tr><td><code>SupervisorIndicator</code></td><td><code>Microsoft_SupervisorIndicator</code></td></tr>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">Important</div>
+  <p>Any custom attribute name beginning with <code>Microsoft_</code> will be rejected during validation. If you need to add custom attributes with similar concepts, use your own naming convention (e.g., <code>Agency</code>, <code>CostCentre</code>, <code>Region</code>).</p>
+</div>
+
+<!-- ═══════════════════════ 5. LEARN REFERENCES ═══════════════════════ -->
+<h1 id="learn-references">5. Microsoft Learn References</h1>
+
+<table>
+  <tr><th>Topic</th><th>Link</th></tr>
+  <tr>
+    <td>Organizational Data in Microsoft 365</td>
+    <td><a href="https://learn.microsoft.com/viva/organizational-data">learn.microsoft.com/viva/organizational-data</a></td>
+  </tr>
+  <tr>
+    <td>Org Data Attribute Reference</td>
+    <td><a href="https://learn.microsoft.com/viva/insights/advanced/admin/org-data-overview">learn.microsoft.com/viva/insights/advanced/admin/org-data-overview</a></td>
+  </tr>
+  <tr>
+    <td>Prepare Organisational Data (CSV)</td>
+    <td><a href="https://learn.microsoft.com/viva/insights/advanced/admin/prepare-org-data">learn.microsoft.com/viva/insights/advanced/admin/prepare-org-data</a></td>
+  </tr>
+  <tr>
+    <td>Validation Errors</td>
+    <td><a href="https://learn.microsoft.com/viva/insights/advanced/admin/rules-validation-errors">learn.microsoft.com/viva/insights/advanced/admin/rules-validation-errors</a></td>
+  </tr>
+  <tr>
+    <td>Data Quality Page</td>
+    <td><a href="https://learn.microsoft.com/viva/insights/advanced/admin/data-quality">learn.microsoft.com/viva/insights/advanced/admin/data-quality</a></td>
+  </tr>
+</table>
+
+<!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
+<hr>
+<p style="font-size:0.85em; color:var(--text-muted); margin-top:32px;">
+  <strong>Disclaimer:</strong> This document is provided for informational purposes only and reflects Microsoft 365 capabilities as of April 2026. Microsoft may change features, interfaces, and availability without notice. Always verify current guidance on <a href="https://learn.microsoft.com">Microsoft Learn</a>. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
+</p>
+
+<!-- Back to Top -->
+<a href="#" id="back-to-top" style="
+  position:fixed; bottom:32px; right:32px; background:var(--accent,#0078d4); color:#fff;
+  border:none; border-radius:50%; width:44px; height:44px; font-size:22px;
+  text-align:center; line-height:44px; text-decoration:none; cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,0.18); display:none; z-index:999;
+" title="Back to top">&uarr;</a>
+<script>
+(function(){
+  var btn = document.getElementById('back-to-top');
+  window.addEventListener('scroll', function(){
+    btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+  btn.addEventListener('click', function(e){
+    e.preventDefault();
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+})();
+</script>
+
+</body>
+</html>

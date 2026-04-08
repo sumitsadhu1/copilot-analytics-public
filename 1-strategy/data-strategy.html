@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Strategy — Copilot Analytics</title>
+<link rel="stylesheet" href="../assets/docs-style.css">
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Strategy</span>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Data Strategy</span>
+  </div>
+  <div class="doc-nav-right">
+    <a href="../artifacts/pdfs/Data_Strategy.pdf" class="pdf-btn" title="Download PDF">&#128196; PDF</a>
+  </div>
+</nav>
+
+<div class="cover">
+  <h1>Microsoft 365 Copilot Analytics</h1>
+  <div class="subtitle">Data Strategy</div>
+  <div class="sub2">Entra ID vs. Org Data Upload — What to connect, why, and how to decide</div>
+</div>
+
+<table>
+  <tr><th>Document Property</th><th>Value</th></tr>
+  <tr><td>Layer</td><td>1 — Strategy</td></tr>
+  <tr><td>Audience</td><td>Solution Architect, IT Admin, CIO</td></tr>
+  <tr><td>Version</td><td>4.0</td></tr>
+  <tr><td>Published</td><td>April 2026</td></tr>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">How This Document Fits</div>
+  <p>This is a <strong>Layer 1 — Strategy</strong> document. Read this to decide your data approach. Then hand off to IT with the <a href="../2-setup/data-onboarding.html">Data Onboarding Guide</a> for step-by-step implementation.</p>
+</div>
+
+<!-- ═══════════════════════ 1. WHY ═══════════════════════ -->
+<h1 id="why">1. Why Upload Org Data? (Entra ID vs. Org Data Upload)</h1>
+
+<p>A common question: <em>&ldquo;We already have Department, Manager, and Job Title in Entra ID — why do we need to upload a CSV?&rdquo;</em></p>
+<p>Entra ID provides a baseline, but org data uploads unlock significantly more analytics capability:</p>
+
+<table>
+  <tr><th>Capability</th><th>Entra ID Only</th><th>With Org Data Upload</th></tr>
+  <tr><td>Department filter on dashboard</td><td>Yes (Entra ID &ldquo;Department&rdquo; attribute)</td><td>Yes (from CSV — can use different/cleaner values)</td></tr>
+  <tr><td>Job Function / Job Discipline filter</td><td>No</td><td>Yes (via <code>FunctionType</code> / <code>Microsoft_JobDiscipline</code>)</td></tr>
+  <tr><td>Location filter</td><td>No</td><td>Yes (via <code>Location</code> attribute)</td></tr>
+  <tr><td>Level / Seniority filter</td><td>No</td><td>Yes (via <code>LevelDesignation</code>)</td></tr>
+  <tr><td>Custom attributes (Cost Centre, Agency, BU, Region)</td><td>No</td><td>Yes (up to 105 custom attributes)</td></tr>
+  <tr><td>Multi-agency / multi-BU partitioning</td><td>Yes — if each agency has a distinct email domain, use the system-generated <code>Domain</code> attribute (no CSV needed)</td><td>Yes — use a custom <code>Agency</code> attribute for maximum flexibility (works even when agencies share one domain)</td></tr>
+  <tr><td>Before/after cohort segmentation in Power BI</td><td>No segmentation</td><td>Yes (segment by any uploaded attribute)</td></tr>
+  <tr><td>Manager hierarchy accuracy</td><td>Depends on Entra ID completeness</td><td>Can supplement/override with CSV <code>ManagerId</code></td></tr>
+  <tr><td>Data freshness control</td><td>Updated by directory team (often delayed)</td><td>Updated by Insights Admin on a defined cadence</td></tr>
+</table>
+
+<div class="callout tip">
+  <div class="callout-title">TIP: When Entra ID Alone Is Sufficient</div>
+  <p>If you <strong>only</strong> need the Copilot Dashboard with tenant-level views and Department filtering — and the Entra ID Department attribute is accurate and consistently populated — you can skip the org data upload. However, if you need <strong>any</strong> of the following, org data upload is required: Location or Job Function filters, custom attributes (Cost Centre, Agency), or before/after cohort analysis in Power BI.</p>
+</div>
+
+<!-- ═══════════════════════ 2. WHAT BREAKS ═══════════════════════ -->
+<h1 id="entra-gaps">2. What Breaks with an Incomplete Entra ID Hierarchy?</h1>
+
+<p>If the Entra ID <code>Manager</code> attribute is missing or inconsistent for many users:</p>
+<table>
+  <tr><th>Feature</th><th>Impact</th></tr>
+  <tr><td>Auto CxO Identification</td><td>Fewer leaders are auto-identified. Users without a clear reporting line are excluded from the &ldquo;top 3 levels&rdquo; calculation.</td></tr>
+  <tr><td>Manager Settings (team-level data)</td><td>Managers without a populated <code>Manager</code> attribute or without enough direct reports won't see team-level data.</td></tr>
+  <tr><td>Filter by manager hierarchy (Publish Reports)</td><td>Published reports with &ldquo;Filter by manager hierarchy&rdquo; will show incomplete data.</td></tr>
+  <tr><td>Advanced Analytics cohort segmentation</td><td>Manager-based grouping will be inaccurate.</td></tr>
+</table>
+<p><strong>Recommendation:</strong> If more than 20% of users lack a Manager attribute, prioritise fixing directory data or supplement with an org data CSV upload that includes correct <code>ManagerId</code> values.</p>
+
+<!-- ═══════════════════════ 3. IRREVERSIBILITY ═══════════════════════ -->
+<h1 id="irreversible">3. The Irreversibility Warning</h1>
+
+<p>Once org data is uploaded, it <strong>permanently replaces Entra ID as the data source</strong> for dashboard filters:</p>
+<ul>
+  <li>Department values come from the CSV, not from Entra ID — even if they differ</li>
+  <li>If you stop uploading, the data becomes stale (not reverted to Entra ID)</li>
+  <li>To revert to Entra ID as the source, you must <strong>contact Microsoft Support</strong>. There is no self-service reversal.</li>
+  <li><strong>Before uploading:</strong> Confirm readiness to own the ongoing refresh cycle (monthly re-uploads recommended)</li>
+</ul>
+
+<!-- ═══════════════════════ 4. CHOOSE YOUR METHOD ═══════════════════════ -->
+<h1 id="methods">4. Choose Your Upload Method</h1>
+
+<p>Start with <em>"What HRIS do you use?"</em> — not <em>"how do I upload a CSV."</em></p>
+
+<table>
+  <tr><th>Method</th><th>Who Manages</th><th>Status</th><th>Best For</th></tr>
+  <tr><td><strong>SAP SuccessFactors Connector</strong></td><td>Global Admin + SAP SF Admin</td><td>GA</td><td>Organisations using SAP SuccessFactors. No CSV needed. Auto-sync weekly/monthly.</td></tr>
+  <tr><td><strong>Workday Connector</strong></td><td>Global Admin + Workday Admin</td><td>GA</td><td>Organisations using Workday (≤100K users). For &gt;100K, use Workday RaaS → Azure Blob.</td></tr>
+  <tr><td><strong>Azure Blob Storage</strong></td><td>Global Admin + Data Engineer</td><td>GA</td><td>Automated CSV drop. Good for data engineering teams or Workday RaaS export.</td></tr>
+  <tr><td><strong>API-Based Import</strong></td><td>Global Admin + Developer</td><td>Preview</td><td>Programmatic push via REST API. Supports incremental refresh.</td></tr>
+  <tr><td><strong>CSV Upload — M365 Admin Center</strong></td><td>Org Data Source Administrator</td><td>GA</td><td>Universal fallback. Lowest technical barrier. Works with any HRIS (export to CSV).</td></tr>
+  <tr><td><strong>CSV Upload — Viva Insights</strong></td><td>Insights Administrator</td><td>Deprecated (mid-2026)</td><td>Legacy path. Use only if your tenant has not been migrated.</td></tr>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">NOTE: Decision Logic</div>
+  <ul>
+    <li><strong>Use SAP SuccessFactors or Workday</strong> if your org runs either HRIS — eliminates manual CSV entirely</li>
+    <li><strong>Use Azure Blob Storage</strong> if you want automated CSV drops from a data warehouse</li>
+    <li><strong>Use API-based import</strong> if you need incremental refresh or have a custom HRIS</li>
+    <li><strong>Use CSV upload</strong> for everything else — universal compatibility</li>
+  </ul>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">TIP: Bypass On-Premises AD</div>
+  <p>If your HRIS data flows through <strong>SAP SuccessFactors → middleware → on-premises AD → Entra ID</strong>, be aware that Viva Insights only picks up 3 attributes from Entra (PersonId, ManagerId, Organization). Custom fields in Entra <code>extensionAttributes</code> are <strong>not synced</strong>.</p>
+  <p><strong>Solution:</strong> Use the HRIS connector to send data directly to M365 — bypassing AD entirely for analytics purposes.</p>
+</div>
+
+<!-- ═══════════════════════ 5. PLANNING WORKSHEET ═══════════════════════ -->
+<h1 id="planning">5. Data Planning Worksheet</h1>
+
+<p>Complete this before any upload. Share answers with your IT team when you hand off to the <a href="../2-setup/data-onboarding.html">Data Onboarding Guide</a>.</p>
+
+<table>
+  <tr><th>#</th><th>Question</th><th>Your Answer</th></tr>
+  <tr><td>1</td><td>Which HRIS does your organisation use? (SAP SF, Workday, Oracle, Custom, None)</td><td></td></tr>
+  <tr><td>2</td><td>Can your HRIS export a CSV with employee email, manager email, and department?</td><td></td></tr>
+  <tr><td>3</td><td>Which dashboard filters do you need beyond Department? (Job Function, Location, Level, Cost Centre, Agency, Region)</td><td></td></tr>
+  <tr><td>4</td><td>Do you need custom attributes for segmentation in Power BI reports? (e.g., Copilot Pilot Group, Hire Date, BU)</td><td></td></tr>
+  <tr><td>5</td><td>Who will own the monthly data refresh? (HR, IT, Data Engineering)</td><td></td></tr>
+  <tr><td>6</td><td>Is your tenant migrated to "Organizational Data in Microsoft 365" in M365 Admin Center?</td><td></td></tr>
+  <tr><td>7</td><td>Do multiple agencies share a single email domain? (If yes, you'll need a custom <code>Agency</code> attribute for partitioning)</td><td></td></tr>
+  <tr><td>8</td><td>Do you need to share org data with apps beyond Viva Insights? (M365 Profile, People Skills)</td><td></td></tr>
+</table>
+
+<!-- ═══════════════════════ 6. MIGRATION ═══════════════════════ -->
+<h1 id="migration">6. Organizational Data Upload Migration</h1>
+
+<div class="callout warning">
+  <div class="callout-title">IMPORTANT: April 2026 Migration</div>
+  <p>Microsoft is migrating all tenants from the Viva Insights web app to the <strong>M365 Admin Center</strong> as the single upload point. By mid-2026, all tenants will be migrated.</p>
+  <ul>
+    <li>New platform: <strong>Organizational Data in Microsoft 365</strong> at <code>admin.microsoft.com</code> → Setup → Migration and imports</li>
+    <li>New role: <strong>Organizational Data Source Administrator</strong> manages uploads</li>
+    <li>Supports HRIS connectors, Azure Blob, API-based import — not just CSV</li>
+    <li>Data serves multiple M365 apps (Copilot Dashboard, Viva Insights, M365 User Profile)</li>
+  </ul>
+</div>
+
+<h3>Which path am I on?</h3>
+<ol>
+  <li>Go to <code>admin.microsoft.com</code> → Setup → Migration and imports</li>
+  <li>If you see <strong>"Organizational Data in Microsoft 365"</strong> → you're migrated → follow the M365 Admin Center path in the <a href="../2-setup/data-onboarding.html">Data Onboarding Guide</a></li>
+  <li>If you don't see it → you're pre-migration → follow the Viva Insights legacy path</li>
+  <li>If unsure → check Message Center for migration notifications</li>
+</ol>
+
+<!-- ═══════════════════════ 7. WHAT NEXT ═══════════════════════ -->
+<h1 id="next">7. What to Read Next</h1>
+
+<table>
+  <tr><th>Ready to...</th><th>Read this</th></tr>
+  <tr><td>Upload data (step-by-step)</td><td><a href="../2-setup/data-onboarding.html">Data Onboarding Guide</a> (Setup layer)</td></tr>
+  <tr><td>See the full attribute mapping table</td><td><a href="../4-reference/attribute-reference.html">Attribute Reference</a> (Reference layer)</td></tr>
+  <tr><td>Troubleshoot a failed upload</td><td><a href="../4-reference/troubleshooting.html">Troubleshooting Guide</a> (Reference layer)</td></tr>
+  <tr><td>Understand multi-agency data isolation</td><td><a href="multi-agency-decision.html">Multi-Agency Decision Guide</a> (Strategy layer)</td></tr>
+</table>
+
+<div class="callout info" style="margin-top:40px;">
+  <div class="callout-title">Disclaimer</div>
+  <p>This guide is provided as a procedural reference. Always refer to <a href="https://learn.microsoft.com/viva/organizational-data">Organizational Data in Microsoft 365</a> on Microsoft Learn for the most up-to-date information.</p>
+</div>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+<script>
+(function(){
+  var btn=document.getElementById('backToTop');
+  window.addEventListener('scroll',function(){ btn.classList.toggle('visible',window.scrollY>300); });
+})();
+</script>
+
+</body>
+</html>

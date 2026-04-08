@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glossary &amp; Resources — Copilot Analytics</title>
+<link rel="stylesheet" href="../assets/docs-style.css">
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Reference</span>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Glossary &amp; Resources</span>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ COVER PAGE ═══════════════════════ -->
+<div class="cover">
+  <h1>Microsoft 365 Copilot Analytics</h1>
+  <div class="subtitle">Glossary &amp; Resources</div>
+  <div class="sub2">Key terms, quick links, and technical documentation references</div>
+</div>
+
+<table>
+  <tr><th>Document Property</th><th>Value</th></tr>
+  <tr><td>Layer</td><td>4 &mdash; Reference</td></tr>
+  <tr><td>Audience</td><td>All Roles</td></tr>
+  <tr><td>Version</td><td>4.0</td></tr>
+  <tr><td>Published</td><td>April 2026</td></tr>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">How This Document Fits</div>
+  <p>This is a <strong>Layer 4 &mdash; Reference</strong> document. Use it to look up terms and find links to Microsoft documentation. For setup, see the <a href="../2-setup/admin-setup.html">Admin Setup Guide</a>.</p>
+  <table>
+    <tr><th>Layer</th><th>Purpose</th><th>Who Reads</th></tr>
+    <tr><td><a href="../1-strategy/executive-briefing.html">1 &mdash; Strategy</a></td><td>Decide what to implement</td><td>CIO, SA, Business Leaders</td></tr>
+    <tr><td><a href="../2-setup/admin-setup.html">2 &mdash; Setup</a></td><td>Configure and deploy</td><td>IT Admin, Insights Admin</td></tr>
+    <tr><td><a href="../3-operate/dashboard-guide.html">3 &mdash; Operate</a></td><td>Use dashboards and reports daily</td><td>Leaders, Analysts, Managers</td></tr>
+    <tr><td><strong>4 &mdash; Reference</strong> (you are here)</td><td>Look up details and fix issues</td><td>Everyone (as needed)</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════════════════ TOC ═══════════════════════ -->
+<h1 id="toc">Table of Contents</h1>
+<ol>
+  <li><a href="#glossary">Glossary of Key Terms</a></li>
+  <li><a href="#resources">Additional Resources</a></li>
+  <li><a href="#dashboard-links">Dashboard Direct Links</a></li>
+  <li><a href="#technical-docs">Technical Documentation</a></li>
+</ol>
+
+<!-- ═══════════════════════ 1. GLOSSARY ═══════════════════════ -->
+<h1 id="glossary">1. Glossary of Key Terms</h1>
+
+<table>
+  <tr><th>Term</th><th>Definition</th></tr>
+  <tr>
+    <td><strong>AI Administrator</strong></td>
+    <td>Entra ID role that manages AI-related settings across the tenant, including Copilot Dashboard access, delegation, and Viva Feature Access Management policies.</td>
+  </tr>
+  <tr>
+    <td><strong>Assisted Hours</strong></td>
+    <td>The estimated number of hours saved by employees using Copilot features. Calculated from per-action time savings applied to Copilot interaction counts. Displayed on the Dashboard Impact page with a 28-day rolling window.</td>
+  </tr>
+  <tr>
+    <td><strong>Assisted Value</strong></td>
+    <td>The monetary estimate of Copilot time savings, calculated as Assisted Hours &times; Loaded Labour Rate. Default rate is $72/hour (session-only, not persistent). Customers should adjust to their own rate.</td>
+  </tr>
+  <tr>
+    <td><strong>Auto-enablement</strong></td>
+    <td>The process by which eligible users are automatically assigned Copilot licences based on tenant policy, without manual per-user assignment.</td>
+  </tr>
+  <tr>
+    <td><strong>Copilot Analytics Reports</strong></td>
+    <td>Pre-built Power BI reports accessible from the Viva Insights web app, including the M365 Copilot Adoption report and the M365 Copilot Impact report. These provide deeper drill-down than the Dashboard.</td>
+  </tr>
+  <tr>
+    <td><strong>Delegated Access</strong></td>
+    <td>A mechanism where an AI Administrator or Insights Administrator grants another user access to the Copilot Dashboard at either &ldquo;Your group&rdquo; (team) or &ldquo;Your company&rdquo; (tenant) scope.</td>
+  </tr>
+  <tr>
+    <td><strong>Exclusion List</strong></td>
+    <td>A list of users excluded from Viva Insights data collection and aggregation. Configured by the Insights Administrator in Privacy Settings. Changes take up to 5 days to take effect.</td>
+  </tr>
+  <tr>
+    <td><strong>Insights Administrator</strong></td>
+    <td>Entra ID role responsible for configuring Viva Insights settings including privacy, partitions, org data uploads (legacy path), and analyst role assignments.</td>
+  </tr>
+  <tr>
+    <td><strong>Insights Analyst</strong></td>
+    <td>Entra ID role that can run person queries, access Power BI templates, and create custom reports within the Viva Insights advanced analysis workbench. Scoped to assigned partitions.</td>
+  </tr>
+  <tr>
+    <td><strong>Loaded Labour Rate</strong></td>
+    <td>The fully-burdened hourly cost of an employee, including salary, benefits, and overhead. Used to calculate Assisted Value. Default is $72/hour; organisations should substitute their own rate.</td>
+  </tr>
+  <tr>
+    <td><strong>Minimum Group Size</strong></td>
+    <td>The smallest number of employees for which aggregated data is displayed on dashboards and in reports. Default is 10; lowest allowed is 5. Groups below this threshold show &ldquo;N/A.&rdquo;</td>
+  </tr>
+  <tr>
+    <td><strong>Minimum Team Size</strong></td>
+    <td>The minimum number of direct reports a manager must have for team-level insights to be available. Configured separately from minimum group size.</td>
+  </tr>
+  <tr>
+    <td><strong>Organizational Data</strong></td>
+    <td>Employee attribute data (department, location, job function, etc.) uploaded to Microsoft 365 to enable group filtering and segmentation on dashboards and in Power BI reports.</td>
+  </tr>
+  <tr>
+    <td><strong>Partition</strong></td>
+    <td>A scoped subset of the measured population that restricts which employees an Insights Analyst can query. Used to enforce data boundaries (e.g., per-agency isolation).</td>
+  </tr>
+  <tr>
+    <td><strong>Rolling Window</strong></td>
+    <td>The time period for which the Dashboard displays data. The Copilot Dashboard uses a <strong>28-day rolling window</strong> with up to a 6-day delay. Historical snapshots are not retained natively.</td>
+  </tr>
+  <tr>
+    <td><strong>VFAM (Viva Feature Access Management)</strong></td>
+    <td>The admin control surface in the M365 Admin Center that enables or disables specific Viva features (e.g., Copilot Dashboard, Agent Dashboard) for the tenant or specific groups.</td>
+  </tr>
+</table>
+
+<!-- ═══════════════════════ 2. ADDITIONAL RESOURCES ═══════════════════════ -->
+<h1 id="resources">2. Additional Resources</h1>
+
+<div class="callout">
+  <div class="callout-title">Tip</div>
+  <p>Bookmark the <code>aka.ms</code> short links below &mdash; they always redirect to the latest version of each page.</p>
+</div>
+
+<table>
+  <tr><th>Resource</th><th>Link</th><th>Description</th></tr>
+  <tr>
+    <td>Copilot Adoption Hub</td>
+    <td><a href="https://adoption.microsoft.com/copilot/">adoption.microsoft.com/copilot</a></td>
+    <td>Central hub for Copilot rollout resources, community, and best practices.</td>
+  </tr>
+  <tr>
+    <td>Copilot Success Kit</td>
+    <td><a href="https://adoption.microsoft.com/copilot/success-kit/">adoption.microsoft.com/copilot/success-kit</a></td>
+    <td>Downloadable toolkit with templates for communication, training, and change management.</td>
+  </tr>
+  <tr>
+    <td>Copilot Scenario Library</td>
+    <td><a href="https://adoption.microsoft.com/copilot-scenario-library/">adoption.microsoft.com/copilot-scenario-library</a></td>
+    <td>Role-based use cases showing how Copilot applies to specific job functions.</td>
+  </tr>
+</table>
+
+<!-- ═══════════════════════ 3. DASHBOARD DIRECT LINKS ═══════════════════════ -->
+<h1 id="dashboard-links">3. Dashboard Direct Links</h1>
+
+<table>
+  <tr><th>Destination</th><th>URL</th></tr>
+  <tr>
+    <td>Viva Insights Web App</td>
+    <td><a href="https://insights.cloud.microsoft">insights.cloud.microsoft</a></td>
+  </tr>
+  <tr>
+    <td>Copilot Dashboard (Readiness)</td>
+    <td><a href="https://insights.cloud.microsoft/copilot-dashboard">insights.cloud.microsoft/copilot-dashboard</a></td>
+  </tr>
+  <tr>
+    <td>Agent Dashboard</td>
+    <td><a href="https://insights.cloud.microsoft/agent-dashboard">insights.cloud.microsoft/agent-dashboard</a></td>
+  </tr>
+  <tr>
+    <td>M365 Admin Center</td>
+    <td><a href="https://admin.microsoft.com">admin.microsoft.com</a></td>
+  </tr>
+  <tr>
+    <td>M365 Admin &mdash; Copilot Usage Report</td>
+    <td><a href="https://admin.microsoft.com/Adminportal/Home#/reportsUsage/CopilotUsage">admin.microsoft.com &rarr; Reports &rarr; Copilot Usage</a></td>
+  </tr>
+  <tr>
+    <td>Viva Feature Access Management</td>
+    <td><a href="https://admin.microsoft.com/#/vivaFeatureAccessManagement">admin.microsoft.com &rarr; Viva &rarr; Feature Access Management</a></td>
+  </tr>
+</table>
+
+<!-- ═══════════════════════ 4. TECHNICAL DOCUMENTATION ═══════════════════════ -->
+<h1 id="technical-docs">4. Technical Documentation</h1>
+
+<table>
+  <tr><th>Topic</th><th>Microsoft Learn URL</th></tr>
+  <tr>
+    <td>Copilot Analytics Introduction</td>
+    <td><a href="https://learn.microsoft.com/viva/insights/copilot-analytics-introduction">learn.microsoft.com/viva/insights/copilot-analytics-introduction</a></td>
+  </tr>
+  <tr>
+    <td>Copilot Dashboard</td>
+    <td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard</a></td>
+  </tr>
+  <tr>
+    <td>Copilot Analytics Reports</td>
+    <td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-analytics-reports">learn.microsoft.com/viva/insights/org-team-insights/copilot-analytics-reports</a></td>
+  </tr>
+  <tr>
+    <td>Agent Dashboard</td>
+    <td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard</a></td>
+  </tr>
+  <tr>
+    <td>Copilot Dashboard Settings</td>
+    <td><a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard">learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard</a></td>
+  </tr>
+  <tr>
+    <td>Licensing &amp; Environment Requirements</td>
+    <td><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/environment-requirements">learn.microsoft.com/viva/insights/advanced/setup-maint/environment-requirements</a></td>
+  </tr>
+  <tr>
+    <td>Organizational Data in Microsoft 365</td>
+    <td><a href="https://learn.microsoft.com/viva/organizational-data">learn.microsoft.com/viva/organizational-data</a></td>
+  </tr>
+  <tr>
+    <td>Org Data Attribute Reference</td>
+    <td><a href="https://learn.microsoft.com/viva/insights/advanced/admin/org-data-overview">learn.microsoft.com/viva/insights/advanced/admin/org-data-overview</a></td>
+  </tr>
+  <tr>
+    <td>Validation Errors</td>
+    <td><a href="https://learn.microsoft.com/viva/insights/advanced/admin/rules-validation-errors">learn.microsoft.com/viva/insights/advanced/admin/rules-validation-errors</a></td>
+  </tr>
+  <tr>
+    <td>Privacy Settings</td>
+    <td><a href="https://learn.microsoft.com/viva/insights/advanced/privacy/privacy-settings">learn.microsoft.com/viva/insights/advanced/privacy/privacy-settings</a></td>
+  </tr>
+  <tr>
+    <td>Partitions</td>
+    <td><a href="https://learn.microsoft.com/viva/insights/advanced/admin/partitions">learn.microsoft.com/viva/insights/advanced/admin/partitions</a></td>
+  </tr>
+  <tr>
+    <td>Viva Feature Access Management</td>
+    <td><a href="https://learn.microsoft.com/viva/feature-access-management">learn.microsoft.com/viva/feature-access-management</a></td>
+  </tr>
+  <tr>
+    <td>SAP SuccessFactors Connector</td>
+    <td><a href="https://learn.microsoft.com/viva/organizational-data/sap-successfactors-connector">learn.microsoft.com/viva/organizational-data/sap-successfactors-connector</a></td>
+  </tr>
+  <tr>
+    <td>Workday Connector</td>
+    <td><a href="https://learn.microsoft.com/viva/organizational-data/workday-connector">learn.microsoft.com/viva/organizational-data/workday-connector</a></td>
+  </tr>
+  <tr>
+    <td>Azure Blob Storage Connector</td>
+    <td><a href="https://learn.microsoft.com/viva/organizational-data/azure-blob-storage">learn.microsoft.com/viva/organizational-data/azure-blob-storage</a></td>
+  </tr>
+  <tr>
+    <td>API-Based Import</td>
+    <td><a href="https://learn.microsoft.com/viva/organizational-data/api-based-import">learn.microsoft.com/viva/organizational-data/api-based-import</a></td>
+  </tr>
+  <tr>
+    <td>Copilot Metrics (Advanced)</td>
+    <td><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/metrics">learn.microsoft.com/viva/insights/advanced/analyst/metrics</a></td>
+  </tr>
+</table>
+
+<!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
+<hr>
+<p style="font-size:0.85em; color:var(--text-muted); margin-top:32px;">
+  <strong>Disclaimer:</strong> This document is provided for informational purposes only and reflects Microsoft 365 capabilities as of April 2026. Microsoft may change features, interfaces, and availability without notice. Always verify current guidance on <a href="https://learn.microsoft.com">Microsoft Learn</a>. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
+</p>
+
+<!-- Back to Top -->
+<a href="#" id="back-to-top" style="
+  position:fixed; bottom:32px; right:32px; background:var(--accent,#0078d4); color:#fff;
+  border:none; border-radius:50%; width:44px; height:44px; font-size:22px;
+  text-align:center; line-height:44px; text-decoration:none; cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,0.18); display:none; z-index:999;
+" title="Back to top">&uarr;</a>
+<script>
+(function(){
+  var btn = document.getElementById('back-to-top');
+  window.addEventListener('scroll', function(){
+    btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+  btn.addEventListener('click', function(e){
+    e.preventDefault();
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+})();
+</script>
+
+</body>
+</html>

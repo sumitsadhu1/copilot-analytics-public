@@ -17,6 +17,23 @@ echo ""
 
 # Document list: input_path -> output_name
 declare -a DOCS=(
+  # Layer Cake structure (new)
+  "1-strategy/executive-briefing.html|Executive_Briefing.pdf"
+  "1-strategy/data-strategy.html|Data_Strategy.pdf"
+  "1-strategy/multi-agency-decision.html|Multi_Agency_Decision_Guide.pdf"
+  "2-setup/admin-setup.html|Admin_Setup_Guide.pdf"
+  "2-setup/data-onboarding.html|Data_Onboarding_Guide.pdf"
+  "2-setup/privacy-configuration.html|Privacy_Configuration.pdf"
+  "2-setup/multi-agency-setup.html|Multi_Agency_Setup.pdf"
+  "3-operate/dashboard-guide.html|Dashboard_Reports_Guide.pdf"
+  "3-operate/analyst-playbook.html|Analyst_Playbook.pdf"
+  "3-operate/billing-operations.html|Billing_Operations.pdf"
+  "3-operate/collaboration-analysis.html|Collaboration_Analysis.pdf"
+  "4-reference/troubleshooting.html|Troubleshooting_Guide.pdf"
+  "4-reference/faq.html|FAQ.pdf"
+  "4-reference/glossary.html|Glossary_Resources.pdf"
+  "4-reference/attribute-reference.html|Attribute_Reference.pdf"
+  # Legacy guides (kept for backward compatibility)
   "docs/core/Copilot_Analytics_Implementation_Guide.html|Copilot_Analytics_Implementation_Guide.pdf"
   "docs/core/Copilot_Analytics_Setup_Companion_Guide.html|Copilot_Analytics_Setup_Companion_Guide.pdf"
   "docs/playbooks/Copilot_Lifecycle_Billing_Playbook.html|Copilot_Lifecycle_Billing_Playbook.pdf"

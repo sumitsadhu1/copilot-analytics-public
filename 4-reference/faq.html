@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ — Copilot Analytics</title>
+<link rel="stylesheet" href="../assets/docs-style.css">
+<style>
+  /* Page-specific: FAQ layout */
+  .faq { margin-bottom: 20px; border-left: 3px solid var(--accent); padding: 14px 18px; background: var(--bg-subtle); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+  .faq-q { font-weight: 700; color: var(--primary); font-size: 1.02em; margin-bottom: 6px; }
+  .faq-q::before { content: "Q" attr(data-num) ". "; color: var(--accent); }
+  .faq-a { font-size: 0.94em; color: var(--text-secondary); }
+  .faq-a strong { color: var(--primary); }
+  .category { color: var(--secondary); font-size: 1.12em; font-weight: 700; margin: 28px 0 12px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+</style>
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Reference</span>
+    <span class="separator">/</span>
+    <span class="breadcrumb">FAQ</span>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ COVER PAGE ═══════════════════════ -->
+<div class="cover">
+  <h1>Microsoft 365 Copilot Analytics</h1>
+  <div class="subtitle">Frequently Asked Questions</div>
+  <div class="sub2">Consolidated answers for customers, IT administrators, and analysts</div>
+</div>
+
+<table>
+  <tr><th>Document Property</th><th>Value</th></tr>
+  <tr><td>Layer</td><td>4 &mdash; Reference</td></tr>
+  <tr><td>Audience</td><td>All Roles</td></tr>
+  <tr><td>Version</td><td>4.0</td></tr>
+  <tr><td>Published</td><td>April 2026</td></tr>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">How This Document Fits</div>
+  <p>This is a <strong>Layer 4 &mdash; Reference</strong> document. It consolidates frequently asked questions across all Copilot Analytics tiers. For setup, see the <a href="../2-setup/admin-setup.html">Admin Setup Guide</a>. For issue resolution, see the <a href="troubleshooting.html">Troubleshooting Guide</a>.</p>
+  <table>
+    <tr><th>Layer</th><th>Purpose</th><th>Who Reads</th></tr>
+    <tr><td><a href="../1-strategy/executive-briefing.html">1 &mdash; Strategy</a></td><td>Decide what to implement</td><td>CIO, SA, Business Leaders</td></tr>
+    <tr><td><a href="../2-setup/admin-setup.html">2 &mdash; Setup</a></td><td>Configure and deploy</td><td>IT Admin, Insights Admin</td></tr>
+    <tr><td><a href="../3-operate/dashboard-guide.html">3 &mdash; Operate</a></td><td>Use dashboards and reports daily</td><td>Leaders, Analysts, Managers</td></tr>
+    <tr><td><strong>4 &mdash; Reference</strong> (you are here)</td><td>Look up details and fix issues</td><td>Everyone (as needed)</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════════════════ LICENSING & ACCESS ═══════════════════════ -->
+<div class="category">Licensing &amp; Access</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="1">Can managers see individual employee Copilot usage?</div>
+  <div class="faq-a"><strong>No.</strong> All data is aggregated at group level and protected by minimum group size thresholds (default 10, minimum 5), differential privacy, and distribution masking. No individual user behaviour is ever visible in the dashboards.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="2">What happens if we drop below 50 licences?</div>
+  <div class="faq-a">The dashboard reverts to limited features: only tenant-level metrics and the Readiness page are available. Group-level filtering, the full Adoption page, and the Impact page require at least 50 assigned Copilot or Viva Insights licences.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="3">Can we trial the Dashboard before licensing everyone?</div>
+  <div class="faq-a"><strong>Yes.</strong> The basic Copilot Dashboard is available to any M365/O365 tenant with Exchange Online &mdash; no paid Viva licence required. However, full group filtering and the Impact page require the 50-licence threshold.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="4">Does the Dashboard track Copilot Chat (web) usage?</div>
+  <div class="faq-a"><strong>For paid Copilot users: Yes.</strong> If Copilot Chat reporting is enabled in your tenant and you have 50+ Copilot or Viva Insights licences, there is a separate licence filter on the dashboard to switch between Microsoft 365 Copilot and Copilot Chat views. <strong>For free Copilot Chat users (E3/E5 without Copilot add-on): No.</strong> Their usage is not tracked by the Copilot Dashboard.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="5">How often does the data refresh?</div>
+  <div class="faq-a">The Copilot Dashboard refreshes <strong>daily</strong>, showing a 28-day rolling window with up to a 6-day delay from the current date. Admin Center reports refresh approximately every <strong>72 hours</strong>. Newly licensed employees may take an additional 7 days before appearing.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="6">Is a separate Viva Insights licence needed if we already have Microsoft 365 Copilot?</div>
+  <div class="faq-a"><strong>No.</strong> Every M365 Copilot licence automatically includes the Viva Insights service plan &mdash; covering personal insights, manager/leader insights, and advanced analysis. A separate Viva Insights purchase is only needed if you want to analyse employees who do <em>not</em> have Copilot licences.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="7">Who needs licences &mdash; only leaders viewing dashboards, or also the employees whose data we want to analyse?</div>
+  <div class="faq-a"><strong>Both.</strong> Employees whose collaboration data you want to analyse must have a Viva Insights licence assigned (included with every Copilot licence). Leaders and managers viewing dashboards also need a Viva Insights licence to access the full Copilot Dashboard and organisation insights.</div>
+</div>
+
+<!-- ═══════════════════════ ORGANIZATIONAL DATA ═══════════════════════ -->
+<div class="category">Organizational Data</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="8">Can we see data by business unit, department, or country?</div>
+  <div class="faq-a"><strong>Yes</strong>, but you must upload organizational data (a CSV file with attributes like Business Unit, Department, Country) to enable these filters. Without an org data upload, only the Entra ID &ldquo;Department&rdquo; field is available as a filter.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="9">Do I need to manually prepare and upload a CSV if we use SAP SuccessFactors or Workday?</div>
+  <div class="faq-a"><strong>No.</strong> Microsoft provides native HRIS connectors for both <a href="https://learn.microsoft.com/viva/import-org-data-success-factors">SAP SuccessFactors</a> and <a href="https://learn.microsoft.com/viva/import-org-data-workday">Workday</a> (Workday limited to &le;100K users). These connectors pull employee data directly from your HRIS on a weekly or monthly schedule.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="10">Can I automate monthly CSV uploads?</div>
+  <div class="faq-a"><strong>Yes &mdash; multiple options exist:</strong> (1) <strong>HRIS connectors</strong> (SAP SuccessFactors, Workday) auto-sync on a schedule. (2) <strong>Azure Blob Storage connector</strong> &mdash; drop a CSV into an Azure blob and it&rsquo;s picked up automatically. (3) <strong>API-based import</strong> (preview) &mdash; push data via REST API. Microsoft provides sample code at <a href="https://github.com/microsoft/orgdata_apibasedimport">github.com/microsoft/orgdata_apibasedimport</a>.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="11">We have Department in Entra &mdash; why do we still need to upload org data?</div>
+  <div class="faq-a">Entra ID only syncs <strong>3 attributes</strong> to Viva Insights: PersonId (UPN), ManagerId, and Organization (from the Department field). Extension attributes (<code>extensionAttribute1-15</code>), Company, Division, JobTitle, City, and Country are <strong>not synced</strong> &mdash; even if populated in Entra via AD Connect. To use these attributes in Viva Insights, upload them via CSV or configure an HRIS connector.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="12">We uploaded org data and now filters show different values &mdash; can we revert?</div>
+  <div class="faq-a"><strong>No.</strong> There is no self-service reversal for organisational data uploads. Contact <strong>Microsoft Support</strong> if you need to undo a data upload. Always validate data in a test upload before applying to production.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="13">&ldquo;View by: Group&rdquo; shows only one person&rsquo;s name instead of sub-groups. How do I fix this?</div>
+  <div class="faq-a">The Group view uses the uploaded manager hierarchy. If most employees report directly to the top-level leader (flat hierarchy), the dashboard cannot split into sub-groups. <strong>Fix:</strong> Ensure intermediate managers (VPs, Directors) exist as rows in your data file with correct <code>ManagerEmail</code> chains. Every <code>ManagerEmail</code> value must match a <code>PersonEmail</code> in the same file.</div>
+</div>
+
+<!-- ═══════════════════════ PRIVACY ═══════════════════════ -->
+<div class="category">Privacy</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="14">Can employees opt out of being analysed?</div>
+  <div class="faq-a">Users can opt out of Viva Insights <strong>personal insights</strong> via their settings. For advanced analysis and the Copilot Dashboard, the Insights Administrator can configure <strong>exclusion lists</strong> to remove specific users from aggregated insights.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="15">Does Power BI bypass the minimum group size?</div>
+  <div class="faq-a"><strong>No.</strong> Power BI template reports from Viva Insights enforce the same minimum group size threshold as the Dashboard. The privacy control is applied at the data aggregation layer, not the UI layer.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="16">How is the $72/hour default for Copilot Assisted Value calculated?</div>
+  <div class="faq-a">The $72/hour is based on data compiled by the U.S. Bureau of Labor Statistics as a broad estimate of loaded labour cost. <strong>Customers should adjust this to their own loaded rate</strong> for accurate ROI calculations. The rate can be changed in the Impact settings or via the Hours and Value calculator on the dashboard. Note: this rate is session-only and not persistent per current guidance.</div>
+</div>
+
+<!-- ═══════════════════════ GENERAL ═══════════════════════ -->
+<div class="category">General</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="17">Can we use the Agent Dashboard without the Copilot Dashboard?</div>
+  <div class="faq-a">Both are part of the Viva Insights web app. You cannot enable one without the other being available, but access to each can be controlled separately via Viva Feature Access Management (VFAM) policies.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="18">We want broader productivity metrics (meeting time, focus time, after-hours). Is that covered here?</div>
+  <div class="faq-a"><strong>No &mdash; that is a separate Viva Insights workstream.</strong> Copilot Analytics covers Copilot-specific adoption, impact, and ROI. Broader productivity metrics use the same Viva Insights licence and analyst role but are configured through different queries and templates. See the <a href="../3-operate/collaboration-analysis.html">Collaboration Analysis Guide</a> for details.</div>
+</div>
+
+<!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
+<hr>
+<p style="font-size:0.85em; color:var(--text-muted); margin-top:32px;">
+  <strong>Disclaimer:</strong> This document is provided for informational purposes only and reflects Microsoft 365 capabilities as of April 2026. Microsoft may change features, interfaces, and availability without notice. Always verify current guidance on <a href="https://learn.microsoft.com">Microsoft Learn</a>. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
+</p>
+
+<!-- Back to Top -->
+<a href="#" id="back-to-top" style="
+  position:fixed; bottom:32px; right:32px; background:var(--accent,#0078d4); color:#fff;
+  border:none; border-radius:50%; width:44px; height:44px; font-size:22px;
+  text-align:center; line-height:44px; text-decoration:none; cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,0.18); display:none; z-index:999;
+" title="Back to top">&uarr;</a>
+<script>
+(function(){
+  var btn = document.getElementById('back-to-top');
+  window.addEventListener('scroll', function(){
+    btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+  btn.addEventListener('click', function(e){
+    e.preventDefault();
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+})();
+</script>
+
+</body>
+</html>

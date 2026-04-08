@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Onboarding — Copilot Analytics</title>
+<link rel="stylesheet" href="../assets/docs-style.css">
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Setup</span>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Data Onboarding</span>
+  </div>
+  <div class="doc-nav-right">
+    <a href="../artifacts/pdfs/Data_Onboarding.pdf" class="pdf-btn" title="Download PDF">&#128196; PDF</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ COVER PAGE ═══════════════════════ -->
+<div class="cover">
+  <h1>Microsoft 365 Copilot Analytics</h1>
+  <div class="subtitle">Data Onboarding Guide</div>
+  <div class="sub2">Upload methods, attribute mapping, verification, and maintenance &mdash; the complete org data playbook</div>
+</div>
+
+<table>
+  <tr><th>Document Property</th><th>Value</th></tr>
+  <tr><td>Layer</td><td>2 &mdash; Setup</td></tr>
+  <tr><td>Audience</td><td>IT Admin, Insights Admin, Data Engineer</td></tr>
+  <tr><td>Version</td><td>4.0</td></tr>
+  <tr><td>Published</td><td>April 2026</td></tr>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">How This Document Fits</div>
+  <p>This is a <strong>Layer 2 &mdash; Setup</strong> document. It is the complete step-by-step guide for uploading organisational data into Microsoft 365, covering all six upload methods, attribute mapping, verification, and ongoing maintenance. Read the <a href="../1-strategy/data-strategy.html">Data Strategy</a> first to decide <em>what</em> to upload and <em>why</em>, then follow this guide to execute.</p>
+  <table>
+    <tr><th>Layer</th><th>Purpose</th><th>Who Reads</th></tr>
+    <tr><td><a href="../1-strategy/executive-briefing.html">1 &mdash; Strategy</a></td><td>Decide what to implement</td><td>CIO, SA, Business Leaders</td></tr>
+    <tr><td><strong>2 &mdash; Setup</strong> (you are here)</td><td>Configure and deploy</td><td>IT Admin, Insights Admin</td></tr>
+    <tr><td><a href="../3-operate/dashboard-guide.html">3 &mdash; Operate</a></td><td>Use dashboards and reports daily</td><td>Leaders, Analysts, Managers</td></tr>
+    <tr><td><a href="../4-reference/troubleshooting.html">4 &mdash; Reference</a></td><td>Look up details and fix issues</td><td>Everyone (as needed)</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════════════════ TOC ═══════════════════════ -->
+<h1 id="toc">Table of Contents</h1>
+<ol>
+  <li><a href="#migration-diagnostic">Which Path Am I On? (Migration Diagnostic)</a></li>
+  <li><a href="#methods-overview">Upload Methods Overview</a></li>
+  <li><a href="#m365-upload">Upload Steps &mdash; M365 Admin Center (Primary Path)</a></li>
+  <li><a href="#viva-upload">Upload Steps &mdash; Viva Insights (Legacy Path)</a></li>
+  <li><a href="#attribute-mapping">Attribute Mapping</a></li>
+  <li><a href="#verification">Post-Upload Verification Checklist</a></li>
+  <li><a href="#maintenance">Re-Upload &amp; Maintenance</a></li>
+  <li><a href="#freshness">Data Freshness Monitoring</a></li>
+  <li><a href="#key-rules">Key Rules</a></li>
+  <li><a href="#common-errors">Common Upload Errors</a></li>
+  <li><a href="#next">What to Read Next</a></li>
+</ol>
+
+<!-- ═══════════════════════ 1. MIGRATION DIAGNOSTIC ═══════════════════════ -->
+<h1 id="migration-diagnostic">1. Which Path Am I On? (Migration Diagnostic)</h1>
+
+<p>Microsoft is migrating all organisational data management from the Viva Insights web app to the M365 Admin Center. Use this quick check to determine which path applies to your tenant:</p>
+
+<ol>
+  <li>Go to <code>admin.microsoft.com</code> &rarr; <strong>Setup</strong> &rarr; <strong>Migration and imports</strong></li>
+  <li>See <strong>&ldquo;Organizational Data in Microsoft 365&rdquo;</strong>? &rarr; You&rsquo;re <strong>migrated</strong> &rarr; follow <a href="#m365-upload">Section 3</a></li>
+  <li>Don&rsquo;t see it? &rarr; You&rsquo;re <strong>pre-migration</strong> &rarr; follow <a href="#viva-upload">Section 4</a></li>
+  <li>Unsure? &rarr; Check <strong>Message Center</strong> in the Admin Center for migration notifications</li>
+</ol>
+
+<div class="callout warning">
+  <div class="callout-title">IMPORTANT: MODIS Migration &mdash; All Tenants Moving by Mid-2026</div>
+  <p>The <strong>Microsoft Organizational Data in Microsoft 365 (MODIS)</strong> migration is moving all tenants to the M365 Admin Center for organisational data management by mid-2026. Key changes:</p>
+  <ul>
+    <li><strong>New role:</strong> Organizational Data Source Administrator (replaces Insights Administrator for data uploads)</li>
+    <li><strong>Broader platform:</strong> Org data now serves multiple M365 apps (Viva Insights, Copilot Dashboard, Microsoft 365 Profile, and more) &mdash; not just Viva Insights</li>
+    <li><strong>New capabilities:</strong> HRIS connectors (SAP SuccessFactors, Workday), Azure Blob Storage, and API-based import &mdash; in addition to CSV upload</li>
+    <li><strong>Attribute naming:</strong> Legacy names (<code>PersonId</code>, <code>ManagerId</code>) are replaced by <code>Microsoft_*</code> names (<code>Microsoft_PersonEmail</code>, <code>Microsoft_ManagerEmail</code>)</li>
+  </ul>
+  <p>If your tenant is still using the Viva Insights upload path, plan now to transition to the M365 Admin Center path.</p>
+</div>
+
+<!-- ═══════════════════════ 2. UPLOAD METHODS OVERVIEW ═══════════════════════ -->
+<h1 id="methods-overview">2. Upload Methods Overview</h1>
+
+<table>
+  <tr><th>Option</th><th>Method</th><th>Platform</th><th>Status</th><th>Refresh Behaviour</th><th>Best For</th></tr>
+  <tr>
+    <td><strong>A</strong></td>
+    <td>CSV Upload</td>
+    <td>M365 Admin Center</td>
+    <td>GA (primary path)</td>
+    <td>Incremental merge</td>
+    <td>Universal fallback. Lowest technical barrier. Works with any HRIS (export to CSV).</td>
+  </tr>
+  <tr>
+    <td><strong>B</strong></td>
+    <td>CSV Upload</td>
+    <td>Viva Insights</td>
+    <td>Deprecated (mid-2026)</td>
+    <td>Full replacement</td>
+    <td>Legacy path only. Use if tenant not yet migrated.</td>
+  </tr>
+  <tr>
+    <td><strong>C</strong></td>
+    <td>SAP SuccessFactors Connector</td>
+    <td>M365 Admin Center</td>
+    <td>GA</td>
+    <td>Auto-sync (weekly/monthly)</td>
+    <td>Orgs using SAP SuccessFactors. No CSV needed. Direct HRIS integration.</td>
+  </tr>
+  <tr>
+    <td><strong>D</strong></td>
+    <td>Workday Connector</td>
+    <td>M365 Admin Center</td>
+    <td>GA (&le;100K users)</td>
+    <td>Auto-sync (JSON mapping)</td>
+    <td>Orgs using Workday. For &gt;100K users, use Workday RaaS &rarr; Azure Blob.</td>
+  </tr>
+  <tr>
+    <td><strong>E</strong></td>
+    <td>Azure Blob Storage</td>
+    <td>M365 Admin Center</td>
+    <td>GA</td>
+    <td>Automated CSV drop (checks every 15 min)</td>
+    <td>Data engineering teams. Automated pipeline from data warehouse or HRIS.</td>
+  </tr>
+  <tr>
+    <td><strong>F</strong></td>
+    <td>API-Based Import</td>
+    <td>M365 Admin Center</td>
+    <td>Preview</td>
+    <td>Incremental refresh (REST API)</td>
+    <td>Programmatic push. C# solution accelerator available from Microsoft.</td>
+  </tr>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">NOTE: Decision Logic</div>
+  <ul>
+    <li><strong>Running SAP SuccessFactors?</strong> &rarr; Use <strong>Option C</strong> (connector). Zero CSV.</li>
+    <li><strong>Running Workday (&le;100K users)?</strong> &rarr; Use <strong>Option D</strong> (connector). Zero CSV.</li>
+    <li><strong>Running Workday (&gt;100K) or have a data warehouse?</strong> &rarr; Use <strong>Option E</strong> (Azure Blob). Automated CSV pipeline.</li>
+    <li><strong>Need programmatic control or custom HRIS?</strong> &rarr; Use <strong>Option F</strong> (API). Incremental refresh.</li>
+    <li><strong>Everything else?</strong> &rarr; Use <strong>Option A</strong> (CSV to M365 Admin Center). Universal fallback.</li>
+    <li><strong>Tenant not migrated yet?</strong> &rarr; Use <strong>Option B</strong> (CSV to Viva Insights) temporarily.</li>
+  </ul>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">TIP: Bypass On-Premises AD</div>
+  <p>If your HRIS data flows through <strong>SAP SuccessFactors &rarr; middleware &rarr; on-premises AD &rarr; Entra ID</strong>, be aware that Viva Insights only picks up 3 attributes from Entra (<code>PersonId</code>, <code>ManagerId</code>, <code>Organization</code>). Custom fields in Entra <code>extensionAttributes</code> are <strong>not synced</strong>.</p>
+  <p><strong>Solution:</strong> Use the HRIS connector to send data directly to M365 &mdash; bypassing AD entirely for analytics purposes.</p>
+</div>
+
+<!-- ═══════════════════════ 3. M365 ADMIN CENTER UPLOAD ═══════════════════════ -->
+<h1 id="m365-upload">3. Upload Steps &mdash; M365 Admin Center (Primary Path)</h1>
+
+<p>This is the recommended path for all tenants that have completed the MODIS migration.</p>
+
+<h2>Step 1: Ensure Role Assignment</h2>
+<p>The person performing the upload must have the <strong>Organizational Data Source Administrator</strong> role assigned in Entra ID. This role is specific to the MODIS platform and is separate from the Insights Administrator role.</p>
+<ul>
+  <li>Assign via: <code>admin.microsoft.com</code> &rarr; Users &rarr; Active Users &rarr; select user &rarr; Manage roles &rarr; search for &ldquo;Organizational Data Source Administrator&rdquo;</li>
+</ul>
+
+<h2>Step 2: Prepare Your CSV File</h2>
+<ul>
+  <li><strong>Encoding:</strong> UTF-8 (with or without BOM)</li>
+  <li><strong>File size:</strong> &lt;1 GB. For files &gt;25 MB, upload via SharePoint first</li>
+  <li><strong>Attribute naming:</strong> Use <code>Microsoft_*</code> naming convention (e.g., <code>Microsoft_PersonEmail</code>, <code>Microsoft_ManagerEmail</code>, <code>Microsoft_Organization</code>)</li>
+  <li><strong>No <code>EffectiveDate</code> column:</strong> The M365 Admin Center uses a date picker in the UI, not a CSV column</li>
+  <li><strong>No spaces in header names:</strong> Use underscores (e.g., <code>Cost_Center</code> not <code>Cost Center</code>)</li>
+  <li><strong>One row per employee:</strong> Include every employee you want reflected in analytics</li>
+</ul>
+
+<h2>Step 3: Navigate to Data Connections</h2>
+<p><code>admin.microsoft.com</code> &rarr; <strong>Setup</strong> &rarr; <strong>Migration and imports</strong> &rarr; <strong>Organizational Data in Microsoft 365</strong> &rarr; <strong>Data Connections</strong></p>
+
+<h2>Step 4: Start Import</h2>
+<ul>
+  <li><strong>First upload:</strong> Select <strong>Get started</strong></li>
+  <li><strong>Subsequent uploads:</strong> Select <strong>New import</strong></li>
+</ul>
+
+<h2>Step 5: Select Target Apps</h2>
+<p>Choose which M365 applications will receive the uploaded data:</p>
+<ul>
+  <li><strong>Viva Insights</strong> &mdash; required for Copilot Dashboard and Advanced Analytics</li>
+  <li><strong>Copilot Dashboard</strong> &mdash; enables org-level filters on the dashboard</li>
+  <li><strong>Microsoft 365 Profile</strong> &mdash; populates org data in user profiles</li>
+</ul>
+<p>You can select all that apply. Each app may have its own required attributes.</p>
+
+<h2>Step 6: Upload File and Map Reserved Attributes</h2>
+<ul>
+  <li>Upload your CSV file</li>
+  <li>Map the reserved attributes: <code>Microsoft_PersonEmail</code>, <code>Microsoft_ManagerEmail</code>, <code>Microsoft_Organization</code></li>
+  <li>The system will auto-detect columns that match <code>Microsoft_*</code> naming</li>
+</ul>
+
+<h2>Step 7: Review Custom Attributes and Configure Access</h2>
+<p>For each custom attribute, set the access level:</p>
+<table>
+  <tr><th>Access Level</th><th>Who Can See</th><th>Use Case</th></tr>
+  <tr><td><strong>Public</strong></td><td>All selected apps and their users</td><td>Department, Location, Job Function</td></tr>
+  <tr><td><strong>Confidential</strong></td><td>Only authorised analysts (Viva Insights only)</td><td>HourlyRate, Salary Band, Performance Rating</td></tr>
+  <tr><td><strong>Custom</strong></td><td>Specific apps only</td><td>Attributes shared with Profile but not Insights</td></tr>
+</table>
+
+<h2>Step 8: Validate and Submit</h2>
+<ul>
+  <li>Review the summary and submit</li>
+  <li><strong>Processing time:</strong> A few hours for small files, up to <strong>3 days</strong> for large files (&gt;100K rows)</li>
+  <li>Monitor status in the Data Connections page: <strong>Validating</strong> &rarr; <strong>Processing</strong> &rarr; <strong>Complete</strong></li>
+</ul>
+
+<!-- ═══════════════════════ 4. VIVA INSIGHTS UPLOAD (LEGACY) ═══════════════════════ -->
+<h1 id="viva-upload">4. Upload Steps &mdash; Viva Insights (Legacy Path)</h1>
+
+<div class="callout warning">
+  <div class="callout-title">DEPRECATED: This Path Is Being Retired by Mid-2026</div>
+  <p>The Viva Insights upload path is being replaced by the M365 Admin Center path (Section 3). Use this section only if your tenant has not yet been migrated. Plan to transition as soon as the migration completes.</p>
+</div>
+
+<h2>Step 1: Prepare Your CSV File</h2>
+<ul>
+  <li><strong>Encoding:</strong> UTF-8 (with or without BOM)</li>
+  <li><strong>File size:</strong> &lt;1 GB</li>
+  <li><strong>Include <code>EffectiveDate</code> column:</strong> The date must be <strong>earlier</strong> than the upload date (e.g., if uploading today, use yesterday&rsquo;s date or earlier)</li>
+  <li>Use legacy attribute names: <code>PersonId</code>, <code>ManagerId</code>, <code>Organization</code></li>
+</ul>
+
+<h2>Step 2: Navigate to Data Hub</h2>
+<p><code>insights.cloud.microsoft</code> &rarr; <strong>Admin</strong> &rarr; <strong>Data hub</strong> &rarr; <strong>.csv upload</strong> &rarr; <strong>Start</strong></p>
+
+<h2>Step 3: Upload and Map Fields</h2>
+<ul>
+  <li>Upload your CSV file</li>
+  <li>Map required fields: <code>PersonId</code>, <code>ManagerId</code>, <code>Organization</code>, <code>EffectiveDate</code></li>
+  <li>Map optional fields as needed</li>
+</ul>
+
+<h2>Step 4: Validate and Submit</h2>
+<ul>
+  <li>Review validation results</li>
+  <li><strong>Processing time:</strong> Up to <strong>7 days</strong> for large files</li>
+  <li>Monitor status in the Data hub page</li>
+</ul>
+
+<!-- ═══════════════════════ 5. ATTRIBUTE MAPPING ═══════════════════════ -->
+<h1 id="attribute-mapping">5. Attribute Mapping</h1>
+
+<p>This table maps legacy Viva Insights attribute names to the new M365 Admin Center naming convention. Use this when migrating from the legacy upload path or preparing a new CSV.</p>
+
+<table>
+  <tr><th>Legacy Name (Viva Insights)</th><th>M365 Admin Center Name</th><th>Required?</th><th>Notes</th></tr>
+  <tr>
+    <td><code>PersonId</code></td>
+    <td><code>Microsoft_PersonEmail</code></td>
+    <td>Required</td>
+    <td>Employee&rsquo;s primary email address (UPN). Must match Entra ID.</td>
+  </tr>
+  <tr>
+    <td><code>ManagerId</code></td>
+    <td><code>Microsoft_ManagerEmail</code></td>
+    <td>Required</td>
+    <td>Manager&rsquo;s email address. Must exist in Entra ID or upload causes orphan warnings.</td>
+  </tr>
+  <tr>
+    <td><code>Organization</code></td>
+    <td><code>Microsoft_Organization</code></td>
+    <td>Required</td>
+    <td>Department or organisational unit. Drives the Organisation filter on dashboards.</td>
+  </tr>
+  <tr>
+    <td><code>EffectiveDate</code></td>
+    <td>N/A (date picker in UI)</td>
+    <td>Required (legacy) / Not needed (new)</td>
+    <td>Legacy path: include in CSV, must be earlier than upload date. New path: selected in UI.</td>
+  </tr>
+  <tr>
+    <td><code>FunctionType</code></td>
+    <td><code>Microsoft_JobDiscipline</code></td>
+    <td>Optional</td>
+    <td>Drives the Job Function filter on the Copilot Dashboard.</td>
+  </tr>
+  <tr>
+    <td><code>LevelDesignation</code></td>
+    <td><code>Microsoft_LevelDesignation</code></td>
+    <td>Optional</td>
+    <td>Enables level-based views and analysis.</td>
+  </tr>
+  <tr>
+    <td><code>Location</code></td>
+    <td><code>Microsoft_CompanyOfficeLocation</code></td>
+    <td>Optional</td>
+    <td>Drives the Location filter on the Copilot Dashboard.</td>
+  </tr>
+  <tr>
+    <td><code>HireDate</code></td>
+    <td><code>Microsoft_HireDate</code></td>
+    <td>Optional</td>
+    <td>Used for tenure-based analysis and before/after cohort segmentation.</td>
+  </tr>
+  <tr>
+    <td><code>HourlyRate</code></td>
+    <td><code>Microsoft_HourlyRate</code></td>
+    <td>Optional</td>
+    <td><strong>Confidential.</strong> Required for Assisted Value calculation. Set access to Confidential.</td>
+  </tr>
+  <tr>
+    <td>Custom (e.g., <code>BusinessUnit</code>)</td>
+    <td>Custom (same name)</td>
+    <td>Optional</td>
+    <td>Up to 105 total attributes (reserved + custom). Use for Agency, Cost Centre, Region, etc.</td>
+  </tr>
+</table>
+
+<h2>HRIS Connector and Advanced Method Documentation</h2>
+<p>For detailed setup instructions on non-CSV methods, refer to Microsoft Learn:</p>
+<ul>
+  <li><a href="https://learn.microsoft.com/viva/organizational-data/sap-successfactors-connector">SAP SuccessFactors Connector</a></li>
+  <li><a href="https://learn.microsoft.com/viva/organizational-data/workday-connector">Workday Connector</a></li>
+  <li><a href="https://learn.microsoft.com/viva/organizational-data/azure-blob-storage">Azure Blob Storage</a></li>
+  <li><a href="https://learn.microsoft.com/viva/organizational-data/api-based-import">API-Based Import</a></li>
+</ul>
+
+<!-- ═══════════════════════ 6. POST-UPLOAD VERIFICATION ═══════════════════════ -->
+<h1 id="verification">6. Post-Upload Verification Checklist</h1>
+
+<p>After every upload, complete this checklist to confirm data quality before relying on dashboards.</p>
+
+<h2>Step 1: Check Import Status</h2>
+<table>
+  <tr><th>Status</th><th>Meaning</th><th>Action</th></tr>
+  <tr>
+    <td><strong>Success</strong></td>
+    <td>All rows processed. No errors.</td>
+    <td>Proceed to Step 2.</td>
+  </tr>
+  <tr>
+    <td><strong>Partial Success</strong></td>
+    <td>Most rows processed. Some rows had warnings (e.g., unmatched manager emails).</td>
+    <td>Download import log (Step 2). Fix and re-upload problem rows.</td>
+  </tr>
+  <tr>
+    <td><strong>Failed</strong></td>
+    <td>File rejected. No data was imported.</td>
+    <td>Check error details. Common causes: missing required columns, encoding issues, attribute name conflicts.</td>
+  </tr>
+  <tr>
+    <td><strong>Suspended</strong></td>
+    <td>Processing was halted (usually by system or admin).</td>
+    <td>Check Data Connections for details. Re-submit if needed.</td>
+  </tr>
+</table>
+
+<h2>Step 2: Download Import Log</h2>
+<p>Look for rows with unmatched <code>Microsoft_ManagerEmail</code> values. These indicate managers whose email addresses don&rsquo;t exist in the uploaded data or in Entra ID.</p>
+
+<h2>Step 3: Download Manager Log</h2>
+<p>This log shows employees whose <code>ManagerEmail</code> doesn&rsquo;t resolve to an active user in Entra ID. These employees will appear as &ldquo;orphaned&rdquo; in the manager hierarchy.</p>
+
+<h2>Step 4: Check Attribute Coverage</h2>
+<p>Navigate to the <strong>Data Quality</strong> tab. Every attribute should show <strong>&gt;95% coverage</strong> (percentage of rows with non-blank values). Low coverage means dashboard filters will show incomplete results.</p>
+
+<h2>Step 5: Check Manager Tree Count</h2>
+<p>The number of root nodes in the manager hierarchy should be small (typically 1&ndash;5, representing CEO/top executives). If you see hundreds or thousands, many <code>ManagerEmail</code> values are missing or incorrect.</p>
+
+<h2>Step 6: Spot-Check Dashboard</h2>
+<ul>
+  <li>Open the Copilot Dashboard and verify the <strong>Organisation filter</strong> shows your uploaded values (not just Entra defaults)</li>
+  <li>Confirm new employees appear in the population count</li>
+  <li>Check that Job Function, Location, and other optional filters are populated (if uploaded)</li>
+</ul>
+
+<h2>Step 7: Approve Connector Data (If Applicable)</h2>
+<p>If using an HRIS connector (SAP SuccessFactors or Workday) with <strong>&ldquo;Manually approve&rdquo;</strong> enabled: you have a <strong>48-hour review window</strong> to inspect the data before it goes live. If not approved within 48 hours, the data is automatically approved.</p>
+
+<!-- ═══════════════════════ 7. RE-UPLOAD & MAINTENANCE ═══════════════════════ -->
+<h1 id="maintenance">7. Re-Upload &amp; Maintenance</h1>
+
+<h2>Refresh Behaviour by Method</h2>
+
+<table>
+  <tr><th>Method</th><th>Refresh Behaviour</th><th>Key Differences</th></tr>
+  <tr>
+    <td><strong>M365 Admin Center CSV</strong></td>
+    <td>Incremental merge</td>
+    <td>Upload only changed or new rows. Existing rows not in the new file remain unchanged. To delete an employee&rsquo;s data: set attributes to empty and add <code>Layer=-1</code>.</td>
+  </tr>
+  <tr>
+    <td><strong>Viva Insights CSV (legacy)</strong></td>
+    <td>Full replacement</td>
+    <td>Must re-upload <strong>all employees</strong> every time. Missing employees will lose their org data.</td>
+  </tr>
+  <tr>
+    <td><strong>HRIS connectors</strong></td>
+    <td>Automated (weekly/monthly)</td>
+    <td>No manual uploads required. Connector syncs on schedule. Monitor connector health in Data Connections.</td>
+  </tr>
+  <tr>
+    <td><strong>API-based import</strong></td>
+    <td>Incremental or full (configurable)</td>
+    <td>Controlled via automation. Supports programmatic incremental refresh.</td>
+  </tr>
+</table>
+
+<h2>Common Maintenance Scenarios (M365 Admin Center CSV)</h2>
+<table>
+  <tr><th>Scenario</th><th>What to Upload</th></tr>
+  <tr>
+    <td><strong>New hire</strong></td>
+    <td>1 row with the new employee&rsquo;s data (incremental merge adds them)</td>
+  </tr>
+  <tr>
+    <td><strong>Department change</strong></td>
+    <td>1 row with updated <code>Microsoft_Organization</code> value (merge updates existing record)</td>
+  </tr>
+  <tr>
+    <td><strong>Employee left</strong></td>
+    <td>1 row with <code>Layer=-1</code> to remove the employee&rsquo;s organisational data</td>
+  </tr>
+  <tr>
+    <td><strong>Historical correction</strong></td>
+    <td>Use the <strong>Historical import</strong> option in Data Connections to submit data for a past date</td>
+  </tr>
+</table>
+
+<h2>Recommended Cadence</h2>
+<ul>
+  <li><strong>CSV upload:</strong> Monthly (minimum). Set a recurring calendar reminder.</li>
+  <li><strong>HRIS connectors:</strong> Weekly or monthly (configured in connector settings)</li>
+  <li><strong>API-based import:</strong> As frequently as your automation runs (daily is possible)</li>
+</ul>
+
+<div class="callout warning">
+  <div class="callout-title">WARNING: No Automatic Rollback</div>
+  <p>If bad data is uploaded, dashboard filters will break or show incorrect values until corrected data is processed (which may take up to 3 days). There is no &ldquo;undo&rdquo; button.</p>
+  <p><strong>Pre-upload validation checklist:</strong></p>
+  <ol>
+    <li>Spot-check 10 random rows for accuracy</li>
+    <li>Verify every <code>Microsoft_PersonEmail</code> is non-blank and a valid UPN</li>
+    <li>Verify every <code>Microsoft_ManagerEmail</code> resolves to an existing user</li>
+    <li>Confirm no <code>TimeZone</code> column is present (system-generated; causes errors)</li>
+    <li>Confirm no spaces in header names (M365 Admin Center path)</li>
+    <li>Confirm no <code>EffectiveDate</code> column (M365 Admin Center path)</li>
+  </ol>
+</div>
+
+<!-- ═══════════════════════ 8. DATA FRESHNESS MONITORING ═══════════════════════ -->
+<h1 id="freshness">8. Data Freshness Monitoring</h1>
+
+<h2>Where to Check</h2>
+<table>
+  <tr><th>Check</th><th>Where</th><th>What to Look For</th></tr>
+  <tr>
+    <td>Upload / connector status</td>
+    <td>M365 Admin Center &rarr; Data Connections</td>
+    <td>Last import date, status (Success / Partial / Failed)</td>
+  </tr>
+  <tr>
+    <td>Data freshness indicator</td>
+    <td>Viva Insights web app &rarr; Admin &rarr; Data hub</td>
+    <td>Freshness badge showing days since last successful upload</td>
+  </tr>
+  <tr>
+    <td>Attribute quality scores</td>
+    <td>M365 Admin Center &rarr; Data Quality tab</td>
+    <td>Coverage percentage per attribute (&gt;95% target)</td>
+  </tr>
+  <tr>
+    <td>Dashboard spot-check</td>
+    <td>Copilot Dashboard &rarr; filters</td>
+    <td>Filter values match current org structure</td>
+  </tr>
+</table>
+
+<h2>Signs of Stale Data</h2>
+<table>
+  <tr><th>Symptom</th><th>Likely Cause</th></tr>
+  <tr><td>New employees are missing from dashboards</td><td>Upload hasn&rsquo;t been refreshed since they were hired</td></tr>
+  <tr><td>Only one leader appears in Group view</td><td>Manager hierarchy data is outdated or incomplete</td></tr>
+  <tr><td>Old department/location values still showing in filters</td><td>Org changes not reflected in latest upload</td></tr>
+  <tr><td>Employee counts don&rsquo;t match HR system totals</td><td>Leavers not removed or new hires not added</td></tr>
+</table>
+
+<h2>Recommended Monitoring Cadence</h2>
+<table>
+  <tr><th>When</th><th>What to Do</th></tr>
+  <tr><td><strong>After every upload</strong></td><td>Complete the <a href="#verification">Post-Upload Verification Checklist</a> (Section 6)</td></tr>
+  <tr><td><strong>Weekly</strong> (if using connectors)</td><td>Check connector health in Data Connections. Verify last sync date.</td></tr>
+  <tr><td><strong>Monthly</strong> (if using CSV)</td><td>Confirm upload was completed. Spot-check dashboard filters.</td></tr>
+  <tr><td><strong>Quarterly</strong></td><td>Full audit: compare uploaded population against HR system of record. Review attribute coverage. Verify manager tree health.</td></tr>
+</table>
+
+<!-- ═══════════════════════ 9. KEY RULES ═══════════════════════ -->
+<h1 id="key-rules">9. Key Rules</h1>
+
+<ul>
+  <li><strong>Upload for every employee</strong> &mdash; include every person you want reflected in analytics, not just Copilot-licensed users</li>
+  <li><strong>No <code>TimeZone</code> column</strong> &mdash; TimeZone is system-generated from Outlook settings. Including it in your CSV causes a validation error.</li>
+  <li><strong>M365 Admin Center path: no <code>EffectiveDate</code> column</strong> &mdash; the date is selected via the UI date picker</li>
+  <li><strong>M365 Admin Center path: no spaces in header names</strong> &mdash; use underscores (<code>Cost_Center</code>, not <code>Cost Center</code>)</li>
+  <li><strong>Viva Insights legacy path: include <code>EffectiveDate</code></strong> &mdash; must be a date earlier than the upload date</li>
+  <li><strong>Incremental merge is the default</strong> in the M365 Admin Center &mdash; you only need to upload changed or new rows. Unmentioned employees retain their existing data.</li>
+  <li><strong>Data precedence: Entra ID takes precedence by default</strong> &mdash; for attributes like Department, Entra values win unless you configure the override in Data Connections settings</li>
+  <li><strong>One import at a time per tenant</strong> &mdash; if an import is in progress, you must wait for it to complete before starting another</li>
+</ul>
+
+<!-- ═══════════════════════ 10. COMMON UPLOAD ERRORS ═══════════════════════ -->
+<h1 id="common-errors">10. Common Upload Errors</h1>
+
+<table>
+  <tr><th>Error</th><th>Cause</th><th>Fix</th></tr>
+  <tr>
+    <td>Blank <code>Microsoft_PersonEmail</code> rows</td>
+    <td>Rows with empty email addresses</td>
+    <td>Remove blank rows or populate with valid UPNs. Validation fails if any required field is blank.</td>
+  </tr>
+  <tr>
+    <td>Missing required attributes for selected apps</td>
+    <td>Target app (e.g., Viva Insights) requires specific attributes that are not in the CSV</td>
+    <td>Check which attributes each selected app requires and add them to the CSV.</td>
+  </tr>
+  <tr>
+    <td>Empty data rows</td>
+    <td>Rows with all-blank values (often trailing rows from Excel export)</td>
+    <td>Remove empty rows from the CSV before upload. These block validation.</td>
+  </tr>
+  <tr>
+    <td>Sending data to unlicensed apps</td>
+    <td>Selected a target app that your tenant doesn&rsquo;t have licences for</td>
+    <td>Deselect the unlicensed app in Step 5 or acquire the required licences.</td>
+  </tr>
+  <tr>
+    <td>Custom attributes sent to unsupported apps</td>
+    <td>Not all apps support custom attributes</td>
+    <td>Review app compatibility for custom attributes. Viva Insights supports custom attributes; others may not.</td>
+  </tr>
+  <tr>
+    <td>Attribute name conflicts with <code>Microsoft_</code> reserved names</td>
+    <td>Custom attribute uses a name that starts with <code>Microsoft_</code> and conflicts with reserved attributes</td>
+    <td>Rename the custom attribute to avoid the <code>Microsoft_</code> prefix, or map it to the correct reserved attribute.</td>
+  </tr>
+</table>
+
+<p>For a comprehensive list of validation error codes and resolutions, see <a href="https://learn.microsoft.com/viva/organizational-data/troubleshoot-upload-errors">Upload error troubleshooting</a> on Microsoft Learn.</p>
+
+<!-- ═══════════════════════ 11. WHAT TO READ NEXT ═══════════════════════ -->
+<h1 id="next">11. What to Read Next</h1>
+
+<table>
+  <tr><th>Ready to&hellip;</th><th>Read this</th></tr>
+  <tr>
+    <td>Look up the full attribute reference</td>
+    <td><a href="../4-reference/attribute-reference.html">Attribute Reference</a> (Reference layer)</td>
+  </tr>
+  <tr>
+    <td>Troubleshoot a failed upload</td>
+    <td><a href="../4-reference/troubleshooting.html">Troubleshooting Guide</a> (Reference layer)</td>
+  </tr>
+  <tr>
+    <td>Revisit the data strategy decision</td>
+    <td><a href="../1-strategy/data-strategy.html">Data Strategy</a> (Strategy layer)</td>
+  </tr>
+  <tr>
+    <td>Configure roles, VFAM, and dashboards</td>
+    <td><a href="admin-setup.html">Admin Setup Guide</a> (Setup layer)</td>
+  </tr>
+</table>
+
+<div class="callout info" style="margin-top:40px;">
+  <div class="callout-title">Disclaimer</div>
+  <p>This guide is provided as a procedural reference. Always refer to <a href="https://learn.microsoft.com/viva/organizational-data">Organizational Data in Microsoft 365</a> on Microsoft Learn for the most up-to-date information. Upload interfaces and attribute requirements may change as Microsoft completes the MODIS migration.</p>
+</div>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+<script>
+(function(){
+  var btn=document.getElementById('backToTop');
+  window.addEventListener('scroll',function(){ btn.classList.toggle('visible',window.scrollY>300); });
+})();
+</script>
+
+</body>
+</html>

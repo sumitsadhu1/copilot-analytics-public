@@ -381,7 +381,56 @@
     .topic-pills { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .topic-pill { flex-shrink: 0; }
     .container { padding: 24px 16px; }
+    .layer-tabs { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .layer-tab { flex-shrink: 0; }
   }
+
+  /* ═══ Layer Tab Navigation ═══ */
+  .layer-tabs {
+    display: flex;
+    gap: 6px;
+    margin: 0 0 24px;
+    padding: 0;
+    border-bottom: 2px solid var(--border);
+  }
+  .layer-tab {
+    padding: 10px 20px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 0.88em;
+    font-weight: 600;
+    color: var(--muted);
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all var(--transition);
+    font-family: inherit;
+    white-space: nowrap;
+  }
+  .layer-tab:hover { color: var(--text); }
+  .layer-tab.active {
+    color: var(--accent-sky);
+    border-bottom-color: var(--accent-sky);
+  }
+  .layer-tab .tab-count {
+    display: inline-block;
+    background: var(--surface-strong);
+    color: var(--muted);
+    font-size: 0.78em;
+    padding: 1px 6px;
+    border-radius: 10px;
+    margin-left: 5px;
+    font-weight: 500;
+  }
+  .layer-tab.active .tab-count {
+    background: var(--accent-sky-bg);
+    color: var(--accent-sky);
+  }
+
+  .layer-panel { display: none; }
+  .layer-panel.active { display: block; }
+
+  /* ═══ Compact card variant ═══ */
 </style>
 </head>
 <body>
@@ -435,187 +484,253 @@
 <div class="no-results" id="noResults">No matching sections found. Try a different topic.</div>
 
 <!-- DECISION GUIDE -->
-<div class="decision" id="decisionGuide">
-  <h3 onclick="toggleDecision()">📋 What do you need? <span class="toggle-icon">▼</span></h3>
+<div class="decision collapsed" id="decisionGuide">
+  <h3 onclick="toggleDecision()">What do you need? <span class="toggle-icon">▼</span></h3>
   <div class="decision-body">
-  <p style="font-size:0.88em;color:var(--muted);margin-bottom:12px;">Use this table to find the right guide for your task.</p>
+  <p style="font-size:0.88em;color:var(--muted);margin-bottom:12px;">Find the right guide for your task.</p>
   <table>
     <tr><th>If you need to...</th><th>Start here</th></tr>
-    <tr><td>Set up Copilot analytics dashboards &amp; reports</td><td><a href="docs/core/Copilot_Analytics_Implementation_Guide.html">Implementation Guide</a> or <a href="docs/core/Copilot_Analytics_Setup_Companion_Guide.html">Setup Companion</a> (Customer)</td></tr>
-    <tr><td>Hand a setup guide to your IT team</td><td><a href="docs/core/Copilot_Analytics_Setup_Companion_Guide.html">Setup Companion Guide</a> or <a href="artifacts/pdfs/Copilot_Analytics_Setup_Companion_Guide.pdf">PDF version</a></td></tr>
-    <tr><td>Control what Copilot agents can do (DLP, connectors, publishing)</td><td><a href="docs/core/Copilot_Analytics_Implementation_Guide.html#s7">Agent Dashboard (detect)</a> &rarr; Copilot &amp; Agent Governance (separate guide)</td></tr>
-    <tr><td>Understand billing, credits, or licence lifecycle impact on data</td><td><a href="docs/playbooks/Copilot_Lifecycle_Billing_Playbook.html">Lifecycle &amp; Billing Playbook</a></td></tr>
-    <tr><td>Analyse meeting time, focus time, wellbeing (beyond Copilot)</td><td><a href="docs/playbooks/Advanced_Viva_Insights_Collaboration_Guide.html">Collaboration Analysis Guide</a></td></tr>
-    <tr><td>Agencies see their own Copilot data by default (cross-agency visibility OK)</td><td><a href="docs/playbooks/Copilot_Multi_Agency_Default_Priority_Architecture.html">Multi-Agency Default-Priority Architecture</a></td></tr>
-    <tr><td>Isolate Copilot data between agencies in a shared tenant (hard isolation)</td><td><a href="docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Multi-Agency Isolation Architecture</a></td></tr>
-    <tr><td>Get a quick-start checklist for implementation</td><td><a href="artifacts/Copilot_Analytics_QuickStart_CheatSheet.html">Quick-Start Cheat Sheet</a></td></tr>
-    <tr><td>Answer common questions</td><td><a href="artifacts/Copilot_Analytics_FAQ.html">FAQ</a></td></tr>
+    <tr><td>Understand what Copilot analytics can do (CIO/exec read)</td><td><a href="1-strategy/executive-briefing.html">Executive Briefing</a></td></tr>
+    <tr><td>Decide your HR data / org data approach</td><td><a href="1-strategy/data-strategy.html">Data Strategy</a></td></tr>
+    <tr><td>Choose a multi-agency architecture</td><td><a href="1-strategy/multi-agency-decision.html">Multi-Agency Decision Guide</a></td></tr>
+    <tr><td>Set up Copilot analytics dashboards &amp; reports</td><td><a href="2-setup/admin-setup.html">Admin Setup Guide</a></td></tr>
+    <tr><td>Connect your HR data (upload, HRIS connectors, API)</td><td><a href="2-setup/data-onboarding.html">Data Onboarding Guide</a></td></tr>
+    <tr><td>Configure privacy, exclusion lists, data retention</td><td><a href="2-setup/privacy-configuration.html">Privacy Configuration</a></td></tr>
+    <tr><td>Implement multi-agency isolation or default-priority</td><td><a href="2-setup/multi-agency-setup.html">Multi-Agency Setup</a></td></tr>
+    <tr><td>Learn to read dashboards and interpret metrics</td><td><a href="3-operate/dashboard-guide.html">Dashboard &amp; Reports Guide</a></td></tr>
+    <tr><td>Create Power BI reports from Viva Insights queries</td><td><a href="3-operate/analyst-playbook.html">Analyst Playbook</a></td></tr>
+    <tr><td>Understand billing, credits, or licence lifecycle</td><td><a href="3-operate/billing-operations.html">Billing Operations</a></td></tr>
+    <tr><td>Analyse meeting time, focus time, wellbeing</td><td><a href="3-operate/collaboration-analysis.html">Collaboration Analysis</a></td></tr>
+    <tr><td>Fix something that's not working</td><td><a href="4-reference/troubleshooting.html">Troubleshooting Guide</a></td></tr>
+    <tr><td>Look up attribute names or upload formats</td><td><a href="4-reference/attribute-reference.html">Attribute Reference</a></td></tr>
+    <tr><td>Answer common questions</td><td><a href="4-reference/faq.html">FAQ</a></td></tr>
   </table>
   </div>
 </div>
 
-<!-- CORE GUIDES -->
-<div class="section-title">Core Guides</div>
-<div class="section-subtitle">Start here — the primary implementation and handoff documents.</div>
-<div class="card-grid">
-
-  <div class="card" data-roles="admin leader analyst governance finance" data-keywords="VFAM dashboard tier admin center copilot reports agent analytics power bi template org data privacy roles PowerShell enable setup configure ROI assisted hours assisted value hourly rate sentiment survey Glint Pulse CSV impact adoption readiness delegation Entra partition manager exclusion list group size satisfaction rate troubleshooting">
-    <span class="card-badge badge-core">CORE</span>
-    <h3>Copilot Analytics Implementation Guide</h3>
-    <p>Complete procedural reference covering all 5 analytics tiers — Admin Center, Copilot Dashboard, Analytics Reports, Agent Dashboard, and Advanced Analytics (Power BI). Includes VFAM policy verification, end-to-end dashboard enablement, template walkthrough, and troubleshooting.</p>
-    <div class="card-meta">v3.1 &bull; ~40 pages &bull; 13 sections + appendices</div>
-    <div class="card-roles">
-      <span class="card-role">IT Admin</span>
-      <span class="card-role">AI Admin</span>
-      <span class="card-role">Insights Admin</span>
-      <span class="card-role">Insights Analyst</span>
-    </div>
-    <div class="card-links">
-      <a href="docs/core/Copilot_Analytics_Implementation_Guide.html">Open Guide</a>
-      <a href="artifacts/pdfs/Copilot_Analytics_Implementation_Guide.pdf" class="secondary">PDF</a>
-    </div>
-  </div>
-
-  <div class="card" data-roles="admin leader" data-keywords="setup configure dashboard enable VFAM org data roles privacy companion streamlined checklist sentiment survey ROI">
-    <span class="card-badge badge-core">CORE</span>
-    <h3>Setup Companion Guide</h3>
-    <p>A streamlined version of the implementation guide for IT administrators. Includes disclaimer pointing to Microsoft Learn for the latest information.</p>
-    <div class="card-meta">v1.1 &bull; ~35 pages</div>
-    <div class="card-roles">
-      <span class="card-role">IT Admin</span>
-      <span class="card-role">Leaders</span>
-    </div>
-    <div class="card-links">
-      <a href="docs/core/Copilot_Analytics_Setup_Companion_Guide.html">Open Guide</a>
-      <a href="artifacts/pdfs/Copilot_Analytics_Setup_Companion_Guide.pdf" class="secondary">PDF</a>
-    </div>
-  </div>
-
-  <div class="card" data-roles="admin governance leader" data-keywords="agent shadow AI detect creator type adoption metrics returning users block approve review governance studio credits agent dashboard VFAM">
-    <span class="card-badge badge-core">CORE <span style="font-size:0.85em;opacity:0.7;">· SECTION 7</span></span>
-    <h3>Agent Dashboard (Detect)</h3>
-    <p>Adoption metrics, returning users, per-agent deep-dives, shadow AI detection via Creator Type filter. Includes the <strong>Detect → Act workflow</strong> bridging analytics to governance — quick actions in M365 Admin Center to block, approve, or review agents.</p>
-    <div class="card-roles">
-      <span class="card-role">AI Admin</span>
-      <span class="card-role">IT Governance</span>
-      <span class="card-role">Leaders</span>
-    </div>
-    <a href="docs/core/Copilot_Analytics_Implementation_Guide.html#s7">Open Section 7</a>
-  </div>
-
+<!-- ═══════════════════ LAYER TABS ═══════════════════ -->
+<div class="layer-tabs" role="tablist" aria-label="Documentation layers">
+  <button class="layer-tab active" role="tab" aria-selected="true" onclick="switchLayer('strategy', this)">Strategy <span class="tab-count">3</span></button>
+  <button class="layer-tab" role="tab" aria-selected="false" onclick="switchLayer('setup', this)">Setup <span class="tab-count">4</span></button>
+  <button class="layer-tab" role="tab" aria-selected="false" onclick="switchLayer('operate', this)">Operate <span class="tab-count">4</span></button>
+  <button class="layer-tab" role="tab" aria-selected="false" onclick="switchLayer('reference', this)">Reference <span class="tab-count">4</span></button>
 </div>
 
-<!-- PLAYBOOKS -->
-<div class="section-title">Playbooks</div>
-<div class="section-subtitle">Scenario-specific guides for billing, collaboration analysis, and multi-agency isolation.</div>
-<div class="card-grid">
-
-  <div class="card" data-roles="admin finance leader" data-keywords="licence license billing credits chargeback lifecycle renewal expiry model subscription PAYG commit consumption cost finance pricing Copilot Chat Studio credit pool">
-    <span class="card-badge badge-playbook">PLAYBOOK</span>
-    <h3>Lifecycle &amp; Billing</h3>
-    <p>Operational guide for licence lifecycle events and billing. Covers 5 licensing models, 6 lifecycle scenarios (with analytics data impact), Copilot Credits consumption, PPAC billing config, multi-agency chargeback, and monthly/quarterly operational checklists.</p>
-    <div class="card-meta">v1.0 &bull; ~16 pages &bull; 9 sections</div>
-    <div class="card-roles">
-      <span class="card-role">IT Admin</span>
-      <span class="card-role">Finance</span>
-      <span class="card-role">Licence Admin</span>
+<!-- ═══ LAYER 1: STRATEGY ═══ -->
+<div class="layer-panel active" id="layer-strategy" role="tabpanel">
+  <p style="font-size:0.86em;color:var(--text-secondary);margin:0 0 16px;">Read before deployment. Understand capabilities, make decisions, choose architectures.</p>
+  <div class="card-grid">
+    <div class="card" data-roles="leader admin analyst governance finance" data-keywords="executive briefing CIO strategy ROI decision framework RACI capabilities overview tier architecture">
+      <span class="card-badge badge-core">STRATEGY</span>
+      <h3>Executive Briefing</h3>
+      <p>What Copilot analytics can tell you, which dashboards answer which questions, level-of-effort, implementation timeline, and key decisions. The CIO's 10-minute read.</p>
+      <div class="card-meta">v4.0 &bull; Layer 1</div>
+      <div class="card-roles">
+        <span class="card-role">CIO</span>
+        <span class="card-role">Solution Architect</span>
+        <span class="card-role">Business Leaders</span>
+      </div>
+      <a href="1-strategy/executive-briefing.html">Open Guide</a>
     </div>
-    <div class="card-links">
-      <a href="docs/playbooks/Copilot_Lifecycle_Billing_Playbook.html">Open Playbook</a>
-      <a href="artifacts/pdfs/Copilot_Lifecycle_Billing_Playbook.pdf" class="secondary">PDF</a>
+
+    <div class="card" data-roles="admin analyst" data-keywords="data strategy org data HRIS Entra CSV upload SAP Workday Azure Blob API connector planning worksheet custom attributes">
+      <span class="card-badge badge-core">STRATEGY</span>
+      <h3>Data Strategy</h3>
+      <p>Entra ID vs. org data upload — what breaks without it, which upload method to choose, data planning worksheet, and the MODIS migration.</p>
+      <div class="card-meta">v4.0 &bull; Layer 1</div>
+      <div class="card-roles">
+        <span class="card-role">Solution Architect</span>
+        <span class="card-role">IT Admin</span>
+      </div>
+      <a href="1-strategy/data-strategy.html">Open Guide</a>
+    </div>
+
+    <div class="card" data-roles="admin governance leader" data-keywords="multi-agency isolation default priority partition single tenant delegation agency architecture decision">
+      <span class="card-badge badge-architecture">STRATEGY</span>
+      <h3>Multi-Agency Decision Guide</h3>
+      <p>Choose between Default Priority (agencies see their own data by default) and Isolation (hard data boundaries via partitions). Decision tree and data strategy for each path.</p>
+      <div class="card-meta">v4.0 &bull; Layer 1</div>
+      <div class="card-roles">
+        <span class="card-role">Solution Architect</span>
+        <span class="card-role">IT Admin</span>
+        <span class="card-role">CIO</span>
+      </div>
+      <a href="1-strategy/multi-agency-decision.html">Open Guide</a>
     </div>
   </div>
-
-  <div class="card" data-roles="analyst leader" data-keywords="meeting time focus time wellbeing manager effectiveness collaboration template query 27 months behavioural metrics HR people analytics after hours email overload network Viva Insights advanced">
-    <span class="card-badge badge-playbook">PLAYBOOK</span>
-    <h3>Advanced Viva Insights — Collaboration Analysis</h3>
-    <p>Guide for using Viva Insights to analyse meeting time, focus time, wellbeing, and manager effectiveness — beyond Copilot. Covers 6 templates, behavioural metrics, custom queries, 3 use case scenarios, and data retention differences (27 months vs 13 months).</p>
-    <div class="card-meta">v1.0 &bull; ~20 pages &bull; 10 sections</div>
-    <div class="card-roles">
-      <span class="card-role">Insights Analyst</span>
-      <span class="card-role">HR / People Analytics</span>
-    </div>
-    <div class="card-links">
-      <a href="docs/playbooks/Advanced_Viva_Insights_Collaboration_Guide.html">Open Playbook</a>
-      <a href="artifacts/pdfs/Advanced_Viva_Insights_Collaboration_Guide.pdf" class="secondary">PDF</a>
-    </div>
-  </div>
-
-  <div class="card" data-roles="admin leader governance" data-keywords="multi-agency default priority single tenant delegation AutoCxO hierarchy Your group agency scoping dashboard access manager domain Entra report sharing">
-    <span class="card-badge badge-architecture">ARCHITECTURE</span>
-    <h3>Multi-Agency Default-Priority Architecture</h3>
-    <p>Solution architecture for multi-agency tenants where each agency sees its own Copilot data by default, but cross-agency visibility is acceptable. Leverages native AutoCxO, delegation, and "Your group" scoping — no lockdowns or partitions required.</p>
-    <div class="card-meta">v1.0 &bull; ~12 pages &bull; 10 sections + appendices</div>
-    <div class="card-roles">
-      <span class="card-role">Solution Architect</span>
-      <span class="card-role">IT Admin</span>
-      <span class="card-role">Leaders</span>
-    </div>
-    <div class="card-links">
-      <a href="docs/playbooks/Copilot_Multi_Agency_Default_Priority_Architecture.html">Open Playbook</a>
-      <a href="artifacts/pdfs/Copilot_Multi_Agency_Default_Priority_Architecture.pdf" class="secondary">PDF</a>
-    </div>
-  </div>
-
-  <div class="card" data-roles="admin governance" data-keywords="partition isolation multi-agency single tenant VFAM lockdown PowerShell access control risk register org data architecture solution domain CSV agency Entra group-scoped report power bi workspace publish reports">
-    <span class="card-badge badge-architecture">ARCHITECTURE</span>
-    <h3>Multi-Agency Isolation Architecture</h3>
-    <p>Solution architecture for deploying Copilot Dashboard in a single tenant with multiple independent agencies. Covers partition-based isolation, VFAM lockdown, PowerShell commands, access control matrix, risk register, and org data strategy.</p>
-    <div class="card-meta">v1.0 &bull; ~15 pages &bull; 12 sections + appendices</div>
-    <div class="card-roles">
-      <span class="card-role">Solution Architect</span>
-      <span class="card-role">IT Admin</span>
-    </div>
-    <div class="card-links">
-      <a href="docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Open Playbook</a>
-      <a href="artifacts/pdfs/Copilot_Multi_Agency_Isolation_Architecture.pdf" class="secondary">PDF</a>
-    </div>
-  </div>
-
 </div>
 
-<!-- ARTIFACTS -->
-<div class="section-title">Quick References &amp; Artifacts</div>
-<div class="section-subtitle">Printable cheat sheets, FAQs, and campaign materials.</div>
-<div class="card-grid">
-
-  <div class="card" data-roles="admin analyst" data-keywords="checklist quick start one page printable URLs wait times roles tier summary steps reference">
-    <span class="card-badge badge-artifact">ARTIFACT</span>
-    <h3>Quick-Start Cheat Sheet</h3>
-    <p>One-page printable checklist covering all 5 tiers. Key URLs, wait times, org data fields, and roles at a glance. Print as PDF via File → Print → Save as PDF.</p>
-    <div class="card-roles">
-      <span class="card-role">IT Admin</span>
-      <span class="card-role">Analyst</span>
+<!-- ═══ LAYER 2: SETUP ═══ -->
+<div class="layer-panel" id="layer-setup" role="tabpanel">
+  <p style="font-size:0.86em;color:var(--text-secondary);margin:0 0 16px;">Configure and deploy. Step-by-step guides for IT administrators.</p>
+  <div class="card-grid">
+    <div class="card" data-roles="admin" data-keywords="admin setup configure dashboard enable VFAM roles licences tier admin center copilot dashboard agent analytics sentiment survey exclusion list manager settings delegation group size hourly rate">
+      <span class="card-badge badge-core">SETUP</span>
+      <h3>Admin Setup Guide</h3>
+      <p>End-to-end setup for all 5 analytics tiers. Global Admin readiness checklist, VFAM policy verification, dashboard enablement, manager settings, sentiment configuration, and Advanced Analytics.</p>
+      <div class="card-meta">v4.0 &bull; Layer 2</div>
+      <div class="card-roles">
+        <span class="card-role">IT Admin</span>
+        <span class="card-role">AI Admin</span>
+        <span class="card-role">Insights Admin</span>
+      </div>
+      <a href="2-setup/admin-setup.html">Open Guide</a>
     </div>
-    <div class="card-links">
-      <a href="artifacts/Copilot_Analytics_QuickStart_CheatSheet.html">Open Cheat Sheet</a>
-      <a href="artifacts/pdfs/Copilot_Analytics_QuickStart_CheatSheet.pdf" class="secondary">PDF</a>
+
+    <div class="card" data-roles="admin analyst" data-keywords="data onboarding upload CSV org data HRIS SAP Workday Azure Blob API connector attribute mapping verification troubleshoot migration MODIS incremental merge">
+      <span class="card-badge badge-core">SETUP</span>
+      <h3>Data Onboarding Guide</h3>
+      <p>The complete guide to connecting your HR data. All 6 upload methods, attribute mapping, step-by-step procedures, post-upload verification, maintenance cadence, and common errors.</p>
+      <div class="card-meta">v4.0 &bull; Layer 2</div>
+      <div class="card-roles">
+        <span class="card-role">IT Admin</span>
+        <span class="card-role">Insights Admin</span>
+        <span class="card-role">Data Engineer</span>
+      </div>
+      <a href="2-setup/data-onboarding.html">Open Guide</a>
+    </div>
+
+    <div class="card" data-roles="admin governance" data-keywords="privacy group size exclusion list data residency GDPR retention differential privacy distribution masking">
+      <span class="card-badge badge-core">SETUP</span>
+      <h3>Privacy Configuration</h3>
+      <p>Privacy thresholds, exclusion lists, data residency, GDPR compliance, and data retention periods across all analytics tiers.</p>
+      <div class="card-meta">v4.0 &bull; Layer 2</div>
+      <div class="card-roles">
+        <span class="card-role">IT Admin</span>
+        <span class="card-role">Governance</span>
+      </div>
+      <a href="2-setup/privacy-configuration.html">Open Guide</a>
+    </div>
+
+    <div class="card" data-roles="admin governance" data-keywords="multi-agency setup partition isolation VFAM lockdown PowerShell default priority delegation AutoCxO CSV agency domain">
+      <span class="card-badge badge-architecture">SETUP</span>
+      <h3>Multi-Agency Setup</h3>
+      <p>Step-by-step implementation for both multi-agency architectures: Default Priority (scoped views) and Isolation (partition-based data boundaries with VFAM lockdown).</p>
+      <div class="card-meta">v4.0 &bull; Layer 2</div>
+      <div class="card-roles">
+        <span class="card-role">IT Admin</span>
+        <span class="card-role">Solution Architect</span>
+      </div>
+      <a href="2-setup/multi-agency-setup.html">Open Guide</a>
     </div>
   </div>
+</div>
 
-  <div class="card" data-roles="leader admin" data-keywords="questions answers licensing privacy data refresh agents billing scope common FAQ misconceptions group size survey Glint Pulse partition dashboard access">
-    <span class="card-badge badge-artifact">ARTIFACT</span>
-    <h3>FAQ</h3>
-    <p>15 most common questions with direct answers. Covers licensing, privacy, data refresh, agents, billing, and scope.</p>
-    <div class="card-roles">
-      <span class="card-role">Pre-sales</span>
-      <span class="card-role">Account Team</span>
+<!-- ═══ LAYER 3: OPERATE ═══ -->
+<div class="layer-panel" id="layer-operate" role="tabpanel">
+  <p style="font-size:0.86em;color:var(--text-secondary);margin:0 0 16px;">Use dashboards and reports. Ongoing operational guides for leaders, analysts, and admins.</p>
+  <div class="card-grid">
+    <div class="card" data-roles="leader admin analyst" data-keywords="dashboard adoption impact readiness sentiment assisted hours value ROI scope filter group delegation copilot analytics reports agent dashboard detect act metrics review cadence">
+      <span class="card-badge badge-playbook">OPERATE</span>
+      <h3>Dashboard &amp; Reports Guide</h3>
+      <p>How to read and interpret the Copilot Dashboard, Analytics Reports, and Agent Dashboard. Every metric defined, scope filters explained, delegation guide, PBI template decision guide, and suggested review cadence.</p>
+      <div class="card-meta">v4.0 &bull; Layer 3</div>
+      <div class="card-roles">
+        <span class="card-role">Business Leaders</span>
+        <span class="card-role">Managers</span>
+        <span class="card-role">Analysts</span>
+      </div>
+      <a href="3-operate/dashboard-guide.html">Open Guide</a>
     </div>
-    <div class="card-links">
-      <a href="artifacts/Copilot_Analytics_FAQ.html">Open FAQ</a>
-      <a href="artifacts/pdfs/Copilot_Analytics_FAQ.pdf" class="secondary">PDF</a>
+
+    <div class="card" data-roles="analyst" data-keywords="analyst playbook power bi template query partition copilot impact adoption business impact headlines glint publish reports before after cohort segmentation">
+      <span class="card-badge badge-playbook">OPERATE</span>
+      <h3>Analyst Playbook</h3>
+      <p>Advanced Analytics workflow for Insights Analysts. PBI template catalog, step-by-step query creation, Power BI connection, report publishing, and analyst departure transfer guide.</p>
+      <div class="card-meta">v4.0 &bull; Layer 3</div>
+      <div class="card-roles">
+        <span class="card-role">Insights Analyst</span>
+      </div>
+      <a href="3-operate/analyst-playbook.html">Open Guide</a>
+    </div>
+
+    <div class="card" data-roles="admin finance leader" data-keywords="licence license billing credits chargeback lifecycle renewal expiry model subscription PAYG commit consumption cost finance pricing Copilot Chat Studio credit pool">
+      <span class="card-badge badge-playbook">OPERATE</span>
+      <h3>Billing Operations</h3>
+      <p>Licence lifecycle events, 5 licensing models, 6 lifecycle scenarios, Copilot Credits consumption, chargeback, and operational checklists.</p>
+      <div class="card-meta">v4.0 &bull; Layer 3</div>
+      <div class="card-roles">
+        <span class="card-role">IT Admin</span>
+        <span class="card-role">Finance</span>
+      </div>
+      <a href="3-operate/billing-operations.html">Open Guide</a>
+    </div>
+
+    <div class="card" data-roles="analyst leader" data-keywords="meeting time focus time wellbeing manager effectiveness collaboration template query 27 months behavioural metrics HR people analytics after hours email overload network Viva Insights advanced">
+      <span class="card-badge badge-playbook">OPERATE</span>
+      <h3>Collaboration Analysis</h3>
+      <p>Meeting time, focus time, wellbeing, manager effectiveness — beyond Copilot. 6 templates, behavioural metrics, and data retention (27 months vs 13 months).</p>
+      <div class="card-meta">v4.0 &bull; Layer 3</div>
+      <div class="card-roles">
+        <span class="card-role">Insights Analyst</span>
+        <span class="card-role">HR / People Analytics</span>
+      </div>
+      <a href="3-operate/collaboration-analysis.html">Open Guide</a>
     </div>
   </div>
-
 </div>
 
+<!-- ═══ LAYER 4: REFERENCE ═══ -->
+<div class="layer-panel" id="layer-reference" role="tabpanel">
+  <p style="font-size:0.86em;color:var(--text-secondary);margin:0 0 16px;">Look up details and fix issues. Always-available reference material.</p>
+  <div class="card-grid">
+    <div class="card" data-roles="admin analyst" data-keywords="troubleshooting fix error access denied VFAM dashboard not working org data upload validation failed processing failed suppressed N/A exclusion list">
+      <span class="card-badge badge-artifact">REFERENCE</span>
+      <h3>Troubleshooting Guide</h3>
+      <p>Consolidated troubleshooting for all analytics tiers, data upload errors, and common access issues. Includes escalation path.</p>
+      <div class="card-meta">v4.0 &bull; Layer 4</div>
+      <div class="card-roles">
+        <span class="card-role">IT Admin</span>
+        <span class="card-role">Analyst</span>
+      </div>
+      <a href="4-reference/troubleshooting.html">Open Guide</a>
+    </div>
+
+    <div class="card" data-roles="admin analyst" data-keywords="attribute mapping reference PersonEmail ManagerEmail Organization FunctionType LevelDesignation Location HireDate HourlyRate custom public confidential classification">
+      <span class="card-badge badge-artifact">REFERENCE</span>
+      <h3>Attribute Reference</h3>
+      <p>Full attribute mapping table (legacy vs M365 Admin Center names), data classifications (Public/Confidential/Custom), and naming conventions.</p>
+      <div class="card-meta">v4.0 &bull; Layer 4</div>
+      <div class="card-roles">
+        <span class="card-role">IT Admin</span>
+        <span class="card-role">Insights Admin</span>
+      </div>
+      <a href="4-reference/attribute-reference.html">Open Guide</a>
+    </div>
+
+    <div class="card" data-roles="leader admin analyst" data-keywords="questions answers licensing privacy data refresh agents billing scope common FAQ misconceptions group size survey Glint Pulse partition dashboard access org data upload Entra">
+      <span class="card-badge badge-artifact">REFERENCE</span>
+      <h3>FAQ</h3>
+      <p>18 common questions across licensing, org data, privacy, and general topics with direct answers.</p>
+      <div class="card-meta">v4.0 &bull; Layer 4</div>
+      <div class="card-roles">
+        <span class="card-role">All roles</span>
+      </div>
+      <a href="4-reference/faq.html">Open Guide</a>
+    </div>
+
+    <div class="card" data-roles="admin analyst" data-keywords="glossary definitions terms VFAM assisted hours partition delegation exclusion list URLs resources adoption hub scenario library">
+      <span class="card-badge badge-artifact">REFERENCE</span>
+      <h3>Glossary &amp; Resources</h3>
+      <p>Key term definitions, dashboard direct links, and Microsoft Learn technical documentation URLs.</p>
+      <div class="card-meta">v4.0 &bull; Layer 4</div>
+      <div class="card-roles">
+        <span class="card-role">All roles</span>
+      </div>
+      <a href="4-reference/glossary.html">Open Guide</a>
+    </div>
+  </div>
 </div>
+
+<!-- Legacy guides removed — all content is now in the Layer Cake structure above -->
+
+</div><!-- close container -->
 
 <div class="footer">
   <p><strong>Disclaimer:</strong> These guides are provided as procedural references and may not reflect the latest product changes. Always refer to the official
   <a href="https://learn.microsoft.com/viva/insights/">Viva Insights</a> and
   <a href="https://learn.microsoft.com/copilot/microsoft-365/">Microsoft 365 Copilot</a> documentation on Microsoft Learn for the most up-to-date information.</p>
-  <p style="margin-top:12px;">Copilot Analytics Documentation Hub &bull; March 2026</p>
+  <p style="margin-top:12px;">Copilot Analytics Documentation Hub &bull; April 2026</p>
 </div>
 
 <script>
@@ -801,6 +916,23 @@ function clearTopic() {
 function toggleDecision() {
   var d = document.getElementById('decisionGuide');
   if (d) d.classList.toggle('collapsed');
+}
+
+function switchLayer(layer, btn) {
+  // Update tabs
+  document.querySelectorAll('.layer-tab').forEach(function(t) {
+    t.classList.remove('active');
+    t.setAttribute('aria-selected', 'false');
+  });
+  btn.classList.add('active');
+  btn.setAttribute('aria-selected', 'true');
+
+  // Update panels
+  document.querySelectorAll('.layer-panel').forEach(function(p) {
+    p.classList.remove('active');
+  });
+  var panel = document.getElementById('layer-' + layer);
+  if (panel) panel.classList.add('active');
 }
 </script>
 

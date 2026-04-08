@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multi-Agency Setup — Copilot Analytics</title>
+<link rel="stylesheet" href="../assets/docs-style.css">
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Setup</span>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Multi-Agency Setup</span>
+  </div>
+  <div class="doc-nav-right">
+    <a href="../artifacts/pdfs/Multi_Agency_Setup.pdf" class="pdf-btn" title="Download PDF">&#128196; PDF</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ COVER PAGE ═══════════════════════ -->
+<div class="cover">
+  <h1>Microsoft 365 Copilot Analytics</h1>
+  <div class="subtitle">Multi-Agency Setup Guide</div>
+  <div class="sub2">Step-by-step implementation for multi-agency Copilot Analytics in a shared M365 tenant</div>
+</div>
+
+<table>
+  <tr><th>Document Property</th><th>Value</th></tr>
+  <tr><td>Layer</td><td>2 &mdash; Setup</td></tr>
+  <tr><td>Audience</td><td>IT Admin, Solution Architect</td></tr>
+  <tr><td>Version</td><td>4.0</td></tr>
+  <tr><td>Published</td><td>April 2026</td></tr>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">How This Document Fits</div>
+  <p>This is a <strong>Layer 2 &mdash; Setup</strong> document. It provides the hands-on configuration steps for deploying Copilot Analytics across multiple agencies in a shared M365 tenant. You should have already chosen your architecture before arriving here.</p>
+  <table>
+    <tr><th>Layer</th><th>Purpose</th><th>Who Reads</th></tr>
+    <tr><td><a href="../1-strategy/executive-briefing.html">1 &mdash; Strategy</a></td><td>Decide what to implement</td><td>CIO, SA, Business Leaders</td></tr>
+    <tr><td><strong>2 &mdash; Setup</strong> (you are here)</td><td>Configure and deploy</td><td>IT Admin, Insights Admin</td></tr>
+    <tr><td><a href="../3-operate/dashboard-guide.html">3 &mdash; Operate</a></td><td>Use dashboards and reports daily</td><td>Leaders, Analysts, Managers</td></tr>
+    <tr><td><a href="../4-reference/troubleshooting.html">4 &mdash; Reference</a></td><td>Look up details and fix issues</td><td>Everyone (as needed)</td></tr>
+  </table>
+</div>
+
+<div class="callout warning">
+  <div class="callout-title">Read the Decision Guide First</div>
+  <p>Read the <a href="../1-strategy/multi-agency-decision.html">Multi-Agency Architecture Decision Guide</a> first to choose between the <strong>Default Priority</strong> and <strong>Isolation</strong> architectures. This setup guide assumes you have already made that decision. Jump to the section that matches your choice:</p>
+  <ul>
+    <li><a href="#default-priority">Section 1 &mdash; Default Priority Architecture Setup</a> (2&ndash;4 hours)</li>
+    <li><a href="#isolation">Section 2 &mdash; Isolation Architecture Setup</a> (1&ndash;3 days)</li>
+  </ul>
+</div>
+
+<!-- ═══════════════════════ TOC ═══════════════════════ -->
+<h1 id="toc">Table of Contents</h1>
+<ol>
+  <li><a href="#default-priority">Default Priority Architecture Setup</a></li>
+  <li><a href="#isolation">Isolation Architecture Setup</a></li>
+  <li><a href="#governance">Ongoing Governance</a></li>
+  <li><a href="#csv-templates">CSV Templates</a></li>
+  <li><a href="#next">What to Read Next</a></li>
+</ol>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     1. DEFAULT PRIORITY ARCHITECTURE SETUP
+     ═══════════════════════════════════════════════════════════════════════ -->
+<h1 id="default-priority">1. Default Priority Architecture Setup</h1>
+
+<p><strong>Estimated time:</strong> 2&ndash;4 hours &nbsp;|&nbsp; <strong>PowerShell required:</strong> No</p>
+
+<p>This architecture relies on the native Copilot Dashboard scoping (&ldquo;Your group&rdquo;) driven by Entra ID manager hierarchy. Each agency CEO automatically sees their agency&rsquo;s data. Cross-agency visibility is acceptable in this model.</p>
+
+<!-- Phase 0 -->
+<h2 id="dp-phase0">Phase 0: Base Setup</h2>
+
+<p>Complete <strong>all five tiers</strong> in the <a href="admin-setup.html">Admin Setup Guide</a> before proceeding. This establishes:</p>
+<ul>
+  <li>Copilot licence assignment (&ge;50 licences)</li>
+  <li>Insights Admin and Insights Analyst roles</li>
+  <li>VFAM feature access policies (dashboard, advanced analytics, behavioural experiences)</li>
+  <li>Org data upload (Entra connection or CSV)</li>
+  <li>Default partition with analyst assignment</li>
+</ul>
+
+<div class="callout tip">
+  <div class="callout-title">Verify Before Continuing</div>
+  <p>Run through the <a href="admin-setup.html#readiness">Global Admin Readiness Checklist</a> in the Admin Setup Guide. All 8 checks must pass before you proceed to Phase 1.</p>
+</div>
+
+<!-- Phase 1 -->
+<h2 id="dp-phase1">Phase 1: Verify AutoCxO and Delegation</h2>
+
+<table>
+  <tr><th>Step</th><th>Action</th><th>Where</th><th>Expected Result</th></tr>
+  <tr>
+    <td>1.1</td>
+    <td>Enable Auto CxO Identification</td>
+    <td>Viva Insights web app &rarr; Admin &rarr; General &rarr; Auto CxO Identification</td>
+    <td>Toggle is <strong>On</strong>. The system automatically identifies C-suite executives based on Entra ID hierarchy.</td>
+  </tr>
+  <tr>
+    <td>1.2</td>
+    <td>Enable Delegation</td>
+    <td>Viva Insights web app &rarr; Admin &rarr; Delegation</td>
+    <td>Delegation is <strong>enabled</strong>. CxO-identified leaders can delegate dashboard access to others in their reporting chain.</td>
+  </tr>
+  <tr>
+    <td>1.3</td>
+    <td>Verify each agency CEO gets automatic &ldquo;Your group&rdquo; scope</td>
+    <td>Ask each agency CEO to open the Copilot Dashboard and check the scope selector (top of dashboard)</td>
+    <td>Each CEO sees <strong>&ldquo;Your group&rdquo;</strong> scoped to their direct + indirect reports. The population count should match the agency&rsquo;s headcount.</td>
+  </tr>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">If a CEO Doesn&rsquo;t See &ldquo;Your Group&rdquo;</div>
+  <p>The most common cause is incorrect or missing <code>ManagerId</code> data in Entra ID. Verify the CEO&rsquo;s reporting chain: every employee in the agency must have a valid manager chain that terminates at the agency CEO. See the <a href="data-onboarding.html">Data Onboarding Guide</a> for manager hierarchy verification steps.</p>
+</div>
+
+<!-- Phase 2 -->
+<h2 id="dp-phase2">Phase 2: Grant Additional Access</h2>
+
+<table>
+  <tr><th>Step</th><th>Action</th><th>Where</th><th>Expected Result</th></tr>
+  <tr>
+    <td>2.1</td>
+    <td>Delegate to agency CIOs / senior leaders</td>
+    <td>Each agency CEO uses the Delegation feature (Copilot Dashboard &rarr; Settings &rarr; Delegation) to grant access to their CIO or other leaders</td>
+    <td>Delegated leaders see the same <strong>&ldquo;Your group&rdquo;</strong> scope as the delegating CEO.</td>
+  </tr>
+  <tr>
+    <td>2.2</td>
+    <td>Grant Central IT &ldquo;Your company&rdquo; scope</td>
+    <td>Viva Insights web app &rarr; Admin &rarr; Delegation &rarr; add Central IT lead</td>
+    <td>Central IT lead sees <strong>&ldquo;Your company&rdquo;</strong> scope with tenant-wide data for cross-agency oversight.</td>
+  </tr>
+</table>
+
+<!-- Phase 2.3 -->
+<h3 id="dp-phase2-3">Phase 2.3: Enrich Org Data (Optional)</h3>
+
+<p>If the Entra ID connection provides sufficient attributes (<code>ManagerId</code>, <code>Organization</code>), no additional data upload is needed. If you require custom attributes (e.g., <code>Agency</code>, <code>FunctionType</code>, <code>CostCentre</code>), upload a CSV supplement:</p>
+
+<ol>
+  <li>Enable the Entra connection for <code>ManagerId</code> + <code>Organization</code> attributes (if not already done in Phase 0).</li>
+  <li>If custom attributes are needed, prepare a CSV file following the <a href="#csv-templates">CSV Templates</a> (Section 4).</li>
+  <li>Upload via the steps in the <a href="data-onboarding.html">Data Onboarding Guide</a>.</li>
+</ol>
+
+<!-- Phase 3 -->
+<h2 id="dp-phase3">Phase 3: Create Partitions (Optional)</h2>
+
+<p>Partitions are <strong>optional</strong> in the Default Priority architecture but recommended if you want analyst-level reporting scoped to each agency.</p>
+
+<ol>
+  <li>Navigate to <strong>Viva Insights web app &rarr; Admin &rarr; Privacy settings &rarr; Partitions</strong>.</li>
+  <li>Click <strong>New partition</strong>.</li>
+  <li>Name the partition after the agency (e.g., &ldquo;Agency A&rdquo;).</li>
+  <li>Set the filter to the relevant attribute (e.g., <code>Organization = "Agency A"</code> or <code>Agency = "Agency A"</code>).</li>
+  <li>Assign the partition&rsquo;s analyst(s).</li>
+  <li>Repeat for each agency.</li>
+</ol>
+
+<!-- Phase 4 -->
+<h2 id="dp-phase4">Phase 4: Power BI Reports (Optional)</h2>
+
+<p>For deeper analysis beyond the native dashboard, analysts can create Power BI reports from partition-scoped queries.</p>
+
+<ol>
+  <li>The assigned analyst opens their partition in the Viva Insights web app.</li>
+  <li>Creates a Copilot person query (or uses a pre-built template).</li>
+  <li>Connects the query output to Power BI Desktop.</li>
+  <li>Publishes the report to a <strong>Power BI workspace</strong> dedicated to the agency.</li>
+  <li>Shares the workspace with agency leadership.</li>
+</ol>
+
+<div class="callout tip">
+  <div class="callout-title">Default Priority Setup Complete</div>
+  <p>At this point, each agency CEO sees their data via the native dashboard, delegation is configured, and optional partitions and Power BI reports are in place. Skip to <a href="#governance">Section 3 &mdash; Ongoing Governance</a> for maintenance procedures.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     2. ISOLATION ARCHITECTURE SETUP
+     ═══════════════════════════════════════════════════════════════════════ -->
+<h1 id="isolation">2. Isolation Architecture Setup</h1>
+
+<p><strong>Estimated time:</strong> 1&ndash;3 days &nbsp;|&nbsp; <strong>PowerShell required:</strong> Yes</p>
+
+<p>This architecture enforces hard data boundaries via Viva Insights partitions. Agency A <strong>cannot</strong> see Agency B&rsquo;s data under any circumstance. The native Copilot Dashboard is locked down to prevent cross-agency browsing, and reports are delivered via Power BI workspaces.</p>
+
+<!-- Phase 0 -->
+<h2 id="iso-phase0">Phase 0: Prerequisites</h2>
+
+<p>Complete through <strong>Tier 2, Step 3</strong> in the <a href="admin-setup.html">Admin Setup Guide</a>. This establishes:</p>
+<ul>
+  <li>Copilot licence assignment (&ge;50 licences)</li>
+  <li>Insights Admin and Insights Analyst roles</li>
+  <li>VFAM verification that the dashboard toggle and Advanced Analytics toggle are accessible</li>
+</ul>
+
+<div class="callout warning">
+  <div class="callout-title">Do NOT Enable Broad Access</div>
+  <p>Stop after verifying VFAM in Tier 2, Step 3. Do <strong>not</strong> enable AutoCxO, delegation, or broad dashboard access for &ldquo;Everyone&rdquo;. The Isolation architecture requires a controlled lockdown of these features (Phase 1 below).</p>
+</div>
+
+<!-- Phase 1 -->
+<h2 id="iso-phase1">Phase 1: VFAM Lockdown</h2>
+
+<p>Lock down the Copilot Dashboard so that only Central IT has access. All other users &mdash; including agency CEOs &mdash; will receive reports via Power BI only.</p>
+
+<table>
+  <tr><th>Step</th><th>Action</th><th>Details</th></tr>
+  <tr>
+    <td>1.1</td>
+    <td>Disable Auto CxO Identification</td>
+    <td>Viva Insights web app &rarr; Admin &rarr; General &rarr; Auto CxO Identification &rarr; toggle <strong>Off</strong></td>
+  </tr>
+  <tr>
+    <td>1.2</td>
+    <td>Disable Delegation</td>
+    <td>Viva Insights web app &rarr; Admin &rarr; Delegation &rarr; toggle <strong>Off</strong></td>
+  </tr>
+  <tr>
+    <td>1.3</td>
+    <td>Disable dashboard for &ldquo;Everyone&rdquo;</td>
+    <td>Admin Centre &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; set Copilot Dashboard access to <strong>specific groups only</strong> (Central IT group)</td>
+  </tr>
+  <tr>
+    <td>1.4</td>
+    <td>Create Entra security group</td>
+    <td>Create a group named <code>AgencyUsers-NoDashboard</code> in Entra ID. Add all non-Central-IT users (or all agency users).</td>
+  </tr>
+  <tr>
+    <td>1.5</td>
+    <td>Apply group-scoped VFAM policy</td>
+    <td>Run the PowerShell command below to disable the Copilot Dashboard for the agency users group.</td>
+  </tr>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">PowerShell: Disable Dashboard for Non-Central-IT Users</div>
+  <p>Run this in an elevated PowerShell session with the <code>ExchangeOnlineManagement</code> module installed:</p>
+<pre><code>Add-VivaModuleFeaturePolicy `
+  -ModuleId VivaInsights `
+  -FeatureId CopilotDashboard `
+  -Name DisableForNonCentralIT `
+  -IsFeatureEnabled $false `
+  -GroupIds "group-id-here"</code></pre>
+  <p>Replace <code>group-id-here</code> with the Object ID of the <code>AgencyUsers-NoDashboard</code> Entra security group.</p>
+</div>
+
+<div class="callout warning">
+  <div class="callout-title">Why Group-Scoped &mdash; Not &ldquo;Everyone&rdquo;</div>
+  <p>Use <strong>group-scoped policies</strong>, not &ldquo;Everyone&rdquo;. A blanket &ldquo;Everyone&rdquo; disable would also block Central IT and non-agency executives who may legitimately need dashboard access. The group-scoped approach protects these users while locking out agency-level browsing.</p>
+</div>
+
+<!-- Phase 2 -->
+<h2 id="iso-phase2">Phase 2: Data Strategy</h2>
+
+<p>Choose your data path based on whether your agencies have distinct email domains or you need a custom attribute for agency identification.</p>
+
+<h3 id="iso-path-decision">Choose Your Path</h3>
+
+<table>
+  <tr><th>Criterion</th><th>Path A &mdash; CSV with Agency Attribute</th><th>Path B &mdash; Entra Domain Filter (Zero CSV)</th></tr>
+  <tr>
+    <td><strong>When to use</strong></td>
+    <td>Agencies share a common email domain, or you need custom grouping that doesn&rsquo;t align with email domains</td>
+    <td>Each agency uses a distinct email domain (e.g., <code>@agencyA.gov</code>, <code>@agencyB.gov</code>)</td>
+  </tr>
+  <tr>
+    <td><strong>Data upload</strong></td>
+    <td>CSV with <code>Agency</code> attribute (see <a href="#csv-templates">Section 4</a>)</td>
+    <td>No upload needed &mdash; Domain is a system-generated attribute from email addresses</td>
+  </tr>
+  <tr>
+    <td><strong>Partition filter</strong></td>
+    <td>Filter by <code>Agency</code> attribute</td>
+    <td>Filter by <code>Domain</code> attribute</td>
+  </tr>
+  <tr>
+    <td><strong>Maintenance</strong></td>
+    <td>Re-upload CSV monthly or on org change</td>
+    <td>Zero maintenance &mdash; domain data is automatic</td>
+  </tr>
+</table>
+
+<h3 id="iso-path-a">Path A: CSV with Agency Attribute</h3>
+
+<ol>
+  <li>Prepare a CSV file with the following columns (see <a href="#csv-templates">Section 4</a> for a template):
+    <ul>
+      <li><code>Microsoft_PersonEmail</code> (required)</li>
+      <li><code>Microsoft_ManagerEmail</code> (required)</li>
+      <li><code>Microsoft_Organization</code> (required)</li>
+      <li><code>EffectiveDate</code> (required)</li>
+      <li><code>Agency</code> (custom attribute &mdash; this is the partition filter)</li>
+    </ul>
+  </li>
+  <li>Follow the upload steps in the <a href="data-onboarding.html">Data Onboarding Guide</a>.</li>
+  <li>After upload, verify the <code>Agency</code> attribute appears in Viva Insights &rarr; Admin &rarr; Data quality.</li>
+</ol>
+
+<h3 id="iso-path-b">Path B: Entra Domain Filter (Zero CSV)</h3>
+
+<ol>
+  <li>No data upload is required.</li>
+  <li>Verify each agency has a distinct email domain in Entra ID (e.g., <code>@agencyA.gov</code>, <code>@agencyB.gov</code>).</li>
+  <li>The <code>Domain</code> attribute is system-generated from user email addresses and is automatically available for partition filtering.</li>
+</ol>
+
+<!-- Phase 3 -->
+<h2 id="iso-phase3">Phase 3: Create Partitions</h2>
+
+<p>Create one partition per agency. Optionally, create a global partition for CIO-level cross-agency reporting.</p>
+
+<table>
+  <tr><th>Step</th><th>Action</th><th>Details</th></tr>
+  <tr>
+    <td>3.1</td>
+    <td>Navigate to partitions</td>
+    <td>Viva Insights web app &rarr; Admin &rarr; Privacy settings &rarr; Partitions</td>
+  </tr>
+  <tr>
+    <td>3.2</td>
+    <td>Create agency partition</td>
+    <td>Click <strong>New partition</strong>. Name it after the agency (e.g., &ldquo;Agency A&rdquo;). Set the filter:
+      <ul>
+        <li><strong>Path A:</strong> <code>Agency = "Agency A"</code></li>
+        <li><strong>Path B:</strong> <code>Domain = "agencyA.gov"</code></li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>3.3</td>
+    <td>Assign analyst(s)</td>
+    <td>Assign the per-agency analyst to the partition. This analyst can only see data within this partition.</td>
+  </tr>
+  <tr>
+    <td>3.4</td>
+    <td>Repeat for each agency</td>
+    <td>Create separate partitions for Agency B, Agency C, etc., each with its own filter and analyst(s).</td>
+  </tr>
+  <tr>
+    <td>3.5</td>
+    <td>Create global partition (optional)</td>
+    <td>For CIO-level reporting, create a partition with no filter (includes all users). Assign the Central IT analyst.</td>
+  </tr>
+</table>
+
+<!-- Phase 4 -->
+<h2 id="iso-phase4">Phase 4: Report Delivery</h2>
+
+<p>In the Isolation architecture, report delivery uses <strong>Power BI workspaces</strong> rather than the native Copilot Dashboard.</p>
+
+<ol>
+  <li>Each per-agency analyst opens their partition in the Viva Insights web app.</li>
+  <li>Creates a Copilot person query (or uses a pre-built template such as the M365 Copilot Adoption report).</li>
+  <li>Connects the query output to Power BI Desktop.</li>
+  <li>Publishes the report to a <strong>dedicated Power BI workspace</strong> for the agency (e.g., &ldquo;Agency A &mdash; Copilot Analytics&rdquo;).</li>
+  <li>Shares the workspace with agency leadership (CEO, CIO, designated leaders).</li>
+  <li>Repeat for each agency.</li>
+</ol>
+
+<div class="callout warning">
+  <div class="callout-title">WARNING: Avoid &ldquo;Publish Reports&rdquo; in Isolation Architecture</div>
+  <p><strong>&ldquo;Publish Reports&rdquo;</strong> with a manager hierarchy filter grants automatic Copilot Dashboard access to all enabled managers in the scope. In an Isolation architecture, this may expose cross-agency data if managers have reporting chains that span agencies. Use <strong>Power BI workspaces</strong> instead for controlled, agency-specific report delivery.</p>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">Isolation Setup Complete</div>
+  <p>At this point, the dashboard is locked down, partitions enforce data boundaries, and each agency receives reports via Power BI workspaces. Continue to <a href="#governance">Section 3 &mdash; Ongoing Governance</a> for maintenance procedures.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     3. ONGOING GOVERNANCE
+     ═══════════════════════════════════════════════════════════════════════ -->
+<h1 id="governance">3. Ongoing Governance</h1>
+
+<p>Multi-agency configurations require ongoing attention. Use the table below as a maintenance schedule.</p>
+
+<table>
+  <tr><th>Frequency</th><th>Task</th><th>Architecture</th><th>Details</th></tr>
+  <tr>
+    <td><strong>Monthly</strong></td>
+    <td>Refresh org data</td>
+    <td>Both (Path A only for Isolation)</td>
+    <td>Re-upload CSV with current employee data. Path B (Domain filter) requires no action.</td>
+  </tr>
+  <tr>
+    <td><strong>Monthly</strong></td>
+    <td>Verify partition filters</td>
+    <td>Both (if using partitions)</td>
+    <td>Spot-check partition member counts in Viva Insights &rarr; Admin &rarr; Partitions. Counts should match expected agency headcount.</td>
+  </tr>
+  <tr>
+    <td><strong>Monthly</strong></td>
+    <td>Spot-check dashboard scope</td>
+    <td>Default Priority</td>
+    <td>Have one leader per agency verify their &ldquo;Your group&rdquo; scope shows the correct population.</td>
+  </tr>
+  <tr>
+    <td><strong>Quarterly</strong></td>
+    <td>Audit delegation list</td>
+    <td>Default Priority</td>
+    <td>Review who has been delegated access in Viva Insights &rarr; Admin &rarr; Delegation. Remove departed staff.</td>
+  </tr>
+  <tr>
+    <td><strong>Quarterly</strong></td>
+    <td>Verify VFAM policies unchanged</td>
+    <td>Isolation</td>
+    <td>Confirm the <code>DisableForNonCentralIT</code> policy is still active. Run <code>Get-VivaModuleFeaturePolicy</code> to verify.</td>
+  </tr>
+  <tr>
+    <td><strong>Quarterly</strong></td>
+    <td>Review access logs in Purview</td>
+    <td>Both</td>
+    <td>Check Microsoft Purview audit logs for dashboard access events. Verify no unexpected users accessed analytics.</td>
+  </tr>
+  <tr>
+    <td><strong>On org change</strong></td>
+    <td>Update partitions</td>
+    <td>Both (if using partitions)</td>
+    <td>If agencies merge, split, or rename &mdash; update partition filters and analyst assignments accordingly.</td>
+  </tr>
+  <tr>
+    <td><strong>On org change</strong></td>
+    <td>Update CSV</td>
+    <td>Path A (Isolation)</td>
+    <td>Re-upload CSV immediately when new hires join, employees transfer between agencies, or agencies restructure.</td>
+  </tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     4. CSV TEMPLATES
+     ═══════════════════════════════════════════════════════════════════════ -->
+<h1 id="csv-templates">4. CSV Templates</h1>
+
+<h2 id="csv-path-a">Path A: CSV with Agency Attribute</h2>
+
+<p>Use this format when agencies share a common email domain and you need a custom <code>Agency</code> attribute for partition filtering.</p>
+
+<pre><code>Microsoft_PersonEmail,Microsoft_ManagerEmail,Microsoft_Organization,EffectiveDate,Agency,FunctionType
+alice@contoso.gov,bob@contoso.gov,Finance,2026-04-01,Agency A,Corporate
+bob@contoso.gov,carol@contoso.gov,Finance,2026-04-01,Agency A,Leadership
+dave@contoso.gov,eve@contoso.gov,Engineering,2026-04-01,Agency B,Technical
+eve@contoso.gov,frank@contoso.gov,Engineering,2026-04-01,Agency B,Leadership
+grace@contoso.gov,frank@contoso.gov,Operations,2026-04-01,Agency C,Operations</code></pre>
+
+<table>
+  <tr><th>Column</th><th>Required</th><th>Description</th></tr>
+  <tr><td><code>Microsoft_PersonEmail</code></td><td>Yes</td><td>Employee&rsquo;s primary email address (must match Entra ID UPN)</td></tr>
+  <tr><td><code>Microsoft_ManagerEmail</code></td><td>Yes</td><td>Direct manager&rsquo;s email address (builds the reporting chain)</td></tr>
+  <tr><td><code>Microsoft_Organization</code></td><td>Yes</td><td>Department or business unit name</td></tr>
+  <tr><td><code>EffectiveDate</code></td><td>Yes</td><td>Date the record takes effect (ISO 8601: <code>YYYY-MM-DD</code>)</td></tr>
+  <tr><td><code>Agency</code></td><td>Custom</td><td>Agency identifier used as partition filter</td></tr>
+  <tr><td><code>FunctionType</code></td><td>Custom</td><td>Optional &mdash; functional classification for deeper analysis</td></tr>
+</table>
+
+<h2 id="csv-path-b">Path B: Entra Domain Filter (Zero CSV)</h2>
+
+<p>No CSV is needed. The <code>Domain</code> attribute is automatically derived from each user&rsquo;s email address in Entra ID. Ensure each agency uses a distinct email domain:</p>
+
+<table>
+  <tr><th>Agency</th><th>Email Domain</th><th>Partition Filter</th></tr>
+  <tr><td>Agency A</td><td><code>@agencyA.gov</code></td><td><code>Domain = "agencyA.gov"</code></td></tr>
+  <tr><td>Agency B</td><td><code>@agencyB.gov</code></td><td><code>Domain = "agencyB.gov"</code></td></tr>
+  <tr><td>Agency C</td><td><code>@agencyC.gov</code></td><td><code>Domain = "agencyC.gov"</code></td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     5. WHAT TO READ NEXT
+     ═══════════════════════════════════════════════════════════════════════ -->
+<h1 id="next">5. What to Read Next</h1>
+
+<table>
+  <tr><th>Document</th><th>When to Read</th></tr>
+  <tr><td><a href="../1-strategy/multi-agency-decision.html"><strong>Multi-Agency Architecture Decision Guide</strong></a></td><td>If you haven&rsquo;t yet chosen between Default Priority and Isolation, start here</td></tr>
+  <tr><td><a href="data-onboarding.html"><strong>Data Onboarding Guide</strong></a></td><td>Detailed steps for CSV upload, Entra connection, attribute mapping, and verification</td></tr>
+  <tr><td><a href="admin-setup.html"><strong>Admin Setup Guide</strong></a></td><td>Complete base setup for all five analytics tiers (prerequisite for both architectures)</td></tr>
+  <tr><td><a href="../3-operate/dashboard-guide.html"><strong>Dashboard Guide</strong></a></td><td>Understanding each dashboard page, metrics, and how to interpret scoped views</td></tr>
+</table>
+
+<!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
+<hr>
+<p style="font-size:0.85em; color:var(--text-muted); margin-top:32px;">
+  <strong>Disclaimer:</strong> This document is provided for informational purposes only and reflects Microsoft 365 capabilities as of April 2026. Microsoft may change features, interfaces, and availability without notice. Always verify current guidance on <a href="https://learn.microsoft.com">Microsoft Learn</a>. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
+</p>
+
+<!-- Back to Top -->
+<a href="#" id="back-to-top" style="
+  position:fixed; bottom:32px; right:32px; background:var(--accent,#0078d4); color:#fff;
+  border:none; border-radius:50%; width:44px; height:44px; font-size:22px;
+  text-align:center; line-height:44px; text-decoration:none; cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,0.18); display:none; z-index:999;
+" title="Back to top">&uarr;</a>
+<script>
+(function(){
+  var btn = document.getElementById('back-to-top');
+  window.addEventListener('scroll', function(){
+    btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+  btn.addEventListener('click', function(e){
+    e.preventDefault();
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+})();
+</script>
+
+</body>
+</html>

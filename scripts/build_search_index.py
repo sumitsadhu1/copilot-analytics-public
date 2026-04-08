@@ -13,13 +13,30 @@ OUTPUT = os.path.join(REPO, "assets", "search-index.json")
 
 # Files to index (relative to repo root)
 FILES = [
+    # Layer Cake structure (new)
+    ("1-strategy/executive-briefing.html", "Executive Briefing"),
+    ("1-strategy/data-strategy.html", "Data Strategy"),
+    ("1-strategy/multi-agency-decision.html", "Multi-Agency Decision Guide"),
+    ("2-setup/admin-setup.html", "Admin Setup Guide"),
+    ("2-setup/data-onboarding.html", "Data Onboarding Guide"),
+    ("2-setup/privacy-configuration.html", "Privacy Configuration"),
+    ("2-setup/multi-agency-setup.html", "Multi-Agency Setup"),
+    ("3-operate/dashboard-guide.html", "Dashboard & Reports Guide"),
+    ("3-operate/analyst-playbook.html", "Analyst Playbook"),
+    ("3-operate/billing-operations.html", "Billing Operations"),
+    ("3-operate/collaboration-analysis.html", "Collaboration Analysis"),
+    ("4-reference/troubleshooting.html", "Troubleshooting Guide"),
+    ("4-reference/faq.html", "FAQ"),
+    ("4-reference/glossary.html", "Glossary & Resources"),
+    ("4-reference/attribute-reference.html", "Attribute Reference"),
+    # Legacy guides (kept for backward compatibility)
     ("docs/core/Copilot_Analytics_Implementation_Guide.html", "Copilot Analytics Implementation Guide"),
     ("docs/core/Copilot_Analytics_Setup_Companion_Guide.html", "Setup Companion Guide"),
     ("docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html", "Multi-Agency Isolation Architecture"),
     ("docs/playbooks/Copilot_Multi_Agency_Default_Priority_Architecture.html", "Multi-Agency Default Priority Architecture"),
     ("docs/playbooks/Copilot_Lifecycle_Billing_Playbook.html", "Lifecycle & Billing Playbook"),
     ("docs/playbooks/Advanced_Viva_Insights_Collaboration_Guide.html", "Advanced Collaboration Analysis"),
-    ("artifacts/Copilot_Analytics_FAQ.html", "FAQ"),
+    ("artifacts/Copilot_Analytics_FAQ.html", "FAQ (Legacy)"),
     ("artifacts/Copilot_Analytics_QuickStart_CheatSheet.html", "Quick-Start Cheat Sheet"),
 ]
 

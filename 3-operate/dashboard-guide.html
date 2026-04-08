@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard &amp; Reports Guide — Copilot Analytics</title>
+<link rel="stylesheet" href="../assets/docs-style.css">
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Operate</span>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Dashboard &amp; Reports Guide</span>
+  </div>
+  <div class="doc-nav-right">
+    <a href="../artifacts/pdfs/Dashboard_Reports_Guide.pdf" class="pdf-btn" title="Download PDF">&#128196; PDF</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ COVER PAGE ═══════════════════════ -->
+<div class="cover">
+  <h1>Microsoft 365 Copilot Analytics</h1>
+  <div class="subtitle">Dashboard &amp; Reports Guide</div>
+  <div class="sub2">Reading and using the Copilot Dashboard, Analytics Reports, and Agent Dashboard</div>
+</div>
+
+<table>
+  <tr><th>Document Property</th><th>Value</th></tr>
+  <tr><td>Layer</td><td>3 &mdash; Operate</td></tr>
+  <tr><td>Audience</td><td>Business Leaders / Managers / Analysts</td></tr>
+  <tr><td>Version</td><td>4.0</td></tr>
+  <tr><td>Published</td><td>April 2026</td></tr>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">How This Document Fits</div>
+  <p>This is a <strong>Layer 3 &mdash; Operate</strong> document. It covers how to <em>read</em> and <em>use</em> the Copilot Dashboard, Analytics Reports, and Agent Dashboard on a daily basis. It does <strong>not</strong> cover setup &mdash; see the <a href="../2-setup/admin-setup.html">Admin Setup Guide</a> for configuration steps.</p>
+  <table>
+    <tr><th>Layer</th><th>Purpose</th><th>Who Reads</th></tr>
+    <tr><td><a href="../1-strategy/executive-briefing.html">1 &mdash; Strategy</a></td><td>Decide what to implement</td><td>CIO, SA, Business Leaders</td></tr>
+    <tr><td><a href="../2-setup/admin-setup.html">2 &mdash; Setup</a></td><td>Configure and deploy</td><td>IT Admin, Insights Admin</td></tr>
+    <tr><td><strong>3 &mdash; Operate</strong> (you are here)</td><td>Use dashboards and reports daily</td><td>Leaders, Analysts, Managers</td></tr>
+    <tr><td><a href="../4-reference/troubleshooting.html">4 &mdash; Reference</a></td><td>Look up details and fix issues</td><td>Everyone (as needed)</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════════════════ TOC ═══════════════════════ -->
+<h1 id="toc">Table of Contents</h1>
+<ol>
+  <li><a href="#dashboard-pages">Copilot Dashboard Pages</a>
+    <ol>
+      <li><a href="#readiness">Readiness Page</a></li>
+      <li><a href="#adoption">Adoption Page</a></li>
+      <li><a href="#impact">Impact Page</a></li>
+      <li><a href="#sentiment">Sentiment Section</a></li>
+    </ol>
+  </li>
+  <li><a href="#delegation">How to Delegate Access</a></li>
+  <li><a href="#analytics-reports">Copilot Analytics Reports</a></li>
+  <li><a href="#pbi-templates">Advanced Power BI Templates</a></li>
+  <li><a href="#agent-dashboard">Agent Dashboard</a></li>
+  <li><a href="#cadence">Suggested Review Cadence</a></li>
+  <li><a href="#next">What to Read Next</a></li>
+</ol>
+
+<!-- ═══════════════════════ 1. COPILOT DASHBOARD PAGES ═══════════════════════ -->
+<h1 id="dashboard-pages">1. Copilot Dashboard Pages</h1>
+
+<p>The Copilot Dashboard is accessible at <strong>insights.cloud.microsoft</strong> and is divided into three main pages: <strong>Readiness</strong>, <strong>Adoption</strong>, and <strong>Impact</strong> (which includes a Sentiment section). Each page answers a different question about your organisation&rsquo;s Copilot deployment.</p>
+
+<!-- ─── 1.1 Readiness ─── -->
+<h2 id="readiness">1.1 Readiness Page</h2>
+
+<p>The Readiness page answers: <em>&ldquo;How many licences have we assigned, and is the count growing?&rdquo;</em></p>
+
+<ul>
+  <li><strong>Licence assignment status</strong> &mdash; current count of assigned vs available M365 Copilot licences.</li>
+  <li><strong>Trend chart</strong> &mdash; historical view of licence assignments over time, so you can spot stalled rollouts.</li>
+</ul>
+
+<div class="callout info">
+  <div class="callout-title">Available Below 50 Licences</div>
+  <p>The Readiness page is the <strong>only</strong> dashboard page that works even when your tenant has fewer than 50 Copilot licences assigned. The Adoption and Impact pages require &ge;50 assigned licences to display data.</p>
+</div>
+
+<!-- ─── 1.2 Adoption ─── -->
+<h2 id="adoption">1.2 Adoption Page</h2>
+
+<p>The Adoption page answers: <em>&ldquo;Who is using Copilot, how often, and in which apps?&rdquo;</em></p>
+
+<h3>Key Metrics</h3>
+<table>
+  <tr><th>Metric</th><th>Definition</th></tr>
+  <tr><td><strong>Active Copilot users</strong></td><td>Number of licensed users who had <strong>at least one Copilot interaction</strong> in the 28-day measurement window.</td></tr>
+  <tr><td><strong>Copilot Actions Taken</strong></td><td>Total count of Copilot interactions across all users. <strong>Excludes</strong> agent interactions &mdash; those are tracked on the Agent Dashboard.</td></tr>
+  <tr><td><strong>Usage Intensity</strong></td><td>Average number of actions per active user (Actions Taken &divide; Active Users). Measures depth of engagement beyond simple headcount.</td></tr>
+  <tr><td><strong>Consistent Usage</strong></td><td>Users who were active in <strong>both</strong> the current and the previous 28-day period. Shows sustained adoption rather than one-time trial.</td></tr>
+  <tr><td><strong>Internal Benchmark</strong></td><td>Your own historical trend line &mdash; compare current period to your past performance.</td></tr>
+  <tr><td><strong>External Benchmark</strong></td><td>Anonymised comparison against similar-size organisations. Helps answer &ldquo;Are we ahead or behind?&rdquo;</td></tr>
+</table>
+
+<h3>Per-App Breakdown</h3>
+<p>The Adoption page breaks down usage across individual M365 applications:</p>
+<table>
+  <tr><th>App</th><th>What It Tracks</th></tr>
+  <tr><td>Teams</td><td>Meeting summaries, chat Copilot interactions, Teams Copilot actions</td></tr>
+  <tr><td>Outlook</td><td>Email drafting, summarisation, coaching suggestions</td></tr>
+  <tr><td>Word</td><td>Document drafting, rewriting, summarisation</td></tr>
+  <tr><td>PowerPoint</td><td>Slide generation, design suggestions, narrative creation</td></tr>
+  <tr><td>Excel</td><td>Formula generation, data analysis, chart creation</td></tr>
+  <tr><td>Copilot Chat (work)</td><td>Chat interactions grounded in <strong>tenant data</strong> (SharePoint, emails, calendar)</td></tr>
+  <tr><td>Copilot Chat (web)</td><td>Chat interactions grounded in <strong>internet data</strong> only</td></tr>
+</table>
+
+<div class="callout note">
+  <div class="callout-title">Copilot Chat (work) vs Copilot Chat (web)</div>
+  <p><strong>Copilot Chat (work)</strong> uses your organisation&rsquo;s tenant data &mdash; files in SharePoint, emails, calendar events, and Teams messages &mdash; to generate responses. <strong>Copilot Chat (web)</strong> searches the public internet for answers. Both track <strong>licensed users only</strong>. The distinction matters because &ldquo;work&rdquo; mode reflects enterprise data utilisation, while &ldquo;web&rdquo; mode shows general AI assistance patterns.</p>
+</div>
+
+<h3>&ldquo;View by&rdquo; Options</h3>
+<p>The Adoption page can be sliced by different organisational dimensions. Each requires specific data to be present:</p>
+<table>
+  <tr><th>View By</th><th>What It Shows</th><th>Data Requirement</th></tr>
+  <tr><td><strong>Group</strong></td><td>Adoption by manager&rsquo;s direct/indirect reports</td><td>Requires <strong>manager hierarchy</strong> (ManagerId in org data CSV or Entra&rsquo;s Manager field)</td></tr>
+  <tr><td><strong>Job Function</strong></td><td>Adoption by role category (Engineering, Sales, HR, etc.)</td><td>Requires <strong>FunctionType</strong> attribute in org data</td></tr>
+  <tr><td><strong>Organization</strong></td><td>Adoption by business unit or department</td><td>Requires <strong>Organization</strong> attribute in org data or Entra <strong>Department</strong> field</td></tr>
+</table>
+
+<div class="callout warning">
+  <div class="callout-title">&ldquo;View by: Group&rdquo; Shows Only One Person?</div>
+  <p>If a leader selects &ldquo;View by: Group&rdquo; and sees only themselves (or far fewer people than expected), the most common cause is <strong>missing intermediate managers in the org data</strong>. The manager hierarchy chain must include a row for <em>every</em> manager between the leader and their reports. Verify that your CSV (or Entra Manager field) has rows for every intermediate manager. Gaps break the chain and orphan the downstream employees from the leader&rsquo;s view.</p>
+</div>
+
+<h3>Scope Filter</h3>
+<table>
+  <tr><th>Scope</th><th>What It Shows</th><th>Who Gets It</th></tr>
+  <tr><td><strong>Your company</strong></td><td>Entire tenant (all licensed Copilot users)</td><td>Global Admin, Insights Admin, users with &ldquo;Your company&rdquo; delegation</td></tr>
+  <tr><td><strong>&lt;Leader Name&gt;</strong></td><td>That leader&rsquo;s reporting chain (direct + indirect reports)</td><td>Leaders with enabled Copilot Dashboard access whose hierarchy is in org data</td></tr>
+  <tr><td><strong>Your group</strong></td><td>Your own direct and indirect reports</td><td>Any leader or manager with dashboard access and a manager hierarchy in org data</td></tr>
+</table>
+
+<h3>Suppressed Values (&ldquo;--&rdquo;)</h3>
+<p>When you see <strong>&ldquo;--&rdquo;</strong> instead of a number, it means the group size is below the <strong>minimum group size</strong> threshold (default: 10). This is a <strong>privacy protection</strong>, not an error. Data is present but suppressed to prevent identification of individuals. If you need to see data for smaller teams, an Insights Admin can adjust the minimum group size in privacy settings &mdash; but this should be done carefully with HR and legal approval.</p>
+
+<!-- ─── 1.3 Impact ─── -->
+<h2 id="impact">1.3 Impact Page</h2>
+
+<p>The Impact page answers: <em>&ldquo;What value is Copilot delivering?&rdquo;</em></p>
+
+<h3>Top-Level Metrics</h3>
+<table>
+  <tr><th>Metric</th><th>Definition</th><th>How It&rsquo;s Calculated</th></tr>
+  <tr><td><strong>Copilot Actions Taken</strong></td><td>Total Copilot interactions in the period</td><td>Direct count of all Copilot actions (same as Adoption page)</td></tr>
+  <tr><td><strong>Copilot Assisted Hours</strong></td><td>Estimated hours saved by Copilot</td><td>Meeting summaries + search/summaries valued at 6 min each + content creation valued at 6 min each</td></tr>
+  <tr><td><strong>Copilot Assisted Value</strong></td><td>Dollar value of time saved</td><td>Assisted Hours &times; hourly rate (default <strong>$72/hr</strong>). Hourly rate is <strong>session-only</strong> &mdash; changes are not saved between visits.</td></tr>
+  <tr><td><strong>Satisfaction Rate</strong></td><td>User satisfaction with Copilot responses</td><td>Thumbs up &divide; (thumbs up + thumbs down) reactions, <strong>28-day rolling</strong> window. No survey required &mdash; based on in-app feedback.</td></tr>
+</table>
+
+<div class="callout warning">
+  <div class="callout-title">Known Metric Underreporting Periods</div>
+  <p>Microsoft disclosed two periods where certain metrics were underreported due to telemetry issues. Data from these windows may appear lower than actual usage.</p>
+  <table>
+    <tr><th>Metric Category</th><th>Affected Period</th><th>Details</th></tr>
+    <tr><td>Email (Outlook Copilot)</td><td>July 2025 &ndash; February 2026</td><td>Some email Copilot actions were not counted in telemetry</td></tr>
+    <tr><td>Meetings (Teams Copilot)</td><td>September &ndash; November 2025</td><td>Meeting summary actions were partially underreported</td></tr>
+  </table>
+  <p>If you see dips in these periods, the underreporting issue &mdash; not reduced usage &mdash; is the most likely explanation.</p>
+</div>
+
+<!-- ─── 1.4 Sentiment ─── -->
+<h2 id="sentiment">1.4 Sentiment Section</h2>
+
+<p>The Sentiment section lives <strong>within the Impact page</strong> and shows qualitative user feedback about Copilot.</p>
+
+<table>
+  <tr><th>Component</th><th>What It Shows</th><th>Notes</th></tr>
+  <tr><td><strong>Sentiment results by question</strong></td><td>Aggregated responses to Copilot experience questions</td><td>Includes benchmark comparison against similar orgs</td></tr>
+  <tr><td><strong>Sentiment by group</strong></td><td>Heat map showing sentiment across organisational groups</td><td><strong>Viva Insights customers only</strong> &mdash; requires Viva Insights licence</td></tr>
+  <tr><td><strong>Manager team view</strong></td><td>Sentiment breakdown for a manager&rsquo;s direct reports</td><td>Subject to minimum group size suppression</td></tr>
+</table>
+
+<div class="callout note">
+  <div class="callout-title">No Survey Data?</div>
+  <p>If no Copilot survey has been deployed, the Sentiment section will show <strong>&ldquo;No survey responses available.&rdquo;</strong> This is expected. The <strong>Satisfaction Rate</strong> metric (thumbs up/down) works independently of surveys and will still display on the Impact page regardless of whether surveys have been configured.</p>
+</div>
+
+<!-- ═══════════════════════ 2. DELEGATION ═══════════════════════ -->
+<h1 id="delegation">2. How to Delegate Access</h1>
+
+<p>Dashboard access can be shared with others through delegation. This is how leaders give their managers or analysts visibility into Copilot usage for their scope.</p>
+
+<h3>Two Methods to Add Delegates</h3>
+<table>
+  <tr><th>Method</th><th>Steps</th></tr>
+  <tr><td><strong>Method 1: Settings</strong></td><td>Dashboard &rarr; <strong>Settings</strong> (gear icon) &rarr; <strong>Delegation</strong> &rarr; <strong>Add</strong> &rarr; search for user &rarr; select scope &rarr; Save</td></tr>
+  <tr><td><strong>Method 2: Share</strong></td><td>Dashboard &rarr; <strong>Share</strong> button (top right) &rarr; <strong>Add</strong> &rarr; search for user &rarr; select scope &rarr; Save</td></tr>
+</table>
+
+<h3>Delegation Rules</h3>
+<table>
+  <tr><th>Rule</th><th>Detail</th></tr>
+  <tr><td><strong>Maximum delegates</strong></td><td>75 per delegator</td></tr>
+  <tr><td><strong>No cascading</strong></td><td>Delegation does not flow downward. If Alice delegates to Bob, Bob cannot re-delegate to Carol.</td></tr>
+  <tr><td><strong>&ldquo;Your group&rdquo; scope</strong></td><td>Delegate sees the delegator&rsquo;s reporting chain only</td></tr>
+  <tr><td><strong>&ldquo;Your company&rdquo; scope</strong></td><td>Delegate sees the entire tenant &mdash; use sparingly</td></tr>
+  <tr><td><strong>Agent Dashboard access</strong></td><td>Requires <strong>&ldquo;Your company&rdquo;</strong> scope. &ldquo;Your group&rdquo; delegates cannot see the Agent Dashboard.</td></tr>
+  <tr><td><strong>Delegator leaves org</strong></td><td>All delegates immediately lose access. <strong>Recovery:</strong> another leader must re-delegate to those users.</td></tr>
+</table>
+
+<div class="callout warning">
+  <div class="callout-title">Plan for Delegator Departures</div>
+  <p>If a key delegator (e.g., a VP or CIO) leaves the organisation, <strong>all 75 delegates</strong> could lose dashboard access simultaneously. Document who has delegated to whom and ensure at least two senior leaders have overlapping delegation lists for continuity.</p>
+</div>
+
+<!-- ═══════════════════════ 3. ANALYTICS REPORTS ═══════════════════════ -->
+<h1 id="analytics-reports">3. Copilot Analytics Reports</h1>
+
+<p>Copilot Analytics Reports are pre-built reports available at <strong>insights.cloud.microsoft &rarr; Reports</strong>. They provide deeper analysis than the dashboard pages without requiring Power BI setup.</p>
+
+<h3>Report Types</h3>
+<table>
+  <tr><th>Type</th><th>Examples</th><th>Description</th></tr>
+  <tr><td><strong>Out-of-the-box</strong></td><td>Copilot Studio Agents, Copilot for Sales Adoption</td><td>Pre-built by Microsoft. Available automatically once prerequisites are met.</td></tr>
+  <tr><td><strong>Shared</strong></td><td>Custom reports published by your analysts</td><td>Analysts with partition access can create queries and publish results as shared reports visible to others in the Reports section.</td></tr>
+</table>
+
+<h3>Access</h3>
+<ul>
+  <li>Anyone with <strong>Dashboard access</strong> (direct or delegated) can view reports.</li>
+  <li><strong>Analysts</strong> with a global partition can create and share reports.</li>
+  <li><strong>Global Admins</strong> have full access.</li>
+</ul>
+
+<p>No additional setup is required beyond what is already configured for the Copilot Dashboard.</p>
+
+<!-- ═══════════════════════ 4. POWER BI TEMPLATES ═══════════════════════ -->
+<h1 id="pbi-templates">4. Advanced Power BI Templates</h1>
+
+<p>When the dashboard and built-in reports are not enough, Microsoft provides Power BI templates that connect directly to Viva Insights query data. Use the decision guide below to pick the right template.</p>
+
+<h3>Which Template Do I Need?</h3>
+<table>
+  <tr><th>Question You&rsquo;re Asking</th><th>Recommended Template</th></tr>
+  <tr><td>&ldquo;Is Copilot paying for itself?&rdquo;</td><td><strong>Copilot Impact</strong></td></tr>
+  <tr><td>&ldquo;Which teams are using Copilot?&rdquo;</td><td><strong>Copilot Adoption</strong></td></tr>
+  <tr><td>&ldquo;Quick executive talking points&rdquo;</td><td><strong>Copilot Headlines</strong> (preview)</td></tr>
+  <tr><td>&ldquo;Did Copilot improve our business outcomes?&rdquo;</td><td><strong>Copilot Business Impact</strong></td></tr>
+  <tr><td>&ldquo;How do Copilot Studio agents perform?&rdquo;</td><td><strong>Copilot Studio Agents</strong></td></tr>
+  <tr><td>&ldquo;What do employees think about Copilot?&rdquo;</td><td><strong>Copilot Employee Experience</strong> (Glint)</td></tr>
+  <tr><td>&ldquo;Standard reports are too high-level&rdquo;</td><td><strong>Custom Person Query</strong></td></tr>
+</table>
+
+<h3>Template Reference</h3>
+<table>
+  <tr><th>Template</th><th>Purpose</th><th>Special Requirements</th><th>Learn More</th></tr>
+  <tr>
+    <td><strong>Copilot Impact</strong></td>
+    <td>ROI analysis: Assisted Hours, Assisted Value, time savings by app</td>
+    <td>Viva Insights licence, analyst partition access</td>
+    <td><a href="https://learn.microsoft.com/en-us/viva/insights/advanced/analyst/templates/microsoft-365-copilot-impact">Microsoft Learn</a></td>
+  </tr>
+  <tr>
+    <td><strong>Copilot Adoption</strong></td>
+    <td>Adoption trends, per-app usage, active user counts by group</td>
+    <td>Viva Insights licence, analyst partition access</td>
+    <td><a href="https://learn.microsoft.com/en-us/viva/insights/advanced/analyst/templates/microsoft-365-copilot-adoption">Microsoft Learn</a></td>
+  </tr>
+  <tr>
+    <td><strong>Copilot Headlines</strong></td>
+    <td>One-page executive summary with key metrics and trends</td>
+    <td>Preview &mdash; may change. Viva Insights licence.</td>
+    <td><a href="https://learn.microsoft.com/en-us/viva/insights/advanced/analyst/templates/microsoft-copilot-headlines">Microsoft Learn</a></td>
+  </tr>
+  <tr>
+    <td><strong>Copilot Business Impact</strong></td>
+    <td>Before/after behavioural analysis: meeting time, focus time, email changes</td>
+    <td>Viva Insights licence, analyst partition access, &ge;3 months of data recommended</td>
+    <td><a href="https://learn.microsoft.com/en-us/viva/insights/advanced/analyst/templates/microsoft-365-copilot-business-impact">Microsoft Learn</a></td>
+  </tr>
+  <tr>
+    <td><strong>Copilot Studio Agents</strong></td>
+    <td>Agent usage, response quality, user engagement with custom agents</td>
+    <td>Copilot Studio agents deployed in tenant</td>
+    <td><a href="https://learn.microsoft.com/en-us/viva/insights/advanced/analyst/templates/copilot-studio-agents">Microsoft Learn</a></td>
+  </tr>
+  <tr>
+    <td><strong>Copilot Employee Experience</strong></td>
+    <td>Correlates Copilot usage with Glint survey sentiment and engagement scores</td>
+    <td>Viva Glint deployment, linked Glint &harr; Viva Insights data</td>
+    <td><a href="https://learn.microsoft.com/en-us/viva/insights/advanced/analyst/templates/copilot-employee-experience">Microsoft Learn</a></td>
+  </tr>
+  <tr>
+    <td><strong>Custom Person Query</strong></td>
+    <td>Fully custom analysis &mdash; select any combination of Copilot and collaboration metrics</td>
+    <td>Analyst partition access, Power BI Desktop, query design expertise</td>
+    <td><a href="https://learn.microsoft.com/en-us/viva/insights/advanced/analyst/person-query">Microsoft Learn</a></td>
+  </tr>
+</table>
+
+<!-- ═══════════════════════ 5. AGENT DASHBOARD ═══════════════════════ -->
+<h1 id="agent-dashboard">5. Agent Dashboard</h1>
+
+<p>The Agent Dashboard provides visibility into Copilot Studio agents and declarative agents running in your tenant. It is accessible from the Copilot Dashboard for users with <strong>&ldquo;Your company&rdquo;</strong> scope.</p>
+
+<h3>Key Metrics</h3>
+<table>
+  <tr><th>Metric</th><th>Definition</th></tr>
+  <tr><td><strong>Active agents</strong></td><td>Number of agents that received at least one user interaction in the period</td></tr>
+  <tr><td><strong>Active users</strong></td><td>Unique users who interacted with any agent</td></tr>
+  <tr><td><strong>Agent responses</strong></td><td>Total number of responses generated by agents</td></tr>
+  <tr><td><strong>Returning users</strong></td><td>Users who interacted with agents in both the current and previous period</td></tr>
+  <tr><td><strong>% of Copilot users using agents</strong></td><td>Agent active users &divide; total Copilot active users &mdash; shows agent penetration</td></tr>
+  <tr><td><strong>Copilot Credits</strong></td><td>Credits consumed by agent interactions (relevant for pay-as-you-go billing)</td></tr>
+</table>
+
+<h3>Unique Insights</h3>
+<table>
+  <tr><th>Insight</th><th>What It Tells You</th></tr>
+  <tr><td><strong>Most popular agent</strong></td><td>Agent with the highest number of active users</td></tr>
+  <tr><td><strong>Most versatile agent</strong></td><td>Agent used across the widest variety of use cases or groups</td></tr>
+  <tr><td><strong>Most shared agent</strong></td><td>Agent shared with the most users or groups in the tenant</td></tr>
+</table>
+
+<h3>Filters</h3>
+<table>
+  <tr><th>Filter</th><th>Options</th></tr>
+  <tr><td><strong>Agent creator type</strong></td><td>User, Your org, Microsoft, Partner</td></tr>
+  <tr><td><strong>Agent source</strong></td><td>Filter by where the agent was built or published</td></tr>
+</table>
+
+<h3>Three Practical Scenarios</h3>
+
+<h4>Scenario 1: Post-Launch Adoption Review</h4>
+<p>Your organisation deployed three custom agents last month. Use the Agent Dashboard to answer:</p>
+<ul>
+  <li>How many users actually tried each agent? (Active users per agent)</li>
+  <li>Are people coming back? (Returning users)</li>
+  <li>Which agent is getting the most traction? (Most popular agent)</li>
+</ul>
+<p><strong>Action:</strong> Double down on training for the popular agent; investigate why low-adoption agents are being ignored (discoverability? relevance?).</p>
+
+<h4>Scenario 2: Cost Governance for Pay-As-You-Go</h4>
+<p>Your tenant uses PAYG billing for agent interactions. Use the Agent Dashboard to answer:</p>
+<ul>
+  <li>How many Copilot Credits are being consumed? (Credits metric)</li>
+  <li>Which agents are the biggest consumers? (Sort by responses)</li>
+  <li>Are partner-built agents driving unexpected costs? (Filter by creator type: Partner)</li>
+</ul>
+<p><strong>Action:</strong> Set credit alerts, review high-consumption agents with their owners, consider blocking non-essential agents.</p>
+
+<h4>Scenario 3: Shadow AI Detection</h4>
+<p>Users are creating their own agents without IT approval. Use the Agent Dashboard to answer:</p>
+<ul>
+  <li>How many user-created agents exist? (Filter by creator type: User)</li>
+  <li>Are any user-created agents being widely shared? (Most shared agent)</li>
+  <li>Do any of these agents have external data connections that violate policy?</li>
+</ul>
+<p><strong>Action:</strong> Follow the Detect &rarr; Act workflow below.</p>
+
+<h3>Detect &rarr; Act Workflow</h3>
+<table>
+  <tr><th>Stage</th><th>Tool</th><th>Action</th></tr>
+  <tr><td><strong>Detect</strong></td><td>Agent Dashboard</td><td>Identify agents that are unapproved, high-cost, or widely shared without governance review</td></tr>
+  <tr><td><strong>Decide</strong></td><td>Governance process</td><td>Evaluate the agent against your organisation&rsquo;s AI governance policy (data access, compliance, purpose)</td></tr>
+  <tr><td><strong>Act Quick</strong></td><td>M365 Admin Centre</td><td>Immediate actions: <strong>Block</strong> (disable agent), <strong>Approve</strong> (whitelist), or <strong>Review</strong> (flag for governance team)</td></tr>
+  <tr><td><strong>Act Policy</strong></td><td>Power Platform Admin Centre</td><td>Long-term controls: apply <strong>DLP policies</strong> to restrict connector access, enforce environment boundaries, set maker policies</td></tr>
+</table>
+
+<!-- ═══════════════════════ 6. REVIEW CADENCE ═══════════════════════ -->
+<h1 id="cadence">6. Suggested Review Cadence</h1>
+
+<table>
+  <tr><th>Frequency</th><th>Who</th><th>What to Review</th><th>Where</th></tr>
+  <tr><td><strong>Weekly</strong></td><td>IT Admin</td><td>Licence utilisation, assignment trends</td><td>M365 Admin Centre</td></tr>
+  <tr><td><strong>Fortnightly</strong></td><td>Leaders / Managers</td><td>Assisted Hours, Assisted Value, adoption trends, Satisfaction Rate</td><td>Copilot Dashboard (Adoption + Impact pages)</td></tr>
+  <tr><td><strong>Monthly</strong></td><td>Leaders / Managers</td><td>Analytics Reports, agent adoption, new agent activity</td><td>Copilot Dashboard (Reports + Agent Dashboard)</td></tr>
+  <tr><td><strong>Quarterly</strong></td><td>Analysts + Executive Sponsor</td><td>Before/after behavioural analysis, ROI report, cross-group comparisons</td><td>Power BI (templates or custom queries)</td></tr>
+</table>
+
+<!-- ═══════════════════════ 7. WHAT TO READ NEXT ═══════════════════════ -->
+<h1 id="next">7. What to Read Next</h1>
+
+<table>
+  <tr><th>Document</th><th>When to Read It</th></tr>
+  <tr><td><a href="analyst-playbook.html"><strong>Analyst Playbook</strong></a></td><td>You need to run custom queries, connect Power BI templates, or build cross-group reports</td></tr>
+  <tr><td><a href="billing-operations.html"><strong>Billing Operations</strong></a></td><td>You need to manage licence costs, billing cycles, or PAYG credit governance</td></tr>
+  <tr><td><a href="../4-reference/troubleshooting.html"><strong>Troubleshooting Guide</strong></a></td><td>Something isn&rsquo;t working &mdash; missing data, access issues, or unexpected behaviour</td></tr>
+  <tr><td><a href="../2-setup/admin-setup.html"><strong>Admin Setup Guide</strong></a></td><td>You need to go back and configure or reconfigure dashboard access, org data, or VFAM settings</td></tr>
+</table>
+
+<!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
+<hr>
+<p style="font-size:0.85em; color:var(--text-muted); margin-top:32px;">
+  <strong>Disclaimer:</strong> This document is provided for informational purposes only and reflects Microsoft 365 capabilities as of April 2026. Microsoft may change features, interfaces, and availability without notice. Always verify current guidance on <a href="https://learn.microsoft.com">Microsoft Learn</a>. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
+</p>
+
+<!-- Back to Top -->
+<a href="#" id="back-to-top" style="
+  position:fixed; bottom:32px; right:32px; background:var(--accent,#0078d4); color:#fff;
+  border:none; border-radius:50%; width:44px; height:44px; font-size:22px;
+  text-align:center; line-height:44px; text-decoration:none; cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,0.18); display:none; z-index:999;
+" title="Back to top">&uarr;</a>
+<script>
+(function(){
+  var btn = document.getElementById('back-to-top');
+  window.addEventListener('scroll', function(){
+    btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+  btn.addEventListener('click', function(e){
+    e.preventDefault();
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+})();
+</script>
+
+</body>
+</html>

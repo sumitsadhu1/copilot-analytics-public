@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analyst Playbook — Copilot Analytics</title>
+<link rel="stylesheet" href="../assets/docs-style.css">
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Operate</span>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Analyst Playbook</span>
+  </div>
+  <div class="doc-nav-right">
+    <a href="../artifacts/pdfs/Analyst_Playbook.pdf" class="pdf-btn" title="Download PDF">&#128196; PDF</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ COVER PAGE ═══════════════════════ -->
+<div class="cover">
+  <h1>Microsoft 365 Copilot Analytics</h1>
+  <div class="subtitle">Analyst Playbook</div>
+  <div class="sub2">Advanced Analytics &amp; Power BI workflows for Insights Analysts</div>
+</div>
+
+<table>
+  <tr><th>Document Property</th><th>Value</th></tr>
+  <tr><td>Layer</td><td>3 &mdash; Operate</td></tr>
+  <tr><td>Audience</td><td>Insights Analyst</td></tr>
+  <tr><td>Version</td><td>4.0</td></tr>
+  <tr><td>Published</td><td>April 2026</td></tr>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">How This Document Fits</div>
+  <p>This is a <strong>Layer 3 &mdash; Operate</strong> document. It walks Insights Analysts through creating Copilot analytics queries, connecting Power BI templates, and publishing reports to leaders. It does <strong>not</strong> cover initial admin configuration &mdash; see the <a href="../2-setup/admin-setup.html">Admin Setup Guide</a> for that.</p>
+  <table>
+    <tr><th>Layer</th><th>Purpose</th><th>Who Reads</th></tr>
+    <tr><td><a href="../1-strategy/executive-briefing.html">1 &mdash; Strategy</a></td><td>Decide what to implement</td><td>CIO, SA, Business Leaders</td></tr>
+    <tr><td><a href="../2-setup/admin-setup.html">2 &mdash; Setup</a></td><td>Configure and deploy</td><td>IT Admin, Insights Admin</td></tr>
+    <tr><td><strong>3 &mdash; Operate</strong> (you are here)</td><td>Use dashboards and reports daily</td><td>Leaders, Analysts, Managers</td></tr>
+    <tr><td><a href="../4-reference/troubleshooting.html">4 &mdash; Reference</a></td><td>Look up details and fix issues</td><td>Everyone (as needed)</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════════════════ TOC ═══════════════════════ -->
+<h1 id="toc">Table of Contents</h1>
+<ol>
+  <li><a href="#prerequisites">Prerequisites</a></li>
+  <li><a href="#templates">Available Copilot PBI Templates</a></li>
+  <li><a href="#create-report">Step-by-Step: Create a Report</a></li>
+  <li><a href="#connect-pbi">Connect Power BI</a></li>
+  <li><a href="#publish">Publish Reports to Leaders</a></li>
+  <li><a href="#maintenance">Ongoing Maintenance</a></li>
+  <li><a href="#analyst-departure">Analyst Departure &mdash; Transfer Guide</a></li>
+  <li><a href="#next">What to Read Next</a></li>
+</ol>
+
+<!-- ═══════════════════════ 1. PREREQUISITES ═══════════════════════ -->
+<h1 id="prerequisites">1. Prerequisites</h1>
+
+<p>Before you can create Copilot analytics queries and connect Power BI templates, the following must be in place:</p>
+
+<table>
+  <tr><th>Prerequisite</th><th>Details</th></tr>
+  <tr><td><strong>Viva Insights licence</strong></td><td>Minimum 50 licences in the tenant. Included with M365 Copilot licences &mdash; no separate purchase required.</td></tr>
+  <tr><td><strong>Insights Analyst role</strong></td><td>Must be assigned to your account by an Insights Admin or Global Admin via the Microsoft 365 admin centre.</td></tr>
+  <tr><td><strong>Partition access</strong></td><td>An Insights Admin must grant you access to the relevant partition(s). Without partition access, you cannot run queries.</td></tr>
+  <tr><td><strong>Org data uploaded</strong></td><td>Organisational data (department, agency, location, etc.) must be uploaded for segmentation and group-by analysis.</td></tr>
+  <tr><td><strong>Power BI Desktop</strong></td><td>June 2022 or later. Required to open <code>.pbit</code> template files downloaded from Viva Insights.</td></tr>
+</table>
+
+<div class="callout important">
+  <div class="callout-title">Insights Admin &ne; Insights Analyst</div>
+  <p>These are <strong>different roles</strong> with different permissions. The <strong>Insights Admin</strong> configures the system (uploads org data, creates partitions, manages access). The <strong>Insights Analyst</strong> runs queries and builds reports. You need the <strong>Analyst</strong> role to follow this playbook. If you have the Admin role but not the Analyst role, ask your Global Admin to assign both.</p>
+</div>
+
+<h2>Data Requirements</h2>
+
+<p>Timing matters. Plan your data collection window <em>before</em> Copilot rolls out if you need before/after analysis:</p>
+
+<table>
+  <tr><th>Data Requirement</th><th>Minimum</th><th>Notes</th></tr>
+  <tr><td><strong>Org data upload</strong></td><td>Required</td><td>Enables segmentation by department, agency, location, job function, and other attributes.</td></tr>
+  <tr><td><strong>Pre-adoption baseline</strong></td><td>4 weeks</td><td>Needed for before/after comparison in the Copilot Impact template. Must be collected <em>before</em> Copilot licence assignment.</td></tr>
+  <tr><td><strong>Post-adoption data</strong></td><td>4 weeks</td><td>Minimum period after Copilot rollout for meaningful usage patterns to emerge.</td></tr>
+</table>
+
+<div class="callout warning">
+  <div class="callout-title">Plan Ahead for Before/After Analysis</div>
+  <p>If Copilot has already been rolled out across your tenant, <strong>before/after comparison may not be possible</strong>. The Impact template requires pre-adoption collaboration data as a baseline. Plan your analytics strategy <em>before</em> licence assignment to ensure you capture baseline data.</p>
+</div>
+
+<!-- ═══════════════════════ 2. AVAILABLE COPILOT PBI TEMPLATES ═══════════════════════ -->
+<h1 id="templates">2. Available Copilot PBI Templates</h1>
+
+<p>Microsoft provides several Power BI templates purpose-built for Copilot analytics. Each template creates a pre-built query with predefined metrics and a corresponding <code>.pbit</code> file for Power BI Desktop.</p>
+
+<table>
+  <tr><th>Template</th><th>Purpose</th><th>Key Metrics</th></tr>
+  <tr>
+    <td><strong>M365 Copilot Impact</strong></td>
+    <td>Primary ROI and productivity analysis</td>
+    <td>Assisted hours, assisted value, before/after behavioural comparison, Copilot vs non-Copilot user comparison</td>
+  </tr>
+  <tr>
+    <td><strong>M365 Copilot Adoption</strong></td>
+    <td>Usage trends and feature adoption depth</td>
+    <td>Active users over time, per-app usage, feature-level adoption, usage intensity trends</td>
+  </tr>
+  <tr>
+    <td><strong>Copilot Headlines</strong> (preview)</td>
+    <td>Auto-scanned executive insights</td>
+    <td>Power users, adoption benchmarks, auto-generated insight summaries</td>
+  </tr>
+  <tr>
+    <td><strong>Copilot Business Impact</strong></td>
+    <td>Correlate Copilot usage with business outcomes</td>
+    <td>Business KPI correlation (requires business outcome data upload via org data)</td>
+  </tr>
+  <tr>
+    <td><strong>Copilot Studio Agents</strong></td>
+    <td>Agent usage and impact analysis</td>
+    <td>Agent session outcomes, credits consumed, user engagement with custom agents</td>
+  </tr>
+  <tr>
+    <td><strong>Copilot Employee Experience (Glint)</strong></td>
+    <td>Correlate Copilot usage with employee sentiment</td>
+    <td>Usage patterns mapped to Glint survey responses (requires Viva Glint licence and integration)</td>
+  </tr>
+</table>
+
+<div class="callout note">
+  <div class="callout-title">Template Availability</div>
+  <p>Not all templates may be visible in your tenant. Templates appear based on your licence entitlements, feature rollout status, and whether prerequisites (e.g., Glint licence, business data upload) are met. Check <a href="https://learn.microsoft.com">Microsoft Learn</a> for the latest template availability.</p>
+</div>
+
+<!-- ═══════════════════════ 3. CREATE A REPORT ═══════════════════════ -->
+<h1 id="create-report">3. Step-by-Step: Create a Report</h1>
+
+<p>This walkthrough uses the <strong>M365 Copilot Impact</strong> template as the example, but the process is similar for all templates.</p>
+
+<h2>Step 1 &mdash; Sign In to the Analyst Experience</h2>
+<p>Navigate to <strong><a href="https://analysis.insights.viva.office.com">analysis.insights.viva.office.com</a></strong> and sign in with your organisational account that has the Insights Analyst role.</p>
+
+<h2>Step 2 &mdash; Start a New Analysis</h2>
+<p>Select <strong>Create analysis</strong> &rarr; <strong>Templates</strong> &rarr; <strong>Copilot</strong> &rarr; choose the desired template (e.g., <em>M365 Copilot Impact</em>) &rarr; <strong>Set up analysis</strong>.</p>
+
+<h2>Step 3 &mdash; Configure Query Settings</h2>
+<p>Set the following:</p>
+<ul>
+  <li><strong>Query name</strong> &mdash; use a descriptive name (e.g., &ldquo;Copilot Impact Q1 2026 &mdash; All Agencies&rdquo;)</li>
+  <li><strong>Time period</strong> &mdash; select the analysis window (up to 13 months of historical data)</li>
+  <li><strong>Auto-refresh</strong> &mdash; enable if you want the query to re-run automatically on a schedule</li>
+  <li><strong>Description</strong> &mdash; optional but recommended for team documentation</li>
+</ul>
+
+<h2>Step 4 &mdash; Review Predefined Metrics</h2>
+<p>The template pre-selects the required metrics (shown as grey tags &mdash; these cannot be removed). You can optionally add extra metrics to include in the query output.</p>
+
+<h2>Step 5 &mdash; Set Employee Filters</h2>
+<p>Apply filters to scope the query population:</p>
+<ul>
+  <li><strong>&ldquo;Is Active&rdquo;</strong> &mdash; always recommended to exclude departed employees</li>
+  <li><strong>Org attributes</strong> &mdash; filter by department, agency, location, or any uploaded org data attribute as needed</li>
+</ul>
+
+<h2>Step 6 &mdash; Add Organisational Attributes</h2>
+<p>Select up to <strong>20 organisational attributes</strong> to include in the query output. These attributes become available as group-by and filter dimensions in Power BI. Include any attribute you may want to slice by later &mdash; you cannot add them after the query runs.</p>
+
+<h2>Step 7 &mdash; Run the Query</h2>
+<p>Select <strong>Run</strong>. Depending on population size and time window, the query may take minutes to hours to complete. You will receive a notification when results are ready.</p>
+
+<div class="callout note">
+  <div class="callout-title">Data Quality Warnings</div>
+  <p>During query setup, the system may flag data quality issues:</p>
+  <ul>
+    <li><strong>Yellow warning</strong> &mdash; low quality or partial coverage for an attribute. The query will still run.</li>
+    <li><strong>Red warning</strong> &mdash; missing attribute entirely. The query will run but that attribute will not be usable for segmentation.</li>
+  </ul>
+  <p>Address data quality issues by working with your Insights Admin to update the org data upload.</p>
+</div>
+
+<!-- ═══════════════════════ 4. CONNECT POWER BI ═══════════════════════ -->
+<h1 id="connect-pbi">4. Connect Power BI</h1>
+
+<p>Once your query completes, connect it to the Power BI template:</p>
+
+<h2>Step 1 &mdash; Download the Template</h2>
+<p>From the query results page in Viva Insights, download the <code>.pbit</code> template file.</p>
+
+<h2>Step 2 &mdash; Open in Power BI Desktop</h2>
+<p>Open the downloaded <code>.pbit</code> file in Power BI Desktop. When prompted, paste:</p>
+<ul>
+  <li><strong>Partition ID</strong> &mdash; found in the Viva Insights analyst experience</li>
+  <li><strong>Query ID</strong> &mdash; found on the query results page</li>
+</ul>
+
+<h2>Step 3 &mdash; Set Minimum Group Size</h2>
+<p>Set the minimum group size for privacy thresholds (e.g., 10). Groups smaller than this threshold will be suppressed in the report. Click <strong>Load</strong>.</p>
+
+<h2>Step 4 &mdash; Sign In</h2>
+<p>When prompted for credentials, select <strong>Organisational account</strong> and sign in with the same account used to run the query.</p>
+
+<h2>Step 5 &mdash; Configure Report Settings</h2>
+<p>After data loads, configure the report settings on the Settings page:</p>
+<ul>
+  <li><strong>Time period</strong> &mdash; define the reporting window within the query&rsquo;s date range</li>
+  <li><strong>Group-by attribute</strong> &mdash; select the primary organisational attribute for segmentation (e.g., Department, Agency)</li>
+  <li><strong>Active user definition</strong> &mdash; set the threshold for what constitutes an &ldquo;active&rdquo; Copilot user</li>
+  <li><strong>Language</strong> &mdash; set report language</li>
+</ul>
+
+<h2>Explore the Report Pages</h2>
+<p>The Copilot Impact template includes several pre-built pages:</p>
+<ul>
+  <li><strong>Summary</strong> &mdash; high-level overview of Copilot impact across the organisation</li>
+  <li><strong>Before vs After</strong> &mdash; compares collaboration patterns before and after Copilot adoption</li>
+  <li><strong>Copilot vs Non-Copilot</strong> &mdash; compares metrics between users with and without Copilot licences</li>
+  <li><strong>Two-Group Comparison</strong> &mdash; compare two organisational segments side by side</li>
+  <li><strong>Research Insights</strong> &mdash; deeper statistical analysis and trend exploration</li>
+</ul>
+
+<!-- ═══════════════════════ 5. PUBLISH REPORTS ═══════════════════════ -->
+<h1 id="publish">5. Publish Reports to Leaders</h1>
+
+<p>You can share query results with business leaders directly from Viva Insights using the <strong>Publish</strong> feature.</p>
+
+<h2>Step 1 &mdash; Select Publish</h2>
+<p>In the Viva Insights analyst experience, navigate to your completed query and select <strong>Publish</strong>.</p>
+
+<h2>Step 2 &mdash; Set Report Metadata</h2>
+<p>Enter:</p>
+<ul>
+  <li><strong>Title</strong> &mdash; the report title that recipients will see</li>
+  <li><strong>Publisher name</strong> &mdash; your name or team name</li>
+  <li><strong>Description</strong> &mdash; brief summary of what the report covers</li>
+</ul>
+
+<h2>Step 3 &mdash; Choose Scope</h2>
+<p>Select one of:</p>
+<ul>
+  <li><strong>Unfiltered original</strong> &mdash; publishes the full dataset. All recipients see the same data.</li>
+  <li><strong>Filter by manager hierarchy</strong> &mdash; each recipient sees only data for their reporting line.</li>
+</ul>
+
+<h2>Step 4 &mdash; Set Expiry Date</h2>
+<p>Set when the published report expires. Maximum is <strong>365 days</strong> from publication.</p>
+
+<h2>Step 5 &mdash; Publish</h2>
+<p>Confirm and publish. Recipients receive an email notification with a link to view the report.</p>
+
+<div class="callout warning">
+  <div class="callout-title">No Auto-Notification Before Expiry</div>
+  <p>Published reports expire silently &mdash; there is <strong>no automatic notification</strong> sent before a report expires. Set a calendar reminder to re-publish before the expiry date to avoid gaps in leader access.</p>
+</div>
+
+<div class="callout warning">
+  <div class="callout-title">Multi-Agency Tenants: Manager Hierarchy Risk</div>
+  <p>Choosing <strong>&ldquo;Filter by manager hierarchy&rdquo;</strong> grants <strong>any enabled manager</strong> dashboard access to their reporting line&rsquo;s data. In multi-agency tenants, this may unintentionally expose data across agency boundaries. <strong>Use Power BI workspaces instead</strong> for controlled distribution in multi-agency deployments &mdash; see the <a href="../2-setup/multi-agency-setup.html">Multi-Agency Setup Guide</a> for details.</p>
+</div>
+
+<!-- ═══════════════════════ 6. ONGOING MAINTENANCE ═══════════════════════ -->
+<h1 id="maintenance">6. Ongoing Maintenance</h1>
+
+<p>Keep your Copilot analytics current with these recurring tasks:</p>
+
+<ul>
+  <li><strong>Refresh org data monthly</strong> &mdash; work with your Insights Admin to ensure organisational data (new hires, transfers, departures) stays up to date. Stale org data leads to inaccurate segmentation.</li>
+  <li><strong>Re-run queries periodically</strong> &mdash; either enable auto-refresh during query setup or manually re-run queries on a monthly or quarterly cadence to capture current trends.</li>
+  <li><strong>Update PBI reports</strong> &mdash; when Microsoft releases updated template versions, download the new <code>.pbit</code> and reconnect to benefit from new metrics and visualisations.</li>
+  <li><strong>Share via Publish Reports or Power BI workspaces</strong> &mdash; for ongoing distribution, either re-publish through Viva Insights or save <code>.pbix</code> files to a shared Power BI workspace where leaders can access them directly.</li>
+</ul>
+
+<!-- ═══════════════════════ 7. ANALYST DEPARTURE ═══════════════════════ -->
+<h1 id="analyst-departure">7. Analyst Departure &mdash; Transfer Guide</h1>
+
+<p>When an Insights Analyst leaves the organisation or changes roles, follow this checklist to ensure continuity:</p>
+
+<table>
+  <tr><th>Item</th><th>What Happens</th><th>Action Required</th></tr>
+  <tr>
+    <td><strong>Completed query results</strong></td>
+    <td>Persist in Viva Insights &mdash; a new analyst with partition access can view them</td>
+    <td>No action required (results are not tied to the analyst&rsquo;s account)</td>
+  </tr>
+  <tr>
+    <td><strong>Scheduled / recurring queries</strong></td>
+    <td>May stop running when the account is disabled or deleted</td>
+    <td>Recreate scheduled queries under the new analyst&rsquo;s account</td>
+  </tr>
+  <tr>
+    <td><strong>Published reports</strong></td>
+    <td>Remain accessible until their expiry date, but <strong>cannot be renewed</strong> by a different analyst</td>
+    <td>Re-publish reports under the new analyst&rsquo;s account before the originals expire</td>
+  </tr>
+  <tr>
+    <td><strong>Power BI files (.pbix)</strong></td>
+    <td>Stored locally on the analyst&rsquo;s machine &mdash; lost if not transferred</td>
+    <td>Transfer all <code>.pbix</code> files to a shared Power BI workspace <strong>before</strong> account deletion</td>
+  </tr>
+  <tr>
+    <td><strong>Partition access</strong></td>
+    <td>Role assignment is per-user &mdash; does not transfer automatically</td>
+    <td>Insights Admin must assign partition access to the replacement analyst</td>
+  </tr>
+</table>
+
+<div class="callout warning">
+  <div class="callout-title">Redundancy Is Essential</div>
+  <p>Always have <strong>at least two analysts</strong> with partition access. Store all <code>.pbix</code> files in a shared Power BI workspace rather than on individual machines. This prevents data loss and reporting gaps during transitions.</p>
+</div>
+
+<!-- ═══════════════════════ 8. WHAT TO READ NEXT ═══════════════════════ -->
+<h1 id="next">8. What to Read Next</h1>
+
+<table>
+  <tr><th>Document</th><th>When to Read</th></tr>
+  <tr><td><a href="dashboard-guide.html"><strong>Dashboard &amp; Reports Guide</strong></a></td><td>You want to understand the Copilot Dashboard metrics and pages that leaders see</td></tr>
+  <tr><td><a href="../2-setup/data-onboarding.html"><strong>Data Onboarding Guide</strong></a></td><td>You need to prepare or update the organisational data upload</td></tr>
+  <tr><td><a href="../4-reference/attribute-reference.html"><strong>Attribute Reference</strong></a></td><td>You need the full list of org data attributes and their mapping rules</td></tr>
+  <tr><td><a href="../4-reference/troubleshooting.html"><strong>Troubleshooting Guide</strong></a></td><td>Something isn&rsquo;t working &mdash; query failures, missing data, or access issues</td></tr>
+</table>
+
+<!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
+<hr>
+<p style="font-size:0.85em; color:var(--text-muted); margin-top:32px;">
+  <strong>Disclaimer:</strong> This document is provided for informational purposes only and reflects Microsoft 365 capabilities as of April 2026. Microsoft may change features, interfaces, and availability without notice. Always verify current guidance on <a href="https://learn.microsoft.com">Microsoft Learn</a>. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
+</p>
+
+<!-- Back to Top -->
+<a href="#" id="back-to-top" style="
+  position:fixed; bottom:32px; right:32px; background:var(--accent,#0078d4); color:#fff;
+  border:none; border-radius:50%; width:44px; height:44px; font-size:22px;
+  text-align:center; line-height:44px; text-decoration:none; cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,0.18); display:none; z-index:999;
+" title="Back to top">&uarr;</a>
+<script>
+(function(){
+  var btn = document.getElementById('back-to-top');
+  window.addEventListener('scroll', function(){
+    btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+  btn.addEventListener('click', function(e){
+    e.preventDefault();
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+})();
+</script>
+
+</body>
+</html>

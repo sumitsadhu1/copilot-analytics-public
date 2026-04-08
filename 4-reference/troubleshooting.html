@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Troubleshooting — Copilot Analytics</title>
+<link rel="stylesheet" href="../assets/docs-style.css">
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Reference</span>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Troubleshooting</span>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ COVER PAGE ═══════════════════════ -->
+<div class="cover">
+  <h1>Microsoft 365 Copilot Analytics</h1>
+  <div class="subtitle">Troubleshooting Guide</div>
+  <div class="sub2">Consolidated issue resolution for all five analytics tiers</div>
+</div>
+
+<table>
+  <tr><th>Document Property</th><th>Value</th></tr>
+  <tr><td>Layer</td><td>4 &mdash; Reference</td></tr>
+  <tr><td>Audience</td><td>All Roles</td></tr>
+  <tr><td>Version</td><td>4.0</td></tr>
+  <tr><td>Published</td><td>April 2026</td></tr>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">How This Document Fits</div>
+  <p>This is a <strong>Layer 4 &mdash; Reference</strong> document. Use it to diagnose and resolve issues across all Copilot Analytics tiers. For setup instructions, see the <a href="../2-setup/admin-setup.html">Admin Setup Guide</a>.</p>
+  <table>
+    <tr><th>Layer</th><th>Purpose</th><th>Who Reads</th></tr>
+    <tr><td><a href="../1-strategy/executive-briefing.html">1 &mdash; Strategy</a></td><td>Decide what to implement</td><td>CIO, SA, Business Leaders</td></tr>
+    <tr><td><a href="../2-setup/admin-setup.html">2 &mdash; Setup</a></td><td>Configure and deploy</td><td>IT Admin, Insights Admin</td></tr>
+    <tr><td><a href="../3-operate/dashboard-guide.html">3 &mdash; Operate</a></td><td>Use dashboards and reports daily</td><td>Leaders, Analysts, Managers</td></tr>
+    <tr><td><strong>4 &mdash; Reference</strong> (you are here)</td><td>Look up details and fix issues</td><td>Everyone (as needed)</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════════════════ TOC ═══════════════════════ -->
+<h1 id="toc">Table of Contents</h1>
+<ol>
+  <li><a href="#admin-centre">Admin Centre Reports</a></li>
+  <li><a href="#copilot-dashboard">Copilot Dashboard</a></li>
+  <li><a href="#agent-dashboard">Agent Dashboard</a></li>
+  <li><a href="#advanced-analytics">Advanced Analytics (Power BI)</a></li>
+  <li><a href="#data-upload">Data Upload Issues</a></li>
+  <li><a href="#auditing">Auditing Delegation</a></li>
+  <li><a href="#escalation">Escalation Path</a></li>
+</ol>
+
+<!-- ═══════════════════════ 1. ADMIN CENTRE ═══════════════════════ -->
+<h1 id="admin-centre">1. Admin Centre Reports</h1>
+
+<table>
+  <tr><th>Symptom</th><th>Cause</th><th>Resolution</th></tr>
+  <tr>
+    <td>No data displayed</td>
+    <td>Reports take up to 72 hours to populate after initial licence assignment.</td>
+    <td>Wait 72 hours after assigning Copilot licences. Verify licence assignment in <code>admin.microsoft.com</code> &rarr; Users &rarr; Active Users.</td>
+  </tr>
+  <tr>
+    <td>No Copilot licences visible</td>
+    <td>Licences not purchased or not assigned to users.</td>
+    <td>Check <code>admin.microsoft.com</code> &rarr; Billing &rarr; Licences. Purchase and assign Microsoft 365 Copilot licences to target users.</td>
+  </tr>
+  <tr>
+    <td>Can&rsquo;t export CSV from reports</td>
+    <td>User does not have the Reports Reader role.</td>
+    <td>Assign the <strong>Reports Reader</strong> role in Entra ID to the user who needs to export data.</td>
+  </tr>
+  <tr>
+    <td>User details hidden / only aggregates visible</td>
+    <td>Concealed user details is enabled (privacy setting).</td>
+    <td>Navigate to <code>admin.microsoft.com</code> &rarr; Settings &rarr; Org Settings &rarr; Reports &rarr; uncheck &ldquo;Display concealed user, group, and site names in all reports.&rdquo; Allow 72 hours for changes to take effect.</td>
+  </tr>
+  <tr>
+    <td>0 active users despite assigned licences</td>
+    <td>Users have not yet interacted with Copilot, or reporting has not caught up.</td>
+    <td>Verify users have actually used a Copilot feature (e.g., prompted Copilot in Word or Teams). Wait 72 hours for data to appear.</td>
+  </tr>
+</table>
+
+<!-- ═══════════════════════ 2. COPILOT DASHBOARD ═══════════════════════ -->
+<h1 id="copilot-dashboard">2. Copilot Dashboard</h1>
+
+<table>
+  <tr><th>Symptom</th><th>Cause</th><th>Resolution</th></tr>
+  <tr>
+    <td>Access denied / cannot open dashboard</td>
+    <td>Multiple possible causes: VFAM (Viva Feature Access Management) is off, AI Administrator not added, delegation policy not configured, or tenant has fewer than 2,500 users without appropriate roles.</td>
+    <td>
+      <ol>
+        <li>Verify VFAM is enabled: <code>admin.microsoft.com</code> &rarr; Viva &rarr; Feature Access Management &rarr; Viva Insights &rarr; &ldquo;Copilot Dashboard&rdquo; must be ON.</li>
+        <li>Ensure the user has Admin access or has been added as a delegate by an AI Administrator.</li>
+        <li>For tenants &lt;2,500 users: user needs AI Administrator, Insights Administrator, or Global Admin role.</li>
+      </ol>
+    </td>
+  </tr>
+  <tr>
+    <td>Impact page missing collaboration data</td>
+    <td>Behavioral Experiences (formerly &ldquo;Collaboration data&rdquo;) is turned OFF in Viva Insights privacy settings.</td>
+    <td>Enable Behavioral Experiences: <code>insights.cloud.microsoft</code> &rarr; Settings &rarr; Privacy &rarr; toggle &ldquo;Behavioral Experiences&rdquo; ON. Allow 7 days for data to populate.</td>
+  </tr>
+  <tr>
+    <td>Only Readiness page visible (no Adoption or Impact)</td>
+    <td>Tenant has fewer than 50 assigned Copilot or Viva Insights licences.</td>
+    <td>Assign at least 50 licences. Adoption and Impact pages become available once the threshold is met and data refreshes (up to 7 days).</td>
+  </tr>
+  <tr>
+    <td>No group filtering available</td>
+    <td>Organisational data has not been uploaded.</td>
+    <td>Upload organisational data via CSV, HRIS connector, or another supported method. See the <a href="../2-setup/data-onboarding.html">Data Onboarding Guide</a>.</td>
+  </tr>
+  <tr>
+    <td>Impact page shows no data</td>
+    <td>Requires at least 7 days of usage data after licence assignment.</td>
+    <td>Wait at least 7 days after licences are assigned and users begin using Copilot. If data still doesn&rsquo;t appear, verify Behavioral Experiences is ON.</td>
+  </tr>
+  <tr>
+    <td>Data suppressed / shows &ldquo;N/A&rdquo;</td>
+    <td>Group is below the minimum group size threshold (default 10).</td>
+    <td>Ensure the group being viewed meets the minimum group size requirement. The minimum can be adjusted (lowest is 5) by the AI Administrator or Insights Administrator in Privacy Settings.</td>
+  </tr>
+  <tr>
+    <td>Managers can&rsquo;t see team data</td>
+    <td>Manager Settings are not enabled in Viva Insights.</td>
+    <td>Enable Manager Settings: <code>insights.cloud.microsoft</code> &rarr; Settings &rarr; Manager Settings &rarr; toggle ON. The manager&rsquo;s team must also meet the minimum team size threshold.</td>
+  </tr>
+  <tr>
+    <td>Sentiment section is empty</td>
+    <td>No Copilot survey has been configured or responses haven&rsquo;t been collected.</td>
+    <td>Configure the Copilot satisfaction survey in Viva Insights Settings. Sentiment data appears once enough responses are collected (subject to minimum group size).</td>
+  </tr>
+  <tr>
+    <td>Exclusion list not taking effect</td>
+    <td>Exclusion list changes take up to 5 days to propagate.</td>
+    <td>Wait 5 days after adding users to the exclusion list. Verify the list was saved correctly in Privacy Settings.</td>
+  </tr>
+  <tr>
+    <td>Org data not showing in filters</td>
+    <td>Wrong attribute names in uploaded CSV or missing <code>EffectiveDate</code> (legacy path).</td>
+    <td>
+      <ul>
+        <li>Verify attribute names match expected naming convention (legacy: <code>PersonId</code>, <code>ManagerId</code>; new: <code>Microsoft_PersonEmail</code>, <code>Microsoft_ManagerEmail</code>)</li>
+        <li>For legacy path: ensure <code>EffectiveDate</code> column exists and date is earlier than upload date</li>
+        <li>Check the Data Quality page in Viva Insights for validation errors</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+<!-- ═══════════════════════ 3. AGENT DASHBOARD ═══════════════════════ -->
+<h1 id="agent-dashboard">3. Agent Dashboard</h1>
+
+<table>
+  <tr><th>Symptom</th><th>Cause</th><th>Resolution</th></tr>
+  <tr>
+    <td>Agent Dashboard not visible</td>
+    <td>Delegates need &ldquo;Your company&rdquo; scope (not &ldquo;Your group&rdquo;) to access the Agent Dashboard.</td>
+    <td>Update delegation scope: <code>insights.cloud.microsoft</code> &rarr; Settings &rarr; Delegation &rarr; change the delegate&rsquo;s scope to &ldquo;Your company.&rdquo;</td>
+  </tr>
+  <tr>
+    <td>Agent Dashboard disabled</td>
+    <td>VFAM policy for AgentDashboard is set to OFF.</td>
+    <td>Check <code>admin.microsoft.com</code> &rarr; Viva &rarr; Feature Access Management &rarr; Viva Insights &rarr; verify &ldquo;AgentDashboard&rdquo; is enabled.</td>
+  </tr>
+  <tr>
+    <td>No agent data displayed</td>
+    <td>No agents have been deployed in the tenant, or agents have not been used.</td>
+    <td>Verify agents are deployed and users are interacting with them. Agent data requires active usage to populate.</td>
+  </tr>
+</table>
+
+<!-- ═══════════════════════ 4. ADVANCED ANALYTICS ═══════════════════════ -->
+<h1 id="advanced-analytics">4. Advanced Analytics (Power BI)</h1>
+
+<table>
+  <tr><th>Symptom</th><th>Cause</th><th>Resolution</th></tr>
+  <tr>
+    <td>Can&rsquo;t access analyst experience</td>
+    <td>User does not have the Insights Analyst role assigned.</td>
+    <td>Assign the <strong>Insights Analyst</strong> role in Entra ID. Alternatively, use the <strong>Insights Administrator</strong> role (which includes analyst capabilities).</td>
+  </tr>
+  <tr>
+    <td>Query returns no data</td>
+    <td>Analyst&rsquo;s partition does not include the target users.</td>
+    <td>Verify partition membership. The Insights Administrator can check and update partition assignments in <code>insights.cloud.microsoft</code> &rarr; Settings &rarr; Partitions.</td>
+  </tr>
+  <tr>
+    <td>Query fails with time period error</td>
+    <td>Selected time period exceeds available historical data.</td>
+    <td>Reduce the query time period to fall within available data. Viva Insights retains up to 27 months of collaboration data and 12 months of Copilot data.</td>
+  </tr>
+  <tr>
+    <td>Power BI won&rsquo;t connect to Viva Insights</td>
+    <td>Authentication issue &mdash; incorrect account or expired token.</td>
+    <td>Sign in with the same account that has the Insights Analyst role. Clear cached credentials in Power BI Desktop: File &rarr; Options &rarr; Data Source Settings &rarr; Clear Permissions. Retry connection.</td>
+  </tr>
+  <tr>
+    <td>No segmentation available in PBI reports</td>
+    <td>Organisational data has not been uploaded or custom attributes are missing.</td>
+    <td>Upload organisational data with the attributes you need for segmentation. See the <a href="attribute-reference.html">Attribute Reference</a>.</td>
+  </tr>
+  <tr>
+    <td>Before/after analysis unavailable</td>
+    <td>No pre-adoption baseline data exists &mdash; Copilot was deployed before Viva Insights was configured.</td>
+    <td>Before/after comparisons require data from both periods. If no pre-adoption data was captured, use the existing Impact page metrics as a proxy or begin collecting a baseline now for future comparison.</td>
+  </tr>
+</table>
+
+<!-- ═══════════════════════ 5. DATA UPLOAD ═══════════════════════ -->
+<h1 id="data-upload">5. Data Upload Issues</h1>
+
+<h2>Validation Failures</h2>
+<p>These errors occur before data is processed. The upload is rejected and no data is ingested.</p>
+
+<table>
+  <tr><th>Error</th><th>Cause</th><th>Resolution</th></tr>
+  <tr>
+    <td>Blank <code>PersonEmail</code> / <code>PersonId</code></td>
+    <td>One or more rows have an empty email field.</td>
+    <td>Ensure every row has a valid email address in the <code>PersonEmail</code> (or <code>PersonId</code> / <code>Microsoft_PersonEmail</code>) column.</td>
+  </tr>
+  <tr>
+    <td>Missing required attributes</td>
+    <td>CSV is missing one or more required columns: <code>PersonEmail</code>, <code>ManagerEmail</code>, <code>Organization</code> (or their <code>Microsoft_*</code> equivalents).</td>
+    <td>Add the missing required columns to the CSV header row. See the <a href="attribute-reference.html">Attribute Reference</a> for the full mapping.</td>
+  </tr>
+  <tr>
+    <td>Empty rows in CSV</td>
+    <td>Blank rows (including trailing empty rows) cause validation to fail.</td>
+    <td>Remove all empty rows from the CSV. Pay special attention to rows at the end of the file.</td>
+  </tr>
+  <tr>
+    <td>Unlicensed apps referenced</td>
+    <td>CSV references applications or services not licensed in the tenant.</td>
+    <td>Remove or correct app references. Ensure all referenced services are active in the tenant.</td>
+  </tr>
+  <tr>
+    <td>Unsupported custom attributes</td>
+    <td>Custom attribute names contain spaces, special characters, or exceed 105 total attribute limit.</td>
+    <td>Use underscores instead of spaces. Remove special characters. Reduce total attribute count to &le;105.</td>
+  </tr>
+  <tr>
+    <td><code>Microsoft_</code> prefix on custom attributes</td>
+    <td>Custom attributes must not use the <code>Microsoft_</code> prefix &mdash; this is reserved for system attributes.</td>
+    <td>Rename custom columns to remove the <code>Microsoft_</code> prefix. Use a plain name like <code>BusinessUnit</code> or <code>CostCentre</code>.</td>
+  </tr>
+</table>
+
+<h2>Processing Failures</h2>
+<table>
+  <tr><th>Status</th><th>Meaning</th><th>Resolution</th></tr>
+  <tr>
+    <td>Processing failed</td>
+    <td>Backend error during data ingestion.</td>
+    <td>Retry the upload. If the issue persists, contact Microsoft Support with the error details and correlation ID.</td>
+  </tr>
+  <tr>
+    <td>Suspended</td>
+    <td>Credentials expired or backend system unavailable (common with HRIS connectors).</td>
+    <td>Re-authenticate the connector credentials. Retry the next day. If suspended repeatedly, check service health at <a href="https://status.office.com">status.office.com</a>.</td>
+  </tr>
+  <tr>
+    <td>Partial success</td>
+    <td>Some rows failed validation (API, Workday, or SAP connectors only).</td>
+    <td>Download the error report from the upload status page. Fix the failing rows and re-upload. Common causes: duplicate emails, malformed dates, invalid manager references.</td>
+  </tr>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">Validation Error Reference</div>
+  <p>For the complete list of upload validation errors and error codes, see <a href="https://learn.microsoft.com/viva/insights/advanced/admin/rules-validation-errors">Validation errors for organizational data uploads</a> on Microsoft Learn.</p>
+</div>
+
+<!-- ═══════════════════════ 6. AUDITING ═══════════════════════ -->
+<h1 id="auditing">6. Auditing Delegation</h1>
+
+<p>Delegation changes are logged in <strong>Microsoft Purview</strong> audit logs. Use these operation names to track delegation activity:</p>
+
+<table>
+  <tr><th>Purview Operation</th><th>Description</th></tr>
+  <tr>
+    <td><code>AddDelegates</code></td>
+    <td>A delegate was added to the Copilot Dashboard or Viva Insights.</td>
+  </tr>
+  <tr>
+    <td><code>RemoveDelegates</code></td>
+    <td>A delegate was removed from the Copilot Dashboard or Viva Insights.</td>
+  </tr>
+</table>
+
+<p>To view these logs: <code>compliance.microsoft.com</code> &rarr; Audit &rarr; Search &rarr; filter by Activities: <code>AddDelegates</code> or <code>RemoveDelegates</code> &rarr; filter by Workload: <code>Viva Insights</code>.</p>
+
+<!-- ═══════════════════════ 7. ESCALATION ═══════════════════════ -->
+<h1 id="escalation">7. Escalation Path</h1>
+
+<p>If the troubleshooting steps above do not resolve the issue, contact <strong>Microsoft Support</strong>:</p>
+
+<ol>
+  <li>Navigate to <code>admin.microsoft.com</code> &rarr; Support &rarr; New Service Request</li>
+  <li>Select <strong>Viva Insights</strong> as the product</li>
+  <li>Provide the following information:
+    <ul>
+      <li><strong>Tenant ID</strong> (from <code>admin.microsoft.com</code> &rarr; Settings &rarr; Org Settings &rarr; Organization Profile)</li>
+      <li><strong>Licence counts</strong> (total Copilot and Viva Insights licences assigned)</li>
+      <li><strong>Error messages</strong> (screenshot or exact text, including correlation IDs if available)</li>
+      <li><strong>Steps already taken</strong> from this troubleshooting guide</li>
+    </ul>
+  </li>
+</ol>
+
+<!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
+<hr>
+<p style="font-size:0.85em; color:var(--text-muted); margin-top:32px;">
+  <strong>Disclaimer:</strong> This document is provided for informational purposes only and reflects Microsoft 365 capabilities as of April 2026. Microsoft may change features, interfaces, and availability without notice. Always verify current guidance on <a href="https://learn.microsoft.com">Microsoft Learn</a>. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
+</p>
+
+<!-- Back to Top -->
+<a href="#" id="back-to-top" style="
+  position:fixed; bottom:32px; right:32px; background:var(--accent,#0078d4); color:#fff;
+  border:none; border-radius:50%; width:44px; height:44px; font-size:22px;
+  text-align:center; line-height:44px; text-decoration:none; cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,0.18); display:none; z-index:999;
+" title="Back to top">&uarr;</a>
+<script>
+(function(){
+  var btn = document.getElementById('back-to-top');
+  window.addEventListener('scroll', function(){
+    btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+  btn.addEventListener('click', function(e){
+    e.preventDefault();
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+})();
+</script>
+
+</body>
+</html>
