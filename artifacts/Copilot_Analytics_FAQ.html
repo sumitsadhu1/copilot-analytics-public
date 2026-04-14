@@ -94,7 +94,7 @@
 
 <div class="faq">
   <div class="faq-q" data-num="11">Does the Dashboard track Copilot Chat (web) usage?</div>
-  <div class="faq-a"><strong>For paid Copilot users: Yes.</strong> If Copilot Chat reporting is enabled in your tenant and you have 50+ Copilot or Viva Insights licences, there is a separate licence filter on the dashboard to switch between Microsoft 365 Copilot and Copilot Chat views. <strong>For free Copilot Chat users (E3/E5 without Copilot add-on): No.</strong> Users with M365 E3/E5 licences can access Copilot Chat at copilot.microsoft.com without the paid add-on, but their usage is <strong>not tracked</strong> by the Copilot Dashboard or any of the 5 analytics tiers. To understand free Copilot Chat adoption (e.g., to build a business case for purchasing paid Copilot licences), consider M365 Audit Logs (Purview) or the M365 Usage Analytics content pack as separate analytics workstreams.</div>
+  <div class="faq-a"><strong>For paid Copilot users: Yes.</strong> If Copilot Chat reporting is enabled in your tenant and you have 50+ Copilot or Viva Insights licences, there is a separate licence filter on the dashboard to switch between Microsoft 365 Copilot and Copilot Chat views. <strong>For free Copilot Chat users (E3/E5 without Copilot add-on): Yes, with limits.</strong> As of April 2026, the Copilot Dashboard includes a <strong>Copilot Chat</strong> licence filter that shows insights for active users of the free Copilot Chat app. This requires 50+ Copilot or Viva Insights licences and Copilot Chat reporting enabled. Free users are <em>not</em> tracked by Viva Insights custom queries or Admin Center Copilot usage reports. To understand free Copilot Chat adoption beyond the dashboard (e.g., building a business case for paid licences), consider M365 Audit Logs (Purview) as a complementary analytics workstream.</div>
 </div>
 
 <div class="faq">
@@ -150,7 +150,29 @@
 
 <div class="faq">
   <div class="faq-q" data-num="20">The dashboard shows a yellow banner about email data being under-reported. What does this mean?</div>
-  <div class="faq-a">Microsoft has acknowledged that email draft and summarize email thread metrics were under-reported from <strong>July 1, 2025 through February 18, 2026</strong>. This affects Outlook adoption numbers and email-related Assisted Hours for that period. A separate meeting underreporting issue affected <strong>September 6 through November 3, 2025</strong>. No customer action is needed &mdash; the data auto-corrects for periods after the affected windows.</div>
+  <div class="faq-a">Microsoft has acknowledged that email draft and summarize email thread metrics were under-reported from <strong>June 1, 2025 through February 18, 2026</strong>. This affects Outlook adoption numbers and email-related Assisted Hours for that period. A separate meeting underreporting issue affected <strong>September 6 through November 3, 2025</strong>. No customer action is needed &mdash; the data auto-corrects for periods after the affected windows.</div>
+</div>
+
+<h2 style="color:#1F4E79;margin-top:32px;border-left:4px solid #1F4E79;padding-left:12px;">New Features (April 2026)</h2>
+
+<div class="faq">
+  <div class="faq-q" data-num="27">What are intent patterns in the Copilot Dashboard?</div>
+  <div class="faq-a">Intent patterns (public preview, April 2026) categorise Copilot Chat (work) prompts into: <strong>Ask and find</strong> (questions, info retrieval), <strong>Catch up</strong> (summaries, recaps), <strong>Draft and brainstorm</strong> (content creation), and <strong>Other</strong>. Available on the Adoption page and in Viva Insights advanced reporting. These help you understand <em>how</em> people use Copilot, not just how much.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="28">Can I export Copilot Dashboard data for offline analysis?</div>
+  <div class="faq-a"><strong>Yes.</strong> The Dashboard now supports a CSV export of de-identified, weekly metrics covering 6 months. Select <strong>Export</strong> on the dashboard. Data matches the on-screen view — aggregated, de-identified, and subject to privacy thresholds. For user-level exports, use Advanced Analytics person queries.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="29">How can we use Organizational Messages to drive Copilot adoption?</div>
+  <div class="faq-a">Organizational Messages (GA, April 2026) enable IT admins to send targeted Copilot adoption nudges via email, Teams, or Windows. The key feature is <strong>usage-based targeting</strong> — messages target users based on actual Copilot usage behaviour (never used, tried once, occasional, regular). Configure at <code>admin.microsoft.com</code> → Organizational messages.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="30">Does Microsoft Purview DLP affect Copilot analytics?</div>
+  <div class="faq-a"><strong>Potentially.</strong> DLP policies for Copilot (GA) can block prompts containing sensitive information types. Blocked prompts are <strong>not counted</strong> as Copilot actions. If DLP blocks many prompts, usage metrics may appear lower than expected. Coordinate with your Security team to understand DLP impact on analytics. DLP is configured in the Purview Compliance Portal — see <a href="https://aka.ms/Copilot/SecureGovern">aka.ms/Copilot/SecureGovern</a>.</div>
 </div>
 
 <h2 style="color:#1F4E79;margin-top:32px;border-left:4px solid #1F4E79;padding-left:12px;">Common Misconceptions</h2>

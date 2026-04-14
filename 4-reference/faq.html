@@ -73,7 +73,7 @@
 
 <div class="faq">
   <div class="faq-q" data-num="4">Does the Dashboard track Copilot Chat (web) usage?</div>
-  <div class="faq-a"><strong>For paid Copilot users: Yes.</strong> If Copilot Chat reporting is enabled in your tenant and you have 50+ Copilot or Viva Insights licences, there is a separate licence filter on the dashboard to switch between Microsoft 365 Copilot and Copilot Chat views. <strong>For free Copilot Chat users (E3/E5 without Copilot add-on): No.</strong> Their usage is not tracked by the Copilot Dashboard.</div>
+  <div class="faq-a"><strong>For paid Copilot users: Yes.</strong> If Copilot Chat reporting is enabled in your tenant and you have 50+ Copilot or Viva Insights licences, there is a separate licence filter on the dashboard to switch between Microsoft 365 Copilot and Copilot Chat views. <strong>For free Copilot Chat users (E3/E5 without Copilot add-on): Yes, with limits.</strong> As of April 2026, the Copilot Dashboard includes a <strong>Copilot Chat</strong> licence filter that shows insights for active users of the free Copilot Chat app. This requires 50+ Copilot or Viva Insights licences and Copilot Chat reporting enabled. Free users are <em>not</em> tracked by Viva Insights custom queries or Admin Center Copilot usage reports.</div>
 </div>
 
 <div class="faq">
@@ -116,7 +116,7 @@
 
 <div class="faq">
   <div class="faq-q" data-num="12">We uploaded org data and now filters show different values &mdash; can we revert?</div>
-  <div class="faq-a"><strong>No.</strong> There is no self-service reversal for organisational data uploads. Contact <strong>Microsoft Support</strong> if you need to undo a data upload. Always validate data in a test upload before applying to production.</div>
+  <div class="faq-a"><strong>Yes.</strong> You can use <strong>parallel data ingestion</strong> to restore Entra ID as the source for <code>ManagerId</code> and <code>Organization</code> while keeping custom CSV attributes. To remove all uploaded data entirely, use the &ldquo;Replace All data&rdquo; option with a single dummy row, then re-enable Entra sync. See <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Microsoft Learn</a>. Always validate data in a test upload before applying to production.</div>
 </div>
 
 <div class="faq">
@@ -153,6 +153,26 @@
 <div class="faq">
   <div class="faq-q" data-num="18">We want broader productivity metrics (meeting time, focus time, after-hours). Is that covered here?</div>
   <div class="faq-a"><strong>No &mdash; that is a separate Viva Insights workstream.</strong> Copilot Analytics covers Copilot-specific adoption, impact, and ROI. Broader productivity metrics use the same Viva Insights licence and analyst role but are configured through different queries and templates. See the <a href="../3-operate/collaboration-analysis.html">Collaboration Analysis Guide</a> for details.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="19">What are intent patterns, and how do they appear in the Dashboard?</div>
+  <div class="faq-a">Intent patterns (public preview, April 2026) categorise Copilot Chat (work) prompts into four groups: <strong>Ask and find</strong> (questions and info retrieval), <strong>Catch up</strong> (summaries and recaps), <strong>Draft and brainstorm</strong> (content creation), and <strong>Other</strong>. These appear on the Adoption page and help you understand <em>how</em> people use Copilot, not just how much. Intent metrics are also available in Viva Insights custom person queries for deeper analysis.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="20">Can I export data from the Copilot Dashboard?</div>
+  <div class="faq-a"><strong>Yes.</strong> The Dashboard now offers a CSV export of de-identified, weekly metrics covering the past 6 months. Select the <strong>Export</strong> button on the dashboard. The exported data matches what you see on screen &mdash; aggregated and de-identified. For user-level or custom-segmented exports, use Advanced Analytics (person queries in the Viva Insights analyst workbench).</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="21">Can we use Organizational Messages to boost Copilot adoption?</div>
+  <div class="faq-a"><strong>Yes.</strong> Organizational Messages (GA, April 2026) allow IT admins to send targeted Copilot adoption nudges via email, Teams, or Windows surfaces. The key feature is <strong>usage-based targeting</strong> &mdash; messages are sent based on actual Copilot usage behaviour (e.g., &ldquo;never used&rdquo; or &ldquo;tried once&rdquo;), not static group membership. Configure in M365 Admin Centre &rarr; Organizational messages. See the <a href="../2-setup/admin-setup.html#org-messages">Admin Setup Guide</a> for configuration steps.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="22">Does Microsoft Purview DLP affect Copilot usage metrics?</div>
+  <div class="faq-a"><strong>Potentially.</strong> DLP policies can block prompts containing sensitive information types. Blocked prompts are <strong>not counted</strong> as Copilot actions in the Dashboard or Viva Insights. If a significant number of prompts are blocked by DLP, you may see lower-than-expected usage metrics. Coordinate with your Security team to understand what DLP policies are in place.</div>
 </div>
 
 <!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->

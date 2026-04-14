@@ -42,7 +42,7 @@
 <!-- ═══════════════════════ 1. WHY ═══════════════════════ -->
 <h1 id="why">1. Why Upload Org Data? (Entra ID vs. Org Data Upload)</h1>
 
-<p>A common question: <em>&ldquo;We already have Department, Manager, and Job Title in Entra ID — why do we need to upload a CSV?&rdquo;</em></p>
+<p>A common question: <em>&ldquo;We already have Department, Manager, and Organisation in Entra ID — why do we need to upload a CSV?&rdquo;</em></p>
 <p>Entra ID provides a baseline, but org data uploads unlock significantly more analytics capability:</p>
 
 <table>
@@ -77,13 +77,13 @@
 <p><strong>Recommendation:</strong> If more than 20% of users lack a Manager attribute, prioritise fixing directory data or supplement with an org data CSV upload that includes correct <code>ManagerId</code> values.</p>
 
 <!-- ═══════════════════════ 3. IRREVERSIBILITY ═══════════════════════ -->
-<h1 id="irreversible">3. The Irreversibility Warning</h1>
+<h1 id="irreversible">3. The Data Source Change Warning</h1>
 
-<p>Once org data is uploaded, it <strong>permanently replaces Entra ID as the data source</strong> for dashboard filters:</p>
+<p>Once org data is uploaded, it <strong>replaces Entra ID as the data source</strong> for the uploaded attributes in dashboard filters:</p>
 <ul>
   <li>Department values come from the CSV, not from Entra ID — even if they differ</li>
   <li>If you stop uploading, the data becomes stale (not reverted to Entra ID)</li>
-  <li>To revert to Entra ID as the source, you must <strong>contact Microsoft Support</strong>. There is no self-service reversal.</li>
+  <li><strong>Reversal is now self-service:</strong> You can use <strong>parallel data ingestion</strong> to keep Entra as the source for <code>ManagerId</code> and <code>Organization</code> while adding custom attributes via CSV. To stop using uploaded data entirely, clear the Entra connection selections or use the &ldquo;Replace All data&rdquo; option with a single dummy row. See <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Microsoft Learn</a>.</li>
   <li><strong>Before uploading:</strong> Confirm readiness to own the ongoing refresh cycle (monthly re-uploads recommended)</li>
 </ul>
 

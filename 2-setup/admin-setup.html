@@ -56,6 +56,7 @@
   <li><a href="#tier2">Tier 2: Copilot Dashboard Enablement</a></li>
   <li><a href="#tier3">Tier 3: Copilot Analytics Reports</a></li>
   <li><a href="#tier4">Tier 4: Agent Dashboard</a></li>
+  <li><a href="#org-messages">Organizational Messages for Copilot Adoption</a></li>
   <li><a href="#tier5">Tier 5: Advanced Analytics Setup</a></li>
   <li><a href="#processing">Processing Times Reference</a></li>
   <li><a href="#next">What to Read Next</a></li>
@@ -508,6 +509,53 @@
 <div class="callout danger">
   <div class="callout-title">IMPORTANT: Team-Level Agent Data Not Available</div>
   <p>The Agent Dashboard currently provides company-level and group-level data only. <strong>Team-level (manager) views are not available</strong> for agent usage data. Managers enabled via Manager Settings will see Copilot data for their team but not agent-specific breakdowns.</p>
+</div>
+
+<!-- ═══════════════════════ 6B. ORGANIZATIONAL MESSAGES ═══════════════════════ -->
+<h1 id="org-messages">6B. Organizational Messages for Copilot Adoption</h1>
+<p>Organizational Messages allow IT admins to send <strong>targeted adoption nudges</strong> directly to users, encouraging Copilot usage based on their actual behaviour rather than static group membership.</p>
+
+<h3>What Are Organizational Messages?</h3>
+<p>Organizational Messages deliver short, contextual prompts to employees through multiple channels. Messages can promote Copilot features, share tips, or nudge inactive users to try specific capabilities.</p>
+
+<h3>Delivery Channels</h3>
+<table>
+  <tr><th>Channel</th><th>Where It Appears</th><th>Best For</th></tr>
+  <tr><td><strong>Email</strong></td><td>User&rsquo;s Outlook inbox</td><td>High-confidence reach; auditable; series campaigns for sustained adoption</td></tr>
+  <tr><td><strong>Teams Popovers</strong></td><td>In-context within Teams</td><td>Catching users where they already work; meeting and chat context</td></tr>
+  <tr><td><strong>Windows Taskbar</strong></td><td>Windows desktop notification area</td><td>Broad surface for daily desktop users</td></tr>
+  <tr><td><strong>Windows Notifications</strong></td><td>Windows notification centre</td><td>Less intrusive; visible when user checks notifications</td></tr>
+  <tr><td><strong>Windows Spotlight</strong></td><td>Lock screen and spotlight surface</td><td>Passive awareness; reaches users during transition moments</td></tr>
+</table>
+
+<h3>Usage-Based Targeting</h3>
+<p>The key capability for Copilot adoption is <strong>usage-based targeting</strong>, which uses dynamic, pre-defined usage segments to reach the right users:</p>
+<table>
+  <tr><th>Segment</th><th>Who It Targets</th><th>Recommended Message</th></tr>
+  <tr><td><strong>Never used</strong></td><td>Licensed users who haven&rsquo;t tried Copilot</td><td>Introduction and first-step guidance</td></tr>
+  <tr><td><strong>Tried once</strong></td><td>Users with minimal initial use</td><td>Tips for getting more value; specific feature suggestions</td></tr>
+  <tr><td><strong>Occasional users</strong></td><td>Users who use Copilot sporadically</td><td>Workflow-specific prompts; &ldquo;Did you know?&rdquo; features</td></tr>
+  <tr><td><strong>Regular users</strong></td><td>Active users with consistent patterns</td><td>Advanced features; power-user tips</td></tr>
+</table>
+
+<h3>How to Configure</h3>
+<ol>
+  <li>Navigate to <code>admin.microsoft.com</code> &rarr; <strong>Settings</strong> &rarr; <strong>Org settings</strong> &rarr; <strong>Organizational messages</strong>.</li>
+  <li>Select <strong>+ New message</strong> and choose the <strong>Copilot adoption</strong> template (or create a custom message).</li>
+  <li>Under <strong>Audience</strong>, select <strong>Usage-based targeting</strong> to choose a product usage segment.</li>
+  <li>Select the <strong>delivery channel</strong> (email, Teams, Windows).</li>
+  <li>Set the <strong>schedule</strong> &mdash; one-time or recurring series.</li>
+  <li>Preview and <strong>publish</strong>.</li>
+</ol>
+
+<div class="callout info">
+  <div class="callout-title">TIP: Pair with Dashboard Insights</div>
+  <p>Use the Copilot Dashboard Adoption page to identify groups with low adoption, then create targeted Organizational Messages for those groups. After sending, monitor the Dashboard to see if adoption improves &mdash; this creates a closed-loop adoption enablement workflow.</p>
+</div>
+
+<div class="callout note">
+  <div class="callout-title">Analytics Connection</div>
+  <p>Organizational Messages do not appear in the Copilot Dashboard. To track message delivery and open rates, use the Organizational Messages reporting within the M365 Admin Centre. To measure the <em>impact</em> of messages on adoption, compare Dashboard adoption trends before and after message campaigns.</p>
 </div>
 
 <!-- ═══════════════════════ 7. TIER 5 ═══════════════════════ -->

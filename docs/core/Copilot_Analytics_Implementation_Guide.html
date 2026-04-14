@@ -185,22 +185,26 @@
   <li>Broader Viva Insights productivity metrics independent of Copilot (meeting time, focus time, after-hours work, collaboration network analysis)</li>
 </ul>
 
-<div class="callout warning">
-  <div class="callout-title">IMPORTANT: Copilot Chat (Free) Users Are Invisible to Copilot Analytics</div>
-  <p>All M365 E3/E5 users can access <strong>Copilot Chat</strong> (web-based AI chat at copilot.microsoft.com) without the paid M365 Copilot add-on licence. However, these users are <strong>not tracked</strong> by any analytics surface documented in this guide:</p>
+<div class="callout info">
+  <div class="callout-title">UPDATE (April 2026): Copilot Chat (Free) Users Are Now Partially Visible</div>
+  <p>As of April 2026, the Copilot Dashboard includes a <strong>Copilot Chat licence filter</strong> that shows adoption insights for M365 E3/E5 users who use the free Copilot Chat app without the paid add-on. This requires Copilot Chat reporting to be enabled and 50+ Copilot or Viva Insights licences.</p>
+  <p><strong>What the Dashboard now shows for free Copilot Chat users:</strong></p>
   <ul>
-    <li><strong>Copilot Dashboard</strong> — only measures users with M365 Copilot licences assigned</li>
+    <li>Active Copilot Chat users count</li>
+    <li>Adoption trends over time</li>
+    <li>Group-level breakdowns (Organisation, Job function, Group)</li>
+  </ul>
+  <p><strong>What is still NOT tracked for free users:</strong></p>
+  <ul>
     <li><strong>Admin Center Copilot Usage Report</strong> — only shows licensed Copilot users</li>
-    <li><strong>Viva Insights / Advanced Analytics</strong> — Copilot metrics require Copilot licences on the measured population</li>
+    <li><strong>Viva Insights / Advanced Analytics</strong> — Copilot metrics in custom queries still require Copilot licences on the measured population</li>
+    <li><strong>Impact page metrics</strong> (Assisted Hours, Assisted Value) — require paid Copilot licences</li>
   </ul>
-  <p><strong>Why this matters:</strong> Many organisations roll out free Copilot Chat to all E3/E5 users as a precursor to paid Copilot adoption. Leaders want to understand free Copilot Chat usage to build the business case for purchasing paid licences — but none of the 5 analytics tiers provide this data.</p>
-  <p><strong>Possible workarounds:</strong></p>
+  <p><strong>For deeper free Copilot Chat analysis</strong> beyond the dashboard (e.g., user-level adoption data for building a paid-licence business case), the following supplementary data sources remain available:</p>
   <ul>
-    <li><strong>M365 Audit Logs (Purview):</strong> Copilot Chat interactions may generate audit log entries that can be queried via Purview Compliance Portal or the Office 365 Management Activity API. This provides raw interaction data (not aggregated dashboards) and requires a separate analytics pipeline.</li>
-    <li><strong>Microsoft 365 Usage Analytics:</strong> The M365 Usage Analytics content pack in Power BI may surface some Copilot Chat activity data for all users, but telemetry depth varies.</li>
-    <li><strong>Copilot Chat Admin Report:</strong> Check Admin Center → Reports → Usage for any “Copilot Chat” specific report — Microsoft may add dedicated reporting for free Copilot Chat usage independently of the Copilot Dashboard.</li>
+    <li><strong>M365 Audit Logs (Purview):</strong> Copilot Chat interactions generate audit log entries queryable via Purview Compliance Portal or the Office 365 Management Activity API.</li>
+    <li><strong>Microsoft 365 Usage Analytics:</strong> The M365 Usage Analytics content pack in Power BI may surface some Copilot Chat activity data.</li>
   </ul>
-  <p>These workarounds are outside the scope of this guide. If tracking free Copilot Chat adoption is a priority, consider it as a separate analytics workstream using audit log data.</p>
 </div>
 
 <div class="callout warning">
@@ -867,7 +871,7 @@
 <p>Microsoft has acknowledged two data collection issues that caused underreporting on the dashboard. No customer action is needed &mdash; data auto-corrects for periods after the affected windows.</p>
 <table>
   <tr><th>Affected Metrics</th><th>Affected Period</th><th>Impact</th></tr>
-  <tr><td><strong>Email features</strong> (Generate email draft, Summarize email thread)</td><td>July 1, 2025 &ndash; February 18, 2026</td><td>Outlook active user counts and email-related Assisted Hours are lower than actual for this period</td></tr>
+  <tr><td><strong>Email features</strong> (Generate email draft, Summarize email thread)</td><td>June 1, 2025 &ndash; February 18, 2026</td><td>Outlook active user counts and email-related Assisted Hours are lower than actual for this period</td></tr>
   <tr><td><strong>Meeting features</strong> (Meeting summaries, Intelligent Recap)</td><td>September 6 &ndash; November 3, 2025</td><td>Teams meeting summary counts and related Assisted Hours are lower than actual for this period</td></tr>
 </table>
 <p>If you see unexpectedly low Outlook or Teams metrics for these periods, the underreporting is the cause &mdash; not a configuration issue. The dashboard may display a yellow warning banner for the email issue.</p>
@@ -1597,7 +1601,7 @@
 </div>
 
 <h2>9.1 Why Upload Org Data? (Entra ID vs. Org Data Upload)</h2>
-<p>A common question: <em>&ldquo;We already have Department, Manager, and Job Title in Entra ID &mdash; why do we need to upload a CSV?&rdquo;</em></p>
+<p>A common question: <em>&ldquo;We already have Department, Manager, and Organisation in Entra ID &mdash; why do we need to upload a CSV?&rdquo;</em></p>
 <p>Entra ID provides a baseline, but org data uploads unlock significantly more analytics capability:</p>
 <table>
   <tr><th>Capability</th><th>Entra ID Only</th><th>With Org Data Upload</th></tr>
@@ -1629,11 +1633,11 @@
 <p><strong>Recommendation:</strong> Before deploying dashboards, run <a href="#s5">Section 5.3 Step 2 (Verify Entra ID Hierarchy)</a>. If more than 20% of users lack a Manager attribute, prioritise fixing directory data or supplement with an org data CSV upload that includes correct <code>ManagerId</code> values.</p>
 
 <h3>What Happens After Org Data Is Uploaded? (Reversal)</h3>
-<p>Once org data is uploaded, it <strong>permanently replaces Entra ID as the data source</strong> for dashboard filters. This means:</p>
+<p>Once org data is uploaded, it <strong>replaces Entra ID as the data source</strong> for the uploaded attributes in dashboard filters. This means:</p>
 <ul>
   <li>Department values come from the CSV, not from Entra ID &mdash; even if they differ</li>
   <li>If you stop uploading, the data becomes stale (not reverted to Entra ID)</li>
-  <li>To revert to Entra ID as the source, you must <strong>contact Microsoft Support</strong> to reset the org data configuration. There is no self-service reversal.</li>
+  <li><strong>Reversal is now self-service:</strong> You can use <strong>parallel data ingestion</strong> to keep Entra as the source for <code>ManagerId</code> and <code>Organization</code> while adding custom attributes via CSV. To stop using uploaded data entirely, clear the Entra connection selections or use the &ldquo;Replace All data&rdquo; option with a single dummy row. See <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Microsoft Learn</a>.</li>
   <li><strong>Before uploading:</strong> Confirm readiness to own the ongoing refresh cycle (monthly re-uploads recommended)</li>
 </ul>
 
@@ -1874,7 +1878,7 @@
   <tr><td>&ldquo;Microsoft_ManagerEmail doesn’t meet data completeness&rdquo;</td><td>Employees with blank or missing manager field in the uploaded data</td><td>Download the completeness log, identify employees missing manager data, fill in the correct <code>ManagerEmail</code>, and re-upload.</td></tr>
   <tr><td>Dashboard shows &ldquo;&ndash;&ndash;&rdquo; for most Job Function or Organization cells</td><td>Groups fall below the minimum group size threshold (default 10). This is privacy protection, not an error.</td><td>Expected behaviour. Options: (a) reduce minimum group size in Privacy Settings (minimum 5, subject to organisational policy), or (b) accept that small groups are suppressed.</td></tr>
   <tr><td>Org data uploaded but dashboard still shows only Entra ID Department values</td><td>Upload is still processing, or upload failed silently</td><td>Check upload status: M365 Admin Center → Organizational Data → Data Connections (status should be “Success”). Or Viva Insights → Admin → Organizational data → Data connections tab. Processing takes up to 7 days (legacy) or up to 3 days (M365 Admin Center).</td></tr>
-  <tr><td>Outlook or email-related adoption metrics seem unexpectedly low</td><td>Known Microsoft data issue: email draft and summarize counts were under-reported from July 1, 2025 through February 18, 2026</td><td>No customer action needed. Data auto-corrects for periods after February 18, 2026. The dashboard may display a yellow warning banner.</td></tr>
+  <tr><td>Outlook or email-related adoption metrics seem unexpectedly low</td><td>Known Microsoft data issue: email draft and summarize counts were under-reported from June 1, 2025 through February 18, 2026</td><td>No customer action needed. Data auto-corrects for periods after February 18, 2026. The dashboard may display a yellow warning banner.</td></tr>
   <tr><td>Meeting summary counts seem low for a specific period</td><td>Known Microsoft data issue: meeting metrics were under-reported from September 6 through November 3, 2025</td><td>No customer action needed. Data auto-corrects for periods after November 3, 2025.</td></tr>
 </table>
 
@@ -1976,7 +1980,7 @@
   <tr><td>10</td><td>Can we use the Agent Dashboard without Copilot Dashboard?</td><td>Both are part of the Viva Insights web app. You cannot enable one without the other being available, but access to each can be controlled separately via VFAM policies.</td></tr>
   <tr><td>11</td><td>Who needs licences &mdash; only leaders viewing dashboards, or also employees whose data we want to analyse?</td><td><strong>Both.</strong> Employees whose collaboration data you want to analyse must have a Viva Insights licence assigned (included automatically with every Copilot licence). Leaders and managers viewing dashboards also need a Viva Insights licence to access the full Copilot Dashboard and organisation insights. Unlicensed employees who collaborate with licensed users appear as &ldquo;other internal collaborators&rdquo; in aggregate but are not directly measured.</td></tr>
   <tr><td>12</td><td>We already have Department and Manager in Entra ID &mdash; why do we need to upload org data?</td><td>Entra ID syncs only three attributes to Viva Insights: <code>PersonId</code> (from UPN), <code>ManagerId</code> (from Manager), and <code>Organization</code> (from Department). The system also generates <code>Domain</code> (from SMTP), <code>TimeZone</code>, and <code>PopulationType</code>. Other Entra fields like <code>Company</code>, <code>Division</code>, <code>JobTitle</code>, and <code>extensionAttributes</code> are <strong>not synced</strong>. Org data upload adds: Location, Job Function, Level, and <strong>up to 105 custom attributes</strong> (e.g., Cost Centre, Agency, Region). It also enables before/after cohort segmentation in Power BI. <strong>For multi-agency partitioning:</strong> if each agency has a distinct email domain, you can use <code>Domain</code> as a partition filter without uploading a CSV. Otherwise, a custom <code>Agency</code> attribute via CSV is required. See <a href="#s9">Section 9.1</a> for the full comparison and the <a href="../playbooks/Copilot_Multi_Agency_Isolation_Architecture.html#choose-path">Multi-Agency Isolation Architecture</a> for the dual-path decision framework.</td></tr>
-  <tr><td>13</td><td>We uploaded org data and now our Department filter shows different values than Entra ID &mdash; can we go back?</td><td>Once org data is uploaded, it <strong>permanently replaces Entra ID</strong> as the data source for filters. There is no self-service reversal &mdash; you must contact Microsoft Support to reset. Make sure the CSV values match your intended naming before uploading. See <a href="#s9">Section 9.1</a>.</td></tr>
+  <tr><td>13</td><td>We uploaded org data and now our Department filter shows different values than Entra ID &mdash; can we go back?</td><td>Yes. You can use <strong>parallel data ingestion</strong> to restore Entra as the source for <code>ManagerId</code> and <code>Organization</code> while keeping custom CSV attributes. Alternatively, use the &ldquo;Replace All data&rdquo; option with a single dummy row to wipe uploaded data entirely, then re-enable Entra sync. See <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Microsoft Learn</a> and <a href="#s9">Section 9.1</a>. Make sure CSV values match your intended naming before uploading.</td></tr>
   <tr><td>14</td><td>We want broader productivity metrics (meeting time, focus time) not just Copilot reporting. Is that covered here?</td><td><strong>No.</strong> This guide covers Copilot Analytics only. Broader Viva Insights productivity metrics (meeting time, focus time, after-hours, collaboration networks) use the same Viva Insights licence and analyst role but are a separate analytics workstream. See Section 2.2 (Out of Scope) for pointers to the right resources. The org data and privacy settings configured through this guide carry over.</td></tr>
 </table>
 

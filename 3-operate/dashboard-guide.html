@@ -116,8 +116,41 @@
 </table>
 
 <div class="callout note">
+  <div class="callout-title">License Filter: Microsoft 365 Copilot vs Copilot Chat</div>
+  <p>At the top of the Adoption page, a <strong>License</strong> filter lets you toggle between <strong>Microsoft 365 Copilot</strong> and <strong>Copilot Chat</strong> views. The Microsoft 365 Copilot filter shows insights for employees with a paid Copilot licence. The Copilot Chat filter shows insights for active users of the free, web-based Copilot Chat app &mdash; employees with an M365 licence but <em>without</em> the paid Copilot add-on. The Copilot Chat filter appears only if your tenant has Copilot Chat reporting enabled.</p>
+</div>
+
+<div class="callout note">
   <div class="callout-title">Copilot Chat (work) vs Copilot Chat (web)</div>
-  <p><strong>Copilot Chat (work)</strong> uses your organisation&rsquo;s tenant data &mdash; files in SharePoint, emails, calendar events, and Teams messages &mdash; to generate responses. <strong>Copilot Chat (web)</strong> searches the public internet for answers. Both track <strong>licensed users only</strong>. The distinction matters because &ldquo;work&rdquo; mode reflects enterprise data utilisation, while &ldquo;web&rdquo; mode shows general AI assistance patterns.</p>
+  <p><strong>Copilot Chat (work)</strong> uses your organisation&rsquo;s tenant data &mdash; files in SharePoint, emails, calendar events, and Teams messages &mdash; to generate responses. <strong>Copilot Chat (web)</strong> searches the public internet for answers. The distinction matters because &ldquo;work&rdquo; mode reflects enterprise data utilisation, while &ldquo;web&rdquo; mode shows general AI assistance patterns.</p>
+</div>
+
+<h3>Intent Patterns (Preview)</h3>
+<p>The Adoption page includes <strong>intent-based metrics</strong> that categorise individual Copilot Chat (work) prompts into common intent categories. These help you understand <em>how</em> people use Copilot, not just <em>how much</em>.</p>
+<table>
+  <tr><th>Intent Category</th><th>What It Captures</th><th>Example Prompts</th></tr>
+  <tr><td><strong>Ask and find</strong></td><td>Questions and information retrieval</td><td>&ldquo;Find the recording of meeting X from May&rdquo;, &ldquo;Who is the project lead for initiative Y?&rdquo;</td></tr>
+  <tr><td><strong>Catch up</strong></td><td>Summaries, recaps, and action items</td><td>&ldquo;Recap this meeting with key takeaways&rdquo;, &ldquo;Summarise what happened while I was out&rdquo;</td></tr>
+  <tr><td><strong>Draft and brainstorm</strong></td><td>Content generation and creative ideation</td><td>&ldquo;Draft a status update email about project X&rdquo;, &ldquo;Brainstorm creative presentation ideas&rdquo;</td></tr>
+  <tr><td><strong>Other</strong></td><td>Prompts that don&rsquo;t fit the above categories</td><td>General questions, casual interactions</td></tr>
+</table>
+<p>Intent metrics are also available in <strong>Viva Insights advanced reporting</strong> for deeper analysis.</p>
+
+<h3>Expanded App Coverage</h3>
+<p>Beyond the core M365 apps listed above, the Dashboard also tracks Copilot usage in additional surfaces. Scenario-level breakdowns (e.g., suggested reply, translate, coach, clean data) are available for some apps:</p>
+<table>
+  <tr><th>App/Surface</th><th>Scenarios Tracked</th></tr>
+  <tr><td><strong>Microsoft 365 Copilot App</strong></td><td>Copilot Chat prompts and interactions</td></tr>
+  <tr><td><strong>Edge</strong></td><td>Copilot Chat interactions in the browser sidebar</td></tr>
+  <tr><td><strong>OneNote</strong></td><td>Summarise, organise, and create content from notes</td></tr>
+  <tr><td><strong>Outlook</strong></td><td>Suggested reply, translate, coach (in addition to draft/summarise)</td></tr>
+  <tr><td><strong>PowerPoint</strong></td><td>Translate, designer visuals, suggestions (in addition to create/summarise)</td></tr>
+  <tr><td><strong>Excel</strong></td><td>Clean data, Python in Excel (in addition to formula/analysis/format)</td></tr>
+</table>
+
+<div class="callout note">
+  <div class="callout-title">Intent Metrics Are in Public Preview</div>
+  <p>Intent-based metrics are rolling out in public preview as of April 2026. Availability may vary by tenant. These metrics will also be available in Viva Insights custom person queries once generally available, enabling analysts to correlate intent patterns with organisational attributes.</p>
 </div>
 
 <h3>&ldquo;View by&rdquo; Options</h3>
@@ -127,6 +160,7 @@
   <tr><td><strong>Group</strong></td><td>Adoption by manager&rsquo;s direct/indirect reports</td><td>Requires <strong>manager hierarchy</strong> (ManagerId in org data CSV or Entra&rsquo;s Manager field)</td></tr>
   <tr><td><strong>Job Function</strong></td><td>Adoption by role category (Engineering, Sales, HR, etc.)</td><td>Requires <strong>FunctionType</strong> attribute in org data</td></tr>
   <tr><td><strong>Organization</strong></td><td>Adoption by business unit or department</td><td>Requires <strong>Organization</strong> attribute in org data or Entra <strong>Department</strong> field</td></tr>
+  <tr><td><strong>License type</strong></td><td>Adoption by Microsoft 365 Copilot vs Copilot Chat</td><td>Copilot Chat filter requires tenant-level Copilot Chat reporting to be enabled</td></tr>
 </table>
 
 <div class="callout warning">
@@ -164,10 +198,44 @@
   <p>Microsoft disclosed two periods where certain metrics were underreported due to telemetry issues. Data from these windows may appear lower than actual usage.</p>
   <table>
     <tr><th>Metric Category</th><th>Affected Period</th><th>Details</th></tr>
-    <tr><td>Email (Outlook Copilot)</td><td>July 2025 &ndash; February 2026</td><td>Some email Copilot actions were not counted in telemetry</td></tr>
-    <tr><td>Meetings (Teams Copilot)</td><td>September &ndash; November 2025</td><td>Meeting summary actions were partially underreported</td></tr>
+    <tr><td>Email (Outlook Copilot)</td><td>June 1, 2025 &ndash; February 18, 2026</td><td>Generate email draft and Summarise email thread metrics underreported. Fix applied from February 18, 2026; historical data restoration pending.</td></tr>
+    <tr><td>Meetings (Teams Copilot)</td><td>September 6 &ndash; November 3, 2025</td><td>Copilot assisted hours, assisted value, and meeting summary metrics underreported due to data loss. Fix applied from November 4, 2025; historical data cannot be corrected.</td></tr>
   </table>
   <p>If you see dips in these periods, the underreporting issue &mdash; not reduced usage &mdash; is the most likely explanation.</p>
+</div>
+
+<h3>Export Dashboard Data</h3>
+<p>You can export de-identified Copilot Dashboard data as a <strong>CSV file</strong> covering weekly metrics for the past six months. This enables offline analysis, board-ready reporting, or integration with other analytics tools.</p>
+
+<h4>How to Export</h4>
+<ol>
+  <li>Open the Copilot Dashboard in the Viva Insights web app.</li>
+  <li>Navigate to the page containing the data you want to export (Adoption or Impact).</li>
+  <li>Select the <strong>Export</strong> button (typically in the top-right area of the dashboard).</li>
+  <li>The download starts automatically as a <strong>.csv file</strong>.</li>
+</ol>
+
+<h4>What&rsquo;s in the Export</h4>
+<table>
+  <tr><th>Field</th><th>Description</th></tr>
+  <tr><td><strong>Time period</strong></td><td>Weekly data points covering the <strong>past 6 months</strong></td></tr>
+  <tr><td><strong>Metrics</strong></td><td>Adoption and impact metrics matching the dashboard view (active users, actions, assisted hours, etc.)</td></tr>
+  <tr><td><strong>Groupings</strong></td><td>Metrics broken down by the filters/groups currently applied in the dashboard</td></tr>
+  <tr><td><strong>Privacy</strong></td><td>All data is <strong>de-identified</strong> &mdash; no user-level details are included</td></tr>
+</table>
+
+<h4>Practical Use Cases</h4>
+<ul>
+  <li><strong>Board and executive presentations:</strong> Import the CSV into Excel or Power BI to create polished charts with your organisation&rsquo;s branding.</li>
+  <li><strong>Trend analysis beyond 28 days:</strong> The export covers 6 months of weekly data, overcoming the dashboard&rsquo;s 28-day rolling limitation for visual trend tracking.</li>
+  <li><strong>Cross-tool integration:</strong> Feed Copilot metrics into existing BI pipelines, data warehouses, or reporting platforms.</li>
+  <li><strong>Snapshot archiving:</strong> Schedule regular exports to build a historical archive of adoption and impact data.</li>
+  <li><strong>Multi-agency reporting:</strong> Export tenant-level data and combine with org data in Power BI for agency-specific views.</li>
+</ul>
+
+<div class="callout note">
+  <div class="callout-title">Export vs Advanced Analytics</div>
+  <p>The dashboard export provides <strong>aggregated, de-identified</strong> data matching what you see on screen. For user-level or custom-segmented analysis, use <strong>Advanced Analytics</strong> (person queries in the Viva Insights analyst workbench). The export is ideal for quick reporting; Advanced Analytics is needed for deeper, customisable analysis.</p>
 </div>
 
 <!-- ─── 1.4 Sentiment ─── -->

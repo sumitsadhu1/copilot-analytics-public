@@ -158,9 +158,9 @@
   <tr><td>User-Level Tracking</td><td>Yes</td><td>No (group-level)</td><td>No (group-level)</td><td>No (group-level)</td><td>Custom segments</td></tr>
   <tr><td>ROI Metrics</td><td>No</td><td>Assisted Hours/Value</td><td>Yes (targeted)</td><td>No</td><td>Enhanced</td></tr>
   <tr><td>Sentiment Data</td><td>No</td><td>Yes</td><td>Yes</td><td>No</td><td>Yes</td></tr>
-  <tr><td>Agent Tracking</td><td>No</td><td>No</td><td>No</td><td>Yes</td><td>Yes (custom)</td></tr>
+  <tr><td>Agent Tracking</td><td>No</td><td>Preview</td><td>No</td><td>Yes</td><td>Yes (custom)</td></tr>
   <tr><td>Before/After Analysis</td><td>No</td><td>No</td><td>No</td><td>No</td><td>Yes</td></tr>
-  <tr><td>Export Capabilities</td><td>CSV</td><td>Limited</td><td>Limited</td><td>Limited</td><td>Full Power BI</td></tr>
+  <tr><td>Export Capabilities</td><td>CSV</td><td>CSV (de-identified, 6 months weekly)</td><td>Limited</td><td>Limited</td><td>Full Power BI</td></tr>
 </table>
 
 <!-- ═══════════════════════ 4. RACI ═══════════════════════ -->
@@ -211,7 +211,7 @@
 <p>Microsoft has acknowledged two data collection issues. No action needed — data auto-corrects after the affected windows.</p>
 <table>
   <tr><th>Affected Metrics</th><th>Affected Period</th></tr>
-  <tr><td>Email features (drafts, summaries)</td><td>July 1, 2025 – February 18, 2026</td></tr>
+  <tr><td>Email features (drafts, summaries)</td><td>June 1, 2025 – February 18, 2026</td></tr>
   <tr><td>Meeting features (summaries, recap)</td><td>September 6 – November 3, 2025</td></tr>
 </table>
 
@@ -228,13 +228,13 @@
 <h3>Out of Scope</h3>
 <ul>
   <li>Other Copilot products: Copilot for Sales, Copilot for Service, GitHub Copilot, Security Copilot</li>
-  <li><strong>Copilot Chat (Free) users</strong> — E3/E5 users without the paid Copilot add-on are <strong>not tracked</strong> by any analytics tier</li>
+  <li><strong>Copilot Chat (Free) users</strong> — E3/E5 users without the paid Copilot add-on now have <strong>limited visibility</strong> via the Copilot Chat filter on the Copilot Dashboard (requires 50+ licences). However, they are not tracked by Admin Center Copilot reports or Viva Insights queries.</li>
   <li>Broader Viva Insights productivity metrics (meeting time, focus time) — see <a href="../3-operate/collaboration-analysis.html">Collaboration Analysis Guide</a></li>
 </ul>
 
-<div class="callout warning">
-  <div class="callout-title">IMPORTANT: Copilot Chat (Free) Users Are Invisible</div>
-  <p>All M365 E3/E5 users can access Copilot Chat without the paid add-on, but their usage is <strong>not tracked</strong> by any analytics surface. If tracking free Copilot Chat adoption is a priority, consider audit log data as a separate workstream.</p>
+<div class="callout info">
+  <div class="callout-title">UPDATE (April 2026): Copilot Chat Users Are Now Visible</div>
+  <p>The Copilot Dashboard now includes a <strong>License filter</strong> that lets you toggle between <strong>Microsoft 365 Copilot</strong> and <strong>Copilot Chat</strong> views. The Copilot Chat filter shows insights for M365 E3/E5 users who use the free Copilot Chat app without the paid add-on. This addresses the previous blind spot for free Copilot Chat adoption. Your tenant must have Copilot Chat reporting enabled and 50+ Copilot or Viva Insights licences for this filter to appear.</p>
 </div>
 
 <!-- ═══════════════════════ 7. FURTHER READING ═══════════════════════ -->

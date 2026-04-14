@@ -53,6 +53,7 @@
   <li><a href="#privacy-thresholds">Privacy Thresholds</a></li>
   <li><a href="#exclusion-lists">Exclusion Lists</a></li>
   <li><a href="#data-residency">Data Residency</a></li>
+  <li><a href="#purview-dlp">Microsoft Purview DLP for Copilot Prompts</a></li>
   <li><a href="#gdpr">GDPR and Regional Compliance</a></li>
   <li><a href="#data-retention">Data Retention</a></li>
   <li><a href="#next">What to Read Next</a></li>
@@ -146,6 +147,38 @@
   <li>Confirm the listed region meets your compliance and regulatory requirements.</li>
   <li>If your organisation has specific data sovereignty requirements, consult your compliance team to verify that the tenant region satisfies them.</li>
 </ol>
+
+<!-- ═══════════════════════ 3B. PURVIEW DLP ═══════════════════════ -->
+<h1 id="purview-dlp">3B. Microsoft Purview DLP for Copilot Prompts</h1>
+
+<p>Microsoft Purview Data Loss Prevention (DLP) now extends to <strong>Microsoft 365 Copilot prompts</strong>, providing an additional security layer for organisations deploying Copilot at scale. While Copilot Analytics focuses on adoption and impact measurement, DLP for Copilot addresses the security and governance side of the deployment.</p>
+
+<h2>What It Does</h2>
+<p>Admins can define DLP policies that detect and restrict prompts containing <strong>sensitive information types (SITs)</strong>. When a user submits a Copilot prompt that matches a DLP policy, Copilot will <strong>not respond</strong> to the prompt and will not use it for web grounding.</p>
+
+<h2>Coverage</h2>
+<table>
+  <tr><th>Capability</th><th>Status</th><th>Scope</th></tr>
+  <tr><td><strong>DLP for Copilot prompts</strong></td><td>Generally Available</td><td>Microsoft 365 Copilot &mdash; blocks prompts containing sensitive info types</td></tr>
+  <tr><td><strong>DLP for web search queries</strong></td><td>Public Preview</td><td>Prevents prompts with SITs from being used in web search grounding</td></tr>
+  <tr><td><strong>DSPM for AI: Oversharing remediation</strong></td><td>Generally Available</td><td>Identify and bulk-remediate overshared SharePoint links that Copilot could surface</td></tr>
+  <tr><td><strong>Purview in M365 Admin Centre</strong></td><td>Generally Available</td><td>IT admins can view oversharing risks and enable DLP for Copilot directly from the Admin Centre</td></tr>
+</table>
+
+<h2>Why This Matters for Analytics Teams</h2>
+<ul>
+  <li><strong>DLP-blocked prompts are not counted as Copilot actions</strong> in the Dashboard or Viva Insights. If DLP policies block a significant number of prompts, this may appear as lower-than-expected Copilot usage in your analytics.</li>
+  <li><strong>Oversharing remediation</strong> reduces the risk that Copilot surfaces sensitive documents in responses, which is a prerequisite concern many organisations raise before expanding Copilot deployment.</li>
+  <li>Consider coordinating with your <strong>Security/Compliance team</strong> to understand what DLP policies are in place and how they might affect adoption metrics.</li>
+</ul>
+
+<h2>Configuration Reference</h2>
+<p>DLP for Copilot is configured in the <strong>Microsoft Purview Compliance Portal</strong>, not in Viva Insights. Refer to your security team or the official documentation at <a href="https://aka.ms/Copilot/SecureGovern">aka.ms/Copilot/SecureGovern</a> for deployment guidance.</p>
+
+<div class="callout info">
+  <div class="callout-title">Complementary to Analytics</div>
+  <p>DLP for Copilot and Copilot Analytics serve different purposes but are part of the same deployment posture. A well-governed Copilot deployment uses <strong>DLP</strong> to prevent sensitive data exposure, <strong>Copilot Analytics</strong> to measure adoption and impact, and <strong>Organisational Messages</strong> to drive enablement. Consider establishing a cross-functional team that includes Security (Purview), IT (Admin Centre), and Analytics (Viva Insights) stakeholders.</p>
+</div>
 
 <!-- ═══════════════════════ 4. GDPR ═══════════════════════ -->
 <h1 id="gdpr">4. GDPR and Regional Compliance</h1>
