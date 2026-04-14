@@ -1,0 +1,25 @@
+PersonId,EffectiveDate,ManagerId,Organization,FunctionType,LevelDesignation,HireDate,Layer,Location,HourlyRate,Region,CostCentre
+ceo@tailspin.com,15/04/2026,,Executive,,CEO,10/03/2009,0,Head Office,,APAC,CC-001
+coo@tailspin.com,15/04/2026,ceo@tailspin.com,Operations,,VP,22/07/2012,1,Head Office,,APAC,CC-100
+cto@tailspin.com,15/04/2026,ceo@tailspin.com,Technology,,VP,05/11/2014,1,Sydney,,APAC,CC-200
+cfo@tailspin.com,15/04/2026,ceo@tailspin.com,Finance,,VP,18/02/2016,1,Melbourne,,APAC,CC-300
+dir.logistics@tailspin.com,15/04/2026,coo@tailspin.com,Operations,,Director,14/06/2017,2,Brisbane,,APAC,CC-110
+dir.supply@tailspin.com,15/04/2026,coo@tailspin.com,Operations,,Director,#N/A,2,Perth,,APAC,CC-120
+dir.dev@tailspin.com,15/04/2026,cto@tailspin.com,Technology,,Director,01/01/1900,2,Sydney,$95.00,APAC,CC-210
+dir.infra@tailspin.com,15/04/2026,cto@tailspin.com,Technology,,Director,28/09/2019,2,Sydney,,APAC,CC-220
+mgr.fleet@tailspin.com,15/04/2026,dir.logistics@tailspin.com,Operations,,Manager,03/03/2020,3,Brisbane,,APAC,CC-111
+mgr.warehouse@tailspin.com,15/04/2026,dir.logistics@tailspin.com,Operations,,Manager,17/08/2020,3,Brisbane,,APAC,CC-112
+mgr.procurement@tailspin.com,15/04/2026,dir.supply@tailspin.com,Operations,,Manager,22/11/2021,3,Perth,,APAC,CC-121
+dev.alice@tailspin.com,15/04/2026,dir.dev@tailspin.com,Technology,,Senior IC,09/01/2020,3,Sydney,$88.50,APAC,CC-211
+dev.ben@tailspin.com,15/04/2026,dir.dev@tailspin.com,Technology,,IC,15/04/2022,,Sydney,72,APAC,CC-211
+dev.clara@tailspin.com,15/04/2026,dir.dev@tailspin.com,Technology,,IC,20/09/2023,,Sydney,68,APAC,CC-211
+infra.dave@tailspin.com,15/04/2026,dir.infra@tailspin.com,Technology,,IC,NULL,,Remote,75,APAC,CC-221
+infra.emma@tailspin.com,15/04/2026,dir.infra@tailspin.com,Technology,,IC,12/02/2023,,Adelaide,,APAC,CC-221
+fleet.fiona@tailspin.com,15/04/2026,mgr.fleet@tailspin.com,Operations,,IC,11/10/2021,4,Brisbane,,APAC,CC-111
+fleet.greg@tailspin.com,15/04/2026,mgr.fleet@tailspin.com,Operations,,IC,03/03/2022,4,Brisbane,,APAC,CC-111
+wh.helen@tailspin.com,15/04/2026,mgr.warehouse@tailspin.com,Operations,,IC,17/05/2022,4,Brisbane,,APAC,CC-112
+wh.ivan@tailspin.com,15/04/2026,mgr.warehouse@tailspin.com,Operations,,IC,29/09/2023,4,Brisbane,,APAC,CC-112
+proc.julia@tailspin.com,15/04/2026,mgr.procurement@tailspin.com,,,,06/01/2023,4,Perth,,APAC,CC-121
+proc.karl@tailspin.com,15/04/2026,mgr.procurement@tailspin.com,,,,14/07/2023,4,Perth,,APAC,CC-121
+fin.luna@tailspin.com,15/04/2026,cfo@tailspin.com,Finance,,IC,22/11/2022,2,Melbourne,,APAC,CC-301
+fin.marcus@tailspin.com,15/04/2026,cfo@tailspin.com,Finance,,IC,08/04/2024,2,Melbourne,,APAC,CC-301

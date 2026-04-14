@@ -79,8 +79,41 @@ Analyse the attached organizational data file and produce a comprehensive valida
 4. Copilot Dashboard filter recommendations
 5. Specific fix instructions
 
+<span class="cm"># UPLOAD PATH DETECTION</span>
+Before validating, determine which upload path the file is intended for:
+
+<span class="kw">Viva Insights (legacy path)</span> — uses column names: PersonId, ManagerId, Organization, EffectiveDate, FunctionType
+<span class="kw">M365 Admin Centre (new MODIS path)</span> — uses column names: Microsoft_PersonEmail, Microsoft_ManagerEmail, Microsoft_Organization, Microsoft_JobDiscipline
+
+Detection logic:
+- If columns start with "Microsoft_" → file is for M365 Admin Centre path. Validate against the MODIS schema below.
+- If columns use PersonId/ManagerId/Organization → file is for Viva Insights legacy path. Validate against the legacy schema below.
+- If NEITHER pattern matches → the file has non-standard column names. Report as CRITICAL and provide a mapping table for both paths.
+
+<span class="cm"># SCHEMA — VIVA INSIGHTS (LEGACY PATH)</span>
+Required columns: PersonId, EffectiveDate, ManagerId, Organization
+
+<span class="cm"># SCHEMA — M365 ADMIN CENTRE (MODIS PATH)</span>
+Required columns: Microsoft_PersonEmail, Microsoft_ManagerEmail, Microsoft_Organization
+Note: EffectiveDate is NOT a column — it is selected via the UI date picker during upload.
+Note: FunctionType → Microsoft_JobDiscipline, Location → Microsoft_CompanyOfficeLocation, HireDate → Microsoft_HireDate, HourlyRate → Microsoft_HourlyRate, LevelDesignation → Microsoft_LevelDesignation
+Note: No spaces allowed in column headers (use underscores).
+
+If the file uses legacy names but the customer is targeting the M365 Admin Centre path, produce a <span class="kw">Column Rename Mapping</span> table:
+| Legacy Name | M365 Admin Centre Name | Action |
+|---|---|---|
+| PersonId | Microsoft_PersonEmail | Rename |
+| ManagerId | Microsoft_ManagerEmail | Rename |
+| Organization | Microsoft_Organization | Rename |
+| FunctionType | Microsoft_JobDiscipline | Rename |
+| Location | Microsoft_CompanyOfficeLocation | Rename |
+| HireDate | Microsoft_HireDate | Rename |
+| HourlyRate | Microsoft_HourlyRate | Rename |
+| LevelDesignation | Microsoft_LevelDesignation | Rename |
+| EffectiveDate | (remove — use UI date picker) | Delete column |
+
 <span class="cm"># MICROSOFT LEARN REFERENCE — REQUIRED ATTRIBUTES</span>
-The following 4 attributes are <span class="kw">REQUIRED</span>. Each must be present as a column header (exact spelling, case-sensitive) and every row must have a non-blank value:
+The following 4 attributes are <span class="kw">REQUIRED</span> (legacy names shown; see MODIS mapping above for M365 Admin Centre equivalents). Each must be present as a column header (exact spelling, case-sensitive) and every row must have a non-blank value:
 
 | Attribute      | Data Type | Description |
 |----------------|-----------|-------------|
@@ -97,7 +130,7 @@ These are <span class="kw">RESERVED OPTIONAL</span>. If included, they must use 
 | FunctionType           | String    | Job function (e.g., Finance, Engineering, Sales) | Enables "Job Function" filter on Copilot Dashboard |
 | LevelDesignation       | String    | Seniority level (e.g., Director, VP, IC) | Used in some Power BI templates |
 | HireDate               | DateTime  | Employment start date. #N/A or non-date values will fail. | Used in tenure-based analysis |
-| HourlyRate             | Double    | Salary as hourly rate in USD. No commas or $ signs. | Used in Copilot Assisted Value calculations |
+| HourlyRate             | Double    | Salary as hourly rate in USD. No commas or $ signs. | Used in Copilot Assisted Value calculations. ACCESS: Set to Confidential during upload so only authorised analysts can see salary data — not all dashboard viewers. |
 | Layer                  | Integer   | Hierarchy distance from CEO (0 = CEO, 1 = direct reports, etc.) | Must be a NUMBER, not a string |
 | SupervisorIndicator    | String    | "IC", "Mngr", or "Mngr+" | Used in manager/IC analysis |
 | WeeklyBadgeOnsiteDays  | Double    | 0–7 or -1 if unknown | Used in hybrid work analysis |
@@ -117,12 +150,13 @@ The Copilot Dashboard has three main filters. Map customer data to these:
 Apply these checks to the file:
 
 <span class="kw">1. REQUIRED FIELD CHECKS</span>
-   - Verify PersonId, EffectiveDate, ManagerId, Organization columns exist
+   - Verify PersonId, EffectiveDate, ManagerId, Organization columns exist (or their Microsoft_* equivalents for MODIS path)
    - Check every row has non-blank values for all required fields
    - If Organization column exists but is EMPTY → CRITICAL ERROR (will fail upload validation)
    - If Organization column is MISSING entirely → WARNING (will fall back to Entra Department)
    - Verify PersonId values are valid email format (contain @)
    - Verify ManagerId values are valid email format (allow blank for CEO row only)
+   - Check Organization values for code-like patterns: if most values are alphanumeric codes (e.g., CC-4023, DEPT001, 50000593), numeric-only, shorter than 3 characters, or contain only uppercase letters and digits → WARNING: values appear to be system codes rather than human-readable names. Dashboard filter labels will display these codes. Recommend mapping to readable business unit names (e.g., CC-4023 → "Finance", DEPT001 → "Engineering").
 
 <span class="kw">2. RESERVED ATTRIBUTE DATA TYPE CHECKS</span>
    - Layer: Must be Integer (0, 1, 2, 3...). If values are strings like "Senior", "Grade-A", "Level3" → ERROR: rename column to a custom attribute name
@@ -158,6 +192,17 @@ Apply these checks to the file:
    - Total attribute count must not exceed 105 (including 5 required + reserved)
    - Flag any custom attributes containing PII (SSN, date of birth, home address) — these should NOT be uploaded
 
+<span class="kw">6. HRIS CONNECTOR RECOMMENDATION</span>
+   Check whether the column names or values suggest the data originates from a known HRIS platform. If detected, recommend the native M365 connector instead of CSV upload — this eliminates the entire manual validation and upload workflow.
+
+   SAP SuccessFactors indicators: columns named userId, jobCode, businessUnit, division, department, costCenter, employmentNav, or values containing "SF-" prefixes, SuccessFactors-style employee IDs.
+   → Recommend: "Your data appears to originate from SAP SuccessFactors. Microsoft 365 provides a native SAP SuccessFactors connector that syncs org data automatically on a weekly/monthly schedule — no CSV preparation or upload needed. See: https://learn.microsoft.com/viva/organizational-data/sap-successfactors-connector"
+
+   Workday indicators: columns named Worker_ID, Supervisory_Organization, Cost_Center_Reference, Management_Level, or values containing Workday-style WD/WID identifiers.
+   → Recommend: "Your data appears to originate from Workday. Microsoft 365 provides a native Workday connector (for tenants with ≤100K users) that syncs org data automatically. For larger tenants, use the Workday RaaS → Azure Blob Storage path. See: https://learn.microsoft.com/viva/organizational-data/workday-connector"
+
+   If no HRIS platform is detected, skip this section silently — do not mention it.
+
 <span class="cm"># OUTPUT FORMAT</span>
 Produce the report in this structure:
 
@@ -165,6 +210,14 @@ Produce the report in this structure:
 - Total rows, total columns, file format
 - Date range (EffectiveDate values)
 - Estimated employee count (unique PersonIds)
+- Upload path detected: Viva Insights (legacy) or M365 Admin Centre (MODIS)
+- If MODIS path detected with legacy column names, include the Column Rename Mapping table
+
+<span class="kw">## 1b. Attribute Completeness</span>
+For EVERY column in the file (not just required/reserved), produce a completeness table:
+| Column Name | Filled Rows | Total Rows | Completeness % | Quality |
+Where Quality = "Good" (>95%), "Low" (50-95%), "Poor" (<50%), or "Empty" (0%).
+This enables ongoing data quality audits — the customer can track coverage trends month over month.
 
 <span class="kw">## 2. Required Attributes — Pass/Fail</span>
 Table showing each required attribute, whether it exists, completeness %, and any issues.
@@ -202,6 +255,8 @@ Use these rules to determine dashboard impact:
 - Layer invalid → <span class="hl">Upload fails</span> if partial ingestion is off. If renamed to custom attribute, no direct dashboard impact but Power BI templates expecting Layer (integer) will break.
 - HireDate invalid → <span class="hl">Upload may fail or rows rejected</span>. Tenure-based segmentation in Power BI templates will be incomplete. No direct dashboard page impact.
 - HourlyRate missing → <span class="hl">Impact page</span>: Copilot Assisted Value will use the global default ($72/hr) instead of organisation-specific rates. ROI calculations may be inaccurate.
+- HourlyRate present but not Confidential → <span class="hl">Security risk</span>: If uploaded with Public access, salary data will be visible to all dashboard viewers and selected apps. Always recommend setting HourlyRate to Confidential access during upload (M365 Admin Centre path) to restrict visibility to authorised Viva Insights analysts only.
+- Organization values are system codes (CC-4023, DEPT001) → <span class="hl">Adoption + Impact pages</span>: Filter dropdowns and "View by: Organization" labels will show cryptic codes instead of readable business unit names. Leaders won't recognise the values. Recommend mapping codes to human-readable names before upload.
 - Single EffectiveDate (no monthly snapshots) → <span class="hl">Adoption + Impact pages</span>: 6-month trendlines on the dashboard are unaffected (they use M365 telemetry data, not org data). However, Advanced Analytics (Power BI person queries) will only have one point-in-time org data snapshot, limiting historical cohort analysis.
 - Parenthetical IDs in values → <span class="hl">Adoption + Impact pages</span>: Filter dropdowns and "View by" labels will display cluttered text like "Corporate Services (10000593)" instead of clean "Corporate Services".
 - Too many unique values in Organisation (&gt;50) → <span class="hl">Adoption page</span>: Filter dropdown becomes unusually long and hard to navigate. Consider using a higher-level grouping.

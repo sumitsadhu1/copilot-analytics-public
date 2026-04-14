@@ -1,0 +1,25 @@
+PersonId,EffectiveDate,ManagerId,Organization,FunctionType,LevelDesignation,HireDate,Layer,Location,HourlyRate,Department,CostCenter
+ceo@northwind.com,15/04/2026,,Executive,,CEO,10/03/2008,0,Head Office,,Executive Office,CC-001
+vp.ops@northwind.com,15/04/2026,ceo@northwind.com,Operations,,VP,05/06/2012,1,Head Office,,Operations,CC-100
+vp.tech@northwind.com,15/04/2026,ceo@northwind.com,Technology,,VP,22/09/2014,1,Branch Office,,Technology,CC-200
+dir.logistics@northwind.com,15/04/2026,vp.ops@northwind.com,Operations,,Director,14/02/2016,2,,,Logistics,CC-110
+dir.warehouse@northwind.com,15/04/2026,vp.ops@northwind.com,Operations,,Director,30/08/2017,2,Warehouse A,,Warehouse,CC-120
+dir.dev@northwind.com,15/04/2026,vp.tech@northwind.com,Technology,,Director,#N/A,2,Branch Office,,Development,CC-210
+dir.infra@northwind.com,15/04/2026,vp.tech@northwind.com,Technology,,Director,01/01/1900,2,Branch Office,,Infrastructure,CC-220
+mgr.shipping@northwind.com,15/04/2026,dir.logistics@northwind.com,Operations,,Manager,18/03/2019,3,Hub 1,,Shipping,CC-111
+mgr.receiving@northwind.com,15/04/2026,dir.logistics@northwind.com,Operations,,Manager,25/07/2020,3,Hub 2,,Receiving,CC-112
+mgr.inventory@northwind.com,15/04/2026,dir.warehouse@northwind.com,Operations,,Manager,09/11/2020,3,Warehouse A,,Inventory,CC-121
+mgr.qa@northwind.com,15/04/2026,dir.warehouse@northwind.com,Operations,,Manager,15/01/2021,3,Warehouse B,,Quality Assurance,CC-122
+dev.senior.amy@northwind.com,15/04/2026,dir.dev@northwind.com,Technology,,Senior IC,20/04/2019,3,Branch Office,$85.50,Development,CC-211
+dev.ben@northwind.com,15/04/2026,dir.dev@northwind.com,Technology,,IC,13/08/2021,,Branch Office,$72.00,Development,CC-211
+dev.clara@northwind.com,15/04/2026,dir.dev@northwind.com,Technology,,IC,05/02/2023,,Branch Office,68,Development,CC-211
+infra.dave@northwind.com,15/04/2026,dir.infra@northwind.com,Technology,,IC,NULL,,,75,Infrastructure,CC-221
+infra.emma@northwind.com,15/04/2026,dir.infra@northwind.com,Technology,,IC,28/06/2022,,Remote,,Infrastructure,CC-221
+ship.fiona@northwind.com,15/04/2026,mgr.shipping@northwind.com,Operations,,IC,11/10/2021,4,Hub 1,,Shipping,CC-111
+ship.greg@northwind.com,15/04/2026,mgr.shipping@northwind.com,Operations,,IC,03/03/2022,4,Hub 1,,Shipping,CC-111
+recv.helen@northwind.com,15/04/2026,mgr.receiving@northwind.com,Operations,,IC,17/05/2022,4,Hub 2,,Receiving,CC-112
+recv.ivan@northwind.com,15/04/2026,mgr.receiving@northwind.com,Operations,,IC,29/09/2023,4,Hub 2,,Receiving,CC-112
+inv.julia@northwind.com,15/04/2026,mgr.inventory@northwind.com,Operations,,IC,06/01/2023,4,Warehouse A,,Inventory,CC-121
+inv.karl@northwind.com,15/04/2026,mgr.inventory@northwind.com,Operations,,IC,14/07/2023,4,Warehouse A,,Inventory,CC-121
+qa.luna@northwind.com,15/04/2026,mgr.qa@northwind.com,,,,22/11/2023,4,Warehouse B,,Quality Assurance,CC-122
+qa.marcus@northwind.com,15/04/2026,mgr.qa@northwind.com,,,,08/04/2024,4,Warehouse B,,Quality Assurance,CC-122

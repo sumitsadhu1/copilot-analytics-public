@@ -1,0 +1,21 @@
+EmployeeEmail,Date,ManagerName,Dept,Role,Band,StartDate,PayGrade,Office,YearsService,Rating,TimeZone
+j.smith@adventure.works,2026-04-15,Sarah Johnson,Sales & Marketing,Account Executive,B3,2019-05-12,Grade C,Sydney,7,3.5,AEST
+s.johnson@adventure.works,2026-04-15,Michael Chen,Sales & Marketing,Regional Manager,B5,2015-08-20,Grade A,Sydney,11,4.2,AEST
+m.chen@adventure.works,2026-04-15,CEO TBD,Executive,Chief Revenue Officer,B7,2012-03-01,Grade S,Melbourne,14,,AEST
+a.williams@adventure.works,2026-04-15,Sarah Johnson,Sales & Marketing,Account Executive,B3,#N/A,Grade C,Brisbane,N/A,2.8,AEST
+p.garcia@adventure.works,2026-04-15,Sarah Johnson,,Account Executive,B3,,Grade C,,5,3.1,AEST
+l.brown@adventure.works,2026-04-15,David Wilson,Engineering,Senior Developer,B4,2018-11-30,Grade B,Melbourne,8,4.0,AEST
+d.wilson@adventure.works,2026-04-15,Michael Chen,Engineering,Engineering Manager,B5,2016-02-14,Grade A,Melbourne,10,4.5,AEST
+r.martinez@adventure.works,2026-04-15,David Wilson,Engineering,Developer,B2,2022-01-15,Grade D,Remote,4,none,AEST
+k.anderson@adventure.works,2026-04-15,David Wilson,Engineering,Developer,B2,0/01/1900,Grade D,Melbourne,null,3.2,AEST
+t.thomas@adventure.works,2026-04-15,Lisa Nakamura,Customer Success (CS-400),Support Specialist,B1,2023-06-01,Grade E,Perth,3,2.9,AWST
+l.nakamura@adventure.works,2026-04-15,Michael Chen,Customer Success (CS-400),CS Director,B5,2017-07-22,Grade A,Perth,9,4.1,AWST
+n.patel@adventure.works,2026-04-15,Lisa Nakamura,Customer Success (CS-400),Support Specialist,B1,2024-01-10,Grade E,Perth,2,#N/A,AWST
+w.jones@adventure.works,2026-04-15,Unknown Manager,Finance & Accounting,Financial Analyst,B3,2021-09-05,Grade C,Sydney,5,3.3,AEST
+c.davis@adventure.works,2026-04-15,Wendy Jones,Finance & Accounting,Senior Accountant,B4,2019-12-01,Grade B,Sydney,7,3.8,AEST
+w.jones@adventure.works,2026-04-15,Michael Chen,Finance & Accounting,Finance Manager,B5,2018-04-15,Grade A,Sydney,8,4.0,AEST
+b.thompson@adventure.works,2026-04-15,CEO TBD,HR,HR Director,B5,2014-06-30,Grade A,Melbourne,,3.7,AEST
+h.lee@adventure.works,2026-04-15,Beth Thompson,HR,Recruiter,B2,2023-03-20,Grade D,Melbourne,3,,AEST
+f.robinson@adventure.works,2026-04-15,Beth Thompson,,Payroll Specialist,B2,2022-08-10,Grade D,Melbourne,4,3.0,AEST
+m.white@adventure.works,2026-04-15,Beth Thompson,HR,HR Coordinator,,2024-07-01,Grade E,Remote,2,3.5,AEST
+j.harris@adventure.works,2026-04-15,Sarah Johnson,Sales & Marketing,Marketing Analyst,B3,12/25/2021,Grade C,Brisbane,5,3.4,AEST

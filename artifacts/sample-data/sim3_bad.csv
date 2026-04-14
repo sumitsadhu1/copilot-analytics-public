@@ -1,0 +1,21 @@
+EmployeeEmail,Date,ManagerDisplayName,DeptCode,JobTitle,Grade,StartDate,PayLevel,OfficeName,YearsExp,PerfScore,TimeZone,Domain
+j.smith@litware.com,2026-04-15,Sarah Johnson,D-401,Account Manager,G3,2019-05-12,PL-C,Sydney Office,7,3.5,AEST,litware.com
+s.johnson@litware.com,2026-04-15,Michael Chen,D-401,Regional Director,G5,2015-08-20,PL-A,Sydney Office,11,4.2,AEST,litware.com
+m.chen@litware.com,2026-04-15,TBD,D-001,Chief Revenue Officer,G7,2012-03-01,PL-S,Melbourne HQ,14,,AEST,litware.com
+a.williams@litware.com,2026-04-15,Sarah Johnson,D-401,Account Manager,G3,#N/A,PL-C,Brisbane,N/A,2.8,AEST,litware.com
+p.garcia@litware.com,2026-04-15,Sarah Johnson,,Account Manager,G3,,PL-C,,5,3.1,AEST,litware.com
+l.brown@litware.com,2026-04-15,David Wilson,D-500,Senior Developer,G4,2018-11-30,PL-B,Melbourne HQ,8,4.0,AEST,litware.com
+d.wilson@litware.com,2026-04-15,Michael Chen,D-500,Engineering Manager,G5,2016-02-14,PL-A,Melbourne HQ,10,4.5,AEST,litware.com
+r.martinez@litware.com,2026-04-15,David Wilson,D-500,Junior Developer,G2,2022-01-15,PL-D,Remote,4,none,AEST,litware.com
+k.anderson@litware.com,2026-04-15,David Wilson,D-500,Developer,G2,0/01/1900,PL-D,Melbourne HQ,null,3.2,AEST,litware.com
+t.thomas@litware.com,2026-04-15,Lisa Nakamura,D-600,Support Analyst,G1,2023-06-01,PL-E,Perth,3,2.9,AWST,litware.com
+l.nakamura@litware.com,2026-04-15,Michael Chen,D-600,Support Director,G5,2017-07-22,PL-A,Perth,9,4.1,AWST,litware.com
+n.patel@litware.com,2026-04-15,Lisa Nakamura,D-600,Support Analyst,G1,2024-01-10,PL-E,Perth,2,#N/A,AWST,litware.com
+w.jones@litware.com,2026-04-15,Unknown Manager,D-700,Financial Analyst,G3,2021-09-05,PL-C,Sydney Office,5,3.3,AEST,litware.com
+c.davis@litware.com,2026-04-15,Wendy Jones,D-700,Senior Accountant,G4,2019-12-01,PL-B,Sydney Office,7,3.8,AEST,litware.com
+w.jones@litware.com,2026-04-15,Michael Chen,D-700,Finance Manager,G5,2018-04-15,PL-A,Sydney Office,8,4.0,AEST,litware.com
+b.thompson@litware.com,2026-04-15,TBD,D-800,HR Director,G5,2014-06-30,PL-A,Melbourne HQ,,3.7,AEST,litware.com
+h.lee@litware.com,2026-04-15,Beth Thompson,D-800,Recruiter,G2,2023-03-20,PL-D,Melbourne HQ,3,,AEST,litware.com
+f.robinson@litware.com,2026-04-15,Beth Thompson,,Payroll Specialist,G2,2022-08-10,PL-D,Melbourne HQ,4,3.0,AEST,litware.com
+m.white@litware.com,2026-04-15,Beth Thompson,D-800,HR Coordinator,,2024-07-01,PL-E,Remote,2,3.5,AEST,litware.com
+j.harris@litware.com,2026-04-15,Sarah Johnson,D-401,Marketing Analyst,G3,12/25/2021,PL-C,Brisbane,5,3.4,AEST,litware.com

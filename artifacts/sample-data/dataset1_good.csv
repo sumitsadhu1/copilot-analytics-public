@@ -1,0 +1,29 @@
+PersonId,EffectiveDate,ManagerId,Organization,FunctionType,LevelDesignation,HireDate,Layer,Location,CountryOrRegion,SupervisorIndicator,HourlyRate
+ceo@contoso.com,04/15/2026,,Executive,Leadership,CEO,03/15/2010,0,Seattle,United States,Mngr+,150.00
+vp.engineering@contoso.com,04/15/2026,ceo@contoso.com,Engineering,Technology,VP,06/01/2012,1,Seattle,United States,Mngr+,130.00
+vp.sales@contoso.com,04/15/2026,ceo@contoso.com,Sales,Revenue,VP,09/20/2013,1,New York,United States,Mngr+,125.00
+vp.hr@contoso.com,04/15/2026,ceo@contoso.com,Human Resources,People Operations,VP,01/10/2015,1,Seattle,United States,Mngr,110.00
+vp.finance@contoso.com,04/15/2026,ceo@contoso.com,Finance,Finance Management,VP,04/22/2014,1,Chicago,United States,Mngr,115.00
+dir.platform@contoso.com,04/15/2026,vp.engineering@contoso.com,Engineering,Technology,Director,02/14/2016,2,Seattle,United States,Mngr,105.00
+dir.cloud@contoso.com,04/15/2026,vp.engineering@contoso.com,Engineering,Technology,Director,08/30/2017,2,Redmond,United States,Mngr,105.00
+dir.enterprise@contoso.com,04/15/2026,vp.sales@contoso.com,Sales,Revenue,Director,11/05/2016,2,New York,United States,Mngr,100.00
+dir.smb@contoso.com,04/15/2026,vp.sales@contoso.com,Sales,Revenue,Director,03/18/2018,2,Boston,United States,Mngr,98.00
+mgr.backend@contoso.com,04/15/2026,dir.platform@contoso.com,Engineering,Technology,Manager,05/22/2019,3,Seattle,United States,Mngr,90.00
+mgr.frontend@contoso.com,04/15/2026,dir.platform@contoso.com,Engineering,Technology,Manager,07/11/2019,3,Seattle,United States,Mngr,88.00
+mgr.devops@contoso.com,04/15/2026,dir.cloud@contoso.com,Engineering,Technology,Manager,09/01/2020,3,Redmond,United States,Mngr,92.00
+mgr.accounts@contoso.com,04/15/2026,dir.enterprise@contoso.com,Sales,Revenue,Manager,01/15/2020,3,New York,United States,Mngr,85.00
+sr.eng.alice@contoso.com,04/15/2026,mgr.backend@contoso.com,Engineering,Technology,Senior IC,04/10/2020,4,Seattle,United States,IC,82.00
+sr.eng.bob@contoso.com,04/15/2026,mgr.backend@contoso.com,Engineering,Technology,Senior IC,06/25/2020,4,Seattle,United States,IC,80.00
+eng.carol@contoso.com,04/15/2026,mgr.backend@contoso.com,Engineering,Technology,IC,11/03/2021,5,Seattle,United States,IC,70.00
+eng.dan@contoso.com,04/15/2026,mgr.frontend@contoso.com,Engineering,Technology,IC,02/14/2022,5,Seattle,United States,IC,72.00
+eng.eve@contoso.com,04/15/2026,mgr.frontend@contoso.com,Engineering,Technology,IC,08/20/2022,5,Portland,United States,IC,68.00
+devops.frank@contoso.com,04/15/2026,mgr.devops@contoso.com,Engineering,Technology,IC,03/01/2023,5,Redmond,United States,IC,75.00
+devops.grace@contoso.com,04/15/2026,mgr.devops@contoso.com,Engineering,Technology,IC,05/15/2023,5,Redmond,United States,IC,73.00
+sales.hank@contoso.com,04/15/2026,mgr.accounts@contoso.com,Sales,Revenue,IC,07/01/2021,4,New York,United States,IC,65.00
+sales.iris@contoso.com,04/15/2026,mgr.accounts@contoso.com,Sales,Revenue,IC,09/10/2021,4,New York,United States,IC,63.00
+sales.jack@contoso.com,04/15/2026,dir.smb@contoso.com,Sales,Revenue,IC,12/01/2022,3,Boston,United States,IC,60.00
+sales.kate@contoso.com,04/15/2026,dir.smb@contoso.com,Sales,Revenue,IC,01/20/2023,3,Boston,United States,IC,62.00
+hr.leo@contoso.com,04/15/2026,vp.hr@contoso.com,Human Resources,People Operations,IC,06/15/2020,2,Seattle,United States,IC,58.00
+hr.mia@contoso.com,04/15/2026,vp.hr@contoso.com,Human Resources,People Operations,IC,10/01/2021,2,Seattle,United States,IC,56.00
+fin.nora@contoso.com,04/15/2026,vp.finance@contoso.com,Finance,Finance Management,Senior IC,04/15/2019,2,Chicago,United States,IC,65.00
+fin.oscar@contoso.com,04/15/2026,vp.finance@contoso.com,Finance,Finance Management,IC,08/22/2022,2,Chicago,United States,IC,55.00
