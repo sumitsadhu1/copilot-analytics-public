@@ -53,17 +53,251 @@
   <tr><th>Document Property</th><th>Value</th></tr>
   <tr><td>Type</td><td>Reusable Prompt Template</td></tr>
   <tr><td>Audience</td><td>Analysts, IT Admins, Solution Architects</td></tr>
-  <tr><td>Version</td><td>1.0</td></tr>
+  <tr><td>Version</td><td>2.0</td></tr>
   <tr><td>Published</td><td>April 2026</td></tr>
 </table>
 
 <div class="callout info">
-  <div class="callout-title">How to Use This Prompt</div>
-  <p>Copy the prompt below, paste it into your AI assistant (GitHub Copilot, Microsoft Copilot, ChatGPT, etc.), and <strong>attach or paste the customer&rsquo;s org data file</strong> (Excel or CSV). The AI will analyse the file against Microsoft&rsquo;s Viva Insights requirements and produce a validation report with specific fix recommendations.</p>
+  <div class="callout-title">Choose Your Prompt Format</div>
+  <p>This page provides <strong>two formats</strong> for the same validation. Choose based on your AI platform:</p>
+  <table style="margin:10px 0;">
+    <tr><th>Format</th><th>Best For</th><th>Character Count</th></tr>
+    <tr><td><a href="#modular"><strong>Modular Flow (3 Prompts)</strong></a></td><td>Microsoft 365 Copilot Analyst Agent, Copilot Chat</td><td>~4,500 chars each</td></tr>
+    <tr><td><a href="#full-prompt"><strong>Full Prompt (Single)</strong></a></td><td>GitHub Copilot (Opus), ChatGPT, Claude</td><td>~18,000 chars</td></tr>
+  </table>
+  <p>Both formats produce the same validation. The modular flow splits the analysis into three sequential steps to fit within M365 Copilot input limits. Always <strong>attach or paste the customer&rsquo;s org data file</strong> (Excel or CSV) with each prompt.</p>
 </div>
 
-<!-- ═══════════════════════ 1. THE PROMPT ═══════════════════════ -->
-<h1 id="prompt">1. The Prompt</h1>
+<!-- ═══════════════════════ 1. MODULAR FLOW ═══════════════════════ -->
+<h1 id="modular">1. Modular Flow &mdash; 3 Prompts</h1>
+
+<div class="callout" style="border-left-color:#0078d4;">
+  <div class="callout-title">How the Flow Works</div>
+  <p>Run these three prompts <strong>in order</strong>, attaching the <strong>same org data file</strong> to each. Each prompt produces a self-contained report you can save. The prompts guide you to the next step automatically.</p>
+  <p style="font-family:monospace; font-size:0.9em; margin-top:8px; color:var(--primary);">
+    Prompt 1: Data Readiness &nbsp;&#10132;&nbsp; Prompt 2: Dashboard Impact &nbsp;&#10132;&nbsp; Prompt 3: Remediation Plan
+  </p>
+</div>
+
+<!-- ─── PROMPT 1 ─── -->
+<h2 id="prompt1">Prompt 1 of 3 &mdash; Data Readiness Assessment</h2>
+<p><strong>Purpose:</strong> Is the file structurally ready for upload? Checks column names, data types, hierarchy integrity, and data quality.</p>
+
+<div class="prompt-block" id="prompt-1-block">
+<button class="copy-btn" onclick="copyById('prompt-1-block')">&#128203; Copy</button><span class="cm"># ROLE</span>
+You are a <span class="kw">Microsoft Viva Insights Organizational Data Validation Specialist</span>. Analyse the attached org data file and produce a DATA READINESS REPORT.
+
+<span class="cm"># TASK</span>
+Validate this org data file for upload readiness to the Copilot Dashboard / Viva Insights platform.
+
+<span class="cm"># UPLOAD PATH DETECTION</span>
+- If columns start with "Microsoft_" → M365 Admin Centre (MODIS) path
+- If columns use PersonId/ManagerId/Organization → Viva Insights (Legacy) path
+- If NEITHER matches → CRITICAL: non-standard column names. Produce a rename mapping.
+
+<span class="cm"># REQUIRED ATTRIBUTES (Legacy)</span>
+| Attribute | Type | Rules |
+|---|---|---|
+| PersonId | Email | Must contain @, unique per EffectiveDate |
+| EffectiveDate | DateTime | MM/DD/YYYY or DD/MM/YYYY |
+| ManagerId | Email | Must contain @, blank only for CEO row |
+| Organization | String | Non-blank for every row |
+
+<span class="cm"># REQUIRED ATTRIBUTES (MODIS)</span>
+PersonId → Microsoft_PersonEmail, ManagerId → Microsoft_ManagerEmail, Organization → Microsoft_Organization. EffectiveDate is set via UI date picker (no column needed).
+
+<span class="cm"># RESERVED OPTIONAL ATTRIBUTES</span>
+If present, must use exact names and correct types:
+| Attribute | Type | Rules |
+|---|---|---|
+| FunctionType | String | Job function category |
+| LevelDesignation | String | Seniority level |
+| HireDate | DateTime | No #N/A or sentinel strings |
+| HourlyRate | Double | Numeric only, no $ or commas |
+| Layer | Integer | 0,1,2,3... not strings |
+| SupervisorIndicator | String | IC, Mngr, or Mngr+ only |
+| Location | String | Office location |
+| CountryOrRegion | String | Country |
+
+<span class="cm"># FORBIDDEN COLUMN NAMES</span>
+TimeZone, Domain, PopulationType, StartDate, EndDate, ObjectId, IsActive, MetricDate, StandardTimeZone
+
+<span class="cm"># VALIDATION CHECKS</span>
+1. Required columns exist and complete
+2. PersonId valid email format (contains @)
+3. ManagerId valid email (blank only for CEO)
+4. Duplicate PersonIds
+5. Date format detection (MM/DD vs DD/MM), flag ambiguous dates
+6. Sentinel values: #N/A, N/A, NULL, "null", "none", 0 as placeholder
+7. Placeholder dates: 01/01/1900, 01/01/1970, 12/31/9999
+8. Hierarchy integrity: orphan managers, loops
+9. Reserved attribute data types
+10. Unique values per column — flag &gt;200 or &lt;3
+11. Parenthetical IDs in values (e.g. "Sales (10001)")
+12. Total columns &lt;= 105
+13. Forbidden column names
+14. Columns with &gt;50% blank values
+15. HRIS indicators: if columns suggest SAP SuccessFactors or Workday, recommend native connector
+
+<span class="cm"># OUTPUT FORMAT</span>
+<span class="kw">## 1. File Summary</span>
+File name, format, total rows, total columns, EffectiveDate range, unique PersonId count, upload path detected.
+
+<span class="kw">## 2. Attribute Completeness</span>
+Table: Column Name | Filled Rows | Total Rows | Completeness % | Quality (Good &gt;95% / Low 50-95% / Poor &lt;50% / Empty 0%)
+
+<span class="kw">## 3. Required Attributes — Pass / Fail</span>
+Table: Attribute | Exists | Completeness | Issues
+
+<span class="kw">## 4. Reserved Attributes — Validation</span>
+Table: Attribute | Present | Data Type Check | Sample Values | Fix Needed
+
+<span class="kw">## 5. Data Quality Issues</span>
+Numbered list with severity (CRITICAL / WARNING / INFO) and specific fix instruction.
+
+<span class="kw">## 6. Upload Readiness Verdict</span>
+State one of: <span class="hl">PASS</span> / <span class="hl">PASS WITH WARNINGS</span> / <span class="hl">FAIL</span>. Brief explanation.
+
+<span class="kw">## ▶ NEXT STEP</span>
+End with: "Save this report. Then run <span class="hl">Prompt 2: Dashboard Impact Simulation</span> with the same file attached to see how this data will appear on the Copilot Dashboard."
+
+Now analyse the attached file.
+</div>
+
+<!-- ─── PROMPT 2 ─── -->
+<h2 id="prompt2">Prompt 2 of 3 &mdash; Dashboard Impact Simulation</h2>
+<p><strong>Purpose:</strong> What will the Copilot Dashboard look like if this data is uploaded? Maps columns to filters and predicts the user experience.</p>
+
+<div class="prompt-block" id="prompt-2-block">
+<button class="copy-btn" onclick="copyById('prompt-2-block')">&#128203; Copy</button><span class="cm"># ROLE</span>
+You are a <span class="kw">Microsoft Copilot Dashboard Impact Analyst</span>. Analyse the attached org data file and produce a DASHBOARD IMPACT SIMULATION showing exactly what the Copilot Dashboard will look like if this data is uploaded.
+
+<span class="cm"># CONTEXT</span>
+This is Prompt 2 of 3. The user has already run Prompt 1 (Data Readiness Assessment) on this file.
+
+<span class="cm"># COPILOT DASHBOARD FILTERS</span>
+| Dashboard Filter | Source | Entra Fallback |
+|---|---|---|
+| <span class="kw">Scope</span> (Your company / Your group) | ManagerId → hierarchy tree | Entra ManagerID |
+| <span class="kw">Organisation</span> filter | Organization column | Entra Department |
+| <span class="kw">Job Function</span> filter | FunctionType column | NO fallback — only appears if FunctionType is uploaded |
+
+<span class="cm"># DASHBOARD IMPACT RULES</span>
+Apply these rules to determine impact for each data condition:
+- Organization empty/missing → Organisation filter absent or shows Entra Department
+- Organization present but values are empty → WORSE: overrides Entra with blanks
+- FunctionType empty/missing → Job Function filter will NOT appear (no Entra fallback)
+- ManagerId hierarchy broken (orphan managers) → Scope shows only "Your company"
+- HourlyRate missing → Impact page uses default $72/hr for Copilot Assisted Value
+- HourlyRate present but not Confidential → Security risk: salary visible to all viewers
+- Single EffectiveDate → Dashboard trendlines unaffected (M365 telemetry), but Advanced Analytics has only 1 snapshot
+- High cardinality (>50 unique values) used as filter → Dropdown unusable
+- Low cardinality (<3 unique values) → Limited analytical value
+- Parenthetical IDs in values → Cluttered filter labels
+- Groups &lt; minimum group size (default 10) → Show "--" on dashboard
+- System codes instead of human-readable names → Cryptic filter labels
+
+<span class="cm"># OUTPUT FORMAT</span>
+<span class="kw">## 1. Dashboard Filter Mapping</span>
+Table: Dashboard Filter | Recommended Source Column | Sample Values | Status (✅/⚠️/❌)
+
+<span class="kw">## 2. Dashboard Impact Assessment</span>
+Table: Data Issue | Dashboard Page Affected | What Users Will See | Severity (High/Medium/Low)
+
+<span class="kw">## 3. Dashboard Preview</span>
+- Filters that WILL work (with caveats)
+- Filters that will NOT be available
+- Scope/Group view — show the hierarchy tree with which groups show data vs "--"
+- Minimum group size impact estimate
+
+<span class="kw">## 4. Copilot Assisted Value Assessment</span>
+HourlyRate present? Populated? If missing, note the $72/hr default. If present, remind to set Confidential.
+
+<span class="kw">## 5. Advanced Analytics Impact</span>
+EffectiveDate snapshot count, Power BI historical analysis capability, reserved attributes available for PBI templates.
+
+<span class="kw">## ▶ NEXT STEP</span>
+End with: "Save this report. Then run <span class="hl">Prompt 3: Remediation &amp; Upload Plan</span> with the same file attached to get a step-by-step fix checklist and column mapping guide."
+
+Now analyse the attached file.
+</div>
+
+<!-- ─── PROMPT 3 ─── -->
+<h2 id="prompt3">Prompt 3 of 3 &mdash; Remediation &amp; Upload Plan</h2>
+<p><strong>Purpose:</strong> Step-by-step fix checklist and column mapping guide. Hand this to whoever is preparing the file for upload.</p>
+
+<div class="prompt-block" id="prompt-3-block">
+<button class="copy-btn" onclick="copyById('prompt-3-block')">&#128203; Copy</button><span class="cm"># ROLE</span>
+You are a <span class="kw">Microsoft Viva Insights Upload Remediation Specialist</span>. Analyse the attached org data file and produce a REMEDIATION AND UPLOAD PLAN with a step-by-step fix checklist.
+
+<span class="cm"># CONTEXT</span>
+This is Prompt 3 of 3. The user has already run Prompt 1 (Data Readiness) and Prompt 2 (Dashboard Impact) on this file.
+
+<span class="cm"># UPLOAD PATHS</span>
+- <span class="kw">Viva Insights (Legacy)</span>: PersonId, ManagerId, Organization, EffectiveDate
+- <span class="kw">M365 Admin Centre (MODIS)</span>: Microsoft_PersonEmail, Microsoft_ManagerEmail, Microsoft_Organization (EffectiveDate set via UI)
+
+<span class="cm"># COLUMN RENAME MAPPING (Legacy → MODIS)</span>
+| Legacy | MODIS | Action |
+|---|---|---|
+| PersonId | Microsoft_PersonEmail | Rename |
+| ManagerId | Microsoft_ManagerEmail | Rename |
+| Organization | Microsoft_Organization | Rename |
+| FunctionType | Microsoft_JobDiscipline | Rename |
+| LevelDesignation | Microsoft_LevelDesignation | Rename |
+| HireDate | Microsoft_HireDate | Rename |
+| HourlyRate | Microsoft_HourlyRate | Rename |
+| Location | Microsoft_CompanyOfficeLocation | Rename |
+| EffectiveDate | (remove — use UI date picker) | Delete column |
+
+<span class="cm"># IMPORTANT UPLOAD NOTES</span>
+- Uploading org data PERMANENTLY replaces Entra ID as the source for those attributes
+- Organization falls back to Entra Department ONLY if Organization column is missing entirely
+- FunctionType / Job Function filter has NO Entra fallback
+- Column names are case-sensitive
+- Maximum 105 total attributes
+- HourlyRate MUST be set to "Confidential" during upload to restrict salary visibility
+
+<span class="cm"># OUTPUT FORMAT</span>
+<span class="kw">## 1. Column Mapping Summary</span>
+Table: Customer Column | Maps To | Action (Keep/Rename/Clean/Remove) | Rationale
+
+<span class="kw">## 2. MODIS Rename Table</span>
+If customer targets Admin Centre, show the full rename mapping. If targeting Legacy path, state "Not required."
+
+<span class="kw">## 3. Fix Checklist (Priority-Ordered)</span>
+Group by priority:
+<span class="hl">P1 — CRITICAL</span> (upload will fail or dashboard severely broken)
+<span class="hl">P2 — WARNING</span> (upload succeeds but dashboard degraded)
+<span class="hl">P3 — INFO</span> (optional improvements)
+Each item: what to fix, why, how (specific instruction).
+
+<span class="kw">## 4. Upload Configuration Reminders</span>
+- DateTime format to select (MM/DD/YYYY or DD/MM/YYYY)
+- HourlyRate confidentiality setting
+- Minimum group size consideration
+- Post-upload impact awareness
+
+<span class="kw">## 5. Post-Upload Verification Checklist</span>
+1. Organisation filter shows expected values
+2. Job Function filter appears (if FunctionType uploaded)
+3. Scope → Your group shows correct hierarchy for a sample manager
+4. No groups unexpectedly show "--"
+5. Impact page → Assisted Value uses correct rates (or expected $72 default)
+6. Spot-check HireDate values for employees with fixed placeholder dates
+
+End with: "After completing all fixes, re-validate the file by running <span class="hl">Prompt 1: Data Readiness Assessment</span> again to confirm a PASS verdict before uploading."
+</div>
+
+<hr>
+
+<!-- ═══════════════════════ FULL PROMPT (ADVANCED) ═══════════════════════ -->
+<h1 id="full-prompt">2. Full Prompt &mdash; Single Prompt (Advanced)</h1>
+
+<div class="callout" style="border-left-color:#8661c5;">
+  <div class="callout-title">For Large-Context AI Platforms</div>
+  <p>This is the original monolithic prompt (~18,000 characters). Use with <strong>GitHub Copilot (Opus/Claude)</strong>, <strong>ChatGPT</strong>, or <strong>Claude</strong> which can handle the full prompt + file in a single pass. Not recommended for Microsoft 365 Copilot Chat or the Analyst Agent due to input size limits.</p>
+</div>
 
 <p>Copy the entire prompt below. When using it, attach the customer's org data file (Excel/CSV) along with the prompt.</p>
 
@@ -287,8 +521,8 @@ End the section with: "After applying all Priority 1 fixes, re-upload and verify
 Now analyse the attached file and produce the validation report.
 </div>
 
-<!-- ═══════════════════════ 2. USAGE SCENARIOS ═══════════════════════ -->
-<h1 id="scenarios">2. Usage Scenarios</h1>
+<!-- ═══════════════════════ 3. USAGE SCENARIOS ═══════════════════════ -->
+<h1 id="scenarios">3. Usage Scenarios</h1>
 
 <div class="use-case">
   <strong>Scenario 1: Pre-Upload Validation</strong><br>
@@ -310,8 +544,8 @@ Now analyse the attached file and produce the validation report.
   A government or multi-agency customer has complex hierarchy with agencies, divisions, branches, and sections. The prompt helps decide the right mapping for isolation vs default-priority architecture.
 </div>
 
-<!-- ═══════════════════════ 3. QUICK REFERENCE ═══════════════════════ -->
-<h1 id="reference">3. Quick Reference — Common Issues</h1>
+<!-- ═══════════════════════ 4. QUICK REFERENCE ═══════════════════════ -->
+<h1 id="reference">4. Quick Reference — Common Issues</h1>
 
 <table>
   <tr><th>Issue</th><th>Symptom</th><th>Fix</th></tr>
@@ -377,8 +611,8 @@ Now analyse the attached file and produce the validation report.
   </tr>
 </table>
 
-<!-- ═══════════════════════ 4. MICROSOFT LEARN SOURCES ═══════════════════════ -->
-<h1 id="sources">4. Microsoft Learn Sources</h1>
+<!-- ═══════════════════════ 5. MICROSOFT LEARN SOURCES ═══════════════════════ -->
+<h1 id="sources">5. Microsoft Learn Sources</h1>
 
 <table>
   <tr><th>Topic</th><th>URL</th></tr>
@@ -411,10 +645,11 @@ Now analyse the attached file and produce the validation report.
   });
 })();
 function copyPrompt(){
-  var el = document.getElementById('main-prompt');
-  // Strip HTML tags to get plain text
+  copyById('main-prompt');
+}
+function copyById(id){
+  var el = document.getElementById(id);
   var text = el.innerText || el.textContent;
-  // Remove the copy button text
   text = text.replace(/^📋 Copy\n?/, '');
   navigator.clipboard.writeText(text).then(function(){
     var btn = el.querySelector('.copy-btn');
