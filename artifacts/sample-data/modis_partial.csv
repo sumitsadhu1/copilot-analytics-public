@@ -1,0 +1,31 @@
+EmployeeEmail,SnapshotDate,ManagerEmail,Department,JobFamily,Level,StartDate,Rate,Tier,Site,Country
+ceo@contoso.com,03/15/2026,,Executive Office,Leadership,CEO,02/10/2009,180,0,New York,US
+cfo@contoso.com,03/15/2026,ceo@contoso.com,Finance & Accounting,Finance,EVP,05/18/2013,150,1,New York,US
+coo@contoso.com,03/15/2026,ceo@contoso.com,Operations,Operations,EVP,08/22/2013,148,1,New York,US
+vp.fin@contoso.com,03/15/2026,cfo@contoso.com,Finance & Accounting,Finance,VP,11/30/2015,115,2,New York,US
+vp.ops.east@contoso.com,03/15/2026,coo@contoso.com,Operations,Operations,VP,07/12/2016,112,2,New York,US
+vp.ops.west@contoso.com,03/15/2026,coo@contoso.com,Operations,Operations,VP,09/05/2016,112,2,Los Angeles,US
+vp.eng@contoso.com,03/15/2026,ceo@contoso.com,Engineering,Engineering,VP,01/18/2017,128,2,San Jose,US
+dir.acct@contoso.com,03/15/2026,vp.fin@contoso.com,Finance & Accounting,Finance,Director,03/22/2018,92,3,New York,US
+dir.tax@contoso.com,03/15/2026,vp.fin@contoso.com,Finance & Accounting,Finance,Director,06/15/2018,94,3,New York,US
+dir.warehouse@contoso.com,03/15/2026,vp.ops.east@contoso.com,Operations,Operations,Director,10/08/2018,88,3,Newark,US
+dir.logistics@contoso.com,03/15/2026,vp.ops.west@contoso.com,Operations,Operations,Director,02/14/2019,89,3,Los Angeles,US
+dir.platform@contoso.com,03/15/2026,vp.eng@contoso.com,Engineering,Engineering,Director,04/20/2019,98,3,San Jose,US
+dir.mobile@contoso.com,03/15/2026,vp.eng@contoso.com,Engineering,Engineering,Director,08/30/2019,97,3,San Jose,US
+mgr.ar@contoso.com,03/15/2026,dir.acct@contoso.com,Finance & Accounting,Finance,Manager,05/12/2020,72,4,New York,US
+mgr.ap@contoso.com,03/15/2026,dir.acct@contoso.com,Finance & Accounting,Finance,Manager,09/18/2020,71,4,New York,US
+mgr.wh1@contoso.com,03/15/2026,dir.warehouse@contoso.com,Operations,Operations,Manager,11/25/2020,68,4,Newark,US
+mgr.log1@contoso.com,03/15/2026,dir.logistics@contoso.com,Operations,Operations,Manager,03/08/2021,67,4,Los Angeles,US
+mgr.plat1@contoso.com,03/15/2026,dir.platform@contoso.com,Engineering,Engineering,Manager,06/14/2021,82,4,San Jose,US
+mgr.mob1@contoso.com,03/15/2026,dir.mobile@contoso.com,Engineering,Engineering,Manager,09/22/2021,81,4,San Jose,US
+acct1@contoso.com,03/15/2026,mgr.ar@contoso.com,Finance & Accounting,Finance,Analyst,02/15/2022,54,5,New York,US
+acct2@contoso.com,03/15/2026,mgr.ap@contoso.com,Finance & Accounting,Finance,Analyst,05/20/2022,53,5,New York,US
+ops1@contoso.com,03/15/2026,mgr.wh1@contoso.com,Operations,Operations,Associate,07/10/2022,42,5,Newark,US
+ops2@contoso.com,03/15/2026,mgr.wh1@contoso.com,Operations,Operations,Associate,09/18/2022,41,5,Newark,US
+ops3@contoso.com,03/15/2026,mgr.log1@contoso.com,Operations,Operations,Associate,11/22/2022,42,5,Los Angeles,US
+ops4@contoso.com,03/15/2026,mgr.log1@contoso.com,Operations,Operations,Associate,01/15/2023,41,5,Los Angeles,US
+eng1@contoso.com,03/15/2026,mgr.plat1@contoso.com,Engineering,Engineering,Engineer,03/22/2023,68,5,San Jose,US
+eng2@contoso.com,03/15/2026,mgr.plat1@contoso.com,Engineering,Engineering,Engineer,06/18/2023,66,5,San Jose,US
+eng3@contoso.com,03/15/2026,mgr.mob1@contoso.com,Engineering,Engineering,Engineer,08/30/2023,67,5,San Jose,US
+eng4@contoso.com,03/15/2026,mgr.mob1@contoso.com,Engineering,Engineering,Engineer,11/14/2023,65,5,San Jose,US
+eng5@contoso.com,03/15/2026,mgr.mob1@contoso.com,Engineering,Engineering,Engineer,02/20/2024,64,5,San Jose,US

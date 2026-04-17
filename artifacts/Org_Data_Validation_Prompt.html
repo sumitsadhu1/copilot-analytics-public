@@ -53,7 +53,7 @@
   <tr><th>Document Property</th><th>Value</th></tr>
   <tr><td>Type</td><td>Reusable Prompt Template</td></tr>
   <tr><td>Audience</td><td>Analysts, IT Admins, Solution Architects</td></tr>
-  <tr><td>Version</td><td>2.0</td></tr>
+  <tr><td>Version</td><td>3.0 (adds WorkDayStart/End, StartDate/EndDate, TimeZone, IsActive, IsInternal reserved attribute coverage; PII detection)</td></tr>
   <tr><td>Published</td><td>April 2026</td></tr>
 </table>
 
@@ -113,14 +113,24 @@ If present, must use exact names and correct types:
 | FunctionType | String | Job function category |
 | LevelDesignation | String | Seniority level |
 | HireDate | DateTime | No #N/A or sentinel strings |
-| HourlyRate | Double | Numeric only, no $ or commas |
+| HourlyRate | Double | Numeric only, no $ or commas. Set to Confidential during upload. |
 | Layer | Integer | 0,1,2,3... not strings |
 | SupervisorIndicator | String | IC, Mngr, or Mngr+ only |
 | Location | String | Office location |
 | CountryOrRegion | String | Country |
+| <span class="hl">WorkDayStart</span> | Integer | <span class="hl">0-23 only</span>. No decimals, no time strings ("09:00"). Drives after-hours / focus-time metrics. |
+| <span class="hl">WorkDayEnd</span> | Integer | <span class="hl">0-23 only, must be &gt; WorkDayStart</span> per row. |
+| StartDate | DateTime | Record validity start date (distinct from HireDate). Must be &lt;= EffectiveDate. |
+| EndDate | DateTime | Record validity end date. Must be &gt;= StartDate. |
+| TimeZone | String | IANA TZ (e.g. America/New_York). NOT "PST"/"EST". |
+| IsActive | Boolean | TRUE / FALSE only |
+| IsInternal | Boolean | TRUE / FALSE only |
 
 <span class="cm"># FORBIDDEN COLUMN NAMES</span>
-TimeZone, Domain, PopulationType, StartDate, EndDate, ObjectId, IsActive, MetricDate, StandardTimeZone
+<span class="hl">Truly forbidden</span> (will be rejected or cause upload errors):
+Domain, PopulationType, ObjectId, MetricDate, StandardTimeZone, WeekendDays, InferredTeamSize, PrimaryCollaborator_PersonId, SecondaryCollaborator_PersonId
+
+Note: TimeZone, StartDate, EndDate, IsActive, IsInternal are <span class="hl">reserved (not forbidden)</span> — see table above for rules.
 
 <span class="cm"># VALIDATION CHECKS</span>
 1. Required columns exist and complete
@@ -138,6 +148,9 @@ TimeZone, Domain, PopulationType, StartDate, EndDate, ObjectId, IsActive, Metric
 13. Forbidden column names
 14. Columns with &gt;50% blank values
 15. HRIS indicators: if columns suggest SAP SuccessFactors or Workday, recommend native connector
+16. <span class="hl">WorkDayStart / WorkDayEnd</span>: integer 0-23 only; WorkDayStart &lt; WorkDayEnd per row; flag if &gt;30% of rows share the same value (suspicious mass-default from HRIS); flag if &gt;5% rows = 0 (likely blank→0 sentinel). These trigger the Data Quality page warning triangle and degrade after-hours / focus-time metrics.
+17. StartDate &lt;= EffectiveDate &lt;= EndDate per row (record validity window)
+18. <span class="hl">PII column-name detection</span>: flag columns matching (ssn|social|tax_id|nino|phone|mobile|dob|birth|home_addr|home_address|emergency|bonus|salary_ytd|compensation) — these must NOT be uploaded to org data
 
 <span class="cm"># OUTPUT FORMAT</span>
 <span class="kw">## 1. File Summary</span>
@@ -188,8 +201,10 @@ Apply these rules to determine impact for each data condition:
 - Organization present but values are empty → WORSE: overrides Entra with blanks
 - FunctionType empty/missing → Job Function filter will NOT appear (no Entra fallback)
 - ManagerId hierarchy broken (orphan managers) → Scope shows only "Your company"
-- HourlyRate missing → Impact page uses default $72/hr for Copilot Assisted Value
+- HourlyRate missing → Impact page uses the <span class="hl">$72/hr session-only default</span> (per-viewer session, not a persistent tenant setting) for Copilot Assisted Value
 - HourlyRate present but not Confidential → Security risk: salary visible to all viewers
+- <span class="hl">WorkDayStart / WorkDayEnd invalid or low-variance</span> → Viva Insights <span class="hl">Data Quality page shows warning triangle</span> (quality score &lt; 80%) within 24-48h post-upload. After-hours, focus-time and collaboration-hours metrics in Advanced Insights will be inaccurate.
+- Any reserved attribute with quality score &lt; 80% → admin sees warning triangle on Data Quality page
 - Single EffectiveDate → Dashboard trendlines unaffected (M365 telemetry), but Advanced Analytics has only 1 snapshot
 - High cardinality (>50 unique values) used as filter → Dropdown unusable
 - Low cardinality (<3 unique values) → Limited analytical value
@@ -211,7 +226,7 @@ Table: Data Issue | Dashboard Page Affected | What Users Will See | Severity (Hi
 - Minimum group size impact estimate
 
 <span class="kw">## 4. Copilot Assisted Value Assessment</span>
-HourlyRate present? Populated? If missing, note the $72/hr default. If present, remind to set Confidential.
+HourlyRate present? Populated? If missing, note the <span class="hl">$72/hr session-only default</span> (per-viewer, not persistent). If present, remind to set Confidential during upload.
 
 <span class="kw">## 5. Advanced Analytics Impact</span>
 EffectiveDate snapshot count, Power BI historical analysis capability, reserved attributes available for PBI templates.
@@ -370,6 +385,13 @@ These are <span class="kw">RESERVED OPTIONAL</span>. If included, they must use 
 | WeeklyBadgeOnsiteDays  | Double    | 0–7 or -1 if unknown | Used in hybrid work analysis |
 | Location               | String    | Office location | Used in location-based filtering |
 | CountryOrRegion        | String    | Country or region where the employee works | Used in regional analysis and benchmarks |
+| WorkDayStart           | Integer   | 0-23 only. No decimals, no time strings. Flag if &gt;30% rows share same value (mass-default from HRIS) or &gt;5% rows = 0 (blank→0 sentinel). | Drives after-hours, focus-time, collaboration-hours metrics. Invalid values trigger Viva Insights Data Quality warning triangle within 48h post-upload. |
+| WorkDayEnd             | Integer   | 0-23 only, must be &gt; WorkDayStart per row. | Pairs with WorkDayStart. Same post-upload quality-score impact. |
+| StartDate              | DateTime  | Record validity start date (distinct from HireDate). StartDate &lt;= EffectiveDate. | Used in time-validity filtering. |
+| EndDate                | DateTime  | Record validity end date. EndDate &gt;= StartDate. | Used in time-validity filtering. |
+| TimeZone               | String    | IANA TZ format (e.g. America/New_York). NOT "PST"/"EST". | Used in after-hours calculations. |
+| IsActive               | Boolean   | TRUE or FALSE only. | Used to filter active vs terminated employees. |
+| IsInternal             | Boolean   | TRUE or FALSE only. | Used to separate employees from external collaborators. |
 
 <span class="cm"># COPILOT DASHBOARD FILTER MAPPING</span>
 The Copilot Dashboard has three main filters. Map customer data to these:
@@ -409,7 +431,12 @@ Apply these checks to the file:
    - Check for blank/missing ManagerId chains that would break the hierarchy (Scope/Group filter)
    - Check for manager hierarchy loops (A reports to B and B reports to A) — these cause upload errors. If hierarchy cannot build (no managers exist as PersonIds), note that loop detection is not applicable and explain why.
    - Flag columns with &gt;50% blank values as low quality
-   - Confirm no forbidden system field names are used as column headers: TimeZone, Domain, PopulationType, StartDate, EndDate, ObjectId, IsActive, MetricDate, StandardTimeZone, WorkdayStart, WorkDayEnd, WeekendDays, InferredTeamSize, PrimaryCollaborator_PersonId, SecondaryCollaborator_PersonId, or any name starting with "Microsoft_" (unless mapping to a known reserved attribute)
+   - Confirm no truly forbidden system field names are used as column headers: Domain, PopulationType, ObjectId, MetricDate, StandardTimeZone, WeekendDays, InferredTeamSize, PrimaryCollaborator_PersonId, SecondaryCollaborator_PersonId, or any name starting with "Microsoft_" (unless mapping to a known reserved attribute).
+   - Note: TimeZone, StartDate, EndDate, IsActive, IsInternal, WorkDayStart, WorkDayEnd are RESERVED (not forbidden) — validate against the reserved-attribute rules above, do not flag as forbidden.
+   - WorkDayStart / WorkDayEnd specific checks: integer 0-23 only; WorkDayStart &lt; WorkDayEnd per row; flag if &gt;30% of rows share the same value (suspicious mass-default from HRIS); flag if &gt;5% of rows are 0 (likely blank→0 sentinel). These trigger the Viva Insights Data Quality page warning triangle within 24-48h post-upload and degrade after-hours / focus-time / collaboration-hours metrics.
+   - StartDate / EndDate specific checks: StartDate &lt;= EffectiveDate &lt;= EndDate per row (record validity window).
+   - TimeZone specific check: must be IANA format (e.g. America/New_York, Europe/London), not short codes like PST/EST/GMT.
+   - PII column-name detection: flag columns matching patterns (ssn|social|tax_id|nino|phone|mobile|dob|birth|home_addr|home_address|emergency_contact|bonus|salary_ytd|compensation) → CRITICAL: these must NOT be uploaded to org data. Remove before upload.
    - Report total attribute count vs the 105 maximum
 
 <span class="kw">4. DASHBOARD FILTER RECOMMENDATIONS</span>
@@ -488,7 +515,7 @@ Use these rules to determine dashboard impact:
 - ManagerId hierarchy broken (orphaned managers) → <span class="hl">All pages</span>: Scope filter will show only "Your company" with no group breakdowns. "Your group" view will show 0 people for most leaders. Senior leader list will be empty or show only 1 person.
 - Layer invalid → <span class="hl">Upload fails</span> if partial ingestion is off. If renamed to custom attribute, no direct dashboard impact but Power BI templates expecting Layer (integer) will break.
 - HireDate invalid → <span class="hl">Upload may fail or rows rejected</span>. Tenure-based segmentation in Power BI templates will be incomplete. No direct dashboard page impact.
-- HourlyRate missing → <span class="hl">Impact page</span>: Copilot Assisted Value will use the global default ($72/hr) instead of organisation-specific rates. ROI calculations may be inaccurate.
+- HourlyRate missing → <span class="hl">Impact page</span>: Copilot Assisted Value will use the <span class="hl">$72/hr session-only default</span> (per-viewer session setting, not a persistent tenant setting) instead of organisation-specific rates. ROI calculations may be inaccurate across viewers.
 - HourlyRate present but not Confidential → <span class="hl">Security risk</span>: If uploaded with Public access, salary data will be visible to all dashboard viewers and selected apps. Always recommend setting HourlyRate to Confidential access during upload (M365 Admin Centre path) to restrict visibility to authorised Viva Insights analysts only.
 - Organization values are system codes (CC-4023, DEPT001) → <span class="hl">Adoption + Impact pages</span>: Filter dropdowns and "View by: Organization" labels will show cryptic codes instead of readable business unit names. Leaders won't recognise the values. Recommend mapping codes to human-readable names before upload.
 - Single EffectiveDate (no monthly snapshots) → <span class="hl">Adoption + Impact pages</span>: 6-month trendlines on the dashboard are unaffected (they use M365 telemetry data, not org data). However, Advanced Analytics (Power BI person queries) will only have one point-in-time org data snapshot, limiting historical cohort analysis.
@@ -499,6 +526,10 @@ Use these rules to determine dashboard impact:
 - LevelDesignation empty → <span class="hl">No dashboard impact</span> (not used as a dashboard filter). Impacts Power BI templates that segment by seniority level.
 - Location/CountryOrRegion empty → <span class="hl">No dashboard filter impact</span> unless used in custom reports. Geographic analysis in Power BI will be unavailable.
 - Minimum group size suppression → <span class="hl">All pages</span>: Groups with fewer than 10 employees (default) will show "--" instead of metrics. This is privacy protection, not a data error. If many groups show "--", the org data may be too granular for the dashboard.
+- <span class="hl">WorkDayStart / WorkDayEnd invalid, out-of-range, low variance, or &gt;5% zero-sentinels</span> → <span class="hl">Data Quality page (Analysis setup)</span>: warning triangle appears next to the attribute within 24-48h; quality score drops below 95%. <span class="hl">Advanced Insights</span>: after-hours, focus-time, and collaboration-hours calculations become inaccurate for affected employees.
+- StartDate or EndDate outside validity window (EffectiveDate not between StartDate and EndDate) → <span class="hl">Data Quality page</span>: rows may be excluded from analytics. Warning triangle on affected attribute.
+- TimeZone in short format (PST/EST/GMT) instead of IANA → <span class="hl">Data Quality page</span>: warning triangle; after-hours calculations may fall back to tenant default timezone.
+- PII columns present (SSN, home_address, bonus, DOB) → <span class="hl">CRITICAL before upload</span>: remove columns. These must never be uploaded to org data regardless of dashboard impact — it's a data-governance breach.
 
 For the specific file being analysed, produce a concrete "Dashboard Preview" summary:
 - List which dashboard filters WILL work with this data (after fixes)

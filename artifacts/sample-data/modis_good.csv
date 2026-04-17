@@ -1,0 +1,31 @@
+PersonId,EffectiveDate,ManagerId,Organization,FunctionType,LevelDesignation,HireDate,HourlyRate,Layer,SupervisorIndicator,Location,CountryOrRegion
+ceo@fabrikam.com,04/01/2026,,Executive,Leadership,CEO,01/15/2008,195.00,0,Mngr+,Seattle,United States
+cfo@fabrikam.com,04/01/2026,ceo@fabrikam.com,Finance,Finance,EVP,06/20/2012,160.00,1,Mngr+,Seattle,United States
+coo@fabrikam.com,04/01/2026,ceo@fabrikam.com,Operations,Operations,EVP,09/10/2013,155.00,1,Mngr+,Seattle,United States
+cto@fabrikam.com,04/01/2026,ceo@fabrikam.com,Technology,Engineering,EVP,02/05/2014,160.00,1,Mngr+,Austin,United States
+vp.finance@fabrikam.com,04/01/2026,cfo@fabrikam.com,Finance,Finance,VP,05/15/2016,125.00,2,Mngr+,Seattle,United States
+vp.ops@fabrikam.com,04/01/2026,coo@fabrikam.com,Operations,Operations,VP,07/22/2016,120.00,2,Mngr+,Chicago,United States
+vp.eng@fabrikam.com,04/01/2026,cto@fabrikam.com,Technology,Engineering,VP,11/08/2016,135.00,2,Mngr+,Austin,United States
+vp.data@fabrikam.com,04/01/2026,cto@fabrikam.com,Technology,Data Science,VP,03/12/2017,130.00,2,Mngr+,Austin,United States
+dir.fp@fabrikam.com,04/01/2026,vp.finance@fabrikam.com,Finance,Finance,Director,08/19/2018,95.00,3,Mngr,Seattle,United States
+dir.ops@fabrikam.com,04/01/2026,vp.ops@fabrikam.com,Operations,Operations,Director,04/03/2019,92.00,3,Mngr,Chicago,United States
+dir.eng@fabrikam.com,04/01/2026,vp.eng@fabrikam.com,Technology,Engineering,Director,10/27/2018,98.00,3,Mngr,Austin,United States
+dir.data@fabrikam.com,04/01/2026,vp.data@fabrikam.com,Technology,Data Science,Director,01/14/2019,96.00,3,Mngr,Austin,United States
+mgr.fp1@fabrikam.com,04/01/2026,dir.fp@fabrikam.com,Finance,Finance,Manager,05/06/2020,75.00,4,Mngr,Seattle,United States
+mgr.ops1@fabrikam.com,04/01/2026,dir.ops@fabrikam.com,Operations,Operations,Manager,09/15/2020,72.00,4,Mngr,Chicago,United States
+mgr.eng1@fabrikam.com,04/01/2026,dir.eng@fabrikam.com,Technology,Engineering,Manager,02/28/2021,82.00,4,Mngr,Austin,United States
+mgr.eng2@fabrikam.com,04/01/2026,dir.eng@fabrikam.com,Technology,Engineering,Manager,06/11/2021,80.00,4,Mngr,Austin,United States
+mgr.data1@fabrikam.com,04/01/2026,dir.data@fabrikam.com,Technology,Data Science,Manager,11/30/2021,85.00,4,Mngr,Austin,United States
+analyst.fp1@fabrikam.com,04/01/2026,mgr.fp1@fabrikam.com,Finance,Finance,Analyst,03/01/2022,55.00,5,IC,Seattle,United States
+analyst.fp2@fabrikam.com,04/01/2026,mgr.fp1@fabrikam.com,Finance,Finance,Analyst,08/15/2022,52.00,5,IC,Seattle,United States
+analyst.ops1@fabrikam.com,04/01/2026,mgr.ops1@fabrikam.com,Operations,Operations,Analyst,01/20/2023,50.00,5,IC,Chicago,United States
+analyst.ops2@fabrikam.com,04/01/2026,mgr.ops1@fabrikam.com,Operations,Operations,Analyst,05/05/2023,51.00,5,IC,Chicago,United States
+eng.sw1@fabrikam.com,04/01/2026,mgr.eng1@fabrikam.com,Technology,Engineering,Engineer,07/18/2022,68.00,5,IC,Austin,United States
+eng.sw2@fabrikam.com,04/01/2026,mgr.eng1@fabrikam.com,Technology,Engineering,Engineer,10/24/2022,65.00,5,IC,Austin,United States
+eng.sw3@fabrikam.com,04/01/2026,mgr.eng2@fabrikam.com,Technology,Engineering,Engineer,02/14/2023,67.00,5,IC,Austin,United States
+eng.sw4@fabrikam.com,04/01/2026,mgr.eng2@fabrikam.com,Technology,Engineering,Engineer,06/28/2023,64.00,5,IC,Austin,United States
+ds.sr1@fabrikam.com,04/01/2026,mgr.data1@fabrikam.com,Technology,Data Science,Scientist,09/12/2022,78.00,5,IC,Austin,United States
+ds.sr2@fabrikam.com,04/01/2026,mgr.data1@fabrikam.com,Technology,Data Science,Scientist,12/05/2022,76.00,5,IC,Austin,United States
+ds.jr1@fabrikam.com,04/01/2026,mgr.data1@fabrikam.com,Technology,Data Science,Scientist,04/17/2023,62.00,5,IC,Austin,United States
+ds.jr2@fabrikam.com,04/01/2026,mgr.data1@fabrikam.com,Technology,Data Science,Scientist,08/22/2023,60.00,5,IC,Austin,United States
+ds.jr3@fabrikam.com,04/01/2026,mgr.data1@fabrikam.com,Technology,Data Science,Scientist,11/14/2023,61.00,5,IC,Austin,United States
