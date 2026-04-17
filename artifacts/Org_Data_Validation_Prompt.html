@@ -53,7 +53,7 @@
   <tr><th>Document Property</th><th>Value</th></tr>
   <tr><td>Type</td><td>Reusable Prompt Template</td></tr>
   <tr><td>Audience</td><td>Analysts, IT Admins, Solution Architects</td></tr>
-  <tr><td>Version</td><td>3.0 (adds WorkDayStart/End, StartDate/EndDate, TimeZone, IsActive, IsInternal reserved attribute coverage; PII detection)</td></tr>
+  <tr><td>Version</td><td>3.1 (Prompt 1 restructured for M365 Analyst Agent: verdict-first, mandatory critical-issues bullet list, anti-truncation rules)</td></tr>
   <tr><td>Published</td><td>April 2026</td></tr>
 </table>
 
@@ -152,29 +152,46 @@ Note: TimeZone, StartDate, EndDate, IsActive, IsInternal are <span class="hl">re
 17. StartDate &lt;= EffectiveDate &lt;= EndDate per row (record validity window)
 18. <span class="hl">PII column-name detection</span>: flag columns matching (ssn|social|tax_id|nino|phone|mobile|dob|birth|home_addr|home_address|emergency|bonus|salary_ytd|compensation) — these must NOT be uploaded to org data
 
-<span class="cm"># OUTPUT FORMAT</span>
-<span class="kw">## 1. File Summary</span>
-File name, format, total rows, total columns, EffectiveDate range, unique PersonId count, upload path detected.
+<span class="cm"># OUTPUT FORMAT — MANDATORY</span>
+<span class="hl">Produce ALL SIX sections below as VISIBLE MARKDOWN TEXT in the response. Do NOT stop after any single table. Do NOT summarise findings into "analysis complete" — every finding from your reasoning MUST appear in the visible output. The completeness table alone is NOT a complete report.</span>
 
-<span class="kw">## 2. Attribute Completeness</span>
-Table: Column Name | Filled Rows | Total Rows | Completeness % | Quality (Good &gt;95% / Low 50-95% / Poor &lt;50% / Empty 0%)
+<span class="kw">## 1. Upload Readiness Verdict</span>
+<span class="hl">State the verdict FIRST, in the first line of your response:</span> PASS / PASS WITH WARNINGS / FAIL. Follow with one sentence explaining the top reason.
 
-<span class="kw">## 3. Required Attributes — Pass / Fail</span>
-Table: Attribute | Exists | Completeness | Issues
+<span class="kw">## 2. Critical Issues (Plain Bulleted List — MANDATORY)</span>
+Before any table, list every CRITICAL finding as plain bullets. Include at minimum (if present in the file):
+- Forbidden column names detected (list them)
+- PII columns detected (list them — SSN, DOB, HomeAddress, Bonus, etc.)
+- Dual-schema detected (both legacy PersonId and Microsoft_PersonEmail present)
+- Duplicate PersonIds on the same EffectiveDate (list row numbers)
+- Orphan managers (ManagerId values not present as PersonId — list them)
+- Manager self-references or hierarchy loops (list them)
+- Mixed date formats in EffectiveDate (count of distinct formats)
+- WorkDayStart / WorkDayEnd invalid values (list sample offending values)
+- Sentinel strings in HireDate (#N/A, NULL, none, TBD, unknown, 01/01/1900)
 
-<span class="kw">## 4. Reserved Attributes — Validation</span>
-Table: Attribute | Present | Data Type Check | Sample Values | Fix Needed
+<span class="kw">## 3. File Summary</span>
+File name, format, total rows, total columns, EffectiveDate range, unique PersonId count, upload path detected (Legacy / MODIS / Ambiguous).
 
-<span class="kw">## 5. Data Quality Issues</span>
-Numbered list with severity (CRITICAL / WARNING / INFO) and specific fix instruction.
+<span class="kw">## 4. Attribute Completeness</span>
+Table: Column Name | Filled Rows | Total Rows | Completeness % | Quality
+<span class="hl">Quality definition:</span> "Good" requires BOTH ≥95% completeness AND no value/type/format violations. A column with 100% fill but invalid values (sentinels, type mismatches, wrong format) is "Low" or "Poor", never "Good". Reserved-attribute type rules (integer, boolean, IANA, email, etc.) must be applied.
 
-<span class="kw">## 6. Upload Readiness Verdict</span>
-State one of: <span class="hl">PASS</span> / <span class="hl">PASS WITH WARNINGS</span> / <span class="hl">FAIL</span>. Brief explanation.
+<span class="kw">## 5. Required &amp; Reserved Attributes — Validation</span>
+Table: Attribute | Present | Type/Format Check | Sample Values | Issue Found
+
+<span class="kw">## 6. Full Data Quality Issue List</span>
+Numbered list of every issue, severity (CRITICAL / WARNING / INFO), and specific fix instruction. Aim for 15+ items on adversarial files; if fewer, explain why.
 
 <span class="kw">## ▶ NEXT STEP</span>
 End with: "Save this report. Then run <span class="hl">Prompt 2: Dashboard Impact Simulation</span> with the same file attached to see how this data will appear on the Copilot Dashboard."
 
-Now analyse the attached file.
+<span class="cm"># ANTI-TRUNCATION RULES</span>
+- If you produce Python-based analysis, the rendered table is NOT sufficient. You MUST also produce sections 1, 2, 5 and 6 as visible Markdown text.
+- Never end the response with "analysis has been fully executed" without the full six sections above.
+- If the file is too large to analyse exhaustively, state that explicitly in Section 1 and produce what you can for every section.
+
+Now analyse the attached file. Begin your response with the verdict on the first line.
 </div>
 
 <!-- ─── PROMPT 2 ─── -->
