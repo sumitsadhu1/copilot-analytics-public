@@ -20,7 +20,9 @@ declare -a DOCS=(
   # Layer Cake structure (new)
   "1-strategy/executive-briefing.html|Executive_Briefing.pdf"
   "1-strategy/data-strategy.html|Data_Strategy.pdf"
-  "1-strategy/multi-agency-decision.html|Multi_Agency_Decision_Guide.pdf"
+  # 1-strategy/multi-agency-decision.html is now a redirect — PDF from decide/architecture.html
+  "decide/architecture.html|Multi_Agency_Decision_Guide.pdf"
+  "explain/why-multi-agency-is-hard.html|Why_Multi_Agency_Is_Hard.pdf"
   "2-setup/admin-setup.html|Admin_Setup_Guide.pdf"
   "2-setup/data-onboarding.html|Data_Onboarding_Guide.pdf"
   "2-setup/privacy-configuration.html|Privacy_Configuration.pdf"
