@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multi-Agency Architecture Decision — Copilot Analytics</title>
+<link rel="stylesheet" href="../assets/docs-style.css">
+<style>
+  /* Decision tool styles */
+  .decision-tool {
+    max-width: 720px;
+    margin: 32px auto;
+  }
+  .question-card {
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-sm);
+  }
+  .question-card h2 {
+    font-size: 1.1em;
+    margin: 0 0 16px;
+    color: var(--text);
+    border: none;
+    padding: 0;
+  }
+  .answer-btn {
+    display: block;
+    width: 100%;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    background: #fff;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.92em;
+    color: var(--text);
+    text-align: left;
+    transition: all var(--transition);
+    font-family: inherit;
+    line-height: 1.5;
+  }
+  .answer-btn:hover {
+    border-color: var(--accent);
+    background: rgba(14,165,233,0.04);
+  }
+  .answer-btn.selected {
+    border-color: var(--accent);
+    background: rgba(14,165,233,0.08);
+    font-weight: 600;
+  }
+  .question-card.inactive {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  .question-card.hidden {
+    display: none;
+  }
+  .result-card {
+    background: linear-gradient(135deg, rgba(14,165,233,0.06), rgba(139,92,246,0.04));
+    border: 2px solid var(--accent);
+    border-radius: var(--radius-md);
+    padding: 28px;
+    margin: 28px auto;
+    max-width: 720px;
+    box-shadow: var(--shadow-md);
+  }
+  .result-card h2 {
+    color: var(--accent);
+    font-size: 1.15em;
+    margin: 0 0 8px;
+    border: none;
+    padding: 0;
+  }
+  .result-arch {
+    font-size: 1.3em;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+  .result-detail {
+    font-size: 0.92em;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+  .result-detail strong { color: var(--text); }
+  .result-links { margin: 16px 0; }
+  .result-links a {
+    display: inline-block;
+    padding: 8px 16px;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.88em;
+    font-weight: 600;
+    margin: 0 8px 8px 0;
+    transition: background var(--transition);
+  }
+  .result-links a:hover { background: var(--accent-hover); }
+  .result-links a.secondary {
+    background: transparent;
+    color: var(--accent);
+    border: 1.5px solid rgba(14,165,233,0.3);
+  }
+  .result-links a.secondary:hover {
+    background: rgba(14,165,233,0.06);
+  }
+  details.why-detail {
+    margin-top: 16px;
+    font-size: 0.88em;
+    color: var(--text-secondary);
+  }
+  details.why-detail summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  details.why-detail p {
+    margin: 8px 0;
+    line-height: 1.6;
+  }
+  .restart-btn {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 8px 16px;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.85em;
+    color: var(--text-secondary);
+    font-family: inherit;
+    transition: all var(--transition);
+  }
+  .restart-btn:hover { border-color: var(--border-strong); color: var(--text); }
+</style>
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Decide</span>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Multi-Agency Architecture</span>
+  </div>
+</nav>
+
+<div class="cover">
+  <h1>Microsoft 365 Copilot Analytics</h1>
+  <div class="subtitle">Multi-Agency Architecture Decision</div>
+  <div class="sub2">Answer three questions to find the right architecture for your tenant</div>
+</div>
+
+<p style="max-width:720px; margin:0 auto 24px; font-size:0.92em; color:var(--text-secondary); line-height:1.6;">
+  Two architectures exist for deploying Copilot analytics across multiple agencies in a shared M365 tenant: <strong>Default Priority</strong> (agencies see their own data by default, cross-agency visibility is acceptable) and <strong>Isolation</strong> (hard data boundaries via partitions). Answer the questions below to get a recommendation.
+</p>
+<p style="max-width:720px; margin:0 auto 32px; font-size:0.88em;">
+  <a href="../explain/why-multi-agency-is-hard.html" style="color:var(--accent); text-decoration:none; font-weight:500;">Want the full background? Read why multi-agency analytics is hard &rarr;</a>
+</p>
+
+<!-- ═══ INTERACTIVE DECISION TOOL ═══ -->
+<div class="decision-tool" id="decisionTool">
+
+  <div class="question-card" id="q1Card">
+    <h2>Question 1 &mdash; Must agencies be prevented from seeing each other&rsquo;s data?</h2>
+    <button class="answer-btn" onclick="answerQ1('no')"><strong>No</strong> &mdash; cross-agency visibility is acceptable</button>
+    <button class="answer-btn" onclick="answerQ1('yes')"><strong>Yes</strong> &mdash; hard data isolation is required</button>
+  </div>
+
+  <div class="question-card hidden" id="q2Card">
+    <h2>Question 2 &mdash; Do agencies share one email domain?</h2>
+    <button class="answer-btn" onclick="answerQ2('no')"><strong>No</strong> &mdash; each agency has its own domain (e.g., @agencyA.gov, @agencyB.gov)</button>
+    <button class="answer-btn" onclick="answerQ2('yes')"><strong>Yes</strong> &mdash; all agencies share one domain (e.g., @government.gov)</button>
+  </div>
+
+  <div class="question-card hidden" id="q3Card">
+    <h2>Question 3 &mdash; Do you need custom attribute filtering?</h2>
+    <p style="font-size:0.88em; color:var(--text-secondary); margin-bottom:12px;">Attributes like Job Function, Location, Cost Centre, or Level &mdash; beyond basic agency scoping.</p>
+    <button class="answer-btn" onclick="answerQ3('yes')"><strong>Yes</strong> &mdash; we need filters beyond agency</button>
+    <button class="answer-btn" onclick="answerQ3('no')"><strong>No</strong> &mdash; partitioning by agency is sufficient</button>
+  </div>
+
+</div>
+
+<div id="resultArea" style="display:none;"></div>
+
+<!-- ═══ STATIC FALLBACK (visible when JS is disabled) ═══ -->
+<noscript>
+<div style="max-width:720px; margin:0 auto;">
+<h2 id="decision-tree">Decision Tree (Static Reference)</h2>
+
+<h3>Question 1 &mdash; Must agencies be prevented from seeing each other&rsquo;s data?</h3>
+<table>
+  <tr><th>Answer</th><th>Result</th></tr>
+  <tr><td><strong>No</strong> &mdash; cross-agency visibility is acceptable</td><td>&rarr; <strong>Default Priority Architecture</strong>. Setup effort: 2&ndash;4 hours. Read: <a href="../2-setup/multi-agency-setup.html">Multi-Agency Setup Guide</a>, then optionally <a href="../2-setup/data-onboarding.html">Data Onboarding Guide</a> for enrichment.</td></tr>
+  <tr><td><strong>Yes</strong> &mdash; hard data isolation is required</td><td>&rarr; <strong>Isolation Architecture</strong>. Continue to Question 2.</td></tr>
+</table>
+
+<h3>Question 2 &mdash; Do agencies share one email domain?</h3>
+<table>
+  <tr><th>Answer</th><th>Result</th></tr>
+  <tr><td><strong>No</strong> &mdash; each agency has its own domain</td><td>&rarr; <strong>Isolation Path B</strong> (zero CSV). Setup effort: 1&ndash;3 days. Use the system-generated <code>Domain</code> attribute. Read: <a href="../2-setup/multi-agency-setup.html">Multi-Agency Setup</a>.</td></tr>
+  <tr><td><strong>Yes</strong> &mdash; shared domain</td><td>&rarr; <strong>Isolation Path A</strong> (CSV required). Continue to Question 3.</td></tr>
+</table>
+
+<h3>Question 3 &mdash; Do you need custom attribute filtering?</h3>
+<table>
+  <tr><th>Answer</th><th>Result</th></tr>
+  <tr><td><strong>Yes</strong></td><td>CSV org data upload required. Read in order: <a href="../2-setup/data-onboarding.html">Data Onboarding</a> &rarr; <a href="../2-setup/multi-agency-setup.html">Multi-Agency Setup</a>.</td></tr>
+  <tr><td><strong>No</strong></td><td>CSV with <code>Agency</code> attribute only. Read: <a href="../2-setup/data-onboarding.html">Data Onboarding</a> &rarr; <a href="../2-setup/multi-agency-setup.html">Multi-Agency Setup</a>.</td></tr>
+</table>
+
+<h3>Summary of Paths</h3>
+<table>
+  <tr><th>Path</th><th>Shared Domain?</th><th>CSV Required?</th><th>Partition Filter</th></tr>
+  <tr><td>Default Priority</td><td>N/A</td><td>Optional (enrichment only)</td><td>None &mdash; uses manager hierarchy</td></tr>
+  <tr><td>Isolation Path A</td><td>Yes</td><td><strong>Yes</strong> (with <code>Agency</code> column)</td><td>Custom <code>Agency</code> attribute</td></tr>
+  <tr><td>Isolation Path B</td><td>No</td><td>Only if custom attributes needed</td><td>System-generated <code>Domain</code> attribute</td></tr>
+</table>
+</div>
+</noscript>
+
+<div class="callout info" style="max-width:720px; margin:40px auto;">
+  <div class="callout-title">Disclaimer</div>
+  <p>This guide is provided as a procedural reference. Always refer to <a href="https://learn.microsoft.com/viva/insights/advanced/analyst/partitions">Partitions in Viva Insights</a> and <a href="https://learn.microsoft.com/viva/copilot-dashboard">Microsoft Copilot Dashboard</a> on Microsoft Learn for the most up-to-date information.</p>
+</div>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">&#8593;</button>
+
+<script>
+(function(){
+  var btn = document.getElementById('backToTop');
+  window.addEventListener('scroll', function(){ btn.classList.toggle('visible', window.scrollY > 300); });
+})();
+
+var answers = {};
+
+function showCard(id) {
+  var card = document.getElementById(id);
+  if (card) { card.classList.remove('hidden'); card.classList.remove('inactive'); }
+}
+function hideCard(id) {
+  var card = document.getElementById(id);
+  if (card) card.classList.add('hidden');
+}
+function selectBtn(card, btnIndex) {
+  var btns = document.getElementById(card).querySelectorAll('.answer-btn');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('selected');
+  btns[btnIndex].classList.add('selected');
+}
+
+function answerQ1(val) {
+  answers.q1 = val;
+  selectBtn('q1Card', val === 'no' ? 0 : 1);
+  if (val === 'no') {
+    hideCard('q2Card');
+    hideCard('q3Card');
+    showResult('default');
+  } else {
+    showCard('q2Card');
+    hideCard('q3Card');
+    document.getElementById('resultArea').style.display = 'none';
+    document.getElementById('q2Card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function answerQ2(val) {
+  answers.q2 = val;
+  selectBtn('q2Card', val === 'no' ? 0 : 1);
+  if (val === 'no') {
+    showCard('q3Card');
+    document.getElementById('resultArea').style.display = 'none';
+    answers.path = 'b';
+    document.getElementById('q3Card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } else {
+    showCard('q3Card');
+    document.getElementById('resultArea').style.display = 'none';
+    answers.path = 'a';
+    document.getElementById('q3Card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function answerQ3(val) {
+  answers.q3 = val;
+  selectBtn('q3Card', val === 'yes' ? 0 : 1);
+  if (answers.path === 'b') {
+    showResult('pathB', val === 'yes');
+  } else {
+    showResult('pathA', val === 'yes');
+  }
+}
+
+function showResult(arch, needsCustomAttrs) {
+  var html = '';
+  var area = document.getElementById('resultArea');
+
+  if (arch === 'default') {
+    html = '<div class="result-card">' +
+      '<h2>Your architecture</h2>' +
+      '<div class="result-arch">Default Priority</div>' +
+      '<div class="result-detail">' +
+        '<strong>Setup effort:</strong> 2\u20134 hours<br>' +
+        '<strong>How it works:</strong> Each agency CEO sees their team\u2019s data by default via the \u201CYour group\u201D scope on the Copilot Dashboard. Cross-agency visibility is possible but acceptable.<br>' +
+        '<strong>Org data:</strong> Optional enrichment \u2014 not required for the architecture to function.' +
+      '</div>' +
+      '<div class="result-links">' +
+        '<a href="../2-setup/multi-agency-setup.html">1. Multi-Agency Setup</a>' +
+        '<a href="../2-setup/data-onboarding.html" class="secondary">2. Data Onboarding (optional)</a>' +
+      '</div>' +
+      '<p style="font-size:0.85em; color:var(--text-secondary); margin-top:12px;"><strong>Skip:</strong> You do not need the Isolation Architecture guides or partition configuration.</p>' +
+      '<details class="why-detail"><summary>Why this recommendation?</summary>' +
+        '<p>You indicated cross-agency data visibility is acceptable. Default Priority uses the native Entra ID manager hierarchy and AutoCxO identification to scope each agency CEO\u2019s dashboard view. No partitions, no PowerShell, no monthly CSV re-uploads for partitioning.</p>' +
+      '</details>' +
+      '<button class="restart-btn" onclick="restart()">Start over</button>' +
+    '</div>';
+  } else if (arch === 'pathA') {
+    html = '<div class="result-card">' +
+      '<h2>Your architecture</h2>' +
+      '<div class="result-arch">Isolation \u2014 Path A (CSV with Agency attribute)</div>' +
+      '<div class="result-detail">' +
+        '<strong>Setup effort:</strong> 1\u20133 days<br>' +
+        '<strong>How it works:</strong> Hard data boundaries via Viva Insights partitions. Since all agencies share one email domain, you must upload org data with a custom <code>Agency</code> attribute to distinguish them.<br>' +
+        '<strong>Org data:</strong> Required \u2014 CSV with at least PersonEmail, ManagerEmail, and Agency.' + (needsCustomAttrs ? ' Plus your custom attributes (Job Function, Location, etc.).' : '') +
+      '</div>' +
+      '<div class="result-links">' +
+        '<a href="../2-setup/data-onboarding.html">1. Data Onboarding</a>' +
+        '<a href="../2-setup/multi-agency-setup.html">2. Multi-Agency Setup</a>' +
+      '</div>' +
+      '<p style="font-size:0.85em; color:var(--text-secondary); margin-top:12px;"><strong>Skip:</strong> Default Priority guides and Path B (Domain-based) setup.</p>' +
+      '<details class="why-detail"><summary>Why this recommendation?</summary>' +
+        '<p>You require hard data isolation between agencies, and all agencies share one email domain. Without distinct domains, there is no system-level attribute to tell agencies apart \u2014 you must supply an <code>Agency</code> column via CSV. Partitions are then created using this custom attribute as the filter boundary. Monthly re-upload is required to keep partition populations current.</p>' +
+      '</details>' +
+      '<button class="restart-btn" onclick="restart()">Start over</button>' +
+    '</div>';
+  } else if (arch === 'pathB') {
+    var csvNote = needsCustomAttrs
+      ? '<strong>Org data:</strong> CSV required for custom attributes (Job Function, Location, etc.) but <strong>not</strong> for partitioning \u2014 that uses the system Domain attribute.'
+      : '<strong>Org data:</strong> Not required. Partitioning uses the system-generated Domain attribute from Entra ID.';
+    html = '<div class="result-card">' +
+      '<h2>Your architecture</h2>' +
+      '<div class="result-arch">Isolation \u2014 Path B (Domain attribute, ' + (needsCustomAttrs ? 'CSV for enrichment' : 'zero CSV') + ')</div>' +
+      '<div class="result-detail">' +
+        '<strong>Setup effort:</strong> 1\u20133 days<br>' +
+        '<strong>How it works:</strong> Hard data boundaries via Viva Insights partitions. Each agency has its own email domain, so the system-generated <code>Domain</code> attribute defines partition boundaries automatically.<br>' +
+        csvNote +
+      '</div>' +
+      '<div class="result-links">' +
+        (needsCustomAttrs ? '<a href="../2-setup/data-onboarding.html">1. Data Onboarding</a>' : '') +
+        '<a href="../2-setup/multi-agency-setup.html">' + (needsCustomAttrs ? '2' : '1') + '. Multi-Agency Setup</a>' +
+      '</div>' +
+      '<p style="font-size:0.85em; color:var(--text-secondary); margin-top:12px;"><strong>Skip:</strong> Default Priority guides and Path A (CSV-based partitioning).</p>' +
+      '<details class="why-detail"><summary>Why this recommendation?</summary>' +
+        '<p>You require hard data isolation and each agency has its own email domain. Viva Insights automatically generates a Domain attribute from users\u2019 email addresses, which can be used directly as the partition filter \u2014 no CSV needed for the partition itself.' + (needsCustomAttrs ? ' You do need a CSV upload for the additional attribute filters you requested.' : '') + '</p>' +
+      '</details>' +
+      '<button class="restart-btn" onclick="restart()">Start over</button>' +
+    '</div>';
+  }
+
+  area.innerHTML = html;
+  area.style.display = '';
+  area.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function restart() {
+  answers = {};
+  var btns = document.querySelectorAll('.answer-btn');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('selected');
+  hideCard('q2Card');
+  hideCard('q3Card');
+  document.getElementById('resultArea').style.display = 'none';
+  document.getElementById('q1Card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+</script>
+
+</body>
+</html>

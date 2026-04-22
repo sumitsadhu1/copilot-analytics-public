@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Multi-Agency Analytics Is Hard — Copilot Analytics</title>
+<link rel="stylesheet" href="../assets/docs-style.css">
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Explain</span>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Why Multi-Agency Is Hard</span>
+  </div>
+</nav>
+
+<div class="cover">
+  <h1>Microsoft 365 Copilot Analytics</h1>
+  <div class="subtitle">Why Multi-Agency Analytics Is Hard</div>
+  <div class="sub2">The architectural challenge of scoping analytics across agencies in a shared tenant</div>
+</div>
+
+<table>
+  <tr><th>Document Property</th><th>Value</th></tr>
+  <tr><td>Section</td><td>Explain</td></tr>
+  <tr><td>Audience</td><td>CIO, Solution Architect</td></tr>
+  <tr><td>Version</td><td>4.0</td></tr>
+  <tr><td>Published</td><td>April 2026</td></tr>
+</table>
+
+<!-- ═══════════════════════ WHEN THIS APPLIES ═══════════════════════ -->
+<h1 id="when">When This Applies</h1>
+
+<p>Multi-agency analytics is a challenge when your organisation meets <strong>all</strong> of the following conditions:</p>
+<ul>
+  <li><strong>Single M365 tenant</strong> &mdash; all agencies share one tenant</li>
+  <li><strong>Multiple independent agencies</strong> (or business units, divisions, departments) that operate semi-autonomously</li>
+  <li><strong>Each agency needs Copilot analytics</strong> scoped to their own population</li>
+</ul>
+
+<p>The fundamental tension: Microsoft 365 Copilot analytics is designed for one organisation per tenant. When multiple agencies share a tenant, there is no out-of-the-box way to guarantee that Agency A sees only its own data and never Agency B&rsquo;s. The Copilot Dashboard defaults to showing &ldquo;Your company&rdquo; &mdash; which means the entire tenant.</p>
+
+<p>Two architectural approaches solve this, each with different trade-offs in data visibility, implementation effort, and ongoing maintenance.</p>
+
+<div class="callout tip">
+  <div class="callout-title">Single-Agency Tenants</div>
+  <p>If your tenant serves only one agency (or your agencies don&rsquo;t need separate analytics scoping), none of this applies. Follow the standard <a href="../2-setup/admin-setup.html">Admin Setup Guide</a> instead.</p>
+</div>
+
+<!-- ═══════════════════════ THE TWO ARCHITECTURES ═══════════════════════ -->
+<h1 id="architectures">The Two Architectures</h1>
+
+<p><strong>Default Priority</strong> is the simpler option. Each agency CEO naturally sees their team&rsquo;s data through the &ldquo;Your group&rdquo; scope on the Copilot Dashboard, which follows the Entra ID manager hierarchy. AutoCxO identification picks up the top leaders automatically. The trade-off: users <em>can</em> navigate to &ldquo;Your company&rdquo; and see tenant-wide data. If that cross-agency visibility is acceptable &mdash; and for many organisations it is &mdash; Default Priority is the right answer. Setup takes 2&ndash;4 hours.</p>
+
+<p><strong>Isolation</strong> is the harder option. It creates hard data boundaries via Viva Insights partitions &mdash; Agency A genuinely cannot access Agency B&rsquo;s data. This requires VFAM lockdown via group-scoped policies, partition creation via PowerShell, analyst assignment per partition, and typically Power BI workspaces for report delivery. Setup takes 1&ndash;3 days. It exists for organisations with regulatory, contractual, or policy requirements that mandate data separation.</p>
+
+<p>Within the Isolation architecture, there are two data paths depending on whether agencies share an email domain:</p>
+<ul>
+  <li><strong>Path A</strong> &mdash; shared domain (e.g., all users are <code>@government.gov</code>). Requires a CSV org data upload with a custom <code>Agency</code> attribute to distinguish agencies. Monthly re-upload needed.</li>
+  <li><strong>Path B</strong> &mdash; distinct domains (e.g., <code>@agencyA.gov</code>, <code>@agencyB.gov</code>). Uses the system-generated <code>Domain</code> attribute from Entra ID. No CSV needed for partitioning, though you may still want one for additional filter attributes.</li>
+</ul>
+
+<h2>Comparison at a Glance</h2>
+
+<table>
+  <tr>
+    <th>Dimension</th>
+    <th>Default Priority</th>
+    <th>Isolation</th>
+  </tr>
+  <tr>
+    <td><strong>Core principle</strong></td>
+    <td>Agency CEOs see their team by default via manager hierarchy</td>
+    <td>Hard data boundaries via partitions</td>
+  </tr>
+  <tr>
+    <td><strong>Cross-agency visibility</strong></td>
+    <td>Possible &mdash; users can navigate to &ldquo;Your company&rdquo;</td>
+    <td>Blocked &mdash; partition boundaries enforce isolation</td>
+  </tr>
+  <tr>
+    <td><strong>Partitions needed</strong></td>
+    <td>No</td>
+    <td>Yes &mdash; one per agency</td>
+  </tr>
+  <tr>
+    <td><strong>Report delivery</strong></td>
+    <td>Native Copilot Dashboard</td>
+    <td>Power BI workspaces (recommended)</td>
+  </tr>
+  <tr>
+    <td><strong>PowerShell required</strong></td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td><strong>Setup effort</strong></td>
+    <td>2&ndash;4 hours</td>
+    <td>1&ndash;3 days</td>
+  </tr>
+  <tr>
+    <td><strong>Best for</strong></td>
+    <td>Organisations where cross-agency visibility is acceptable</td>
+    <td>Organisations with mandatory data separation requirements</td>
+  </tr>
+</table>
+
+<!-- ═══════════════════════ DECIDE ═══════════════════════ -->
+<h1 id="decide">Ready to Decide?</h1>
+
+<p>If you understand the trade-offs above, the decision often comes down to one question: <em>must agencies be prevented from seeing each other&rsquo;s data?</em> If no, choose Default Priority. If yes, choose Isolation, then determine your data path based on whether agencies share an email domain.</p>
+
+<p style="margin-top:20px;">
+  <a href="../decide/architecture.html" style="display:inline-block; padding:10px 20px; background:var(--accent); color:#fff; text-decoration:none; border-radius:var(--radius-sm); font-weight:600; font-size:0.92em;">Use the Architecture Decision tool &rarr;</a>
+</p>
+
+<div class="callout info" style="margin-top:40px;">
+  <div class="callout-title">Disclaimer</div>
+  <p>This guide is provided as a procedural reference. Always refer to <a href="https://learn.microsoft.com/viva/insights/advanced/analyst/partitions">Partitions in Viva Insights</a> and <a href="https://learn.microsoft.com/viva/copilot-dashboard">Microsoft Copilot Dashboard</a> on Microsoft Learn for the most up-to-date information.</p>
+</div>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">&#8593;</button>
+<script>
+(function(){
+  var btn = document.getElementById('backToTop');
+  window.addEventListener('scroll', function(){ btn.classList.toggle('visible', window.scrollY > 300); });
+})();
+</script>
+
+</body>
+</html>
