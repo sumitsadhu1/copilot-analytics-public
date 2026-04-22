@@ -442,287 +442,54 @@
 
 <div class="container">
 
-<!-- Role filter bar -->
-<div class="role-bar" role="group" aria-label="Filter by role">
-  <span style="font-size:0.85em;color:var(--muted);align-self:center;margin-right:8px;">I am a:</span>
-  <button class="role-btn active" aria-pressed="true" onclick="filterCards('all', this)">Show All</button>
-  <button class="role-btn" aria-pressed="false" onclick="filterCards('admin', this)">IT Admin</button>
-  <button class="role-btn" aria-pressed="false" onclick="filterCards('leader', this)">Business Leader</button>
-  <button class="role-btn" aria-pressed="false" onclick="filterCards('analyst', this)">Analyst</button>
-  <button class="role-btn" aria-pressed="false" onclick="filterCards('governance', this)">Governance / Security</button>
-  <button class="role-btn" aria-pressed="false" onclick="filterCards('finance', this)">Finance / Licensing</button>
-</div>
-
-
-<!-- Topic Navigator -->
-<div class="topic-nav" role="navigation" aria-label="Browse by topic">
-  <div class="topic-header">
-    <span class="topic-label">Explore topics</span>
-    <button class="topic-clear" id="topicClear" style="display:none" onclick="clearTopic()">Clear &times;</button>
+<!-- ═══ SCENARIO ENTRY POINTS ═══ -->
+<div class="card-grid" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); margin-bottom: 24px;">
+  <div class="card">
+    <h3>I&rsquo;m rolling out Copilot analytics for the first time</h3>
+    <p>Read the Admin Setup Guide for end-to-end configuration across all five analytics tiers.</p>
+    <a href="2-setup/admin-setup.html">Start here &rarr;</a>
   </div>
-  <div class="topic-pills" id="topicPills">
-    <button class="topic-pill" data-topic="dashboard">Dashboard</button>
-    <button class="topic-pill" data-topic="partition">Partitions</button>
-    <button class="topic-pill" data-topic="assisted hours">Assisted Hours</button>
-    <button class="topic-pill" data-topic="Power BI">Power BI</button>
-    <button class="topic-pill" data-topic="agent">Agents</button>
-    <button class="topic-pill" data-topic="VFAM">VFAM</button>
-    <button class="topic-pill" data-topic="org data">Org Data</button>
-    <button class="topic-pill" data-topic="sentiment">Sentiment</button>
-    <button class="topic-pill" data-topic="delegation">Delegation</button>
-    <button class="topic-pill" data-topic="billing">Billing</button>
-    <button class="topic-pill" data-topic="ROI">ROI</button>
-    <button class="topic-pill" data-topic="multi-agency">Multi-Agency</button>
-    <button class="topic-pill" data-topic="privacy">Privacy</button>
-    <button class="topic-pill" data-topic="template">Templates</button>
-    <button class="topic-pill" data-topic="meeting time">Meetings &amp; Focus</button>
-    <button class="topic-pill" data-topic="licence">Licensing</button>
-  </div>
-</div>
-<input type="hidden" id="docSearch" value="">
-<div class="search-results" id="searchResults"></div>
-<div class="no-results" id="noResults">No matching sections found. Try a different topic.</div>
 
-<!-- DECISION GUIDE -->
-<div class="decision collapsed" id="decisionGuide">
-  <h3 onclick="toggleDecision()">What do you need? <span class="toggle-icon">▼</span></h3>
-  <div class="decision-body">
-  <p style="font-size:0.88em;color:var(--muted);margin-bottom:12px;">Find the right guide for your task.</p>
-  <table>
-    <tr><th>If you need to...</th><th>Start here</th></tr>
-    <tr><td>Understand what Copilot analytics can do (CIO/exec read)</td><td><a href="1-strategy/executive-briefing.html">Executive Briefing</a></td></tr>
-    <tr><td>Decide your HR data / org data approach</td><td><a href="1-strategy/data-strategy.html">Data Strategy</a></td></tr>
-    <tr><td>Choose a multi-agency architecture</td><td><a href="1-strategy/multi-agency-decision.html">Multi-Agency Decision Guide</a></td></tr>
-    <tr><td>Set up Copilot analytics dashboards &amp; reports</td><td><a href="2-setup/admin-setup.html">Admin Setup Guide</a></td></tr>
-    <tr><td>Connect your HR data (upload, HRIS connectors, API)</td><td><a href="2-setup/data-onboarding.html">Data Onboarding Guide</a></td></tr>
-    <tr><td>Configure privacy, exclusion lists, data retention</td><td><a href="2-setup/privacy-configuration.html">Privacy Configuration</a></td></tr>
-    <tr><td>Implement multi-agency isolation or default-priority</td><td><a href="2-setup/multi-agency-setup.html">Multi-Agency Setup</a></td></tr>
-    <tr><td>Learn to read dashboards and interpret metrics</td><td><a href="3-operate/dashboard-guide.html">Dashboard &amp; Reports Guide</a></td></tr>
-    <tr><td>Create Power BI reports from Viva Insights queries</td><td><a href="3-operate/analyst-playbook.html">Analyst Playbook</a></td></tr>
-    <tr><td>Understand billing, credits, or licence lifecycle</td><td><a href="3-operate/billing-operations.html">Billing Operations</a></td></tr>
-    <tr><td>Analyse meeting time, focus time, wellbeing</td><td><a href="3-operate/collaboration-analysis.html">Collaboration Analysis</a></td></tr>
-    <tr><td>Fix something that's not working</td><td><a href="4-reference/troubleshooting.html">Troubleshooting Guide</a></td></tr>
-    <tr><td>Look up attribute names or upload formats</td><td><a href="4-reference/attribute-reference.html">Attribute Reference</a></td></tr>
-    <tr><td>Answer common questions</td><td><a href="4-reference/faq.html">FAQ</a></td></tr>
-  </table>
+  <div class="card">
+    <h3>I&rsquo;m adding multiple agencies to one tenant</h3>
+    <p>Start with the architecture decision, then implementation, then data onboarding.</p>
+    <a href="1-strategy/multi-agency-decision.html">Start here &rarr;</a>
+  </div>
+
+  <div class="card">
+    <h3>I need to upload or refresh HR data</h3>
+    <p>Read the Data Onboarding Guide for all six upload methods and verification steps.</p>
+    <a href="2-setup/data-onboarding.html">Start here &rarr;</a>
+  </div>
+
+  <div class="card">
+    <h3>My dashboard shows no data or wrong data</h3>
+    <p>Read the Troubleshooting Guide for symptom-based diagnosis and resolution steps.</p>
+    <a href="4-reference/troubleshooting.html">Start here &rarr;</a>
+  </div>
+
+  <div class="card">
+    <h3>I need to produce an executive ROI report</h3>
+    <p>Read the Dashboard &amp; Reports Guide for metrics, scope filters, and review cadence.</p>
+    <a href="3-operate/dashboard-guide.html">Start here &rarr;</a>
+  </div>
+
+  <div class="card">
+    <h3>I&rsquo;m an analyst building Power BI reports</h3>
+    <p>Read the Analyst Playbook for queries, PBI templates, and report publishing.</p>
+    <a href="3-operate/analyst-playbook.html">Start here &rarr;</a>
+  </div>
+
+  <div class="card">
+    <h3>I need to configure privacy, exclusions, or retention</h3>
+    <p>Read the Privacy Configuration guide for thresholds, exclusion lists, and GDPR settings.</p>
+    <a href="2-setup/privacy-configuration.html">Start here &rarr;</a>
   </div>
 </div>
 
-<!-- ═══════════════════ LAYER TABS ═══════════════════ -->
-<div class="layer-tabs" role="tablist" aria-label="Documentation layers">
-  <button class="layer-tab active" role="tab" aria-selected="true" onclick="switchLayer('strategy', this)">Strategy <span class="tab-count">3</span></button>
-  <button class="layer-tab" role="tab" aria-selected="false" onclick="switchLayer('setup', this)">Setup <span class="tab-count">4</span></button>
-  <button class="layer-tab" role="tab" aria-selected="false" onclick="switchLayer('operate', this)">Operate <span class="tab-count">4</span></button>
-  <button class="layer-tab" role="tab" aria-selected="false" onclick="switchLayer('reference', this)">Reference <span class="tab-count">4</span></button>
-</div>
-
-<!-- ═══ LAYER 1: STRATEGY ═══ -->
-<div class="layer-panel active" id="layer-strategy" role="tabpanel">
-  <p style="font-size:0.86em;color:var(--text-secondary);margin:0 0 16px;">Read before deployment. Understand capabilities, make decisions, choose architectures.</p>
-  <div class="card-grid">
-    <div class="card" data-roles="leader admin analyst governance finance" data-keywords="executive briefing CIO strategy ROI decision framework RACI capabilities overview tier architecture">
-      <span class="card-badge badge-core">STRATEGY</span>
-      <h3>Executive Briefing</h3>
-      <p>What Copilot analytics can tell you, which dashboards answer which questions, level-of-effort, implementation timeline, and key decisions. The CIO's 10-minute read.</p>
-      <div class="card-meta">v4.0</div>
-      <div class="card-roles">
-        <span class="card-role">CIO</span>
-        <span class="card-role">Solution Architect</span>
-        <span class="card-role">Business Leaders</span>
-      </div>
-      <a href="1-strategy/executive-briefing.html">Open Guide</a>
-    </div>
-
-    <div class="card" data-roles="admin analyst" data-keywords="data strategy org data HRIS Entra CSV upload SAP Workday Azure Blob API connector planning worksheet custom attributes">
-      <span class="card-badge badge-core">STRATEGY</span>
-      <h3>Data Strategy</h3>
-      <p>Entra ID vs. org data upload — what breaks without it, which upload method to choose, data planning worksheet, and the MODIS migration.</p>
-      <div class="card-meta">v4.0</div>
-      <div class="card-roles">
-        <span class="card-role">Solution Architect</span>
-        <span class="card-role">IT Admin</span>
-      </div>
-      <a href="1-strategy/data-strategy.html">Open Guide</a>
-    </div>
-
-    <div class="card" data-roles="admin governance leader" data-keywords="multi-agency isolation default priority partition single tenant delegation agency architecture decision">
-      <span class="card-badge badge-architecture">STRATEGY</span>
-      <h3>Multi-Agency Decision Guide</h3>
-      <p>Choose between Default Priority (agencies see their own data by default) and Isolation (hard data boundaries via partitions). Decision tree and data strategy for each path.</p>
-      <div class="card-meta">v4.0</div>
-      <div class="card-roles">
-        <span class="card-role">Solution Architect</span>
-        <span class="card-role">IT Admin</span>
-        <span class="card-role">CIO</span>
-      </div>
-      <a href="1-strategy/multi-agency-decision.html">Open Guide</a>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ LAYER 2: SETUP ═══ -->
-<div class="layer-panel" id="layer-setup" role="tabpanel">
-  <p style="font-size:0.86em;color:var(--text-secondary);margin:0 0 16px;">Configure and deploy. Step-by-step guides for IT administrators.</p>
-  <div class="card-grid">
-    <div class="card" data-roles="admin" data-keywords="admin setup configure dashboard enable VFAM roles licences tier admin center copilot dashboard agent analytics sentiment survey exclusion list manager settings delegation group size hourly rate">
-      <span class="card-badge badge-core">SETUP</span>
-      <h3>Admin Setup Guide</h3>
-      <p>End-to-end setup for all 5 analytics tiers. Global Admin readiness checklist, VFAM policy verification, dashboard enablement, manager settings, sentiment configuration, and Advanced Analytics.</p>
-      <div class="card-meta">v4.0</div>
-      <div class="card-roles">
-        <span class="card-role">IT Admin</span>
-        <span class="card-role">AI Admin</span>
-        <span class="card-role">Insights Admin</span>
-      </div>
-      <a href="2-setup/admin-setup.html">Open Guide</a>
-    </div>
-
-    <div class="card" data-roles="admin analyst" data-keywords="data onboarding upload CSV org data HRIS SAP Workday Azure Blob API connector attribute mapping verification troubleshoot migration MODIS incremental merge">
-      <span class="card-badge badge-core">SETUP</span>
-      <h3>Data Onboarding Guide</h3>
-      <p>The complete guide to connecting your HR data. All 6 upload methods, attribute mapping, step-by-step procedures, post-upload verification, maintenance cadence, and common errors.</p>
-      <div class="card-meta">v4.0</div>
-      <div class="card-roles">
-        <span class="card-role">IT Admin</span>
-        <span class="card-role">Insights Admin</span>
-        <span class="card-role">Data Engineer</span>
-      </div>
-      <a href="2-setup/data-onboarding.html">Open Guide</a>
-    </div>
-
-    <div class="card" data-roles="admin governance" data-keywords="privacy group size exclusion list data residency GDPR retention differential privacy distribution masking">
-      <span class="card-badge badge-core">SETUP</span>
-      <h3>Privacy Configuration</h3>
-      <p>Privacy thresholds, exclusion lists, data residency, GDPR compliance, and data retention periods across all analytics tiers.</p>
-      <div class="card-meta">v4.0</div>
-      <div class="card-roles">
-        <span class="card-role">IT Admin</span>
-        <span class="card-role">Governance</span>
-      </div>
-      <a href="2-setup/privacy-configuration.html">Open Guide</a>
-    </div>
-
-    <div class="card" data-roles="admin governance" data-keywords="multi-agency setup partition isolation VFAM lockdown PowerShell default priority delegation AutoCxO CSV agency domain">
-      <span class="card-badge badge-architecture">SETUP</span>
-      <h3>Multi-Agency Setup</h3>
-      <p>Step-by-step implementation for both multi-agency architectures: Default Priority (scoped views) and Isolation (partition-based data boundaries with VFAM lockdown).</p>
-      <div class="card-meta">v4.0</div>
-      <div class="card-roles">
-        <span class="card-role">IT Admin</span>
-        <span class="card-role">Solution Architect</span>
-      </div>
-      <a href="2-setup/multi-agency-setup.html">Open Guide</a>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ LAYER 3: OPERATE ═══ -->
-<div class="layer-panel" id="layer-operate" role="tabpanel">
-  <p style="font-size:0.86em;color:var(--text-secondary);margin:0 0 16px;">Use dashboards and reports. Ongoing operational guides for leaders, analysts, and admins.</p>
-  <div class="card-grid">
-    <div class="card" data-roles="leader admin analyst" data-keywords="dashboard adoption impact readiness sentiment assisted hours value ROI scope filter group delegation copilot analytics reports agent dashboard detect act metrics review cadence">
-      <span class="card-badge badge-playbook">OPERATE</span>
-      <h3>Dashboard &amp; Reports Guide</h3>
-      <p>How to read and interpret the Copilot Dashboard, Analytics Reports, and Agent Dashboard. Every metric defined, scope filters explained, delegation guide, PBI template decision guide, and suggested review cadence.</p>
-      <div class="card-meta">v4.0</div>
-      <div class="card-roles">
-        <span class="card-role">Business Leaders</span>
-        <span class="card-role">Managers</span>
-        <span class="card-role">Analysts</span>
-      </div>
-      <a href="3-operate/dashboard-guide.html">Open Guide</a>
-    </div>
-
-    <div class="card" data-roles="analyst" data-keywords="analyst playbook power bi template query partition copilot impact adoption business impact headlines glint publish reports before after cohort segmentation">
-      <span class="card-badge badge-playbook">OPERATE</span>
-      <h3>Analyst Playbook</h3>
-      <p>Advanced Analytics workflow for Insights Analysts. PBI template catalog, step-by-step query creation, Power BI connection, report publishing, and analyst departure transfer guide.</p>
-      <div class="card-meta">v4.0</div>
-      <div class="card-roles">
-        <span class="card-role">Insights Analyst</span>
-      </div>
-      <a href="3-operate/analyst-playbook.html">Open Guide</a>
-    </div>
-
-    <div class="card" data-roles="admin finance leader" data-keywords="licence license billing credits chargeback lifecycle renewal expiry model subscription PAYG commit consumption cost finance pricing Copilot Chat Studio credit pool">
-      <span class="card-badge badge-playbook">OPERATE</span>
-      <h3>Billing Operations</h3>
-      <p>Licence lifecycle events, 5 licensing models, 6 lifecycle scenarios, Copilot Credits consumption, chargeback, and operational checklists.</p>
-      <div class="card-meta">v4.0</div>
-      <div class="card-roles">
-        <span class="card-role">IT Admin</span>
-        <span class="card-role">Finance</span>
-      </div>
-      <a href="3-operate/billing-operations.html">Open Guide</a>
-    </div>
-
-    <div class="card" data-roles="analyst leader" data-keywords="meeting time focus time wellbeing manager effectiveness collaboration template query 27 months behavioural metrics HR people analytics after hours email overload network Viva Insights advanced">
-      <span class="card-badge badge-playbook">OPERATE</span>
-      <h3>Collaboration Analysis</h3>
-      <p>Meeting time, focus time, wellbeing, manager effectiveness — beyond Copilot. 6 templates, behavioural metrics, and data retention (27 months vs 13 months).</p>
-      <div class="card-meta">v4.0</div>
-      <div class="card-roles">
-        <span class="card-role">Insights Analyst</span>
-        <span class="card-role">HR / People Analytics</span>
-      </div>
-      <a href="3-operate/collaboration-analysis.html">Open Guide</a>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ LAYER 4: REFERENCE ═══ -->
-<div class="layer-panel" id="layer-reference" role="tabpanel">
-  <p style="font-size:0.86em;color:var(--text-secondary);margin:0 0 16px;">Look up details and fix issues. Always-available reference material.</p>
-  <div class="card-grid">
-    <div class="card" data-roles="admin analyst" data-keywords="troubleshooting fix error access denied VFAM dashboard not working org data upload validation failed processing failed suppressed N/A exclusion list">
-      <span class="card-badge badge-artifact">REFERENCE</span>
-      <h3>Troubleshooting Guide</h3>
-      <p>Consolidated troubleshooting for all analytics tiers, data upload errors, and common access issues. Includes escalation path.</p>
-      <div class="card-meta">v4.0</div>
-      <div class="card-roles">
-        <span class="card-role">IT Admin</span>
-        <span class="card-role">Analyst</span>
-      </div>
-      <a href="4-reference/troubleshooting.html">Open Guide</a>
-    </div>
-
-    <div class="card" data-roles="admin analyst" data-keywords="attribute mapping reference PersonEmail ManagerEmail Organization FunctionType LevelDesignation Location HireDate HourlyRate custom public confidential classification">
-      <span class="card-badge badge-artifact">REFERENCE</span>
-      <h3>Attribute Reference</h3>
-      <p>Full attribute mapping table (legacy vs M365 Admin Center names), data classifications (Public/Confidential/Custom), and naming conventions.</p>
-      <div class="card-meta">v4.0</div>
-      <div class="card-roles">
-        <span class="card-role">IT Admin</span>
-        <span class="card-role">Insights Admin</span>
-      </div>
-      <a href="4-reference/attribute-reference.html">Open Guide</a>
-    </div>
-
-    <div class="card" data-roles="leader admin analyst" data-keywords="questions answers licensing privacy data refresh agents billing scope common FAQ misconceptions group size survey Glint Pulse partition dashboard access org data upload Entra">
-      <span class="card-badge badge-artifact">REFERENCE</span>
-      <h3>FAQ</h3>
-      <p>18 common questions across licensing, org data, privacy, and general topics with direct answers.</p>
-      <div class="card-meta">v4.0</div>
-      <div class="card-roles">
-        <span class="card-role">All roles</span>
-      </div>
-      <a href="4-reference/faq.html">Open Guide</a>
-    </div>
-
-    <div class="card" data-roles="admin analyst" data-keywords="glossary definitions terms VFAM assisted hours partition delegation exclusion list URLs resources adoption hub scenario library">
-      <span class="card-badge badge-artifact">REFERENCE</span>
-      <h3>Glossary &amp; Resources</h3>
-      <p>Key term definitions, dashboard direct links, and Microsoft Learn technical documentation URLs.</p>
-      <div class="card-meta">v4.0</div>
-      <div class="card-roles">
-        <span class="card-role">All roles</span>
-      </div>
-      <a href="4-reference/glossary.html">Open Guide</a>
-    </div>
-  </div>
-</div>
-
-<!-- Legacy guides removed — all content is now in the Layer Cake structure above -->
+<p style="text-align:center; margin: 0 0 40px; font-size: 0.92em; color: var(--text-secondary);">
+  Looking for something specific? <a href="browse.html" style="color:var(--accent-sky); font-weight:600; text-decoration:none;"><strong>Browse all guides &rarr;</strong></a>
+</p>
 
 </div><!-- close container -->
 
