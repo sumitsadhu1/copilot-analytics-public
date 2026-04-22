@@ -1,0 +1,91 @@
+.
+├── .github/
+│   └── copilot-instructions.md
+├── .gitignore
+├── 1-strategy/
+│   ├── data-strategy.html
+│   ├── executive-briefing.html
+│   ├── index.html                  (redirect → ../index.html)
+│   └── multi-agency-decision.html
+├── 2-setup/
+│   ├── admin-setup.html
+│   ├── data-onboarding.html
+│   ├── index.html                  (redirect → ../index.html)
+│   ├── multi-agency-setup.html
+│   └── privacy-configuration.html
+├── 3-operate/
+│   ├── analyst-playbook.html
+│   ├── billing-operations.html
+│   ├── collaboration-analysis.html
+│   ├── dashboard-guide.html
+│   └── index.html                  (redirect → ../index.html)
+├── 4-reference/
+│   ├── attribute-reference.html
+│   ├── faq.html
+│   ├── glossary.html
+│   ├── index.html                  (redirect → ../index.html)
+│   └── troubleshooting.html
+├── artifacts/
+│   ├── Copilot_Analytics_FAQ.html
+│   ├── Copilot_Analytics_QuickStart_CheatSheet.html
+│   ├── Copilot_Analytics_Setup_Companion_Guide.pdf
+│   ├── Org_Data_Validation_Prompt.html
+│   ├── pdfs/
+│   │   ├── Admin_Setup_Guide.pdf
+│   │   ├── Advanced_Viva_Insights_Collaboration_Guide.pdf
+│   │   ├── Analyst_Playbook.pdf
+│   │   ├── Attribute_Reference.pdf
+│   │   ├── Billing_Operations.pdf
+│   │   ├── Collaboration_Analysis.pdf
+│   │   ├── Copilot_Analytics_FAQ.pdf
+│   │   ├── Copilot_Analytics_Implementation_Guide.pdf
+│   │   ├── Copilot_Analytics_QuickStart_CheatSheet.pdf
+│   │   ├── Copilot_Analytics_Setup_Companion_Guide.pdf
+│   │   ├── Copilot_Lifecycle_Billing_Playbook.pdf
+│   │   ├── Copilot_Multi_Agency_Default_Priority_Architecture.pdf
+│   │   ├── Copilot_Multi_Agency_Isolation_Architecture.pdf
+│   │   ├── Dashboard_Reports_Guide.pdf
+│   │   ├── Data_Onboarding_Guide.pdf
+│   │   ├── Data_Strategy.pdf
+│   │   ├── Executive_Briefing.pdf
+│   │   ├── FAQ.pdf
+│   │   ├── Glossary_Resources.pdf
+│   │   ├── Multi_Agency_Decision_Guide.pdf
+│   │   ├── Multi_Agency_Setup.pdf
+│   │   ├── Privacy_Configuration.pdf
+│   │   └── Troubleshooting_Guide.pdf
+│   └── sample-data/
+│       ├── adversarial_stress_test.csv
+│       ├── contoso_org_data_test.csv
+│       ├── dataset1_good.csv
+│       ├── dataset2_partial.csv
+│       ├── dataset3_bad.csv
+│       ├── modis_bad.csv
+│       ├── modis_good.csv
+│       ├── modis_partial.csv
+│       ├── run_simulation_v2.py
+│       ├── run_validation.py
+│       ├── sim1_good.csv
+│       ├── sim2_partial.csv
+│       ├── sim3_bad.csv
+│       └── sim4_modis_legacy.csv
+├── assets/
+│   ├── docs-style.css
+│   ├── images/
+│   └── search-index.json
+├── BACKLOG.md
+├── docs/
+│   ├── core/
+│   │   ├── Copilot_Analytics_Implementation_Guide.html
+│   │   └── Copilot_Analytics_Setup_Companion_Guide.html
+│   └── playbooks/
+│       ├── Advanced_Viva_Insights_Collaboration_Guide.html
+│       ├── Copilot_Lifecycle_Billing_Playbook.html
+│       ├── Copilot_Multi_Agency_Default_Priority_Architecture.html
+│       └── Copilot_Multi_Agency_Isolation_Architecture.html
+├── index.html
+├── LICENSE
+├── README.md
+└── scripts/
+    ├── build_search_index.py
+    └── generate_all_pdfs.sh
