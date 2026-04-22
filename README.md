@@ -44,6 +44,10 @@ This guide is provided as a practical reference and may not reflect the latest p
 Always refer to [Microsoft Learn](https://learn.microsoft.com/viva/insights/) for the most current information.
 This is not official Microsoft documentation.
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the four-surface author contract (Decide / Do / Reference / Explain) and writing conventions.
+
 ## Licence
 
 MIT — see [LICENSE](LICENSE) for details.
