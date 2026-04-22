@@ -99,7 +99,7 @@
             <strong>Prerequisites &amp; Licensing</strong>
             <table style="font-size:0.9em;margin:8px 0 8px;">
                 <tr><th style="width:40%">Requirement</th><th>Details</th></tr>
-                <tr><td>50+ assigned Copilot licences (or combined Copilot + Viva Insights = 50)</td><td>Required for Copilot Dashboard, Analytics Reports, and advanced analytics features</td></tr>
+                <tr><td>1+ assigned Copilot licences for core dashboard; 50+ combined Copilot + Viva Insights for advanced features (benchmarks, Agent Dashboard, sentiment, delegation)</td><td>Required for Copilot Dashboard, Analytics Reports, and advanced analytics features</td></tr>
                 <tr><td>Insights Admin + AI Admin roles assigned</td><td>Assign via M365 Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Add-on Plan, or Role assignments &rarr; search role name</td></tr>
                 <tr><td>Clean manager hierarchy per agency</td><td>Each agency CEO must be the top-level manager for their agency employees in Entra ID</td></tr>
             </table>
@@ -380,7 +380,7 @@ Two independent trees =            └────┬───┘
                 <p>Audit the current state before configuring anything.</p>
                 <ul>
                     <li><strong>Verify manager hierarchy:</strong> Confirm each agency CEO has no cross-agency manager relationship. Use Entra portal &rarr; Users &rarr; select each CEO &rarr; check Manager field. Run the PowerShell audit in <a href="#appendix-a">Appendix A</a> for bulk verification.</li>
-                    <li><strong>Confirm licence counts:</strong> Verify 50+ Copilot licences are assigned. M365 Admin Center &rarr; Billing &rarr; Licences &rarr; Microsoft 365 Copilot.</li>
+                    <li><strong>Confirm licence counts:</strong> Verify Copilot licences are assigned (1+ for core dashboard; 50+ for advanced features). M365 Admin Center &rarr; Billing &rarr; Licences &rarr; Microsoft 365 Copilot.</li>
                     <li><strong>Identify agency leaders:</strong> List each agency&rsquo;s CEO and their direct reports (VPs). These will be the primary dashboard consumers and delegation targets.</li>
                     <li><strong>Review current VFAM state:</strong> Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Turn Advanced Insights on or off. Document which features are currently enabled or disabled.</li>
                     <li><strong>Check existing dashboard access:</strong> Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Manage user access for Copilot Dashboard. Note who currently has access.</li>

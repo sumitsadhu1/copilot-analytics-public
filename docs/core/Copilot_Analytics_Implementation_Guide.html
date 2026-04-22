@@ -106,7 +106,7 @@
   <div class="arch-box highlight">
     <h4>Tier 2</h4>
     <p><strong>Copilot Dashboard</strong></p>
-    <p>Leaders &amp; Managers<br>ROI, Adoption, Sentiment<br>50+ licenses</p>
+    <p>Leaders &amp; Managers<br>ROI, Adoption, Sentiment<br>1+ licenses</p>
   </div>
   <div class="arch-arrow">&rarr;</div>
   <div class="arch-box">
@@ -118,7 +118,7 @@
   <div class="arch-box">
     <h4>Tier 4</h4>
     <p><strong>Agent Dashboard</strong></p>
-    <p>Leaders &amp; Analysts<br>Agent adoption &amp; usage<br>50+ licenses</p>
+    <p>Leaders &amp; Analysts<br>Agent adoption &amp; usage<br>50+ licenses (advanced)</p>
   </div>
   <div class="arch-arrow">&rarr;</div>
   <div class="arch-box">
@@ -187,7 +187,7 @@
 
 <div class="callout info">
   <div class="callout-title">UPDATE (April 2026): Copilot Chat (Free) Users Are Now Partially Visible</div>
-  <p>As of April 2026, the Copilot Dashboard includes a <strong>Copilot Chat licence filter</strong> that shows adoption insights for M365 E3/E5 users who use the free Copilot Chat app without the paid add-on. This requires Copilot Chat reporting to be enabled and 50+ Copilot or Viva Insights licences.</p>
+  <p>As of April 2026, the Copilot Dashboard includes a <strong>Copilot Chat licence filter</strong> that shows adoption insights for M365 E3/E5 users who use the free Copilot Chat app without the paid add-on. Available with 1+ Copilot licences; Copilot Chat reporting must be enabled.</p>
   <p><strong>What the Dashboard now shows for free Copilot Chat users:</strong></p>
   <ul>
     <li>Active Copilot Chat users count</li>
@@ -231,7 +231,7 @@
 
 <table>
   <tr><th>#</th><th>Question</th><th>Why It Matters</th></tr>
-  <tr><td>1</td><td>How many M365 Copilot licenses are <strong>assigned</strong> (not purchased)?</td><td>Below 50 = limited dashboard features</td></tr>
+  <tr><td>1</td><td>How many M365 Copilot licenses are <strong>assigned</strong> (not purchased)?</td><td>1+ for core dashboard; 50+ for advanced features</td></tr>
   <tr><td>2</td><td>Is the Entra ID manager hierarchy populated for most users?</td><td>Determines automatic vs. manual dashboard access. If &gt;20% of users lack a Manager attribute, auto-identification and Manager Settings will be unreliable. See <a href="#s9">Section 9.1</a> for impact details.</td></tr>
   <tr><td>3</td><td>Do you have an HR data export available (department, function, location)?</td><td>Required for group-level filtering and BU-level rollups</td></tr>
   <tr><td>4</td><td>Has anyone been assigned the AI Administrator role?</td><td>Required to manage dashboard access and privacy settings</td></tr>
@@ -250,7 +250,7 @@
 <table>
   <tr><th>Capability</th><th>Admin Center</th><th>Copilot Dashboard</th><th>Analytics Reports</th><th>Agent Dashboard</th><th>Advanced Analytics</th></tr>
   <tr><td>Primary Audience</td><td>IT Admins</td><td>Leaders, Managers</td><td>Leaders, Analysts</td><td>Leaders, Analysts</td><td>Analysts</td></tr>
-  <tr><td>Minimum Licenses</td><td>Any (1+)</td><td>50 Copilot OR Viva Insights</td><td>Same as Dashboard</td><td>50 Copilot OR Viva Insights</td><td>50 Viva Insights</td></tr>
+  <tr><td>Minimum Licenses</td><td>Any (1+)</td><td>1+ Copilot (50+ for advanced)</td><td>Same as Dashboard</td><td>50 Copilot OR Viva Insights</td><td>50 Viva Insights</td></tr>
   <tr><td>Setup Complexity</td><td>None</td><td>Low–Medium</td><td>None (auto)</td><td>Low</td><td>High</td></tr>
   <tr><td>Data Latency</td><td>~72 hours</td><td>Up to 6 days</td><td>Up to 6 days</td><td>Up to 6 days</td><td>Query-dependent</td></tr>
   <tr><td>User-Level Tracking</td><td>Yes</td><td>No (group-level)</td><td>No (group-level)</td><td>No (group-level)</td><td>Custom segments</td></tr>
@@ -264,7 +264,7 @@
 <h2 id="s3-2">3.2 Decision Framework</h2>
 <ol>
   <li>Do you need user-level license utilization data? &rarr; Start with <strong>Admin Center Reports</strong></li>
-  <li>Do you have 50+ assigned licenses AND want ROI metrics? &rarr; Enable <strong>Copilot Dashboard</strong></li>
+  <li>Do you have 1+ assigned Copilot licences AND want ROI metrics? &rarr; Enable <strong>Copilot Dashboard</strong> (50+ for advanced features)</li>
   <li>Do leaders want ready-to-use targeted reports? &rarr; <strong>Copilot Analytics Reports</strong> (auto-available with Dashboard)</li>
   <li>Are you deploying agents (Copilot Studio, etc.)? &rarr; Enable <strong>Agent Dashboard</strong></li>
   <li>Do you need before/after adoption analysis or custom segmentation? &rarr; Configure <strong>Advanced Analytics</strong></li>
@@ -298,7 +298,7 @@
 <p>When a Global Admin is asked <em>&ldquo;Is everything set up for the analyst?&rdquo;</em>, use this quick diagnostic. Each row can be verified in under 2 minutes.</p>
 <table>
   <tr><th>#</th><th>Check</th><th>Where to Verify</th><th>Expected State</th></tr>
-  <tr><td>1</td><td>50+ licences assigned</td><td>Admin Center &rarr; Billing &rarr; Licenses &rarr; Microsoft 365 Copilot</td><td>&ge;50 in &ldquo;Assigned&rdquo; column</td></tr>
+  <tr><td>1</td><td>Copilot licences assigned</td><td>Admin Center &rarr; Billing &rarr; Licenses &rarr; Microsoft 365 Copilot</td><td>&ge;1 for core dashboard; &ge;50 for advanced features</td></tr>
   <tr><td>2</td><td>Insights Admin role assigned</td><td>Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Admins</td><td>At least one user listed</td></tr>
   <tr><td>3</td><td>Insights Analyst role assigned</td><td>Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Add-on Plan &rarr; Insights Analyst</td><td>Analyst user(s) listed</td></tr>
   <tr><td>4</td><td>VFAM &mdash; Copilot Dashboard ON</td><td>Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Turn Advanced Insights on or off</td><td>Copilot Dashboard = <strong>On</strong> for Everyone</td></tr>
@@ -438,8 +438,8 @@
 <h3>Licensing Requirements</h3>
 <table>
   <tr><th>Requirement</th><th>Details</th></tr>
-  <tr><td>Full Features</td><td>50 or more assigned Copilot licenses OR 50 or more Viva Insights licenses (combination counts)</td></tr>
-  <tr><td>Limited Features</td><td>Less than 50 assigned Copilot licenses (Readiness page + tenant-level only)</td></tr>
+  <tr><td>Core Features (1+ Copilot licences)</td><td>Readiness, Adoption, and Impact pages with tenant-level and group-level metrics and HR filters</td></tr>
+  <tr><td>Advanced Features (50+ Copilot or Viva Insights)</td><td>Agent Dashboard, benchmarks, intelligent summaries, sentiment survey metrics, trendlines, manager group-level views with delegation, &ldquo;All&rdquo; licence type view (combination counts)</td></tr>
   <tr><td>Viva Insights Service Plan</td><td>Automatically included with every Copilot license (no additional cost)</td></tr>
 </table>
 
@@ -449,8 +449,8 @@
 </div>
 
 <div class="callout warning">
-  <div class="callout-title">WARNING: 50-License Threshold</div>
-  Organizations with fewer than 50 Copilot licenses will only see tenant-level adoption metrics. Group-level filtering and the full Impact page require meeting the 50-license threshold. This threshold can be achieved through a <strong>combination</strong> of Copilot and Viva Insights licenses (e.g., 30 Copilot + 20 Viva Insights = 50).
+  <div class="callout-title">NOTE: Licence Thresholds</div>
+  With <strong>1+ Copilot licences</strong>, tenants get the Readiness, Adoption, and Impact pages with tenant-level and group-level metrics. With <strong>50+ Copilot or Viva Insights licences</strong> (combination counts, e.g., 30 Copilot + 20 Viva Insights = 50), tenants additionally get agent insights, benchmarks, intelligent summaries, sentiment surveys, trendlines, manager delegation, and the &ldquo;All&rdquo; licence type view.
 </div>
 
 <div class="callout info">
@@ -533,8 +533,8 @@
     <li>Navigate to <code>https://admin.microsoft.com</code></li>
     <li>Go to <strong>Billing → Licenses</strong></li>
     <li>Locate Microsoft 365 Copilot and note the <strong>assigned</strong> count (not purchased)</li>
-    <li>Confirm 50 or more licenses are assigned</li>
-    <li>If less than 50, consider whether to expand licensing</li>
+    <li>Confirm at least 1 Copilot licence is assigned for core dashboard features (50+ for advanced features)</li>
+    <li>For advanced features (benchmarks, Agent Dashboard, sentiment, delegation), confirm 50+ combined Copilot and Viva Insights licences</li>
   </ol>
 </div>
 
@@ -800,7 +800,7 @@
 <p>The Copilot Dashboard has four main pages plus a Sentiment section. This reference defines every metric shown and explains the data dependencies behind each view.</p>
 
 <h3>Readiness Page</h3>
-<p>Shows license assignment status and readiness for Copilot adoption. Available even with less than 50 licenses.</p>
+<p>Shows license assignment status and readiness for Copilot adoption. Available with any number of Copilot licences.</p>
 <table>
   <tr><th>What You See</th><th>What It Means</th></tr>
   <tr><td>Assigned licences count</td><td>Number of M365 Copilot licences currently assigned to users (not purchased)</td></tr>
@@ -808,7 +808,7 @@
 </table>
 
 <h3>Adoption Page</h3>
-<p>Displays group-level usage trends across all Copilot surfaces. Requires 50+ assigned licenses for group filtering.</p>
+<p>Displays group-level usage trends across all Copilot surfaces. Available with 1+ assigned Copilot licences. Benchmarks and trendlines require 50+ licences.</p>
 
 <h4>Adoption Metrics Defined</h4>
 <table>
@@ -923,7 +923,7 @@
 <ul class="checklist">
   <li>Can access Copilot Dashboard at <code>https://insights.cloud.microsoft/#/CopilotDashboard</code></li>
   <li>Readiness page displays license assignment data</li>
-  <li>Adoption page shows active user trends (if 50+ licenses)</li>
+  <li>Adoption page shows active user trends</li>
   <li>Impact page displays Copilot Assisted Hours and Value metrics</li>
   <li>Group-level filtering works (if org data uploaded)</li>
   <li>Manager settings enabled and managers can see team-level data</li>
@@ -1807,7 +1807,7 @@
   <tr><td>Dashboard access denied</td><td>Delegation VFAM policy restricts delegates</td><td>Check <strong>Copilot Dashboard Delegation</strong> policy — if scoped to specific users, delegates must be included</td></tr>
   <tr><td>Dashboard access denied</td><td>Less than 2,500 users in tenant (no auto-access)</td><td>Use manual access assignment or delegate access</td></tr>
   <tr><td>Impact page missing collaboration data</td><td>Behavioral Experiences policy is OFF</td><td>Navigate to <code>admin.microsoft.com</code> &rarr; Settings &rarr; Microsoft Viva &rarr; Viva Insights &rarr; Set up and management &rarr; Turn Advanced Insights on or off &rarr; verify <strong>TenantPolicyForBehavioralExperiences</strong> is set to <strong>On</strong> for Everyone. Changes take 24 hours to propagate.</td></tr>
-  <tr><td>Only Readiness page visible</td><td>Less than 50 assigned licenses</td><td>Increase assigned licenses to 50+</td></tr>
+  <tr><td>Only Readiness page visible</td><td>No Copilot licences assigned, or data processing not yet complete</td><td>Assign at least 1 Copilot licence and wait up to 7 days for processing</td></tr>
   <tr><td>&ldquo;Viva Insights is below the minimum assigned licence requirement for this experience&rdquo;</td><td>Tenant has fewer than 50 assigned Viva Insights or Copilot licences</td><td>Assign 50+ Copilot licences (each includes Viva Insights service plan) OR standalone Viva Insights licences. Go to Admin Center &rarr; Billing &rarr; Licenses and verify the <strong>assigned</strong> count (not purchased). If recently assigned, wait 24&ndash;48 hours for propagation.</td></tr>
   <tr><td>No group-level filtering</td><td>Organizational data not uploaded</td><td>Upload HR data (see <a href="#s9">Section 9</a>)</td></tr>
   <tr><td>Impact page shows no data</td><td>Less than 7 days since license assignment</td><td>Wait up to 7 days for processing</td></tr>
@@ -1969,8 +1969,8 @@
 <table>
   <tr><th>#</th><th>Question</th><th>Answer</th></tr>
   <tr><td>1</td><td>Can managers see individual employee Copilot usage?</td><td><strong>No.</strong> All data is aggregated at group level and protected by minimum group size thresholds, differential privacy, and distribution masking.</td></tr>
-  <tr><td>2</td><td>What happens if we drop below 50 licences?</td><td>The dashboard reverts to limited features (tenant-level only, Readiness page). Previously available group-level data is no longer shown.</td></tr>
-  <tr><td>3</td><td>Can we trial the Dashboard before licensing everyone?</td><td>The basic Copilot Dashboard is available to any M365/O365 tenant with Exchange Online — no paid Viva licence required. But full group filtering requires the 50-licence threshold.</td></tr>
+  <tr><td>2</td><td>What happens if we drop below 50 licences?</td><td>The core dashboard (Readiness, Adoption, Impact with group-level metrics) remains available with 1+ Copilot licences. Dropping below 50 disables advanced features: Agent Dashboard, benchmarks, intelligent summaries, sentiment, trendlines, manager delegation, and the &ldquo;All&rdquo; licence type view.</td></tr>
+  <tr><td>3</td><td>Can we trial the Dashboard before licensing everyone?</td><td>Yes. The Copilot Dashboard is available to any M365/O365 tenant with Exchange Online. With 1 assigned Copilot licence, you get Readiness, Adoption, and Impact pages. Advanced features require 50+ licences.</td></tr>
   <tr><td>4</td><td>Does the Dashboard track Copilot Chat (web) usage?</td><td>Yes, if Copilot Chat reporting is enabled in the tenant and you have 50+ Copilot or Viva Insights licences. There is a separate licence filter for Copilot Chat.</td></tr>
   <tr><td>5</td><td>How often does the data refresh?</td><td>Daily for the Copilot Dashboard (28-day rolling window, ~6-day delay). Admin Center reports refresh approximately every 72 hours.</td></tr>
   <tr><td>6</td><td>Can we see data by business unit or country?</td><td>Yes, but you must upload organizational data with those attributes. Without org data, only Entra ID Department is available as a filter.</td></tr>

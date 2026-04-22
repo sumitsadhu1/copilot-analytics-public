@@ -62,7 +62,7 @@
   <div class="arch-box highlight">
     <h4>Tier 2</h4>
     <p><strong>Copilot Dashboard</strong></p>
-    <p>Leaders &amp; Managers<br>ROI, Adoption, Sentiment<br>50+ licenses</p>
+    <p>Leaders &amp; Managers<br>ROI, Adoption, Sentiment<br>1+ licenses</p>
   </div>
   <div class="arch-arrow">&rarr;</div>
   <div class="arch-box">
@@ -74,7 +74,7 @@
   <div class="arch-box">
     <h4>Tier 4</h4>
     <p><strong>Agent Dashboard</strong></p>
-    <p>Leaders &amp; Analysts<br>Agent adoption &amp; usage<br>50+ licenses</p>
+    <p>Leaders &amp; Analysts<br>Agent adoption &amp; usage<br>50+ licenses (advanced)</p>
   </div>
   <div class="arch-arrow">&rarr;</div>
   <div class="arch-box">
@@ -120,7 +120,7 @@
 <p>Before your IT team touches any configuration, you should be able to answer these:</p>
 <table>
   <tr><th>#</th><th>Question</th><th>Why It Matters</th></tr>
-  <tr><td>1</td><td>How many M365 Copilot licenses are <strong>assigned</strong> (not purchased)?</td><td>Below 50 = limited dashboard features</td></tr>
+  <tr><td>1</td><td>How many M365 Copilot licenses are <strong>assigned</strong> (not purchased)?</td><td>1+ for core dashboard; 50+ for advanced features (benchmarks, Agent Dashboard, sentiment, delegation)</td></tr>
   <tr><td>2</td><td>Is the Entra ID manager hierarchy populated for most users?</td><td>Determines automatic vs. manual dashboard access. If &gt;20% of users lack a Manager attribute, auto-identification and Manager Settings will be unreliable.</td></tr>
   <tr><td>3</td><td>Do you have an HR data export available (department, function, location)?</td><td>Required for group-level filtering and BU-level rollups. See <a href="data-strategy.html">Data Strategy</a>.</td></tr>
   <tr><td>4</td><td>Has anyone been assigned the AI Administrator role?</td><td>Required to manage dashboard access and privacy settings</td></tr>
@@ -135,7 +135,7 @@
 <h2>2.2 Decision Framework</h2>
 <ol>
   <li>Do you need user-level license utilization data? &rarr; Start with <strong>Admin Center Reports</strong></li>
-  <li>Do you have 50+ assigned licenses AND want ROI metrics? &rarr; Enable <strong>Copilot Dashboard</strong></li>
+  <li>Do you have 1+ assigned Copilot licences AND want ROI metrics? &rarr; Enable <strong>Copilot Dashboard</strong> (50+ for advanced features)</li>
   <li>Do leaders want ready-to-use targeted reports? &rarr; <strong>Copilot Analytics Reports</strong> (auto-available with Dashboard)</li>
   <li>Are you deploying agents (Copilot Studio, etc.)? &rarr; Enable <strong>Agent Dashboard</strong></li>
   <li>Do you need before/after adoption analysis or custom segmentation? &rarr; Configure <strong>Advanced Analytics</strong></li>
@@ -152,7 +152,7 @@
 <table>
   <tr><th>Capability</th><th>Admin Center</th><th>Copilot Dashboard</th><th>Analytics Reports</th><th>Agent Dashboard</th><th>Advanced Analytics</th></tr>
   <tr><td>Primary Audience</td><td>IT Admins</td><td>Leaders, Managers</td><td>Leaders, Analysts</td><td>Leaders, Analysts</td><td>Analysts</td></tr>
-  <tr><td>Minimum Licenses</td><td>Any (1+)</td><td>50 Copilot OR Viva Insights</td><td>Same as Dashboard</td><td>50 Copilot OR Viva Insights</td><td>50 Viva Insights</td></tr>
+  <tr><td>Minimum Licenses</td><td>Any (1+)</td><td>1+ Copilot (50+ for advanced)</td><td>Same as Dashboard</td><td>50 Copilot OR Viva Insights</td><td>50 Viva Insights</td></tr>
   <tr><td>Setup Complexity</td><td>None</td><td>Low–Medium</td><td>None (auto)</td><td>Low</td><td>High</td></tr>
   <tr><td>Data Latency</td><td>~72 hours</td><td>Up to 6 days</td><td>Up to 6 days</td><td>Up to 6 days</td><td>Query-dependent</td></tr>
   <tr><td>User-Level Tracking</td><td>Yes</td><td>No (group-level)</td><td>No (group-level)</td><td>No (group-level)</td><td>Custom segments</td></tr>
@@ -228,13 +228,13 @@
 <h3>Out of Scope</h3>
 <ul>
   <li>Other Copilot products: Copilot for Sales, Copilot for Service, GitHub Copilot, Security Copilot</li>
-  <li><strong>Copilot Chat (Free) users</strong> — E3/E5 users without the paid Copilot add-on now have <strong>limited visibility</strong> via the Copilot Chat filter on the Copilot Dashboard (requires 50+ licences). However, they are not tracked by Admin Center Copilot reports or Viva Insights queries.</li>
+  <li><strong>Copilot Chat (Free) users</strong> — E3/E5 users without the paid Copilot add-on now have visibility via the Copilot Chat filter on the Copilot Dashboard (available with 1+ Copilot licences; Copilot Chat reporting must be enabled). However, they are not tracked by Admin Center Copilot reports or Viva Insights queries.</li>
   <li>Broader Viva Insights productivity metrics (meeting time, focus time) — see <a href="../3-operate/collaboration-analysis.html">Collaboration Analysis Guide</a></li>
 </ul>
 
 <div class="callout info">
   <div class="callout-title">UPDATE (April 2026): Copilot Chat Users Are Now Visible</div>
-  <p>The Copilot Dashboard now includes a <strong>License filter</strong> that lets you toggle between <strong>Microsoft 365 Copilot</strong> and <strong>Copilot Chat</strong> views. The Copilot Chat filter shows insights for M365 E3/E5 users who use the free Copilot Chat app without the paid add-on. This addresses the previous blind spot for free Copilot Chat adoption. Your tenant must have Copilot Chat reporting enabled and 50+ Copilot or Viva Insights licences for this filter to appear.</p>
+  <p>The Copilot Dashboard now includes a <strong>License filter</strong> that lets you toggle between <strong>Microsoft 365 Copilot</strong> and <strong>Copilot Chat</strong> views. The Copilot Chat filter shows insights for M365 E3/E5 users who use the free Copilot Chat app without the paid add-on. This addresses the previous blind spot for free Copilot Chat adoption. Available with 1+ Copilot licences; Copilot Chat reporting must be enabled by an admin.</p>
 </div>
 
 <!-- ═══════════════════════ 7. FURTHER READING ═══════════════════════ -->

@@ -69,7 +69,7 @@
 
 <table>
   <tr><th>#</th><th>Check</th><th>Where to Verify</th><th>Expected State</th></tr>
-  <tr><td>1</td><td>50+ licences assigned</td><td>Admin Centre &rarr; Billing &rarr; Licenses &rarr; Microsoft 365 Copilot</td><td>&ge;50 in &ldquo;Assigned&rdquo; column</td></tr>
+  <tr><td>1</td><td>Copilot licences assigned</td><td>Admin Centre &rarr; Billing &rarr; Licenses &rarr; Microsoft 365 Copilot</td><td>&ge;1 for core dashboard; &ge;50 for advanced features (benchmarks, Agent Dashboard, sentiment, delegation)</td></tr>
   <tr><td>2</td><td>Insights Admin role assigned</td><td>Admin Centre &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Admins</td><td>At least one user listed</td></tr>
   <tr><td>3</td><td>Insights Analyst role assigned</td><td>Admin Centre &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Add-on Plan &rarr; Insights Analyst</td><td>Analyst user(s) listed</td></tr>
   <tr><td>4</td><td>VFAM &mdash; Copilot Dashboard ON</td><td>Admin Centre &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Turn Advanced Insights on or off</td><td>Viva Insights web app = <strong>On</strong> for Everyone</td></tr>
@@ -87,8 +87,8 @@
 </div>
 
 <div class="callout info">
-  <div class="callout-title">NOTE: 50-Licence Threshold</div>
-  <p>The 50-licence threshold required for full dashboard features can be met by a <strong>combination</strong> of Copilot and Viva Insights licences (e.g., 30 Copilot + 20 Viva Insights = 50). Below 50, you get only the Readiness page and tenant-level adoption metrics.</p>
+  <div class="callout-title">NOTE: Licence Thresholds</div>
+  <p>With <strong>1+ Copilot licences</strong>, your tenant gets the Readiness, Adoption, and Impact pages with tenant-level and group-level metrics. With <strong>50+ Copilot or Viva Insights licences</strong> (combination counts, e.g., 30 Copilot + 20 Viva Insights = 50), you additionally get agent-related insights, benchmarks, intelligent summaries, sentiment survey metrics, trendlines, manager group-level views with delegation, and the &ldquo;All&rdquo; licence type view.</p>
 </div>
 
 <!-- ═══════════════════════ 2. WHAT EACH ROLE SEES ═══════════════════════ -->
@@ -218,8 +218,8 @@
     <li>Navigate to <code>https://admin.microsoft.com</code></li>
     <li>Go to <strong>Billing &rarr; Licenses</strong></li>
     <li>Locate Microsoft 365 Copilot and note the <strong>assigned</strong> count (not purchased)</li>
-    <li>Confirm <strong>50 or more</strong> licences are assigned</li>
-    <li>If less than 50, check whether Viva Insights licences can make up the difference (e.g., 30 Copilot + 20 Viva Insights = 50)</li>
+    <li>Confirm at least <strong>1 Copilot licence</strong> is assigned for core dashboard features (Readiness, Adoption, Impact)</li>
+    <li>For advanced features (benchmarks, Agent Dashboard, sentiment, delegation), confirm <strong>50+ combined</strong> Copilot and Viva Insights licences</li>
   </ol>
 </div>
 
