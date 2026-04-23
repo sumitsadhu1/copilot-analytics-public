@@ -55,7 +55,7 @@
 
 <p><strong>Default Priority</strong> is the simpler option. Each agency CEO naturally sees their team&rsquo;s data through the &ldquo;Your group&rdquo; scope on the Copilot Dashboard, which follows the Entra ID manager hierarchy. AutoCxO identification picks up the top leaders automatically. The trade-off: users <em>can</em> navigate to &ldquo;Your company&rdquo; and see tenant-wide data. If that cross-agency visibility is acceptable &mdash; and for many organisations it is &mdash; Default Priority is the right answer. Setup takes 2&ndash;4 hours.</p>
 
-<p><strong>Isolation</strong> is the harder option. It creates hard data boundaries via Viva Insights partitions &mdash; Agency A genuinely cannot access Agency B&rsquo;s data. This requires VFAM lockdown via group-scoped policies, partition creation via PowerShell, analyst assignment per partition, and typically Power BI workspaces for report delivery. Setup takes 1&ndash;3 days. It exists for organisations with regulatory, contractual, or policy requirements that mandate data separation.</p>
+<p><strong>Isolation</strong> is the harder option. It creates hard data boundaries via Viva Insights partitions &mdash; Agency A genuinely cannot access Agency B&rsquo;s data. This requires VFAM lockdown via group-scoped policies (PowerShell), partition creation in the Viva Insights web app, analyst assignment per partition, and typically Power BI workspaces for report delivery. Setup takes 1&ndash;3 days. It exists for organisations with regulatory, contractual, or policy requirements that mandate data separation.</p>
 
 <p>Within the Isolation architecture, there are two data paths depending on whether agencies share an email domain:</p>
 <ul>
@@ -94,7 +94,7 @@
   <tr>
     <td><strong>PowerShell required</strong></td>
     <td>No</td>
-    <td>Yes</td>
+    <td>Yes (VFAM lockdown only; partitions are created via UI)</td>
   </tr>
   <tr>
     <td><strong>Setup effort</strong></td>
