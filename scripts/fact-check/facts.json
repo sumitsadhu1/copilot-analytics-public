@@ -1,0 +1,413 @@
+{
+  "_meta": {
+    "description": "Factual claims in our documentation sourced from Microsoft Learn. Each claim is checked against its MS Learn source on every push.",
+    "last_verified": "2026-04-23",
+    "severity_levels": {
+      "critical": "Incorrect claim could cause deployment failure or data loss",
+      "high": "Incorrect claim changes user decisions or procedures",
+      "medium": "Incorrect claim is misleading but not harmful",
+      "low": "Incorrect claim is cosmetic (e.g. label text, UI path)"
+    }
+  },
+  "facts": [
+    {
+      "id": "licence-threshold-core",
+      "claim": "Tenants with 1+ Copilot licences get Readiness, Adoption, and Impact pages with tenant-level and group-level metrics",
+      "source_page": "copilot-dashboard",
+      "source_anchor": "feature-availability-based-on-licenses",
+      "verify_text": [
+        "Between 1 and 49",
+        "Readiness page",
+        "Adoption and Impact page"
+      ],
+      "our_files": [
+        "3-operate/dashboard-guide.html",
+        "2-setup/admin-setup.html",
+        "4-reference/faq.html"
+      ],
+      "severity": "critical",
+      "scenarios_affected": [
+        "first-time-rollout",
+        "trial-before-licensing"
+      ],
+      "category": "licensing"
+    },
+    {
+      "id": "licence-threshold-advanced",
+      "claim": "50+ Copilot or Viva Insights licences required for Agent Dashboard, benchmarks, intelligent summaries, sentiment, trendlines, manager delegation, All licence type view",
+      "source_page": "copilot-dashboard",
+      "source_anchor": "feature-availability-based-on-licenses",
+      "verify_text": [
+        "50",
+        "Agent-related insights",
+        "Benchmarks",
+        "Intelligent summaries",
+        "delegation"
+      ],
+      "our_files": [
+        "3-operate/dashboard-guide.html",
+        "2-setup/admin-setup.html",
+        "4-reference/faq.html",
+        "1-strategy/executive-briefing.html"
+      ],
+      "severity": "critical",
+      "scenarios_affected": [
+        "first-time-rollout",
+        "multi-agency-setup",
+        "executive-reporting"
+      ],
+      "category": "licensing"
+    },
+    {
+      "id": "data-processing-delay",
+      "claim": "Data processing takes up to 7 days after licence assignment",
+      "source_page": "copilot-dashboard",
+      "source_anchor": "feature-availability-based-on-licenses",
+      "verify_text": [
+        "seven days",
+        "data processing"
+      ],
+      "our_files": [
+        "2-setup/admin-setup.html",
+        "3-operate/billing-operations.html",
+        "4-reference/troubleshooting.html"
+      ],
+      "severity": "high",
+      "scenarios_affected": [
+        "first-time-rollout"
+      ],
+      "category": "processing"
+    },
+    {
+      "id": "dashboard-data-delay",
+      "claim": "Dashboard data has up to 6-day delay from current date, 28-day rolling window",
+      "source_page": "copilot-dashboard",
+      "source_anchor": "data-availability",
+      "verify_text": [
+        "six-day",
+        "28 days",
+        "previous 28 days"
+      ],
+      "our_files": [
+        "3-operate/dashboard-guide.html",
+        "4-reference/faq.html"
+      ],
+      "severity": "medium",
+      "scenarios_affected": [
+        "executive-reporting"
+      ],
+      "category": "processing"
+    },
+    {
+      "id": "auto-access-criteria",
+      "claim": "AutoCxO access requires 2,500+ users in tenant, top 3 levels, significant reporting line",
+      "source_page": "copilot-dashboard",
+      "source_anchor": "using-entra-id-data",
+      "verify_text": [
+        "2,500",
+        "top three levels",
+        "significant portion"
+      ],
+      "our_files": [
+        "2-setup/admin-setup.html",
+        "2-setup/multi-agency-setup.html"
+      ],
+      "severity": "high",
+      "scenarios_affected": [
+        "first-time-rollout",
+        "multi-agency-setup"
+      ],
+      "category": "access"
+    },
+    {
+      "id": "hourly-rate-default",
+      "claim": "Default hourly rate for Copilot Assisted Value is $72, based on US BLS data",
+      "source_page": "copilot-dashboard",
+      "source_anchor": "copilot-assisted-value",
+      "verify_text": [
+        "$72",
+        "Bureau of Labor Statistics"
+      ],
+      "our_files": [
+        "3-operate/dashboard-guide.html"
+      ],
+      "severity": "medium",
+      "scenarios_affected": [
+        "executive-reporting"
+      ],
+      "category": "metrics"
+    },
+    {
+      "id": "hourly-rate-session-only",
+      "claim": "Hourly rate changes are session-only and not saved",
+      "source_page": "copilot-dashboard",
+      "source_anchor": "copilot-assisted-value",
+      "verify_text": [
+        "every time you reopen",
+        "hourly rate"
+      ],
+      "our_files": [
+        "3-operate/dashboard-guide.html"
+      ],
+      "severity": "medium",
+      "scenarios_affected": [
+        "executive-reporting"
+      ],
+      "category": "metrics"
+    },
+    {
+      "id": "assisted-hours-method",
+      "claim": "Assisted Hours uses 3 categories: meeting summaries (actual duration), search/summaries (6 min each), creation (6 min each)",
+      "source_page": "copilot-dashboard",
+      "source_anchor": "details-on-the-copilot-assisted-hours-metric",
+      "verify_text": [
+        "Meeting summaries",
+        "6 minutes",
+        "Search and summaries",
+        "Creation"
+      ],
+      "our_files": [
+        "3-operate/dashboard-guide.html"
+      ],
+      "severity": "high",
+      "scenarios_affected": [
+        "executive-reporting"
+      ],
+      "category": "metrics"
+    },
+    {
+      "id": "satisfaction-rate-threshold",
+      "claim": "Satisfaction rate requires at least 30 feedback responses from at least 5 unique users",
+      "source_page": "copilot-dashboard",
+      "source_anchor": "satisfaction-rate",
+      "verify_text": [
+        "30 feedback",
+        "five unique users"
+      ],
+      "our_files": [
+        "3-operate/dashboard-guide.html"
+      ],
+      "severity": "medium",
+      "scenarios_affected": [
+        "executive-reporting"
+      ],
+      "category": "metrics"
+    },
+    {
+      "id": "min-group-size",
+      "claim": "Default minimum group size is 10, minimum configurable is 5",
+      "source_page": "manage-settings",
+      "source_anchor": "",
+      "verify_text": [
+        "minimum group size"
+      ],
+      "our_files": [
+        "2-setup/privacy-configuration.html",
+        "2-setup/admin-setup.html"
+      ],
+      "severity": "high",
+      "scenarios_affected": [
+        "privacy-configuration",
+        "multi-agency-setup"
+      ],
+      "category": "privacy"
+    },
+    {
+      "id": "delegation-limit",
+      "claim": "Maximum 75 delegates per person, delegates cannot cascade",
+      "source_page": "copilot-dashboard",
+      "source_anchor": "delegate-access-to-the-dashboard",
+      "verify_text": [
+        "delegate"
+      ],
+      "our_files": [
+        "2-setup/admin-setup.html",
+        "3-operate/dashboard-guide.html"
+      ],
+      "severity": "medium",
+      "scenarios_affected": [
+        "first-time-rollout"
+      ],
+      "category": "access"
+    },
+    {
+      "id": "copilot-includes-viva",
+      "claim": "Every M365 Copilot licence includes the Viva Insights service plan at no additional cost",
+      "source_page": "copilot-dashboard",
+      "source_anchor": "",
+      "verify_text": [
+        "Viva Insights",
+        "service plan"
+      ],
+      "our_files": [
+        "2-setup/admin-setup.html",
+        "3-operate/analyst-playbook.html",
+        "1-strategy/executive-briefing.html"
+      ],
+      "severity": "critical",
+      "scenarios_affected": [
+        "first-time-rollout",
+        "analyst-workflow"
+      ],
+      "category": "licensing"
+    },
+    {
+      "id": "partition-powershell",
+      "claim": "Partitions are created and managed through the Viva Insights admin experience",
+      "source_page": "partitions-admin",
+      "source_anchor": "",
+      "verify_text": [
+        "partition",
+        "create",
+        "analyst"
+      ],
+      "our_files": [
+        "2-setup/multi-agency-setup.html",
+        "explain/why-multi-agency-is-hard.html"
+      ],
+      "severity": "high",
+      "scenarios_affected": [
+        "multi-agency-setup"
+      ],
+      "category": "advanced-analytics"
+    },
+    {
+      "id": "email-underreporting",
+      "claim": "Known email metric underreporting from June 1 2025 through February 18 2026",
+      "source_page": "copilot-dashboard",
+      "source_anchor": "adoption",
+      "verify_text": [
+        "June 1, 2025",
+        "February 18, 2026",
+        "underestimation"
+      ],
+      "our_files": [
+        "3-operate/dashboard-guide.html"
+      ],
+      "severity": "medium",
+      "scenarios_affected": [
+        "executive-reporting"
+      ],
+      "category": "known-issues"
+    },
+    {
+      "id": "meeting-underreporting",
+      "claim": "Known meeting metric underreporting from September 6 through November 3 2025",
+      "source_page": "copilot-dashboard",
+      "source_anchor": "known-underreporting-issue-with-copilot-assisted-hours-metrics",
+      "verify_text": [
+        "September 6",
+        "November 3, 2025"
+      ],
+      "our_files": [
+        "3-operate/dashboard-guide.html"
+      ],
+      "severity": "medium",
+      "scenarios_affected": [
+        "executive-reporting"
+      ],
+      "category": "known-issues"
+    },
+    {
+      "id": "org-data-upload-methods",
+      "claim": "6 upload methods: CSV (admin center), CSV (Viva Insights), Azure Blob, SAP SuccessFactors, Workday, API",
+      "source_page": "org-data-m365",
+      "source_anchor": "",
+      "verify_text": [
+        "upload",
+        "organizational data"
+      ],
+      "our_files": [
+        "2-setup/data-onboarding.html",
+        "1-strategy/data-strategy.html"
+      ],
+      "severity": "high",
+      "scenarios_affected": [
+        "hr-data-onboarding"
+      ],
+      "category": "org-data"
+    },
+    {
+      "id": "org-data-replaces-entra",
+      "claim": "Uploading org data permanently replaces Entra ID as the data source for those attributes",
+      "source_page": "copilot-dashboard",
+      "source_anchor": "scope-organization-and-job-function",
+      "verify_text": [
+        "permanently changes the source"
+      ],
+      "our_files": [
+        "2-setup/data-onboarding.html",
+        "artifacts/Org_Data_Validation_Prompt.html"
+      ],
+      "severity": "critical",
+      "scenarios_affected": [
+        "hr-data-onboarding"
+      ],
+      "category": "org-data"
+    },
+    {
+      "id": "credits-no-rollover",
+      "claim": "Copilot Credits do not roll over",
+      "source_page": "copilot-studio-billing",
+      "source_anchor": "",
+      "verify_text": [
+        "credit"
+      ],
+      "our_files": [
+        "3-operate/billing-operations.html"
+      ],
+      "severity": "high",
+      "scenarios_affected": [
+        "billing-operations"
+      ],
+      "category": "licensing"
+    }
+  ],
+  "scenarios": {
+    "first-time-rollout": {
+      "label": "Rolling out Copilot analytics for the first time",
+      "landing_card": true,
+      "primary_page": "2-setup/admin-setup.html"
+    },
+    "multi-agency-setup": {
+      "label": "Adding multiple agencies to one tenant",
+      "landing_card": true,
+      "primary_page": "decide/architecture.html"
+    },
+    "hr-data-onboarding": {
+      "label": "Uploading or refreshing HR data",
+      "landing_card": true,
+      "primary_page": "2-setup/data-onboarding.html"
+    },
+    "troubleshooting": {
+      "label": "Dashboard shows no data or wrong data",
+      "landing_card": true,
+      "primary_page": "4-reference/troubleshooting.html"
+    },
+    "executive-reporting": {
+      "label": "Producing executive ROI reports",
+      "landing_card": true,
+      "primary_page": "3-operate/dashboard-guide.html"
+    },
+    "analyst-workflow": {
+      "label": "Building Power BI reports",
+      "landing_card": true,
+      "primary_page": "3-operate/analyst-playbook.html"
+    },
+    "privacy-configuration": {
+      "label": "Configuring privacy, exclusions, or retention",
+      "landing_card": true,
+      "primary_page": "2-setup/privacy-configuration.html"
+    },
+    "billing-operations": {
+      "label": "Managing billing and licence lifecycle",
+      "landing_card": false,
+      "primary_page": "3-operate/billing-operations.html"
+    },
+    "trial-before-licensing": {
+      "label": "Trialling the dashboard before full licensing",
+      "landing_card": false,
+      "primary_page": "4-reference/faq.html"
+    }
+  }
+}

@@ -1,0 +1,4 @@
+# Snapshots are runtime cache — rebuilt by the checker on each run
+snapshots/
+# CI report output
+last-report.json

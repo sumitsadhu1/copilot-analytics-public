@@ -1,0 +1,192 @@
+{
+  "_meta": {
+    "description": "MS Learn pages our documentation depends on. Checked on every push.",
+    "last_verified": "2026-04-23",
+    "categories": {
+      "copilot-dashboard": "Copilot Dashboard features, licensing, access",
+      "admin-settings": "Admin configuration, VFAM, manager settings",
+      "org-data": "Organisational data upload, connectors, validation",
+      "advanced-analytics": "Partitions, queries, PBI templates, analyst workflow",
+      "licensing-billing": "Licence models, credits, billing",
+      "privacy": "Privacy settings, exclusions, data residency"
+    }
+  },
+  "watched_pages": [
+    {
+      "id": "copilot-dashboard",
+      "url": "https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard",
+      "title": "Copilot Dashboard overview + feature availability",
+      "category": "copilot-dashboard",
+      "our_files": [
+        "3-operate/dashboard-guide.html",
+        "2-setup/admin-setup.html",
+        "1-strategy/executive-briefing.html",
+        "4-reference/faq.html",
+        "4-reference/troubleshooting.html"
+      ]
+    },
+    {
+      "id": "manage-settings",
+      "url": "https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard",
+      "title": "Manage settings for the Copilot Dashboard",
+      "category": "admin-settings",
+      "our_files": [
+        "2-setup/admin-setup.html",
+        "2-setup/privacy-configuration.html",
+        "2-setup/multi-agency-setup.html"
+      ]
+    },
+    {
+      "id": "org-data-overview",
+      "url": "https://learn.microsoft.com/viva/insights/advanced/admin/org-data-overview",
+      "title": "Organisational data overview",
+      "category": "org-data",
+      "our_files": [
+        "2-setup/data-onboarding.html",
+        "1-strategy/data-strategy.html",
+        "4-reference/attribute-reference.html"
+      ]
+    },
+    {
+      "id": "partitions-admin",
+      "url": "https://learn.microsoft.com/viva/insights/advanced/admin/partitions",
+      "title": "Partitions in Viva Insights (admin)",
+      "category": "advanced-analytics",
+      "our_files": [
+        "2-setup/multi-agency-setup.html",
+        "decide/architecture.html",
+        "explain/why-multi-agency-is-hard.html"
+      ]
+    },
+    {
+      "id": "partitions-analyst",
+      "url": "https://learn.microsoft.com/viva/insights/advanced/admin/partitions",
+      "title": "Partitions in Viva Insights (analyst)",
+      "category": "advanced-analytics",
+      "our_files": [
+        "3-operate/analyst-playbook.html"
+      ]
+    },
+    {
+      "id": "agent-dashboard",
+      "url": "https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard",
+      "title": "Agent Dashboard",
+      "category": "copilot-dashboard",
+      "our_files": [
+        "3-operate/dashboard-guide.html",
+        "2-setup/admin-setup.html"
+      ]
+    },
+    {
+      "id": "copilot-analytics-reports",
+      "url": "https://learn.microsoft.com/viva/insights/org-team-insights/copilot-analytics-reports",
+      "title": "Copilot Analytics Reports",
+      "category": "copilot-dashboard",
+      "our_files": [
+        "3-operate/dashboard-guide.html"
+      ]
+    },
+    {
+      "id": "vfam",
+      "url": "https://learn.microsoft.com/viva/feature-access-management",
+      "title": "Viva Feature Access Management",
+      "category": "admin-settings",
+      "our_files": [
+        "2-setup/admin-setup.html",
+        "2-setup/multi-agency-setup.html"
+      ]
+    },
+    {
+      "id": "privacy-settings",
+      "url": "https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard",
+      "title": "Privacy settings",
+      "category": "privacy",
+      "our_files": [
+        "2-setup/privacy-configuration.html"
+      ]
+    },
+    {
+      "id": "person-query",
+      "url": "https://learn.microsoft.com/en-us/viva/insights/advanced/analyst/person-query",
+      "title": "Person query (analyst)",
+      "category": "advanced-analytics",
+      "our_files": [
+        "3-operate/analyst-playbook.html"
+      ]
+    },
+    {
+      "id": "copilot-studio-billing",
+      "url": "https://learn.microsoft.com/microsoft-copilot-studio/billing-licensing",
+      "title": "Copilot Studio billing and licensing",
+      "category": "licensing-billing",
+      "our_files": [
+        "3-operate/billing-operations.html"
+      ]
+    },
+    {
+      "id": "org-data-m365",
+      "url": "https://learn.microsoft.com/viva/organizational-data",
+      "title": "Organisational data in Microsoft 365",
+      "category": "org-data",
+      "our_files": [
+        "2-setup/data-onboarding.html"
+      ]
+    },
+    {
+      "id": "setup-overview",
+      "url": "https://learn.microsoft.com/viva/insights/advanced/setup-maint/setup-overview",
+      "title": "Viva Insights setup overview",
+      "category": "admin-settings",
+      "our_files": [
+        "2-setup/admin-setup.html",
+        "3-operate/collaboration-analysis.html"
+      ]
+    },
+    {
+      "id": "assign-roles",
+      "url": "https://learn.microsoft.com/viva/insights/advanced/setup-maint/assign-user-roles",
+      "title": "Assign user roles",
+      "category": "admin-settings",
+      "our_files": [
+        "2-setup/admin-setup.html",
+        "3-operate/analyst-playbook.html"
+      ]
+    },
+    {
+      "id": "copilot-dashboard-root",
+      "url": "https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard",
+      "title": "Microsoft Copilot Dashboard (root page)",
+      "category": "copilot-dashboard",
+      "our_files": [
+        "decide/architecture.html",
+        "explain/why-multi-agency-is-hard.html"
+      ]
+    },
+    {
+      "id": "feature-access-management",
+      "url": "https://learn.microsoft.com/viva/feature-access-management",
+      "title": "Feature access management",
+      "category": "admin-settings",
+      "our_files": [
+        "2-setup/admin-setup.html"
+      ]
+    }
+  ],
+  "discovery_pages": [
+    {
+      "id": "viva-insights-root",
+      "url": "https://learn.microsoft.com/viva/insights/",
+      "purpose": "Detect new child pages in the Viva Insights doc tree"
+    },
+    {
+      "id": "copilot-dashboard-section",
+      "url": "https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard",
+      "purpose": "Detect new dashboard-related pages"
+    },
+    {
+      "id": "org-data-section",
+      "url": "https://learn.microsoft.com/viva/organizational-data",
+      "purpose": "Detect new org data connector pages"
+    }
+  ]
+}
