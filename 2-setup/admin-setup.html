@@ -69,7 +69,7 @@
 
 <table>
   <tr><th>#</th><th>Check</th><th>Where to Verify</th><th>Expected State</th></tr>
-  <tr><td>1</td><td>Copilot licences assigned</td><td>Admin Centre &rarr; Billing &rarr; Licenses &rarr; Microsoft 365 Copilot</td><td>&ge;1 for core dashboard; &ge;50 for advanced features (benchmarks, Agent Dashboard, sentiment, delegation)</td></tr>
+  <tr><td>1</td><td>Copilot or Viva Insights licences assigned</td><td>Admin Centre &rarr; Billing &rarr; Licenses &rarr; check both <strong>Microsoft 365 Copilot</strong> and <strong>Microsoft Viva Insights</strong> rows</td><td>&ge;1 Copilot licence for the core dashboard (Readiness, Adoption, Impact). Advanced features (benchmarks, Agent Dashboard, sentiment, delegation, trendlines) need <strong>&ge;50 Copilot licences</strong> <em>or</em> <strong>&ge;50 Viva Insights licences</strong> &mdash; the two counts are independent and not summed (a 30 Copilot + 20 Viva Insights mix does not qualify).</td></tr>
   <tr><td>2</td><td>Insights Admin role assigned</td><td>Admin Centre &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Admins</td><td>At least one user listed</td></tr>
   <tr><td>3</td><td>Insights Analyst role assigned</td><td>Admin Centre &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Add-on Plan &rarr; Insights Analyst</td><td>Analyst user(s) listed</td></tr>
   <tr><td>4</td><td>VFAM &mdash; Viva Insights web app ON</td><td>Admin Centre &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Turn Advanced Insights on or off</td><td>Viva Insights web app = <strong>On</strong> for Everyone (this toggle replaced the legacy &ldquo;Copilot Dashboard&rdquo; VFAM control and now governs dashboard access end-to-end)</td></tr>
