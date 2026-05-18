@@ -83,7 +83,7 @@
 
 <div class="callout info">
   <div class="callout-title">Feature Availability by Licence Count</div>
-  <p>Tenants with <strong>1+ assigned Copilot licences</strong> get the Readiness, Adoption, and Impact pages with tenant-level and group-level metrics and HR filters. Tenants with <strong>50+ Copilot or Viva Insights licences</strong> additionally get agent-related insights (Agent Dashboard), benchmarks, intelligent summaries, sentiment survey metrics, week/month-level trendlines, manager group-level views with delegation, and the consolidated &ldquo;All&rdquo; licence type view.</p>
+  <p>Tenants with <strong>1+ assigned Copilot licences</strong> get the Readiness, Adoption, and Impact pages with tenant-level and group-level metrics and HR filters. Tenants with at least <strong>50 assigned Copilot licences</strong> <em>or</em> at least <strong>50 assigned Viva Insights licences</strong> additionally get agent-related insights (Agent Dashboard), benchmarks, intelligent summaries, sentiment survey metrics, week/month-level trendlines, manager group-level views with delegation, and the consolidated &ldquo;All&rdquo; licence type view. The two thresholds are <strong>independent &mdash; not summed</strong> (a tenant with 30 Copilot + 20 Viva Insights does <em>not</em> qualify).</p>
 </div>
 
 <!-- ─── 1.2 Adoption ─── -->
@@ -178,6 +178,28 @@
 
 <h3>Suppressed Values (&ldquo;--&rdquo;)</h3>
 <p>When you see <strong>&ldquo;--&rdquo;</strong> instead of a number, it means the group size is below the <strong>minimum group size</strong> threshold (default: 10). This is a <strong>privacy protection</strong>, not an error. Data is present but suppressed to prevent identification of individuals. If you need to see data for smaller teams, an Insights Admin can adjust the minimum group size in privacy settings &mdash; but this should be done carefully with HR and legal approval.</p>
+
+<h3>Agent-Related Insight Cards on the Adoption Page (Preview)</h3>
+<p>In addition to the core Adoption insights (overview, usage intensity, returning users, per-app breakdown), the Adoption page now surfaces two <strong>agent-focused insight cards</strong> when your tenant has agent activity. These are independent of the Agent Dashboard itself and are visible to anyone who can already view the Adoption page.</p>
+
+<table>
+  <tr><th>Card</th><th>What It Shows</th><th>Requires</th></tr>
+  <tr>
+    <td><strong>Agent adoption by Copilot users</strong> (preview)</td>
+    <td>The number of Copilot users who have used at least one agent, the number of agents with at least one active Copilot user, and the top three agents sorted by active users (with change-over-time and agent-response counts). Lets you jump directly into the agent deep-dive page from the Adoption page.</td>
+    <td>At least one active agent user in the tenant. No PAYG required.</td>
+  </tr>
+  <tr>
+    <td><strong>Credit usage overview</strong></td>
+    <td>Copilot Credits consumed by Copilot Chat users, the number of agents those credits were used across, and the number of Copilot Chat users driving credit consumption. Also breaks out the top groups driving credit usage (by group / organisation / job function) with 28-day change.</td>
+    <td>Your tenant must have <strong>Pay-As-You-Go enabled</strong> for Copilot Studio / Copilot Chat. Without PAYG the card does not appear.</td>
+  </tr>
+</table>
+
+<div class="callout note">
+  <div class="callout-title">Why these cards matter even before you open the Agent Dashboard</div>
+  <p>Both cards live on the regular Adoption page, so leaders who never opened the Agent Dashboard can still see <em>whether</em> agents are being used and <em>whether</em> they cost money. The <strong>Agent adoption by Copilot users</strong> card is the easiest way for a CIO to answer &ldquo;are people actually trying our agents yet?&rdquo;. The <strong>Credit usage overview</strong> card is the first place to spot a runaway PAYG bill before it shows up in the billing report. Click into either card to jump to the corresponding deep-dive view in the Agent Dashboard. Both cards are tagged as preview features &mdash; UI may shift before GA.</p>
+</div>
 
 <!-- ─── 1.3 Impact ─── -->
 <h2 id="impact">1.3 Impact Page</h2>

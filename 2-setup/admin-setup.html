@@ -72,7 +72,7 @@
   <tr><td>1</td><td>Copilot licences assigned</td><td>Admin Centre &rarr; Billing &rarr; Licenses &rarr; Microsoft 365 Copilot</td><td>&ge;1 for core dashboard; &ge;50 for advanced features (benchmarks, Agent Dashboard, sentiment, delegation)</td></tr>
   <tr><td>2</td><td>Insights Admin role assigned</td><td>Admin Centre &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Admins</td><td>At least one user listed</td></tr>
   <tr><td>3</td><td>Insights Analyst role assigned</td><td>Admin Centre &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Add-on Plan &rarr; Insights Analyst</td><td>Analyst user(s) listed</td></tr>
-  <tr><td>4</td><td>VFAM &mdash; Copilot Dashboard ON</td><td>Admin Centre &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Turn Advanced Insights on or off</td><td>Viva Insights web app = <strong>On</strong> for Everyone</td></tr>
+  <tr><td>4</td><td>VFAM &mdash; Viva Insights web app ON</td><td>Admin Centre &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Turn Advanced Insights on or off</td><td>Viva Insights web app = <strong>On</strong> for Everyone (this toggle replaced the legacy &ldquo;Copilot Dashboard&rdquo; VFAM control and now governs dashboard access end-to-end)</td></tr>
   <tr><td>5</td><td>VFAM &mdash; Advanced Analytics ON</td><td>Same screen as above</td><td>Copilot Advanced Analytics = <strong>On</strong> for Everyone</td></tr>
   <tr><td>6</td><td>VFAM &mdash; Behavioural Experiences ON</td><td>Same screen as above</td><td>TenantPolicyForBehavioralExperiences = <strong>On</strong></td></tr>
   <tr><td>7</td><td>Org data uploaded</td><td>M365 Admin Centre &rarr; Organizational Data in Microsoft 365 (post-migration) or Viva Insights web app &rarr; Admin &rarr; Organisational data (pre-migration)</td><td>Upload status shows &ldquo;Complete&rdquo; or &ldquo;In use&rdquo;</td></tr>
@@ -88,7 +88,7 @@
 
 <div class="callout info">
   <div class="callout-title">NOTE: Licence Thresholds</div>
-  <p>With <strong>1+ Copilot licences</strong>, your tenant gets the Readiness, Adoption, and Impact pages with tenant-level and group-level metrics. With <strong>50+ Copilot or Viva Insights licences</strong> (combination counts, e.g., 30 Copilot + 20 Viva Insights = 50), you additionally get agent-related insights, benchmarks, intelligent summaries, sentiment survey metrics, trendlines, manager group-level views with delegation, and the &ldquo;All&rdquo; licence type view.</p>
+  <p>With <strong>1+ Copilot licences</strong>, your tenant gets the Readiness, Adoption, and Impact pages with tenant-level and group-level metrics. To unlock advanced features &mdash; agent-related insights (Agent Dashboard), benchmarks, intelligent summaries, sentiment survey metrics, trendlines, manager group-level views with delegation, and the &ldquo;All&rdquo; licence type view &mdash; you need <strong>at least 50 assigned Copilot licences</strong> <em>or</em> <strong>at least 50 assigned Viva Insights licences</strong>. <strong>The two thresholds are independent</strong> &mdash; a mixed total such as 30 Copilot + 20 Viva Insights does <em>not</em> qualify; only one of the two counts must reach 50 on its own. (Per the <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard#feature-availability-based-on-licenses">MS Learn feature availability table</a>.)</p>
 </div>
 
 <!-- ═══════════════════════ 2. WHAT EACH ROLE SEES ═══════════════════════ -->
@@ -219,7 +219,7 @@
     <li>Go to <strong>Billing &rarr; Licenses</strong></li>
     <li>Locate Microsoft 365 Copilot and note the <strong>assigned</strong> count (not purchased)</li>
     <li>Confirm at least <strong>1 Copilot licence</strong> is assigned for core dashboard features (Readiness, Adoption, Impact)</li>
-    <li>For advanced features (benchmarks, Agent Dashboard, sentiment, delegation), confirm <strong>50+ combined</strong> Copilot and Viva Insights licences</li>
+    <li>For advanced features (benchmarks, Agent Dashboard, sentiment, delegation), confirm <strong>50+ Copilot licences</strong> <em>or</em> <strong>50+ Viva Insights licences</strong> assigned &mdash; each threshold is independent, not summed</li>
   </ol>
 </div>
 

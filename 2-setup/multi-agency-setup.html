@@ -211,24 +211,29 @@
 <!-- Phase 1 -->
 <h2 id="iso-phase1">Phase 1: VFAM Lockdown</h2>
 
-<p>Lock down the Copilot Dashboard so that only Central IT has access. All other users &mdash; including agency CEOs &mdash; will receive reports via Power BI only.</p>
+<p>Lock down access so that only Central IT can browse the Copilot Dashboard. All other users &mdash; including agency CEOs &mdash; will receive reports via Power BI only.</p>
+
+<div class="callout info">
+  <div class="callout-title">Important: Dashboard Access Is Now Managed via the Viva Insights Web App Toggle</div>
+  <p>Microsoft has retired the standalone <code>CopilotDashboard</code> VFAM control and the legacy &ldquo;Copilot Dashboard&rdquo; access page in the Microsoft 365 admin center. Per <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#enable-or-disable-the-viva-insights-web-app">MS Learn</a>, access to the dashboard is now controlled by enabling or disabling the <strong>Viva Insights web app</strong> &mdash; either through the admin-center UI (<em>Manage access to the Viva Insights web app for individual users and groups</em>) or via the <code>VivaInsightsWebApp</code> VFAM feature in PowerShell. Disabling this toggle removes the user&rsquo;s access to the dashboard, Copilot Analytics Reports, Agent Dashboard, and the advanced analyst tools in a single step. This is the intended lockdown for the Isolation architecture, since per-agency users should reach data only through Power BI.</p>
+</div>
 
 <table>
   <tr><th>Step</th><th>Action</th><th>Details</th></tr>
   <tr>
     <td>1.1</td>
     <td>Disable Auto CxO Identification</td>
-    <td>Viva Insights web app &rarr; Admin &rarr; General &rarr; Auto CxO Identification &rarr; toggle <strong>Off</strong></td>
+    <td>Viva Insights web app &rarr; Admin &rarr; General &rarr; Auto CxO Identification &rarr; toggle <strong>Off</strong> (or run the <code>AutoCxoIdentification</code> VFAM disable policy)</td>
   </tr>
   <tr>
     <td>1.2</td>
     <td>Disable Delegation</td>
-    <td>Viva Insights web app &rarr; Admin &rarr; Delegation &rarr; toggle <strong>Off</strong></td>
+    <td>Viva Insights web app &rarr; Admin &rarr; Delegation &rarr; toggle <strong>Off</strong> (or run the <code>CopilotDashboardDelegation</code> VFAM disable policy)</td>
   </tr>
   <tr>
     <td>1.3</td>
-    <td>Disable dashboard for &ldquo;Everyone&rdquo;</td>
-    <td>Admin Centre &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; set Copilot Dashboard access to <strong>specific groups only</strong> (Central IT group)</td>
+    <td>Restrict admin-center access list to Central IT</td>
+    <td>Admin Centre &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; <strong>Manage access to the Viva Insights web app for individual users and groups</strong> &rarr; add the Central IT Entra group and remove all individual agency users</td>
   </tr>
   <tr>
     <td>1.4</td>
@@ -238,25 +243,26 @@
   <tr>
     <td>1.5</td>
     <td>Apply group-scoped VFAM policy</td>
-    <td>Run the PowerShell command below to disable the Copilot Dashboard for the agency users group.</td>
+    <td>Run the PowerShell command below to disable the entire Viva Insights web app (which includes the Copilot Dashboard) for the agency users group.</td>
   </tr>
 </table>
 
 <div class="callout info">
-  <div class="callout-title">PowerShell: Disable Dashboard for Non-Central-IT Users</div>
-  <p>Run this in an elevated PowerShell session with the <code>ExchangeOnlineManagement</code> module installed:</p>
+  <div class="callout-title">PowerShell: Disable the Viva Insights Web App for Non-Central-IT Users</div>
+  <p>Run this in an elevated PowerShell session with <code>ExchangeOnlineManagement</code> module 3.5.1 or later installed (required for non-mail-enabled group support):</p>
 <pre><code>Add-VivaModuleFeaturePolicy `
   -ModuleId VivaInsights `
-  -FeatureId CopilotDashboard `
+  -FeatureId VivaInsightsWebApp `
   -Name DisableForNonCentralIT `
   -IsFeatureEnabled $false `
   -GroupIds "group-id-here"</code></pre>
-  <p>Replace <code>group-id-here</code> with the Object ID of the <code>AgencyUsers-NoDashboard</code> Entra security group.</p>
+  <p>Replace <code>group-id-here</code> with the Object ID of the <code>AgencyUsers-NoDashboard</code> Entra security group. Changes take effect within 24 hours.</p>
+  <p><strong>Note:</strong> The deprecated <code>-FeatureId CopilotDashboard</code> command no longer applies a policy &mdash; the feature was removed when access management moved to the Viva Insights web app toggle.</p>
 </div>
 
 <div class="callout warning">
   <div class="callout-title">Why Group-Scoped &mdash; Not &ldquo;Everyone&rdquo;</div>
-  <p>Use <strong>group-scoped policies</strong>, not &ldquo;Everyone&rdquo;. A blanket &ldquo;Everyone&rdquo; disable would also block Central IT and non-agency executives who may legitimately need dashboard access. The group-scoped approach protects these users while locking out agency-level browsing.</p>
+  <p>Use <strong>group-scoped policies</strong>, not &ldquo;Everyone&rdquo;. A blanket &ldquo;Everyone&rdquo; disable would also block Central IT and non-agency executives who may legitimately need dashboard access. The group-scoped approach protects these users while locking out agency-level browsing. Because the <code>VivaInsightsWebApp</code> toggle disables the <em>entire</em> web app for the scoped users (dashboard, Analytics Reports, Agent Dashboard, and analyst tools), confirm your Central IT analysts and any executives who need direct dashboard access are explicitly added to the access list in Step 1.3 before applying this policy.</p>
 </div>
 
 <!-- Phase 2 -->

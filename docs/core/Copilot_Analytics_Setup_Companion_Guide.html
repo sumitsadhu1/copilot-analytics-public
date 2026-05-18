@@ -177,7 +177,7 @@
 
 <div class="callout info">
   <div class="callout-title">UPDATE (April 2026): Copilot Chat (Free) Users Are Now Partially Visible</div>
-  <p>The Copilot Dashboard now includes a <strong>Copilot Chat licence filter</strong> that shows adoption insights for M365 E3/E5 users using the free Copilot Chat app. This requires Copilot Chat reporting enabled and 50+ Copilot or Viva Insights licences. Free users remain invisible to Admin Center Copilot reports, Viva Insights custom queries, and Impact page metrics (Assisted Hours/Value).</p>
+  <p>The Copilot Dashboard now includes a <strong>Copilot Chat licence filter</strong> that shows adoption insights for M365 E3/E5 users using the free Copilot Chat app. Per <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">MS Learn (expanded access)</a>, this view requires Copilot Chat reporting to be enabled in the tenant and at least <strong>1 assigned Copilot licence</strong> (or 50+ assigned Viva Insights licences as an alternative). Free users remain invisible to Admin Center Copilot reports, Viva Insights custom queries, and Impact page metrics (Assisted Hours/Value).</p>
   <p><strong>For deeper analysis:</strong> M365 Audit Logs (Purview) or M365 Usage Analytics content pack remain available as separate workstreams.</p>
 </div></div>
 
@@ -398,13 +398,13 @@
 <table>
   <tr><th>Requirement</th><th>Details</th></tr>
   <tr><td>Core Features (1+ Copilot licences)</td><td>Readiness, Adoption, and Impact pages with tenant-level and group-level metrics and HR filters</td></tr>
-  <tr><td>Advanced Features (50+ Copilot or Viva Insights)</td><td>Agent Dashboard, benchmarks, intelligent summaries, sentiment survey metrics, trendlines, manager group-level views with delegation, &ldquo;All&rdquo; licence type view (combination counts)</td></tr>
+  <tr><td>Advanced Features (50+ Copilot <em>or</em> 50+ Viva Insights)</td><td>Agent Dashboard, benchmarks, intelligent summaries, sentiment survey metrics, trendlines, manager group-level views with delegation, &ldquo;All&rdquo; licence type view. The two thresholds are <strong>independent</strong> &mdash; a tenant qualifies by having 50+ Copilot licences <em>or</em> 50+ Viva Insights licences, but a mixed total (e.g., 30 Copilot + 20 Viva Insights) does <em>not</em> qualify.</td></tr>
   <tr><td>Viva Insights Service Plan</td><td>Automatically included with every Copilot license (no additional cost)</td></tr>
 </table>
 
 <div class="callout warning">
   <div class="callout-title">NOTE: Licence Thresholds</div>
-  With <strong>1+ Copilot licences</strong>, tenants get the Readiness, Adoption, and Impact pages with tenant-level and group-level metrics. With <strong>50+ Copilot or Viva Insights licences</strong> (combination counts, e.g., 30 Copilot + 20 Viva Insights = 50), tenants additionally get agent insights, benchmarks, intelligent summaries, sentiment surveys, trendlines, manager delegation, and the &ldquo;All&rdquo; licence type view.
+  With <strong>1+ Copilot licences</strong>, tenants get the Readiness, Adoption, and Impact pages with tenant-level and group-level metrics. With <strong>50+ assigned Copilot licences</strong> <em>or</em> <strong>50+ assigned Viva Insights licences</strong>, tenants additionally get agent insights, benchmarks, intelligent summaries, sentiment surveys, trendlines, manager delegation, and the &ldquo;All&rdquo; licence type view. Per the <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard#feature-availability-based-on-licenses">MS Learn feature-availability table</a>, the two thresholds are <strong>independent &mdash; not summed</strong>: a mixed total such as 30 Copilot + 20 Viva Insights does <em>not</em> qualify; one of the two counts must reach 50 on its own.
 </div>
 
 <h3>Required Admin Roles</h3>
@@ -453,7 +453,7 @@
     <li>Go to <strong>Billing → Licenses</strong></li>
     <li>Locate Microsoft 365 Copilot and note the <strong>assigned</strong> count (not purchased)</li>
     <li>Confirm at least 1 Copilot licence is assigned for core dashboard features (50+ for advanced features)</li>
-    <li>For advanced features (benchmarks, Agent Dashboard, sentiment, delegation), confirm 50+ combined Copilot and Viva Insights licences</li>
+    <li>For advanced features (benchmarks, Agent Dashboard, sentiment, delegation), confirm at least <strong>50 Copilot licences</strong> <em>or</em> at least <strong>50 Viva Insights licences</strong> are assigned &mdash; the two thresholds are independent, not summed</li>
   </ol>
 </div>
 
@@ -1457,7 +1457,7 @@
 <h1 id="appA">Appendix A: Further Considerations</h1>
 
 <ol>
-  <li><strong>50-License Threshold Timing:</strong> Should licensing be expanded before deployment to unlock group-level analytics? The threshold can be met through a combination of Copilot + Viva Insights licences.</li>
+  <li><strong>50-License Threshold Timing:</strong> Should licensing be expanded before deployment to unlock group-level analytics? The threshold requires at least 50 assigned Copilot licences <em>or</em> at least 50 assigned Viva Insights licences &mdash; the two counts are <strong>independent and not summed</strong> (a 30 Copilot + 20 Viva Insights mix does not qualify).</li>
   <li><strong>Entra ID Hierarchy Completeness:</strong> Is the directory populated correctly? Criteria analysed weekly. If not, manual access assignment or org data upload is needed.</li>
   <li><strong>AI Administrator Role Assignment:</strong> Has this role been assigned? Required for dashboard access management, privacy, and exclusion lists. AI Admins must add themselves to view.</li>
   <li><strong>Manager Settings Enablement:</strong> Has the Insights Admin toggled on "Grant managers scoped access"? Without this, no managers can see team-level data even if they are licensed.</li>

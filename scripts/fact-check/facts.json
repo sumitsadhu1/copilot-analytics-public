@@ -59,6 +59,77 @@
       "category": "licensing"
     },
     {
+      "id": "licence-threshold-independent",
+      "claim": "The 50-licence threshold is independent across Copilot and Viva Insights: either 50+ Copilot OR 50+ Viva Insights qualifies, but a mixed total such as 30 Copilot + 20 Viva Insights does NOT qualify (the two counts are not summed)",
+      "source_page": "copilot-dashboard",
+      "source_anchor": "feature-availability-based-on-licenses",
+      "verify_text": [
+        "at least 50 Viva Insights licenses",
+        "at least 50 Copilot licenses",
+        "50 Copilot or Viva Insights"
+      ],
+      "our_files": [
+        "2-setup/admin-setup.html",
+        "4-reference/faq.html",
+        "4-reference/troubleshooting.html",
+        "3-operate/dashboard-guide.html",
+        "docs/core/Copilot_Analytics_Implementation_Guide.html",
+        "docs/core/Copilot_Analytics_Setup_Companion_Guide.html",
+        "docs/playbooks/Copilot_Multi_Agency_Default_Priority_Architecture.html",
+        "docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html",
+        "artifacts/Copilot_Analytics_FAQ.html"
+      ],
+      "severity": "critical",
+      "scenarios_affected": [
+        "first-time-rollout",
+        "trial-before-licensing",
+        "executive-reporting"
+      ],
+      "category": "licensing"
+    },
+    {
+      "id": "copilot-chat-expanded-access",
+      "claim": "Copilot Chat adoption insights on the Adoption page are available with 1+ Copilot licence (or 50+ Viva Insights licences as an alternative) after expanded access",
+      "source_page": "copilot-dashboard",
+      "source_anchor": "feature-availability-based-on-licenses",
+      "verify_text": [
+        "at least 1 Copilot license",
+        "Copilot Chat adoption insights",
+        "expanded access"
+      ],
+      "our_files": [
+        "docs/core/Copilot_Analytics_Implementation_Guide.html",
+        "docs/core/Copilot_Analytics_Setup_Companion_Guide.html"
+      ],
+      "severity": "high",
+      "scenarios_affected": [
+        "executive-reporting",
+        "first-time-rollout"
+      ],
+      "category": "licensing"
+    },
+    {
+      "id": "adoption-agent-insight-cards",
+      "claim": "The Adoption page surfaces two preview agent insight cards: (1) Agent adoption by Copilot users (requires at least one active agent user) and (2) Credit usage overview (requires Pay-As-You-Go enabled)",
+      "source_page": "copilot-dashboard",
+      "source_anchor": "adoption-page",
+      "verify_text": [
+        "Agent adoption by Copilot users",
+        "Credit usage overview",
+        "Pay-As-You-Go"
+      ],
+      "our_files": [
+        "3-operate/dashboard-guide.html",
+        "docs/core/Copilot_Analytics_Implementation_Guide.html"
+      ],
+      "severity": "medium",
+      "scenarios_affected": [
+        "executive-reporting",
+        "agent-rollout"
+      ],
+      "category": "agent-dashboard"
+    },
+    {
       "id": "data-processing-delay",
       "claim": "Data processing takes up to 7 days after licence assignment",
       "source_page": "copilot-dashboard",
