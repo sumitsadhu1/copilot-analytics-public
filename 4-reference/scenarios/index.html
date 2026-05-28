@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Troubleshooting Scenarios — Copilot Analytics</title>
+<link rel="stylesheet" href="../../assets/docs-style.css">
+<style>
+  /* Scenario catalogue cards — mirrors landing-page card style, scoped here */
+  .scenario-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 18px;
+    margin: 24px 0 32px;
+  }
+  .scenario-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 22px 18px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.05);
+    transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+    position: relative;
+  }
+  .scenario-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.04), 0 12px 32px rgba(0,0,0,0.08);
+    border-color: rgba(0,0,0,0.16);
+  }
+  .scenario-card .sc-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #b45309, #dc2626);
+    color: #fff;
+    font-size: 0.66em;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 8px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    width: fit-content;
+    margin-bottom: 12px;
+  }
+  .scenario-card h3 {
+    font-size: 1em;
+    font-weight: 650;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+    color: var(--text, #111);
+  }
+  .scenario-card .sc-reporter {
+    font-size: 0.82em;
+    color: var(--text-secondary, #555);
+    margin: 0 0 10px;
+    line-height: 1.55;
+  }
+  .scenario-card .sc-meta {
+    font-size: 0.74em;
+    color: var(--muted, #777);
+    margin: 0 0 12px;
+    letter-spacing: 0.01em;
+  }
+  .scenario-card .sc-roles {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin: 0 0 14px;
+  }
+  .scenario-card .sc-role {
+    font-size: 0.72em;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(0,0,0,0.04);
+    color: var(--text-secondary, #555);
+    font-weight: 500;
+    border: 1px solid var(--border);
+  }
+  .scenario-card .sc-cta {
+    display: inline-block;
+    padding: 8px 16px;
+    background: #b45309;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 0.85em;
+    font-weight: 600;
+    text-align: center;
+    margin-top: auto;
+    width: fit-content;
+    transition: background 220ms ease, box-shadow 220ms ease;
+  }
+  .scenario-card .sc-cta:hover {
+    background: #92400e;
+    box-shadow: 0 4px 12px rgba(180,83,9,0.22);
+  }
+  .placeholder-card {
+    border: 1px dashed rgba(0,0,0,0.18);
+    background: rgba(0,0,0,0.015);
+    color: var(--muted, #777);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 180px;
+    border-radius: 14px;
+    text-align: center;
+    padding: 22px;
+    font-size: 0.88em;
+  }
+  .placeholder-card strong { color: var(--text, #111); display: block; margin-bottom: 6px; font-weight: 650; }
+</style>
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Reference</span>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Troubleshooting Scenarios</span>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ COVER PAGE ═══════════════════════ -->
+<div class="cover">
+  <h1>Microsoft 365 Copilot Analytics</h1>
+  <div class="subtitle">Troubleshooting Scenarios</div>
+  <div class="sub2">Symptom-first walkthroughs for real issues users report &mdash; each with a 30-second diagnosis and causes ranked by likelihood</div>
+</div>
+
+<table>
+  <tr><th>Document Property</th><th>Value</th></tr>
+  <tr><td>Section</td><td>Reference</td></tr>
+  <tr><td>Audience</td><td>All Roles (Admins, Analysts, Support)</td></tr>
+  <tr><td>Version</td><td>1.0</td></tr>
+  <tr><td>Published</td><td>May 2026</td></tr>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">When to use this catalogue</div>
+  <p>Each scenario starts with the <strong>symptom a user actually reports</strong> &mdash; not the underlying feature area &mdash; and walks through the most likely causes in priority order with a verification step for each.</p>
+  <ul>
+    <li><strong>Use these scenarios</strong> when the symptom spans multiple admin surfaces, or when role / surface confusion is the suspected root cause.</li>
+    <li><strong>Use the <a href="../troubleshooting.html">Troubleshooting Guide</a> symptom-tables</strong> for quick single-surface lookups (Admin Centre Reports, Copilot Dashboard, Agent Dashboard, Advanced Analytics, Data Upload).</li>
+  </ul>
+</div>
+
+<h1 id="catalogue">Scenarios</h1>
+
+<div class="scenario-grid">
+
+  <!-- ─────────── Scenario 01 ─────────── -->
+  <div class="scenario-card">
+    <span class="sc-badge">Scenario 01</span>
+    <h3>&ldquo;Upload Org Data&rdquo; option not visible at <code>aka.ms/copilotdashboard</code></h3>
+    <p class="sc-reporter"><strong>Typically reported by:</strong> Insights Administrator who expected a CSV-upload button on the Copilot Dashboard.</p>
+    <p class="sc-meta">Surfaces: M365 Admin Center, <code>analysis.insights.cloud.microsoft</code> &bull; 9 causes ranked</p>
+    <div class="sc-roles">
+      <span class="sc-role">Insights Admin</span>
+      <span class="sc-role">IT Admin</span>
+      <span class="sc-role">Global Admin</span>
+    </div>
+    <a class="sc-cta" href="upload-org-data-missing.html">Open scenario &rarr;</a>
+  </div>
+
+  <!-- ─────────── Placeholder for next scenario ─────────── -->
+  <div class="placeholder-card">
+    <strong>More scenarios coming soon</strong>
+    Have one to suggest? Open an issue in the repo or update <code>scenarios/</code> directly.
+  </div>
+
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">Suggesting a new scenario</div>
+  <p>A scenario is worth writing when: (a) the symptom shows up repeatedly in real customer escalations, (b) the root cause is non-obvious or spans multiple surfaces / roles, and (c) the existing symptom-table in <a href="../troubleshooting.html">troubleshooting.html</a> alone would mislead an investigator. Each scenario should include: a one-sentence quick answer, a 30-second diagnosis flow, causes ranked by likelihood with fix + verification, a &ldquo;most common misdiagnosis&rdquo; warning, and a &ldquo;what done looks like&rdquo; check.</p>
+</div>
+
+<!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
+<hr>
+<p style="font-size:0.85em; color:var(--text-muted); margin-top:32px;">
+  <strong>Disclaimer:</strong> These scenarios are provided for informational purposes only and reflect Microsoft 365 capabilities as of May 2026. Microsoft may change features, interfaces, and availability without notice. Always verify current guidance on <a href="https://learn.microsoft.com">Microsoft Learn</a>. These documents are not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
+</p>
+
+</body>
+</html>

@@ -10,6 +10,7 @@ CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 PDF_DIR="$REPO_DIR/artifacts/pdfs"
 
 mkdir -p "$PDF_DIR"
+mkdir -p "$PDF_DIR/scenarios"
 
 echo "Generating PDFs..."
 echo "Output: $PDF_DIR"
@@ -32,6 +33,8 @@ declare -a DOCS=(
   "3-operate/billing-operations.html|Billing_Operations.pdf"
   "3-operate/collaboration-analysis.html|Collaboration_Analysis.pdf"
   "4-reference/troubleshooting.html|Troubleshooting_Guide.pdf"
+  "4-reference/scenarios/index.html|scenarios/Troubleshooting_Scenarios_Catalogue.pdf"
+  "4-reference/scenarios/upload-org-data-missing.html|scenarios/Scenario_01_Upload_Org_Data_Missing.pdf"
   "4-reference/faq.html|FAQ.pdf"
   "4-reference/glossary.html|Glossary_Resources.pdf"
   "4-reference/attribute-reference.html|Attribute_Reference.pdf"

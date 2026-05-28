@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scenario 01 — &ldquo;Upload Org Data&rdquo; missing at aka.ms/copilotdashboard — Copilot Analytics</title>
+<link rel="stylesheet" href="../../assets/docs-style.css">
+<style>
+  /* Small per-scenario polish — keep page styling consistent with other reference docs */
+  .scenario-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px 32px;
+    padding: 16px 20px;
+    background: rgba(0,0,0,0.025);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin: 16px 0 24px;
+    font-size: 0.9em;
+  }
+  .scenario-meta div { min-width: 220px; }
+  .scenario-meta strong { display: block; font-size: 0.78em; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted, #777); margin-bottom: 4px; }
+</style>
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Reference</span>
+    <span class="separator">/</span>
+    <a href="index.html" class="breadcrumb">Troubleshooting Scenarios</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Scenario 01</span>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ COVER PAGE ═══════════════════════ -->
+<div class="cover">
+  <h1>Microsoft 365 Copilot Analytics</h1>
+  <div class="subtitle">Scenario 01</div>
+  <div class="sub2">&ldquo;I can&rsquo;t see the option to upload org data at <code>aka.ms/copilotdashboard</code>&rdquo;</div>
+</div>
+
+<div class="scenario-meta">
+  <div><strong>Typically reported by</strong>Insights Administrator who expected a CSV-upload button on the Copilot Dashboard.</div>
+  <div><strong>Surfaces involved</strong>M365 Admin Center, <code>analysis.insights.cloud.microsoft</code>, Entra ID</div>
+  <div><strong>Roles touched</strong>Insights Admin, Organizational Data Source Admin, AI Admin, Global Admin</div>
+  <div><strong>Version</strong>1.0 &bull; Published May 2026</div>
+</div>
+
+<!-- ─────────── Quick answer ─────────── -->
+<h1 id="quick-answer">Quick answer</h1>
+
+<p><code>aka.ms/copilotdashboard</code> is a short link that redirects to the Copilot Dashboard <em>view</em> inside Viva Insights (<code>analysis.insights.cloud.microsoft</code>). The dashboard view itself never hosts an &ldquo;Upload org data&rdquo; control &mdash; for any role. The upload UI lives in a different place depending on whether the tenant has been migrated to <strong>MODIS (Microsoft Organizational Data in Microsoft 365)</strong>:</p>
+
+<ul>
+  <li><strong>Post-MODIS</strong> &rarr; upload has moved to the <strong>Microsoft&nbsp;365 Admin Center</strong> (<code>admin.microsoft.com</code>, a different surface entirely) and now requires the <strong>Organizational Data Source Administrator</strong> role &mdash; Insights Administrator alone is no longer sufficient.</li>
+  <li><strong>Pre-MODIS</strong> &rarr; upload stays on <code>analysis.insights.cloud.microsoft</code> but on a <strong>different page</strong> from the Copilot Dashboard view: <strong>Admin</strong> menu &rarr; <strong>Data hub</strong>. <strong>Insights Administrator</strong> (or Global Admin) is sufficient.</li>
+</ul>
+
+<h2 id="surface-map">Surface map &mdash; where each URL takes you</h2>
+<p>Use this to confirm you&rsquo;re not asking the dashboard view to host the admin UI:</p>
+<table>
+  <tr><th>URL / short link</th><th>What it is</th><th>Hosts the upload?</th></tr>
+  <tr>
+    <td><code>aka.ms/copilotdashboard</code></td>
+    <td>Short link &rarr; redirects to the Copilot Dashboard view inside Viva Insights.</td>
+    <td>No &mdash; ever.</td>
+  </tr>
+  <tr>
+    <td><code>analysis.insights.cloud.microsoft</code> (Copilot Dashboard page)</td>
+    <td>Same destination as the short link above. Adoption / Readiness / Impact pages.</td>
+    <td>No &mdash; ever.</td>
+  </tr>
+  <tr>
+    <td><code>analysis.insights.cloud.microsoft</code> &rarr; <strong>Admin</strong> menu &rarr; <strong>Data hub</strong></td>
+    <td>A <em>different page</em> on the same Viva Insights surface &mdash; the admin area for analytics settings and data sources.</td>
+    <td><strong>Yes</strong>, on <strong>pre-MODIS</strong> tenants only. Requires Insights Administrator or Global Admin.</td>
+  </tr>
+  <tr>
+    <td><code>admin.microsoft.com</code> &rarr; <strong>Setup</strong> &rarr; <strong>Migration and imports</strong> &rarr; <strong>Organizational Data in Microsoft&nbsp;365</strong></td>
+    <td>The Microsoft&nbsp;365 Admin Center &mdash; a completely separate surface from Viva Insights.</td>
+    <td><strong>Yes</strong>, on <strong>post-MODIS</strong> tenants only. Requires Organizational Data Source Administrator (or Global Admin).</td>
+  </tr>
+</table>
+
+<!-- ─────────── 30-second diagnosis ─────────── -->
+<h1 id="diagnosis">30-second diagnosis</h1>
+
+<ol>
+  <li>Open <code>admin.microsoft.com</code> &rarr; <strong>Setup</strong> &rarr; <strong>Migration and imports</strong>.</li>
+  <li><strong>Do you see &ldquo;Organizational Data in Microsoft 365&rdquo;?</strong>
+    <ul>
+      <li><strong>Yes</strong> &rarr; Tenant is <strong>post-MODIS</strong>. Upload UI lives here, on a <em>different surface</em> from the Copilot Dashboard. The user needs the <strong>Organizational Data Source Administrator</strong> role (Insights Administrator alone will not show the upload).</li>
+      <li><strong>No</strong> &rarr; Tenant is <strong>pre-MODIS</strong>. Upload UI lives on the <em>same</em> Viva Insights surface as the dashboard (<code>analysis.insights.cloud.microsoft</code>), but on a different page: <strong>Admin</strong> menu &rarr; <strong>Data hub</strong> &rarr; <strong>.csv upload</strong>. <strong>Insights Administrator</strong> (or Global Admin) is sufficient.</li>
+    </ul>
+  </li>
+  <li>Confirm role assignment in Entra ID and have the user sign out / sign back in to refresh the token.</li>
+</ol>
+
+<!-- ─────────── Causes ─────────── -->
+<h1 id="causes">Causes ranked by likelihood</h1>
+
+<table>
+  <tr><th>#</th><th>Cause</th><th>Why it happens</th><th>Fix &amp; verification</th></tr>
+  <tr>
+    <td>1</td>
+    <td><strong>Looking at the wrong page within the right family of admin surfaces.</strong> The Copilot Dashboard <em>view</em> (which is what <code>aka.ms/copilotdashboard</code> redirects to) never shows an &ldquo;Upload org data&rdquo; control &mdash; for any role.</td>
+    <td>The Copilot Dashboard view is a consumption surface for leaders, managers, and admins to read metrics. The org-data ingestion UI is intentionally separated &mdash; either to a <em>different page</em> within the same Viva Insights surface (pre-MODIS: <code>analysis.insights.cloud.microsoft</code> &rarr; Admin &rarr; Data hub) or to a <em>different surface entirely</em> (post-MODIS: <code>admin.microsoft.com</code>).</td>
+    <td>
+      <ul>
+        <li><strong>Post-MODIS</strong> &mdash; open the Microsoft&nbsp;365 Admin Center (<em>a different surface</em>): <code>admin.microsoft.com</code> &rarr; Setup &rarr; Migration and imports &rarr; <strong>Organizational Data in Microsoft 365</strong> &rarr; <strong>Data Connections</strong> &rarr; <em>Get started</em> (first time) or <em>New import</em>.</li>
+        <li><strong>Pre-MODIS</strong> &mdash; stay on <code>analysis.insights.cloud.microsoft</code> but switch from the dashboard view to the admin area: open the <strong>Admin</strong> menu (top-left nav) &rarr; <strong>Data hub</strong> &rarr; <strong>.csv upload</strong> &rarr; <em>Start</em>.</li>
+        <li><strong>Verify:</strong> the upload wizard loads with a file picker and an attribute-mapping step.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td><strong>Tenant is post-MODIS and the user only holds Insights Administrator.</strong> The MODIS surface checks a different role.</td>
+    <td>The MODIS data platform serves multiple M365 apps (Viva Insights, Copilot Dashboard, Microsoft 365 Profile, &hellip;), so Microsoft introduced a dedicated role for managing org-data ingestion. Insights Administrator continues to govern <em>analytics</em> settings but does not grant <em>upload</em> rights on the MODIS surface. Per Microsoft Learn, only <strong>two roles</strong> are accepted by Organizational Data in Microsoft 365: <strong>Microsoft 365 Global Administrator</strong> (auto-enrolled) and <strong>Organizational Data Source Administrator</strong> (must be assigned by a Global Administrator).</td>
+    <td>
+      <ul>
+        <li>Assign <strong>Organizational Data Source Administrator</strong> in Entra ID: <code>admin.microsoft.com</code> &rarr; Users &rarr; Active Users &rarr; select user &rarr; <em>Manage roles</em> &rarr; search for &ldquo;Organizational Data Source Administrator.&rdquo;</li>
+        <li>Microsoft 365 Global Administrator is the only other role accepted by MODIS &mdash; use it as a break-glass option for the first upload, then move to Organizational Data Source Administrator for ongoing operations (least privilege).</li>
+        <li><strong>Verify:</strong> after sign-out/sign-in, the &ldquo;Organizational Data in Microsoft 365&rdquo; node appears under <em>Setup &rarr; Migration and imports</em>, and the <em>Get started</em> / <em>New import</em> button is enabled.</li>
+        <li><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/organizational-data#roles-and-permissions">Microsoft Learn &mdash; Organizational Data in Microsoft 365: Roles and permissions</a> (and the <a href="https://learn.microsoft.com/viva/organizational-data#organizational-data-source-administrator-details">Organizational Data Source Administrator details</a> section).</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td><strong>Role was just assigned &mdash; token has not refreshed.</strong></td>
+    <td>Entra role activations propagate to access tokens on next sign-in or token refresh, which can take up to 60 minutes if the user keeps an existing session open.</td>
+    <td>
+      <ul>
+        <li>Sign out of <strong>all</strong> Microsoft 365 surfaces, close the browser, and sign back in (incognito window is fastest).</li>
+        <li><strong>Verify:</strong> open <code>myaccount.microsoft.com</code> &rarr; <em>My roles</em> &mdash; the newly assigned role should be listed before reopening the admin surface.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td><strong>Role is granted via Privileged Identity Management (PIM) but not <em>activated</em>.</strong></td>
+    <td>If the org uses PIM, the user may be <em>eligible</em> for the role but not currently holding it. Eligibility alone does not surface admin UI.</td>
+    <td>
+      <ul>
+        <li><code>portal.azure.com</code> &rarr; <strong>Privileged Identity Management</strong> &rarr; <em>My roles</em> &rarr; activate <strong>Organizational Data Source Administrator</strong> (or <strong>Insights Administrator</strong> on pre-MODIS) for the required duration.</li>
+        <li><strong>Verify:</strong> activation appears under <em>Active assignments</em> with a remaining timer.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td><strong>Role is scoped to a custom Administrative Unit (AU)</strong> rather than the tenant.</td>
+    <td>An AU-scoped role cannot perform tenant-wide ingestion. The MODIS Data Connections node is tenant-scoped, so the UI is hidden for AU-scoped admins.</td>
+    <td>
+      <ul>
+        <li>In Entra ID &rarr; <em>Roles and administrators</em>, locate the assignment and confirm the <strong>Scope</strong> column shows &ldquo;Directory&rdquo; (tenant), not an AU name.</li>
+        <li>If scoped, re-assign at directory scope (requires a Privileged Role Administrator or Global Administrator).</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td><strong>Wrong account in the browser session.</strong></td>
+    <td>Multi-account browsers (work + personal, or two work tenants) often re-use a cached account silently &mdash; the dashboard loads under the unprivileged identity.</td>
+    <td>
+      <ul>
+        <li>Open <code>aka.ms/copilotdashboard</code> in an <strong>incognito / InPrivate</strong> window and sign in explicitly with the admin account.</li>
+        <li><strong>Verify:</strong> top-right account chip shows the correct UPN.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td><strong>Ingestion is already handled by a connector or Azure Blob source &mdash; manual CSV is intentionally hidden / disabled.</strong></td>
+    <td>If the tenant has an active SAP SuccessFactors, Workday, Azure Blob, or API-based source for the same target apps, the CSV-upload tile may be unavailable to prevent two competing sources of truth.</td>
+    <td>
+      <ul>
+        <li><code>admin.microsoft.com</code> &rarr; Setup &rarr; Migration and imports &rarr; <strong>Organizational Data in Microsoft 365</strong> &rarr; <strong>Data Connections</strong> &rarr; review the existing connection list.</li>
+        <li>To switch sources, either pause/remove the existing connector or update <strong>that</strong> source (CSV upload is one method of several &mdash; not the only path).</li>
+        <li>See the <a href="../../2-setup/data-onboarding.html#methods-overview">Upload Methods Overview</a> in the Data Onboarding Guide.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>8</td>
+    <td><strong>Viva Feature Access Management (VFAM) policy disables the Copilot Dashboard surface for this user.</strong></td>
+    <td>VFAM gates the <em>viewing</em> surface itself. The user lands on a permission-denied page or a stripped-down view that does not even expose admin entry points if they were ever there.</td>
+    <td>
+      <ul>
+        <li><code>admin.microsoft.com</code> &rarr; Viva &rarr; <strong>Feature Access Management</strong> &rarr; Viva Insights &rarr; verify <strong>Copilot Dashboard</strong> is ON for the user&rsquo;s group.</li>
+        <li>Remember: this only affects the dashboard surface. The upload still happens via the M365 Admin Center or <code>analysis.insights.cloud.microsoft</code> &rarr; Admin, which are governed by Entra roles, not VFAM.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>9</td>
+    <td><strong>Tenant under 2,500 licensed users without the required admin role.</strong></td>
+    <td>Small-tenant guardrails: certain admin entry points are gated until the user holds AI Administrator, Insights Administrator, or Global Administrator.</td>
+    <td>
+      <ul>
+        <li>Confirm the user holds at least one of: AI Administrator, Insights Administrator, Organizational Data Source Administrator (post-MODIS), or Global Administrator.</li>
+        <li><strong>Verify:</strong> <code>myaccount.microsoft.com</code> &rarr; My roles.</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+<div class="callout warning">
+  <div class="callout-title">Most common misdiagnosis</div>
+  <p>Teams escalate this as a &ldquo;permissions bug&rdquo; on the Copilot Dashboard. In &gt;90% of cases the cause is one of <strong>(1) wrong surface</strong> or <strong>(2) post-MODIS role mismatch</strong>. Always verify the migration state in <em>admin.microsoft.com &rarr; Setup &rarr; Migration and imports</em> before opening a support case.</p>
+</div>
+
+<!-- ─────────── What done looks like ─────────── -->
+<h1 id="done">What &ldquo;done&rdquo; looks like</h1>
+
+<ul>
+  <li>User signs into the correct admin surface (M365 Admin Center post-MODIS, or <code>analysis.insights.cloud.microsoft</code> &rarr; Admin pre-MODIS).</li>
+  <li>Holds the matching role (<strong>Organizational Data Source Administrator</strong> post-MODIS, or <strong>Insights Administrator</strong> pre-MODIS).</li>
+  <li>Sees and clicks <strong>Get started</strong> / <strong>New import</strong> / <strong>.csv upload &rarr; Start</strong>, completes the wizard, and the job appears with status <em>Validating</em> &rarr; <em>Processing</em> &rarr; <em>Complete</em>.</li>
+</ul>
+
+<!-- ─────────── Related ─────────── -->
+<h1 id="related">Related</h1>
+
+<ul>
+  <li><a href="index.html">Troubleshooting Scenarios catalogue</a> &mdash; browse all scenarios.</li>
+  <li><a href="../troubleshooting.html">Troubleshooting Guide</a> &mdash; symptom-tables for single-surface lookups.</li>
+  <li><a href="../../2-setup/data-onboarding.html">Data Onboarding Guide</a> &mdash; full step-by-step upload procedures for both paths.</li>
+  <li><a href="../../2-setup/admin-setup.html">Admin Setup Guide</a> &mdash; role-assignment reference for all five analytics tiers.</li>
+  <li><a href="../troubleshooting.html#data-upload">Troubleshooting Guide &mdash; Section 5 Data Upload Issues</a> &mdash; for validation and processing failures <em>after</em> the upload starts.</li>
+</ul>
+
+<!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
+<hr>
+<p style="font-size:0.85em; color:var(--text-muted); margin-top:32px;">
+  <strong>Disclaimer:</strong> This scenario is provided for informational purposes only and reflects Microsoft 365 capabilities as of May 2026. Microsoft may change features, interfaces, and availability without notice. Always verify current guidance on <a href="https://learn.microsoft.com">Microsoft Learn</a>. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
+</p>
+
+<!-- Back to Top -->
+<a href="#" id="back-to-top" style="
+  position:fixed; bottom:32px; right:32px; background:var(--accent,#0078d4); color:#fff;
+  border:none; border-radius:50%; width:44px; height:44px; font-size:22px;
+  text-align:center; line-height:44px; text-decoration:none; cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,0.18); display:none; z-index:999;
+" title="Back to top">&uarr;</a>
+<script>
+(function(){
+  var btn = document.getElementById('back-to-top');
+  window.addEventListener('scroll', function(){
+    btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+  btn.addEventListener('click', function(e){
+    e.preventDefault();
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+})();
+</script>
+
+</body>
+</html>

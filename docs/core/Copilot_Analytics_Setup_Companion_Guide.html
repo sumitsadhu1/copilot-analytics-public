@@ -516,7 +516,7 @@
   <div class="step-title">Step 5: Enable Manager Access to Team-Level Data (15 min)</div>
   <p>Requires <strong>Insights Administrator</strong> or <strong>AI Admin</strong> role.</p>
   <ol>
-    <li>Navigate to Viva Insights web app: <code>https://insights.cloud.microsoft</code></li>
+    <li>Navigate to Viva Insights web app: <code>https://analysis.insights.cloud.microsoft</code></li>
     <li>Go to <strong>Manager Settings</strong> (under Platform Setup on the left)</li>
     <li>Toggle on <strong>"Grant managers scoped access to Copilot insights"</strong></li>
     <li>Set the <strong>Minimum team size</strong> (minimum 5; includes manager in count)</li>
@@ -548,7 +548,7 @@
   </ol>
   <p><strong>For tenants WITH Viva Insights license:</strong></p>
   <ol>
-    <li><code>https://insights.cloud.microsoft</code> → Admin → Privacy settings</li>
+    <li><code>https://analysis.insights.cloud.microsoft</code> → Admin → Privacy settings</li>
     <li>Configure minimum group size → Save (takes effect in 24 hours)</li>
   </ol>
 </div>
@@ -571,7 +571,7 @@
 <div class="step">
   <div class="step-title">Step 9: Configure Hourly Rate for ROI (10 min)</div>
   <ol>
-    <li><code>https://insights.cloud.microsoft</code> → Admin → Impact settings</li>
+    <li><code>https://analysis.insights.cloud.microsoft</code> → Admin → Impact settings</li>
     <li>Default hourly rate is $72/hour (USD)</li>
     <li>Adjust to customer loaded labour rate if different</li>
     <li>Document the rate used for future reference</li>
@@ -647,7 +647,7 @@
 
 <h2>5.6 Success Criteria</h2>
 <ul class="checklist">
-  <li>Can access Copilot Dashboard at <code>https://insights.cloud.microsoft/#/CopilotDashboard</code></li>
+  <li>Can access Copilot Dashboard at <code>https://analysis.insights.cloud.microsoft</code></li>
   <li>Readiness page displays license assignment data</li>
   <li>Adoption page shows active user trends</li>
   <li>Impact page displays Copilot Assisted Hours and Value metrics</li>
@@ -707,7 +707,7 @@
 <div class="step">
   <div class="step-title">Accessing Copilot Analytics Reports</div>
   <ol>
-    <li>Navigate to the Viva Insights web app: <code>https://insights.cloud.microsoft</code></li>
+    <li>Navigate to the Viva Insights web app: <code>https://analysis.insights.cloud.microsoft</code></li>
     <li>In the left navigation, select <strong>Reports</strong></li>
     <li>Browse available reports — these include out-of-the-box reports and any reports published by analysts</li>
   </ol>
@@ -771,7 +771,7 @@
 <div class="step">
   <div class="step-title">Step 1: Access Copilot Analytics Reports (Leaders/Managers)</div>
   <ol>
-    <li>Sign in to <code>https://insights.cloud.microsoft</code></li>
+    <li>Sign in to <code>https://analysis.insights.cloud.microsoft</code></li>
     <li>Select <strong>Reports</strong> in the left navigation</li>
     <li>Browse <strong>Out-of-the-box</strong> reports (e.g., Copilot Studio Agents, Copilot for Sales)</li>
     <li>Select <strong>View report</strong> on any card to see the insights</li>
@@ -889,7 +889,7 @@
 <div class="step">
   <div class="step-title">Accessing the Agent Dashboard</div>
   <ol>
-    <li>Navigate to the Viva Insights web app: <code>https://insights.cloud.microsoft</code></li>
+    <li>Navigate to the Viva Insights web app: <code>https://analysis.insights.cloud.microsoft</code></li>
     <li>Select <strong>Agent Dashboard</strong> from the left navigation</li>
     <li>If you don't see it, verify your access level (must be company-level access)</li>
   </ol>
@@ -1304,7 +1304,7 @@
 </div>
 <ol>
   <li>Prepare CSV: UTF-8 encoded, &lt;1 GB, include <code>EffectiveDate</code> set earlier than upload date.</li>
-  <li>Navigate to <code>https://insights.cloud.microsoft</code> → Admin → Data hub → .csv upload → Start</li>
+  <li>Navigate to <code>https://analysis.insights.cloud.microsoft</code> → Admin → Data hub → .csv upload → Start</li>
   <li>Upload file, map fields, validate and submit — wait up to 7 days for processing</li>
 </ol>
 
@@ -1512,7 +1512,7 @@
 <table>
   <tr><th>Dashboard</th><th>URL</th></tr>
   <tr><td>M365 Admin Center</td><td><code>https://admin.microsoft.com/</code></td></tr>
-  <tr><td>Copilot Dashboard</td><td><code>https://insights.cloud.microsoft/#/CopilotDashboard</code></td></tr>
+  <tr><td>Copilot Dashboard</td><td><code>https://analysis.insights.cloud.microsoft</code></td></tr>
   <tr><td>Copilot Dashboard Overview (aka.ms)</td><td><a href="https://aka.ms/Copilot/DashboardOverview">https://aka.ms/Copilot/DashboardOverview</a></td></tr>
   <tr><td>Advanced Analytics Playbook</td><td><a href="https://aka.ms/CopilotAdvancedAnalytics">https://aka.ms/CopilotAdvancedAnalytics</a></td></tr>
 </table>
@@ -1563,7 +1563,7 @@
   <li>Verify 50+ assigned Copilot/Viva Insights licences</li>
   <li>Verify Entra ID manager hierarchy is populated</li>
   <li>AI Admin: add self + users/groups to dashboard access → <code>admin.microsoft.com</code> → Viva → Viva Insights</li>
-  <li>Insights Admin: enable Manager Settings → <code>insights.cloud.microsoft</code> → Manager Settings</li>
+  <li>Insights Admin: enable Manager Settings → <code>analysis.insights.cloud.microsoft</code> → Manager Settings</li>
   <li>Upload org data CSV (PersonId, ManagerId, Organization + custom attributes)</li>
   <li>Configure minimum group size (default 10, min 5)</li>
   <li>Configure hourly rate for ROI (default $72/h)</li>
@@ -1574,7 +1574,7 @@
 <h4>Tier 3 — Copilot Analytics Reports (Auto)</h4>
 <ul class="checklist">
   <li>No action needed — automatically available to Dashboard users</li>
-  <li>Verify: <code>insights.cloud.microsoft</code> → Reports (left nav)</li>
+  <li>Verify: <code>analysis.insights.cloud.microsoft</code> → Reports (left nav)</li>
 </ul>
 
 <h4>Tier 4 — Agent Dashboard (Day 7+)</h4>
@@ -1599,8 +1599,8 @@
 <table>
   <tr><td><strong>M365 Admin Center</strong></td><td><code>https://admin.microsoft.com</code></td></tr>
   <tr><td><strong>Entra Admin Center</strong></td><td><code>https://entra.microsoft.com</code></td></tr>
-  <tr><td><strong>Viva Insights Web App</strong></td><td><code>https://insights.cloud.microsoft</code></td></tr>
-  <tr><td><strong>Copilot Dashboard Direct</strong></td><td><code>https://insights.cloud.microsoft/#/CopilotDashboard</code></td></tr>
+  <tr><td><strong>Viva Insights Web App</strong></td><td><code>https://analysis.insights.cloud.microsoft</code></td></tr>
+  <tr><td><strong>Copilot Dashboard Direct</strong></td><td><code>https://analysis.insights.cloud.microsoft</code></td></tr>
   <tr><td><strong>Power BI Desktop</strong></td><td><code>https://powerbi.microsoft.com/desktop/</code></td></tr>
 </table>
 

@@ -466,7 +466,7 @@
                     <ol style="margin:4px 0 0 20px;">
                         <li>Confirm no agency leaders appear in the dashboard access list.</li>
                         <li>Verify VFAM policies (AutoCxo, Delegation, AgentDashboard, MetricsExport, and optionally web app) show as disabled for the <code>AgencyUsers-NoDashboard</code> group.</li>
-                        <li>Have an agency CEO attempt to access <code>insights.cloud.microsoft</code> and confirm access is denied.</li>
+                        <li>Have an agency CEO attempt to access <code>analysis.insights.cloud.microsoft</code> and confirm access is denied.</li>
                         <li>Have a non-agency executive (e.g., CFO) confirm they <strong>still</strong> have dashboard access.</li>
                     </ol>
                 </div>
@@ -521,7 +521,7 @@
                     (e) <strong>Export all existing Viva Insights reports and query results</strong> before enabling partitions. Download from Analysis results &rarr; select each query &rarr; Download CSV or open in Power BI. There is no built-in rollback once partitions are enabled.
                 </div>
                 <ul>
-                    <li>Navigate to <code>insights.cloud.microsoft</code> &rarr; <strong>Admin</strong> &rarr; <strong>Privacy settings</strong> &rarr; <strong>Partitions</strong>. Select <strong>Enable Partitions</strong>.</li>
+                    <li>Navigate to <code>analysis.insights.cloud.microsoft</code> &rarr; <strong>Admin</strong> &rarr; <strong>Privacy settings</strong> &rarr; <strong>Partitions</strong>. Select <strong>Enable Partitions</strong>.</li>
                     <li>Select <strong>New partition</strong>. Name it (e.g., &ldquo;Agency A&rdquo;).
                         <ul>
                             <li><strong>Path A filter:</strong> Set <code>Agency = "Agency A"</code></li>
@@ -537,14 +537,14 @@
                 </div>
                 <div class="highlight-box">
                     <strong>After Phase 3 &mdash; Verification:</strong><br>
-                    Have each agency analyst sign in to <code>insights.cloud.microsoft</code>. Confirm they only see their agency&rsquo;s partition in the partition switcher. Have them run a test person query and verify the employee count matches their agency only.
+                    Have each agency analyst sign in to <code>analysis.insights.cloud.microsoft</code>. Confirm they only see their agency&rsquo;s partition in the partition switcher. Have them run a test person query and verify the employee count matches their agency only.
                 </div>
 
                 <div class="highlight-box" style="border-left:4px solid var(--success-color, #107c10);">
                     <strong>Analyst Onboarding Checklist &mdash; First Day in a Partition</strong>
                     <p style="margin:4px 0;font-size:0.92em;">Share these steps with each agency analyst after they receive partition access:</p>
                     <ol style="margin:4px 0 0 20px;">
-                        <li>Sign in to <code>insights.cloud.microsoft</code> with your analyst account.</li>
+                        <li>Sign in to <code>analysis.insights.cloud.microsoft</code> with your analyst account.</li>
                         <li>Look for the <strong>partition switcher</strong> in the top bar. Select your agency&rsquo;s partition (e.g., &ldquo;Agency A&rdquo;).</li>
                         <li>In the left nav, select <strong>Create analysis</strong>. You should see Power BI templates (Copilot Adoption, Impact Explorer, Business Impact, etc.) and the custom person query option.</li>
                         <li>Run a <strong>test Person Query</strong>: select a few basic Copilot metrics, set a 28-day window, and run. Verify the employee count in the results matches your agency&rsquo;s expected headcount.</li>
@@ -616,7 +616,7 @@
                         <li>Select <strong>one pilot agency CEO</strong> who has a Copilot licence (Viva Insights service plan included).</li>
                         <li>In Manager Settings, enable this CEO as a manager (ensure their team meets minimum team size).</li>
                         <li>Wait 1 hour for manager settings to propagate.</li>
-                        <li>Have the pilot CEO navigate to <code>insights.cloud.microsoft</code>. Check whether they can see the <strong>Copilot Dashboard</strong> in the left nav and whether it shows &ldquo;Your company&rdquo; data across all agencies.</li>
+                        <li>Have the pilot CEO navigate to <code>analysis.insights.cloud.microsoft</code>. Check whether they can see the <strong>Copilot Dashboard</strong> in the left nav and whether it shows &ldquo;Your company&rdquo; data across all agencies.</li>
                         <li><strong>If they can see cross-agency data:</strong> Fall back to Option A (Power BI workspaces). Disable the pilot CEO&rsquo;s manager access.</li>
                         <li><strong>If they only see their team&rsquo;s data:</strong> Proceed with publishing filtered reports to remaining agency CEOs.</li>
                         <li>After pilot, publish a Copilot PBI template report using &ldquo;Filter by manager hierarchy&rdquo; and verify the CEO receives only their agency&rsquo;s data.</li>
@@ -668,7 +668,7 @@
                     <li><strong>Designate one Central IT owner</strong> responsible for the consolidated CSV file across all agencies.</li>
                     <li><strong>Establish a monthly collection process:</strong> Each agency HR team exports their employee data extract &rarr; Central IT merges all extracts into a single CSV with the <code>Agency</code> attribute populated for every row.</li>
                     <li><strong>Validate before upload:</strong> Check that every row has a non-empty <code>Agency</code> value, that employee counts per agency match HR records, and that the <code>PersonId</code> (email) format is correct.</li>
-                    <li><strong>Upload and verify:</strong> Upload via Viva Insights web app or M365 Admin Center. After processing (up to 7 days), verify on the Data Quality page (<code>insights.cloud.microsoft</code> &rarr; Admin &rarr; Organizational data &rarr; Data Quality tab) that the <code>Agency</code> attribute has 100% coverage.</li>
+                    <li><strong>Upload and verify:</strong> Upload via Viva Insights web app or M365 Admin Center. After processing (up to 7 days), verify on the Data Quality page (<code>analysis.insights.cloud.microsoft</code> &rarr; Admin &rarr; Organizational data &rarr; Data Quality tab) that the <code>Agency</code> attribute has 100% coverage.</li>
                     <li><strong>Automate if possible:</strong> Use the <a href="https://learn.microsoft.com/viva/insights/advanced/admin/import-org-data-first">API-based import</a> or <a href="https://learn.microsoft.com/viva/insights/advanced/admin/import-org-data-azure">Azure blob import</a> for automated monthly uploads with failure alerting.</li>
                 </ol>
             </div>
@@ -821,7 +821,7 @@
                 </tbody>
             </table>
             <div class="alert">
-                <strong>Critical Rule:</strong> Never assign an agency analyst to the <strong>Global partition</strong>. Global partition grants automatic Copilot Dashboard access and tenant-wide query access &mdash; defeating the entire isolation architecture. Always verify partition assignments after adding new analysts: <code>insights.cloud.microsoft</code> &rarr; Admin &rarr; Privacy settings &rarr; Partitions &rarr; select each partition &rarr; verify the Analysts tab.
+                <strong>Critical Rule:</strong> Never assign an agency analyst to the <strong>Global partition</strong>. Global partition grants automatic Copilot Dashboard access and tenant-wide query access &mdash; defeating the entire isolation architecture. Always verify partition assignments after adding new analysts: <code>analysis.insights.cloud.microsoft</code> &rarr; Admin &rarr; Privacy settings &rarr; Partitions &rarr; select each partition &rarr; verify the Analysts tab.
             </div>
         </section>
 
