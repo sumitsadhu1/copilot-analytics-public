@@ -28,6 +28,7 @@ FILES = [
     ("4-reference/troubleshooting.html", "Troubleshooting Guide"),
     ("4-reference/scenarios/index.html", "Troubleshooting Scenarios"),
     ("4-reference/scenarios/upload-org-data-missing.html", "Scenario 01: Upload Org Data Missing"),
+    ("4-reference/scenarios/report-visible-to-one-user-not-another.html", "Scenario 02: Report Visible to One User Not Another"),
     ("4-reference/faq.html", "FAQ"),
     ("4-reference/glossary.html", "Glossary & Resources"),
     ("4-reference/attribute-reference.html", "Attribute Reference"),

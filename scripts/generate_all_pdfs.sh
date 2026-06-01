@@ -35,6 +35,7 @@ declare -a DOCS=(
   "4-reference/troubleshooting.html|Troubleshooting_Guide.pdf"
   "4-reference/scenarios/index.html|scenarios/Troubleshooting_Scenarios_Catalogue.pdf"
   "4-reference/scenarios/upload-org-data-missing.html|scenarios/Scenario_01_Upload_Org_Data_Missing.pdf"
+  "4-reference/scenarios/report-visible-to-one-user-not-another.html|scenarios/Scenario_02_Report_Visible_To_One_User.pdf"
   "4-reference/faq.html|FAQ.pdf"
   "4-reference/glossary.html|Glossary_Resources.pdf"
   "4-reference/attribute-reference.html|Attribute_Reference.pdf"

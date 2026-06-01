@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scenario 02 — &ldquo;I can see a Copilot report but my colleague can&rsquo;t&rdquo; — Copilot Analytics</title>
+<link rel="stylesheet" href="../../assets/docs-style.css">
+<style>
+  /* Small per-scenario polish — keep page styling consistent with other reference docs */
+  .scenario-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px 32px;
+    padding: 16px 20px;
+    background: rgba(0,0,0,0.025);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin: 16px 0 24px;
+    font-size: 0.9em;
+  }
+  .scenario-meta div { min-width: 220px; }
+  .scenario-meta strong { display: block; font-size: 0.78em; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted, #777); margin-bottom: 4px; }
+</style>
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Reference</span>
+    <span class="separator">/</span>
+    <a href="index.html" class="breadcrumb">Troubleshooting Scenarios</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Scenario 02</span>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ COVER PAGE ═══════════════════════ -->
+<div class="cover">
+  <h1>Microsoft 365 Copilot Analytics</h1>
+  <div class="subtitle">Scenario 02</div>
+  <div class="sub2">&ldquo;Why can I see the Microsoft&nbsp;365 Copilot adoption report in the Copilot Dashboard but my colleague can&rsquo;t?&rdquo;</div>
+</div>
+
+<div class="scenario-meta">
+  <div><strong>Typically reported by</strong>A user who opened a Copilot report and a colleague (same team, similar licence) sees nothing or a permission-denied page.</div>
+  <div><strong>Surfaces involved</strong><code>analysis.insights.cloud.microsoft</code>, M365 Admin Center (VFAM), Entra ID</div>
+  <div><strong>Roles touched</strong>Global Admin, Insights Admin, AI Admin, AutoCxO leaders, Delegated users, People-managers</div>
+  <div><strong>Version</strong>1.0 &bull; Published June 2026</div>
+</div>
+
+<!-- ─────────── Quick answer ─────────── -->
+<h1 id="quick-answer">Quick answer</h1>
+
+<p>Access to the Copilot Dashboard (and therefore the <strong>Reports</strong> surface inside it) is granted through <strong>five independent paths</strong>. A colleague who sees nothing simply matches <em>none</em> of them &mdash; even on an identical licence. The Reports surface never has its own permission model: it only shows reports to people who <em>already</em> have dashboard access through one of these paths.</p>
+
+<table>
+  <tr><th>#</th><th>Access path</th><th>Granted to</th><th>Scope they see</th></tr>
+  <tr>
+    <td>1</td>
+    <td><strong>Admin role</strong></td>
+    <td>Global Administrator, Insights Administrator, or AI Administrator</td>
+    <td>Your company (whole tenant)</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td><strong>AutoCxO</strong> (automatic senior-leader identification)</td>
+    <td>Senior leaders auto-detected from the org hierarchy</td>
+    <td>Their own reporting hierarchy</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td><strong>Delegation</strong></td>
+    <td>Anyone a leader or admin explicitly shares access with</td>
+    <td>Your group / Your company (whatever was delegated)</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td><strong>VFAM web-app grant</strong></td>
+    <td>Users/groups explicitly allowed the Viva Insights web app + Copilot Dashboard feature</td>
+    <td>Per the access they otherwise hold</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td><strong>Manager Settings</strong> (&ldquo;Grant managers scoped access&rdquo;)</td>
+    <td>Any people-manager whose team meets the minimum team size &mdash; once the Insights Admin toggles this on</td>
+    <td>Your group (their own team)</td>
+  </tr>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">The most common single cause</div>
+  <p>When two colleagues on the same licence differ, the explanation is usually <strong>path&nbsp;5 (Manager Settings)</strong>: the person who <em>can</em> see the report is a people-manager whose team meets the minimum team size; the colleague who <em>can&rsquo;t</em> is an individual contributor (no direct reports), or their team is below the minimum, or their <code>Manager</code> attribute isn&rsquo;t populated.</p>
+</div>
+
+<!-- ─────────── 30-second diagnosis ─────────── -->
+<h1 id="diagnosis">30-second diagnosis</h1>
+
+<ol>
+  <li><strong>Is the colleague a people-manager?</strong> If they have <em>no direct reports</em>, paths 2 and 5 can&rsquo;t apply to them. The difference is almost certainly that you have one of those and they don&rsquo;t.</li>
+  <li><strong>Does the user who <em>can</em> see the report hold an admin role?</strong> Check <code>myaccount.microsoft.com</code> &rarr; <em>My roles</em> for Global / Insights / AI Administrator. If yes, that alone explains tenant-wide access &mdash; the colleague without the role sees nothing.</li>
+  <li><strong>Is Manager Settings enabled?</strong> <code>analysis.insights.cloud.microsoft</code> &rarr; <strong>Admin</strong> &rarr; <strong>Manager settings</strong> &rarr; confirm <em>&ldquo;Grant managers scoped access&rdquo;</em> is ON. If off, <em>no</em> manager sees team data regardless of licence.</li>
+  <li><strong>Is the colleague&rsquo;s team below the minimum team size?</strong> Default minimum is 10 (configurable, floor 5) and includes the manager in the count. A manager of a 3-person team sees nothing.</li>
+  <li><strong>Is the colleague&rsquo;s <code>Manager</code> attribute populated?</strong> No manager hierarchy in Entra ID (or uploaded org data) = no manager-scoped access.</li>
+</ol>
+
+<!-- ─────────── Causes ─────────── -->
+<h1 id="causes">Causes ranked by likelihood</h1>
+
+<table>
+  <tr><th>#</th><th>Cause</th><th>Why it happens</th><th>Fix &amp; verification</th></tr>
+  <tr>
+    <td>1</td>
+    <td><strong>You have manager-scoped access (path 5) and the colleague is an individual contributor.</strong></td>
+    <td>Once the Insights Admin enables <em>&ldquo;Grant managers scoped access&rdquo;</em> in Manager Settings, any people-manager whose team meets the minimum team size automatically gets scoped dashboard + Reports access to their own team. An IC with no direct reports never qualifies for this path.</td>
+    <td>
+      <ul>
+        <li>Confirm you have direct reports and the colleague does not (org chart / Entra <code>Manager</code> attribute).</li>
+        <li><strong>Verify:</strong> the scope chip on your dashboard reads <em>&ldquo;Your group&rdquo;</em> (your team), not <em>&ldquo;Your company.&rdquo;</em> An IC colleague would have no scope at all.</li>
+        <li>This is expected behaviour, not a bug &mdash; ICs are not meant to see team-level reports.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td><strong>You hold an admin role (path 1); the colleague does not.</strong></td>
+    <td>Global Administrator, Insights Administrator, and AI Administrator all grant tenant-wide (&ldquo;Your company&rdquo;) access to the dashboard and Reports. A colleague without any of these roles has no admin-derived access.</td>
+    <td>
+      <ul>
+        <li>Check both users at <code>myaccount.microsoft.com</code> &rarr; <em>My roles</em>.</li>
+        <li>If the colleague legitimately needs access, grant it via <strong>delegation</strong> (path 3) rather than handing out an admin role &mdash; least privilege.</li>
+        <li><strong>Verify:</strong> your scope chip reads <em>&ldquo;Your company.&rdquo;</em></li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td><strong>Manager Settings is OFF tenant-wide.</strong></td>
+    <td>If the Insights Admin has never enabled <em>&ldquo;Grant managers scoped access,&rdquo;</em> then <em>no</em> manager sees team-level data &mdash; so if your colleague is a manager expecting their team report, this is why. (You would still see reports if your access comes from path 1&ndash;4.)</td>
+    <td>
+      <ul>
+        <li><code>analysis.insights.cloud.microsoft</code> &rarr; <strong>Admin</strong> &rarr; <strong>Manager settings</strong> &rarr; toggle <em>&ldquo;Grant managers scoped access&rdquo;</em> ON.</li>
+        <li>Allow <strong>~1 hour</strong> for the change to propagate.</li>
+        <li><strong>Verify:</strong> after propagation, a qualifying manager sees a <em>&ldquo;Your group&rdquo;</em> scope on the dashboard.</li>
+        <li>See <a href="../../2-setup/admin-setup.html">Admin Setup Guide</a> &mdash; Manager Settings step.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td><strong>The colleague&rsquo;s team is below the minimum team size.</strong></td>
+    <td>To protect individual privacy, manager-scoped views are suppressed unless the team meets the minimum team size (default 10, configurable down to a floor of 5; the manager counts toward the total). A manager of a small team sees an empty view even when everything else is configured correctly.</td>
+    <td>
+      <ul>
+        <li>Count the colleague&rsquo;s direct + indirect reports (including themselves).</li>
+        <li>If genuinely small, this is by design &mdash; the minimum cannot go below 5.</li>
+        <li>Note: <strong>minimum team size</strong> (Manager Settings) is distinct from <strong>minimum group size</strong> (Privacy settings) &mdash; see <a href="../../2-setup/privacy-configuration.html">Privacy Configuration Guide</a>.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td><strong>The colleague&rsquo;s <code>Manager</code> attribute (or manager hierarchy) isn&rsquo;t populated.</strong></td>
+    <td>Manager-scoped access (path 5) and AutoCxO (path 2) both depend on a manager hierarchy &mdash; either the Entra ID <code>Manager</code> attribute or a <code>ManagerId</code> column in uploaded org data. Missing hierarchy means the platform can&rsquo;t establish who reports to whom.</td>
+    <td>
+      <ul>
+        <li>Check the colleague&rsquo;s Entra profile (<code>Manager</code> field) and, if org data is uploaded, the <code>ManagerId</code> mapping.</li>
+        <li>Populate via HR sync, Entra, or the org-data CSV upload.</li>
+        <li><strong>Verify:</strong> after the next data refresh (~1 hour for settings; longer for a full org-data reprocess), the manager view populates.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td><strong>You received a delegation (path 3); the colleague did not.</strong></td>
+    <td>A leader or admin can delegate dashboard access to specific people (up to 75 delegates; no cascading). If you were delegated access and your colleague wasn&rsquo;t, you see the reports and they don&rsquo;t.</td>
+    <td>
+      <ul>
+        <li>Ask whether a leader shared access with you. The delegating leader can add the colleague the same way.</li>
+        <li>Delegation rules: max 75 delegates, no cascading, scope follows the delegator; access is revoked if the delegator leaves the org.</li>
+        <li>See <a href="../dashboard-guide.html">Dashboard Guide</a> &mdash; &ldquo;How to Delegate Access.&rdquo;</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td><strong>A VFAM policy blocks the colleague&rsquo;s web-app or Copilot Dashboard access (path 4).</strong></td>
+    <td>Viva Feature Access Management can disable the Viva Insights web app or the Copilot Dashboard feature for specific groups. If the colleague is in a group covered by a restrictive policy, the surface simply doesn&rsquo;t load for them &mdash; even if they would otherwise qualify via paths 1&ndash;5.</td>
+    <td>
+      <ul>
+        <li><code>admin.microsoft.com</code> &rarr; Viva &rarr; <strong>Feature Access Management</strong> &rarr; Viva Insights &rarr; verify the <strong>Viva Insights web app</strong> and <strong>Copilot Dashboard</strong> features are ON for the colleague&rsquo;s group.</li>
+        <li>Remember VFAM policies are group-scoped &mdash; confirm which policy applies to the colleague.</li>
+        <li><strong>Verify:</strong> after the policy change, the colleague can load <code>analysis.insights.cloud.microsoft</code>.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>8</td>
+    <td><strong>The colleague lacks a Viva Insights / Copilot licence.</strong></td>
+    <td>Even with the right role or manager hierarchy, the web-app surface requires the appropriate licence assignment. An unlicensed (or differently licensed) colleague can be blocked at the door.</td>
+    <td>
+      <ul>
+        <li><code>admin.microsoft.com</code> &rarr; Users &rarr; Active Users &rarr; select the colleague &rarr; <em>Licenses and apps</em> &rarr; confirm the Viva Insights / Copilot entitlement.</li>
+        <li><strong>Verify:</strong> the licence shows assigned and active.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>9</td>
+    <td><strong>Recent change hasn&rsquo;t propagated yet.</strong></td>
+    <td>Role assignments refresh on next sign-in (up to ~60 min if a session stays open); Manager Settings changes take ~1 hour; org-data hierarchy changes can take longer to reprocess.</td>
+    <td>
+      <ul>
+        <li>Have the colleague sign out of all M365 surfaces and back in (incognito is fastest).</li>
+        <li>Wait the full propagation window before escalating.</li>
+        <li><strong>Verify:</strong> re-check <code>myaccount.microsoft.com</code> &rarr; <em>My roles</em> and the dashboard scope chip.</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+<div class="callout warning">
+  <div class="callout-title">Most common misdiagnosis</div>
+  <p>This is usually escalated as &ldquo;the same licence behaves differently for two people &mdash; it must be a bug.&rdquo; In practice the two users almost always differ on <strong>(1) manager status</strong> or <strong>(2) admin role</strong>. Identical licences do <em>not</em> imply identical dashboard access &mdash; the licence is necessary but not sufficient.</p>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">Surface vs. scope &mdash; keep these separate</div>
+  <p>Two different questions are easy to conflate:</p>
+  <ul>
+    <li><strong>Does the dashboard / Reports surface appear at all?</strong> &rarr; governed by admin role, AutoCxO, delegation, and the VFAM web-app grant (paths 1&ndash;4).</li>
+    <li><strong>Does a <em>manager</em> see <em>team-level</em> data within it?</strong> &rarr; governed by Manager Settings + manager hierarchy + minimum team size (path 5).</li>
+  </ul>
+  <p>Diagnose which question you&rsquo;re actually answering before chasing a fix.</p>
+</div>
+
+<!-- ─────────── What done looks like ─────────── -->
+<h1 id="done">What &ldquo;done&rdquo; looks like</h1>
+
+<ul>
+  <li>You can articulate <em>which</em> of the five paths grants <strong>your</strong> access (admin role, AutoCxO, delegation, VFAM grant, or Manager Settings).</li>
+  <li>You&rsquo;ve confirmed the colleague matches <em>none</em> of those paths &mdash; or identified the single one that&rsquo;s missing and fixable (most often: enable Manager Settings, populate the <code>Manager</code> attribute, or add a delegation).</li>
+  <li>After the relevant change propagates, the colleague either sees the expected scoped report or it&rsquo;s confirmed as correct-by-design (e.g. an IC with no team to report on).</li>
+</ul>
+
+<!-- ─────────── Related ─────────── -->
+<h1 id="related">Related</h1>
+
+<ul>
+  <li><a href="index.html">Troubleshooting Scenarios catalogue</a> &mdash; browse all scenarios.</li>
+  <li><a href="../troubleshooting.html">Troubleshooting Guide</a> &mdash; symptom-tables for single-surface lookups.</li>
+  <li><a href="../dashboard-guide.html">Dashboard Guide</a> &mdash; access scopes, delegation, and the Reports surface.</li>
+  <li><a href="../../2-setup/admin-setup.html">Admin Setup Guide</a> &mdash; role assignment and Manager Settings step.</li>
+  <li><a href="../../2-setup/privacy-configuration.html">Privacy Configuration Guide</a> &mdash; minimum team size vs. minimum group size.</li>
+  <li><a href="../faq.html">FAQ</a> &mdash; common access questions.</li>
+</ul>
+
+<!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
+<hr>
+<p style="font-size:0.85em; color:var(--text-muted); margin-top:32px;">
+  <strong>Disclaimer:</strong> This scenario is provided for informational purposes only and reflects Microsoft 365 capabilities as of June 2026. Microsoft may change features, interfaces, and availability without notice. Always verify current guidance on <a href="https://learn.microsoft.com">Microsoft Learn</a>. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
+</p>
+
+<!-- Back to Top -->
+<a href="#" id="back-to-top" style="
+  position:fixed; bottom:32px; right:32px; background:var(--accent,#0078d4); color:#fff;
+  border:none; border-radius:50%; width:44px; height:44px; font-size:22px;
+  text-align:center; line-height:44px; text-decoration:none; cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,0.18); display:none; z-index:999;
+" title="Back to top">&uarr;</a>
+<script>
+(function(){
+  var btn = document.getElementById('back-to-top');
+  window.addEventListener('scroll', function(){
+    btn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+  btn.addEventListener('click', function(e){
+    e.preventDefault();
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+})();
+</script>
+
+</body>
+</html>
