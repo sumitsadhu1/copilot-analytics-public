@@ -245,6 +245,55 @@
   <p>Diagnose which question you&rsquo;re actually answering before chasing a fix.</p>
 </div>
 
+<!-- ─────────── Worked example ─────────── -->
+<h1 id="worked-example">Worked example &mdash; the executive sponsor who isn&rsquo;t a manager</h1>
+
+<p>This case comes up constantly, so it&rsquo;s worth walking through end-to-end because the intuitive answer is the <em>wrong</em> one.</p>
+
+<div class="callout info">
+  <div class="callout-title">The situation</div>
+  <p><strong>James</strong> is the executive sponsor of the organisation&rsquo;s Copilot rollout. He needs the org-wide <strong>adoption report</strong> to track the programme. He is <em>not</em> a people-manager &mdash; he has no direct reports &mdash; and he holds no admin role. The instinctive move is &ldquo;he&rsquo;s an exec, just give him <em>manager</em> access.&rdquo; That doesn&rsquo;t work, and it&rsquo;s worth understanding why.</p>
+</div>
+
+<p><strong>Why &ldquo;manager&rdquo; is the wrong lever.</strong> In Viva Insights, <em>&ldquo;manager&rdquo;</em> is not a statement about seniority or importance &mdash; it is a literal test of whether the person has <strong>direct or indirect reports</strong>, established by the <code>PersonId</code> / <code>ManagerId</code> hierarchy. You cannot enable someone as a manager who has nobody reporting to them, no matter how senior they are. And even if James <em>did</em> have a small team, manager access would only show <strong>that team&rsquo;s</strong> adoption &mdash; not the <strong>company-wide</strong> view an executive sponsor actually needs.</p>
+
+<p><strong>The correct lever is delegation (bucket 2).</strong> A non-manager reaches the dashboard exactly one of these ways: automatic senior-leader identification (only if Entra ID places them at the top of the hierarchy &mdash; not James), an admin/analyst role (over-privileged for a read-only sponsor), Global Admin (far too much), or <strong>delegation</strong>. Delegation is the right answer twice over: it is the <em>only</em> mechanism open to a non-manager, <em>and</em> it is the only one that can carry a <strong>&ldquo;Your company&rdquo;</strong> scope &mdash; the org-wide adoption picture James is asking for.</p>
+
+<table>
+  <tr><th>Step</th><th>Action</th></tr>
+  <tr>
+    <td>1</td>
+    <td>Identify a delegator who already has <strong>company-level</strong> access &mdash; a senior leader with automatic access, or a Global Administrator.</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>That leader opens the Copilot Dashboard &rarr; <strong>Settings</strong> &rarr; <strong>Delegation</strong> &rarr; <strong>Add delegates</strong>, adds James, and assigns the scope <strong>&ldquo;Your company.&rdquo;</strong></td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Confirm James holds a <strong>Viva Insights / Copilot licence</strong> (bucket 3 &mdash; necessary even for delegates).</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Check no <strong>VFAM gate</strong> blocks James&rsquo;s group from the Viva Insights web app / Copilot Dashboard.</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>James opens the Viva Insights web app &rarr; <strong>Reports</strong> and sees the org-wide adoption report under the delegating leader&rsquo;s view.</td>
+  </tr>
+</table>
+
+<div class="callout warning">
+  <div class="callout-title">Delegation caveats to set expectations</div>
+  <ul>
+    <li>A delegate sees the surface <em>as the delegating leader</em> &mdash; a banner shows whose insights they&rsquo;re viewing.</li>
+    <li>Delegation is capped at <strong>75 delegates</strong> per leader and <strong>cannot cascade</strong> (James can&rsquo;t re-delegate).</li>
+    <li>If the delegating leader loses their own access (e.g. leaves the org), <strong>James&rsquo;s access is revoked too</strong> &mdash; so prefer a stable senior leader or a Global Admin as the delegator.</li>
+  </ul>
+</div>
+
+<p>This matches Microsoft Learn exactly: the <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-analytics-reports">Copilot Analytics reports prerequisites</a> list automatic access, <em>delegate access</em>, Insights Analyst, or Global Admin &mdash; with no &ldquo;promote a non-manager to manager&rdquo; path &mdash; and the <a href="https://learn.microsoft.com/viva/insights/org-team-insights/delegate-access">delegate-access guidance</a> confirms a company-scoped delegation is how a non-manager gets the org-wide view.</p>
+
 <!-- ─────────── Deliberately restricting access ─────────── -->
 <h1 id="restricting">Deliberately restricting access (the inverse problem)</h1>
 
