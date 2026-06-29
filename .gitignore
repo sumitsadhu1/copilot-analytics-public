@@ -20,3 +20,6 @@ Desktop.ini
 *.bak
 Copilot-Analytics-
 .github/copilot-instructions.md
+
+# Entra hierarchy extracts contain PII (UPNs, manager chain) — never commit
+tools/entra-hierarchy-validation/*.csv

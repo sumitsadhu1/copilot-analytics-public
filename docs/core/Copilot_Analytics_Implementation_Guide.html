@@ -609,7 +609,7 @@
   <div class="step-title">Step 5: Enable Manager Access to Team-Level Data (15 min)</div>
   <p>Requires <strong>Insights Administrator</strong> or <strong>AI Admin</strong> role.</p>
   <ol>
-    <li>Navigate to Viva Insights web app: <code>https://analysis.insights.cloud.microsoft</code></li>
+    <li>Navigate to Viva Insights web app: <code>https://insights.cloud.microsoft</code></li>
     <li>Go to <strong>Manager Settings</strong> (under Platform Setup on the left)</li>
     <li>Toggle on <strong>"Grant managers scoped access to Copilot insights"</strong></li>
     <li>Set the <strong>Minimum team size</strong> (minimum 5; includes manager in count)</li>
@@ -641,7 +641,7 @@
   </ol>
   <p><strong>For tenants WITH Viva Insights license:</strong></p>
   <ol>
-    <li><code>https://analysis.insights.cloud.microsoft</code> → Admin → Privacy settings</li>
+    <li><code>https://insights.cloud.microsoft</code> → Admin → Privacy settings</li>
     <li>Configure minimum group size → Save (takes effect in 24 hours)</li>
   </ol>
 </div>
@@ -768,7 +768,7 @@
   </table>
   <p style="margin-left:24px;font-size:0.9em;">Leave cells blank for unanswered questions. Download the <a href="https://go.microsoft.com/fwlink/?linkid=2260529">sample CSV template</a> for reference.</p>
   <ol start="4">
-    <li>Navigate to <code>analysis.insights.cloud.microsoft</code> &rarr; <strong>Survey data</strong> &rarr; <strong>Data connections</strong> &rarr; <strong>Manage data sources</strong>.</li>
+    <li>Navigate to <code>insights.cloud.microsoft</code> &rarr; <strong>Survey data</strong> &rarr; <strong>Data connections</strong> &rarr; <strong>Manage data sources</strong>.</li>
     <li>Under <strong>M365 Copilot Impact Survey data upload</strong>, select <strong>Start</strong>.</li>
     <li>Enter an optional survey name and date range &rarr; browse to your CSV &rarr; <strong>Upload</strong>.</li>
     <li>Results appear in the Dashboard Sentiment section within <strong>2 days</strong>.</li>
@@ -938,7 +938,7 @@
 
 <h2>5.7 Success Criteria</h2>
 <ul class="checklist">
-  <li>Can access Copilot Dashboard at <code>https://analysis.insights.cloud.microsoft</code></li>
+  <li>Can access Copilot Dashboard at <code>https://insights.cloud.microsoft/#/CopilotDashboard</code></li>
   <li>Readiness page displays license assignment data</li>
   <li>Adoption page shows active user trends</li>
   <li>Impact page displays Copilot Assisted Hours and Value metrics</li>
@@ -999,7 +999,7 @@
 <div class="step">
   <div class="step-title">Accessing Copilot Analytics Reports</div>
   <ol>
-    <li>Navigate to the Viva Insights web app: <code>https://analysis.insights.cloud.microsoft</code></li>
+    <li>Navigate to the Viva Insights web app: <code>https://insights.cloud.microsoft</code></li>
     <li>In the left navigation, select <strong>Reports</strong></li>
     <li>Browse available reports — these include out-of-the-box reports and any reports published by analysts</li>
   </ol>
@@ -1077,7 +1077,7 @@
 <div class="step">
   <div class="step-title">Step 1: Access Copilot Analytics Reports (Leaders/Managers)</div>
   <ol>
-    <li>Sign in to <code>https://analysis.insights.cloud.microsoft</code></li>
+    <li>Sign in to <code>https://insights.cloud.microsoft</code></li>
     <li>Select <strong>Reports</strong> in the left navigation</li>
     <li>Browse <strong>Out-of-the-box</strong> reports (e.g., Copilot Studio Agents, Copilot for Sales)</li>
     <li>Select <strong>View report</strong> on any card to see the insights</li>
@@ -1196,7 +1196,7 @@
 <div class="step">
   <div class="step-title">Accessing the Agent Dashboard</div>
   <ol>
-    <li>Navigate to the Viva Insights web app: <code>https://analysis.insights.cloud.microsoft</code></li>
+    <li>Navigate to the Viva Insights web app: <code>https://insights.cloud.microsoft</code></li>
     <li>Select <strong>Agent Dashboard</strong> from the left navigation</li>
     <li>If you don't see it, verify your access level (must be company-level access)</li>
   </ol>
@@ -1423,7 +1423,7 @@
   <p>A <strong>partition</strong> defines which employees an analyst can query. Most tenants have a default <strong>Global</strong> partition covering all employees. Multi-agency or multi-BU tenants may have separate partitions per agency.</p>
   <p><strong>To assign an analyst to an existing partition:</strong></p>
   <ol>
-    <li>Navigate to <code>https://analysis.insights.cloud.microsoft</code></li>
+    <li>Navigate to <code>https://insights.cloud.microsoft</code></li>
     <li>Go to <strong>Admin</strong> &rarr; <strong>Privacy settings</strong> &rarr; <strong>Partitions</strong></li>
     <li>Select the partition (usually <strong>Global</strong>) &rarr; click <strong>Edit</strong></li>
     <li>Under the <strong>Analysts</strong> tab, select <strong>Add analysts</strong></li>
@@ -1730,7 +1730,7 @@
 </div>
 <ol>
   <li>Prepare CSV: UTF-8 encoded, &lt;1 GB, include all required columns + custom attributes. Include <code>EffectiveDate</code> set earlier than upload date.</li>
-  <li>Navigate to <code>https://analysis.insights.cloud.microsoft</code> → Admin → Data hub → .csv upload → Start</li>
+  <li>Navigate to <code>https://insights.cloud.microsoft</code> → Admin → Data hub → .csv upload → Start</li>
   <li>Upload file, map fields to Viva Insights attributes</li>
   <li>Validate and submit — wait up to 7 days for processing</li>
 </ol>
@@ -1829,12 +1829,12 @@
   <tr><td>No group-level filtering</td><td>Organizational data not uploaded</td><td>Upload HR data (see <a href="#s9">Section 9</a>)</td></tr>
   <tr><td>Impact page shows no data</td><td>Less than 7 days since license assignment</td><td>Wait up to 7 days for processing</td></tr>
   <tr><td>Data suppressed (N/A)</td><td>Group size below privacy threshold</td><td>Groups must meet minimum configured size (default 10)</td></tr>
-  <tr><td>Managers can&rsquo;t see team data</td><td>Manager Settings not enabled</td><td>Navigate to <code>analysis.insights.cloud.microsoft</code> &rarr; Admin &rarr; <strong>Manager Settings</strong> (under Platform Setup) &rarr; Turn on &ldquo;Grant managers scoped access&rdquo;. Wait 1 hour for propagation. Also verify the manager has a populated ManagerID in Entra ID. (See Section 5.3, Step 5)</td></tr>
+  <tr><td>Managers can&rsquo;t see team data</td><td>Manager Settings not enabled</td><td>Navigate to <code>insights.cloud.microsoft</code> &rarr; Admin &rarr; <strong>Manager Settings</strong> (under Platform Setup) &rarr; Turn on &ldquo;Grant managers scoped access&rdquo;. Wait 1 hour for propagation. Also verify the manager has a populated ManagerID in Entra ID. (See Section 5.3, Step 5)</td></tr>
   <tr><td>Sentiment page empty</td><td>No survey data uploaded, or minimum privacy threshold not met</td><td>Configure one of the four options in <a href="#s5-sentiment">Section 5.5</a>. Verify: (a) total survey responses &ge; minimum group size, (b) responses per question &ge; minimum group size, (c) favorable responses per question &ge; minimum group size. The Satisfaction Rate metric on the Impact page works independently and does not require survey configuration.</td></tr>
   <tr><td>Exclusion list not working</td><td>Processing not complete</td><td>Exclusion list changes take up to 5 days to process. Check status at <code>admin.microsoft.com</code> &rarr; Settings &rarr; Microsoft Viva &rarr; Viva Insights &rarr; <strong>Unified exclusion list</strong>.</td></tr>
   <tr><td>Org data not showing</td><td>Missing EffectiveDate or wrong attribute names</td><td>Verify attribute names match exactly; include EffectiveDate. <strong>Note:</strong> M365 Admin Center uses <code>Microsoft_Organization</code> while Viva Insights uses <code>Organization</code> &mdash; they are different field names.</td></tr>
-  <tr><td>Org data not showing</td><td>Upload still processing (within 7-day window)</td><td>Org data uploads take up to 7 days to process. Check status: <code>analysis.insights.cloud.microsoft</code> &rarr; Admin &rarr; <strong>Data hub</strong> &rarr; verify upload shows &ldquo;Complete&rdquo; (not &ldquo;Processing&rdquo; or &ldquo;Failed&rdquo;). If failed, re-upload with corrected CSV.</td></tr>
-  <tr><td>Org data not showing</td><td>Upload failed silently</td><td>Navigate to <code>analysis.insights.cloud.microsoft</code> &rarr; Admin &rarr; <strong>Data quality</strong> to check for validation errors. Common failures: incorrect encoding (must be UTF-8), file &gt;1 GB, missing required columns (PersonId, ManagerId, Organization).</td></tr>
+  <tr><td>Org data not showing</td><td>Upload still processing (within 7-day window)</td><td>Org data uploads take up to 7 days to process. Check status: <code>insights.cloud.microsoft</code> &rarr; Admin &rarr; <strong>Data hub</strong> &rarr; verify upload shows &ldquo;Complete&rdquo; (not &ldquo;Processing&rdquo; or &ldquo;Failed&rdquo;). If failed, re-upload with corrected CSV.</td></tr>
+  <tr><td>Org data not showing</td><td>Upload failed silently</td><td>Navigate to <code>insights.cloud.microsoft</code> &rarr; Admin &rarr; <strong>Data quality</strong> to check for validation errors. Common failures: incorrect encoding (must be UTF-8), file &gt;1 GB, missing required columns (PersonId, ManagerId, Organization).</td></tr>
 </table>
 
 <h2>10.3 Agent Dashboard</h2>
@@ -1863,7 +1863,7 @@
   <tr><th>Issue</th><th>Possible Cause</th><th>Resolution</th></tr>
   <tr><td>Dashboard shows blank page or &ldquo;Something went wrong&rdquo;</td><td>Microsoft 365 service incident or temporary outage</td><td>Check <a href="https://admin.microsoft.com/Adminportal/Home#/servicehealth">M365 Service Health</a> (Admin Center &rarr; Health &rarr; Service health). Look for incidents affecting &ldquo;Microsoft Viva&rdquo; or &ldquo;Microsoft 365 suite.&rdquo; If an incident is active, wait for Microsoft to resolve it.</td></tr>
   <tr><td>Dashboard loads but data is stale or missing</td><td>Backend processing delay</td><td>Dashboard data has a ~6-day processing delay. If data is missing beyond this window, check Service Health. No admin action required for processing delays.</td></tr>
-  <tr><td>Dashboard worked yesterday, broken today (no config change)</td><td>Browser cache or extension conflict</td><td>Try: (1) Clear browser cache and cookies for <code>analysis.insights.cloud.microsoft</code>. (2) Open in InPrivate/Incognito window. (3) Try a different browser (Edge recommended). (4) Disable browser extensions temporarily.</td></tr>
+  <tr><td>Dashboard worked yesterday, broken today (no config change)</td><td>Browser cache or extension conflict</td><td>Try: (1) Clear browser cache and cookies for <code>insights.cloud.microsoft</code>. (2) Open in InPrivate/Incognito window. (3) Try a different browser (Edge recommended). (4) Disable browser extensions temporarily.</td></tr>
   <tr><td>Intermittent &ldquo;Access denied&rdquo; errors</td><td>Token refresh issue or Entra ID sync delay</td><td>Sign out of all Microsoft sessions &rarr; clear browser data &rarr; sign back in. If persistent after 1 hour, check VFAM policies (Section 5.3 Step 3).</td></tr>
   <tr><td>Power BI template fails to connect after working previously</td><td>Query expired or analyst session timed out</td><td>Re-authenticate in Power BI Desktop with the Insights Analyst account. If the query expired, create a new query run in Viva Insights.</td></tr>
 </table>
@@ -2060,7 +2060,7 @@
 <table>
   <tr><th>Dashboard</th><th>URL</th></tr>
   <tr><td>M365 Admin Center</td><td><code>https://admin.microsoft.com/</code></td></tr>
-  <tr><td>Copilot Dashboard</td><td><code>https://analysis.insights.cloud.microsoft</code></td></tr>
+  <tr><td>Copilot Dashboard</td><td><code>https://insights.cloud.microsoft/#/CopilotDashboard</code></td></tr>
   <tr><td>Copilot Dashboard Overview (aka.ms)</td><td><a href="https://aka.ms/Copilot/DashboardOverview">https://aka.ms/Copilot/DashboardOverview</a></td></tr>
   <tr><td>Advanced Analytics Playbook</td><td><a href="https://aka.ms/CopilotAdvancedAnalytics">https://aka.ms/CopilotAdvancedAnalytics</a></td></tr>
 </table>
@@ -2111,7 +2111,7 @@
   <li>Verify 50+ assigned Copilot/Viva Insights licences</li>
   <li>Verify Entra ID manager hierarchy is populated</li>
   <li>AI Admin: add self + users/groups to dashboard access → <code>admin.microsoft.com</code> → Viva → Viva Insights</li>
-  <li>Insights Admin: enable Manager Settings → <code>analysis.insights.cloud.microsoft</code> → Manager Settings</li>
+  <li>Insights Admin: enable Manager Settings → <code>insights.cloud.microsoft</code> → Manager Settings</li>
   <li>Upload org data CSV (PersonId, ManagerId, Organization + custom attributes)</li>
   <li>Configure minimum group size (default 10, min 5)</li>
   <li>Configure hourly rate for ROI (default $72/h)</li>
@@ -2122,7 +2122,7 @@
 <h4>Tier 3 — Copilot Analytics Reports (Auto)</h4>
 <ul class="checklist">
   <li>No action needed — automatically available to Dashboard users</li>
-  <li>Verify: <code>analysis.insights.cloud.microsoft</code> → Reports (left nav)</li>
+  <li>Verify: <code>insights.cloud.microsoft</code> → Reports (left nav)</li>
 </ul>
 
 <h4>Tier 4 — Agent Dashboard (Day 7+)</h4>
@@ -2147,8 +2147,8 @@
 <table>
   <tr><td><strong>M365 Admin Center</strong></td><td><code>https://admin.microsoft.com</code></td></tr>
   <tr><td><strong>Entra Admin Center</strong></td><td><code>https://entra.microsoft.com</code></td></tr>
-  <tr><td><strong>Viva Insights Web App</strong></td><td><code>https://analysis.insights.cloud.microsoft</code></td></tr>
-  <tr><td><strong>Copilot Dashboard Direct</strong></td><td><code>https://analysis.insights.cloud.microsoft</code></td></tr>
+  <tr><td><strong>Viva Insights Web App</strong></td><td><code>https://insights.cloud.microsoft</code></td></tr>
+  <tr><td><strong>Copilot Dashboard Direct</strong></td><td><code>https://insights.cloud.microsoft/#/CopilotDashboard</code></td></tr>
   <tr><td><strong>Power BI Desktop</strong></td><td><code>https://powerbi.microsoft.com/desktop/</code></td></tr>
 </table>
 

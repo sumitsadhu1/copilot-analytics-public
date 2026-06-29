@@ -58,6 +58,24 @@
         </div>
 
         <div class="highlight-box" style="border-left:4px solid #0078d4; margin-bottom:20px;">
+            <strong>Three operating models for isolated Copilot reporting</strong>
+            <p style="margin:8px 0 10px;font-size:0.92em;">If you&rsquo;re evaluating the isolation model, there are three ways to operate it. They differ in <em>who</em> runs the analytics and <em>where</em> each agency&rsquo;s boundary is enforced &mdash; which in turn drives the setup effort.</p>
+            <table style="font-size:0.9em;margin:8px 0 12px;">
+                <thead>
+                    <tr><th style="width:5%">#</th><th style="width:50%">Operating model</th><th style="width:27%">Where the boundary sits</th><th style="width:18%">Setup effort</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>1</strong></td><td><strong>Hybrid</strong> &mdash; Central IT on the global partition, plus one partition per agency for that agency&rsquo;s own analysts</td><td>Viva Insights partition</td><td>High</td></tr>
+                    <tr><td><strong>2</strong></td><td><strong>Central, per-partition</strong> &mdash; central analysts assigned to individual agency partitions; each agency receives only its distributed report</td><td>Power BI distribution</td><td>High</td></tr>
+                    <tr><td><strong>3</strong></td><td><strong>Central + RLS</strong> &mdash; central analysts on the global partition; one shared report, with Power BI <abbr title="Row-Level Security">RLS</abbr> filtering each agency&rsquo;s view</td><td>Power BI RLS</td><td>Low</td></tr>
+                </tbody>
+            </table>
+            <p style="margin:0;font-size:0.88em;color:#8a4b00;background:#fff7ed;border:1px solid #fed7aa;border-radius:6px;padding:8px 10px;">
+                <strong>&#x26A0; Boundary strength differs &mdash; read before choosing Model&nbsp;3.</strong> Models&nbsp;1 and&nbsp;2 are anchored on <strong>Viva Insights partitions</strong> &mdash; a data-layer boundary an analyst cannot cross. Model&nbsp;3 is the lowest-effort but the <strong>softest</strong> boundary: there is no per-agency partition, so all agencies&rsquo; data co-resides in <strong>one Power BI dataset</strong>, and RLS only constrains workspace <strong>Viewers</strong> &mdash; anyone with <strong>Admin, Member, or Contributor</strong> access sees every agency (<a href="https://learn.microsoft.com/fabric/security/service-admin-row-level-security">RLS reference</a>). Choose Model&nbsp;3 only where Central IT fully governs workspace roles and <em>hard</em> data-layer isolation is not a compliance requirement; otherwise use Model&nbsp;1 or&nbsp;2, detailed below.
+            </p>
+        </div>
+
+        <div class="highlight-box" style="border-left:4px solid #0078d4; margin-bottom:20px;">
             <strong>TL;DR &mdash; Two Paths to Agency Isolation</strong>
             <p style="margin:8px 0 4px;font-size:0.92em;">Both paths share the same Phase 1 lockdown. Choose your data strategy based on your environment:</p>
             <table style="font-size:0.9em;margin:8px 0 12px;">
@@ -466,7 +484,7 @@
                     <ol style="margin:4px 0 0 20px;">
                         <li>Confirm no agency leaders appear in the dashboard access list.</li>
                         <li>Verify VFAM policies (AutoCxo, Delegation, AgentDashboard, MetricsExport, and optionally web app) show as disabled for the <code>AgencyUsers-NoDashboard</code> group.</li>
-                        <li>Have an agency CEO attempt to access <code>analysis.insights.cloud.microsoft</code> and confirm access is denied.</li>
+                        <li>Have an agency CEO attempt to access <code>insights.cloud.microsoft</code> and confirm access is denied.</li>
                         <li>Have a non-agency executive (e.g., CFO) confirm they <strong>still</strong> have dashboard access.</li>
                     </ol>
                 </div>
@@ -512,6 +530,29 @@
             <div class="step-card">
                 <h4><span class="step-number">3</span> Phase 3: Partitions Setup</h4>
                 <p>Create the hard data boundaries. The partition filter differs by path, but all other steps are identical.</p>
+
+                <figure id="partition-flow" style="margin:22px 0;page-break-inside:avoid;">
+                    <img src="../../assets/images/partition-isolation-flow.svg"
+                         class="zoomable-img"
+                         title="Click to enlarge"
+                         alt="End-to-end flow showing where partition enabling fits: Phase 1 VFAM lockdown, Phase 2 org-data upload, Phase 3 partitions (Step A Enable Partitions one-time tenant switch, Step B create one partition per agency, Step C assign each analyst to their partition only, plus the auto-created global partition for Central IT), Phase 4 per-agency analyst runs the Copilot query and publishes a Power BI report, distributed via a Power BI workspace/app to a Viewer audience."
+                         style="display:block;width:100%;max-width:680px;height:auto;margin:0 auto;border:1px solid #e5e7eb;border-radius:8px;padding:12px;background:#fff;">
+                    <p class="zoom-hint" style="text-align:center;">&#128269; Click the diagram to enlarge &middot; use &plus;&nbsp;/&nbsp;&minus; to zoom &middot; press Esc to close</p>
+                    <figcaption style="font-size:0.9em;color:#374151;margin-top:14px;line-height:1.55;">
+                        <strong>Figure 1 &mdash; Where partition enabling fits.</strong> Phase&nbsp;3 has <em>two distinct actions that are easy to conflate</em>: <strong>Enable Partitions</strong> (&#9315;) is a <em>one-time, tenant-wide, irreversible</em> switch you flip <em>once</em>, whereas <strong>New partition</strong> (&#9316;) is repeated <em>once per agency</em>. Assigning each analyst to their own partition only (&#9317;) is what makes the boundary hold. Each numbered step links to its verified Microsoft&nbsp;Learn reference:
+                        <ol style="margin:10px 0 0 20px;padding:0;">
+                            <li>&#9312; VFAM lockdown of the Copilot Dashboard &mdash; <a href="https://learn.microsoft.com/en-us/viva/feature-access-management">Viva feature access management</a></li>
+                            <li>&#9313; What gets locked down (the tenant-wide view) &mdash; <a href="https://learn.microsoft.com/en-us/viva/insights/org-team-insights/copilot-dashboard">Connect to the Copilot Dashboard</a></li>
+                            <li>&#9314; Upload org data carrying the Agency / Domain attribute &mdash; <a href="https://learn.microsoft.com/en-us/viva/organizational-data">Organizational data in Microsoft&nbsp;365</a></li>
+                            <li>&#9315; <strong>Enable Partitions</strong> &mdash; the one-time tenant switch &mdash; <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/privacy-settings">Customize privacy settings &rarr; Partitions</a></li>
+                            <li>&#9316; <strong>Create one partition per agency</strong> and set its filter &mdash; <a href="https://learn.microsoft.com/viva/insights/advanced/admin/partitions#how-to-create-a-partition-and-assign-analysts-access">Partitions in Viva Insights</a></li>
+                            <li>&#9317; Assign the Insights Analyst to their partition <strong>only</strong> &mdash; <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/assign-user-roles">Assign user roles</a></li>
+                            <li>&#9318; Run the Copilot query &amp; download the Power BI template (partition&nbsp;+&nbsp;query IDs) &mdash; <a href="https://learn.microsoft.com/en-us/viva/insights/advanced/analyst/templates/microsoft-365-copilot-adoption">Microsoft&nbsp;365 Copilot adoption report</a></li>
+                            <li>&#9319; Distribute via a Power BI workspace/app to a Viewer audience &mdash; <a href="https://learn.microsoft.com/power-bi/collaborate-share/service-roles-new-workspaces">Roles in workspaces</a> &middot; <a href="https://learn.microsoft.com/power-bi/collaborate-share/service-create-distribute-apps">Publish an app</a></li>
+                        </ol>
+                    </figcaption>
+                </figure>
+
                 <div class="alert">
                     <strong>Before Enabling Partitions &mdash; Confirm:</strong><br>
                     (a) <strong>Path A:</strong> You have a reliable, repeatable process for monthly org data uploads with the Agency attribute. <strong>Path B:</strong> You have verified Domain values cleanly map to agencies.<br>
@@ -521,7 +562,7 @@
                     (e) <strong>Export all existing Viva Insights reports and query results</strong> before enabling partitions. Download from Analysis results &rarr; select each query &rarr; Download CSV or open in Power BI. There is no built-in rollback once partitions are enabled.
                 </div>
                 <ul>
-                    <li>Navigate to <code>analysis.insights.cloud.microsoft</code> &rarr; <strong>Admin</strong> &rarr; <strong>Privacy settings</strong> &rarr; <strong>Partitions</strong>. Select <strong>Enable Partitions</strong>.</li>
+                    <li>Navigate to <code>insights.cloud.microsoft</code> &rarr; <strong>Admin</strong> &rarr; <strong>Privacy settings</strong> &rarr; <strong>Partitions</strong>. Select <strong>Enable Partitions</strong>.</li>
                     <li>Select <strong>New partition</strong>. Name it (e.g., &ldquo;Agency A&rdquo;).
                         <ul>
                             <li><strong>Path A filter:</strong> Set <code>Agency = "Agency A"</code></li>
@@ -537,14 +578,14 @@
                 </div>
                 <div class="highlight-box">
                     <strong>After Phase 3 &mdash; Verification:</strong><br>
-                    Have each agency analyst sign in to <code>analysis.insights.cloud.microsoft</code>. Confirm they only see their agency&rsquo;s partition in the partition switcher. Have them run a test person query and verify the employee count matches their agency only.
+                    Have each agency analyst sign in to <code>insights.cloud.microsoft</code>. Confirm they only see their agency&rsquo;s partition in the partition switcher. Have them run a test person query and verify the employee count matches their agency only.
                 </div>
 
                 <div class="highlight-box" style="border-left:4px solid var(--success-color, #107c10);">
                     <strong>Analyst Onboarding Checklist &mdash; First Day in a Partition</strong>
                     <p style="margin:4px 0;font-size:0.92em;">Share these steps with each agency analyst after they receive partition access:</p>
                     <ol style="margin:4px 0 0 20px;">
-                        <li>Sign in to <code>analysis.insights.cloud.microsoft</code> with your analyst account.</li>
+                        <li>Sign in to <code>insights.cloud.microsoft</code> with your analyst account.</li>
                         <li>Look for the <strong>partition switcher</strong> in the top bar. Select your agency&rsquo;s partition (e.g., &ldquo;Agency A&rdquo;).</li>
                         <li>In the left nav, select <strong>Create analysis</strong>. You should see Power BI templates (Copilot Adoption, Impact Explorer, Business Impact, etc.) and the custom person query option.</li>
                         <li>Run a <strong>test Person Query</strong>: select a few basic Copilot metrics, set a 28-day window, and run. Verify the employee count in the results matches your agency&rsquo;s expected headcount.</li>
@@ -590,7 +631,6 @@
                 <ul>
                     <li>Create dedicated Power BI workspaces per agency (e.g., <code>Agency-A-Copilot-Analytics</code>).</li>
                     <li>Publish reports and grant Viewer access to agency leadership via Entra group.</li>
-                    <li>Configure <a href="https://learn.microsoft.com/power-bi/enterprise/service-admin-rls">Row-Level Security</a> (RLS) as a secondary control if multiple agencies share a workspace.</li>
                     <li><strong>Licensing:</strong> Each viewer needs a <strong>Power BI Pro</strong> or <strong>Premium Per User (PPU)</strong> licence. Alternatively, if your organisation has a <strong>Power BI Premium capacity</strong> (P or F SKU), reports published to that capacity can be viewed by users with a free Power BI licence &mdash; eliminating per-user viewer costs. Consult your licensing/finance owner.</li>
                 </ul>
                 <p><strong>Option B: Viva Insights <a href="https://learn.microsoft.com/viva/insights/advanced/analyst/publish-reports">Publish Reports</a></strong> (prerequisites apply &mdash; review notes below)</p>
@@ -616,7 +656,7 @@
                         <li>Select <strong>one pilot agency CEO</strong> who has a Copilot licence (Viva Insights service plan included).</li>
                         <li>In Manager Settings, enable this CEO as a manager (ensure their team meets minimum team size).</li>
                         <li>Wait 1 hour for manager settings to propagate.</li>
-                        <li>Have the pilot CEO navigate to <code>analysis.insights.cloud.microsoft</code>. Check whether they can see the <strong>Copilot Dashboard</strong> in the left nav and whether it shows &ldquo;Your company&rdquo; data across all agencies.</li>
+                        <li>Have the pilot CEO navigate to <code>insights.cloud.microsoft</code>. Check whether they can see the <strong>Copilot Dashboard</strong> in the left nav and whether it shows &ldquo;Your company&rdquo; data across all agencies.</li>
                         <li><strong>If they can see cross-agency data:</strong> Fall back to Option A (Power BI workspaces). Disable the pilot CEO&rsquo;s manager access.</li>
                         <li><strong>If they only see their team&rsquo;s data:</strong> Proceed with publishing filtered reports to remaining agency CEOs.</li>
                         <li>After pilot, publish a Copilot PBI template report using &ldquo;Filter by manager hierarchy&rdquo; and verify the CEO receives only their agency&rsquo;s data.</li>
@@ -668,7 +708,7 @@
                     <li><strong>Designate one Central IT owner</strong> responsible for the consolidated CSV file across all agencies.</li>
                     <li><strong>Establish a monthly collection process:</strong> Each agency HR team exports their employee data extract &rarr; Central IT merges all extracts into a single CSV with the <code>Agency</code> attribute populated for every row.</li>
                     <li><strong>Validate before upload:</strong> Check that every row has a non-empty <code>Agency</code> value, that employee counts per agency match HR records, and that the <code>PersonId</code> (email) format is correct.</li>
-                    <li><strong>Upload and verify:</strong> Upload via Viva Insights web app or M365 Admin Center. After processing (up to 7 days), verify on the Data Quality page (<code>analysis.insights.cloud.microsoft</code> &rarr; Admin &rarr; Organizational data &rarr; Data Quality tab) that the <code>Agency</code> attribute has 100% coverage.</li>
+                    <li><strong>Upload and verify:</strong> Upload via Viva Insights web app or M365 Admin Center. After processing (up to 7 days), verify on the Data Quality page (<code>insights.cloud.microsoft</code> &rarr; Admin &rarr; Organizational data &rarr; Data Quality tab) that the <code>Agency</code> attribute has 100% coverage.</li>
                     <li><strong>Automate if possible:</strong> Use the <a href="https://learn.microsoft.com/viva/insights/advanced/admin/import-org-data-first">API-based import</a> or <a href="https://learn.microsoft.com/viva/insights/advanced/admin/import-org-data-azure">Azure blob import</a> for automated monthly uploads with failure alerting.</li>
                 </ol>
             </div>
@@ -821,7 +861,7 @@
                 </tbody>
             </table>
             <div class="alert">
-                <strong>Critical Rule:</strong> Never assign an agency analyst to the <strong>Global partition</strong>. Global partition grants automatic Copilot Dashboard access and tenant-wide query access &mdash; defeating the entire isolation architecture. Always verify partition assignments after adding new analysts: <code>analysis.insights.cloud.microsoft</code> &rarr; Admin &rarr; Privacy settings &rarr; Partitions &rarr; select each partition &rarr; verify the Analysts tab.
+                <strong>Critical Rule:</strong> Never assign an agency analyst to the <strong>Global partition</strong>. Global partition grants automatic Copilot Dashboard access and tenant-wide query access &mdash; defeating the entire isolation architecture. Always verify partition assignments after adding new analysts: <code>insights.cloud.microsoft</code> &rarr; Admin &rarr; Privacy settings &rarr; Partitions &rarr; select each partition &rarr; verify the Analysts tab.
             </div>
         </section>
 
@@ -1044,6 +1084,87 @@ Get-VivaModuleFeaturePolicy -ModuleId VivaInsights</code></pre>
       }
     });
   }
+})();
+</script>
+
+<script>
+/* Reusable click-to-enlarge lightbox: wires any <img class="zoomable-img"> */
+(function(){
+  var imgs = document.querySelectorAll('img.zoomable-img');
+  if (!imgs.length) return;
+
+  var overlay = document.createElement('div');
+  overlay.className = 'lightbox-overlay';
+  overlay.setAttribute('role','dialog');
+  overlay.setAttribute('aria-modal','true');
+  overlay.innerHTML =
+    '<div class="lightbox-figure">' +
+      '<div class="lightbox-toolbar">' +
+        '<button type="button" class="lightbox-btn" data-act="out" title="Zoom out" aria-label="Zoom out">&#8722;</button>' +
+        '<button type="button" class="lightbox-btn" data-act="in" title="Zoom in" aria-label="Zoom in">&#43;</button>' +
+        '<button type="button" class="lightbox-btn" data-act="reset" title="Fit to screen" aria-label="Fit to screen">Fit</button>' +
+        '<button type="button" class="lightbox-btn lightbox-close" data-act="close" title="Close (Esc)" aria-label="Close">&#10005;</button>' +
+      '</div>' +
+      '<div class="lightbox-scroll"><img class="lightbox-img" alt=""></div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+
+  var scroll = overlay.querySelector('.lightbox-scroll');
+  var lbImg  = overlay.querySelector('.lightbox-img');
+  var baseW = 0, scale = 1, lastFocus = null;
+
+  function fitWidth(){ return Math.min(window.innerWidth * 0.90, 1200); }
+  function apply(){
+    lbImg.style.width = (baseW * scale) + 'px';
+    lbImg.style.cursor = scale > 1 ? 'zoom-out' : 'zoom-in';
+  }
+  function open(src, alt){
+    lastFocus = document.activeElement;
+    lbImg.src = src; lbImg.alt = alt || '';
+    baseW = fitWidth(); scale = 1; apply();
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    overlay.querySelector('.lightbox-close').focus();
+  }
+  function close(){
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    lbImg.src = '';
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  function zoom(f){ scale = Math.min(6, Math.max(0.5, scale * f)); apply(); }
+
+  Array.prototype.forEach.call(imgs, function(im){
+    im.setAttribute('tabindex','0');
+    im.setAttribute('role','button');
+    im.addEventListener('click', function(){ open(im.getAttribute('src'), im.getAttribute('alt')); });
+    im.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(im.getAttribute('src'), im.getAttribute('alt')); }
+    });
+  });
+
+  overlay.addEventListener('click', function(e){
+    if (e.target === overlay) { close(); return; }
+    var act = e.target.getAttribute('data-act');
+    if (act === 'close') close();
+    else if (act === 'in') zoom(1.25);
+    else if (act === 'out') zoom(0.8);
+    else if (act === 'reset') { scale = 1; baseW = fitWidth(); apply(); scroll.scrollTo(0,0); }
+  });
+  lbImg.addEventListener('click', function(){
+    if (scale > 1) { scale = 1; baseW = fitWidth(); scroll.scrollTo(0,0); }
+    else { scale = 2; }
+    apply();
+  });
+  document.addEventListener('keydown', function(e){
+    if (!overlay.classList.contains('open')) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === '+' || e.key === '=') zoom(1.25);
+    else if (e.key === '-') zoom(0.8);
+  });
+  window.addEventListener('resize', function(){
+    if (overlay.classList.contains('open') && scale === 1) { baseW = fitWidth(); apply(); }
+  });
 })();
 </script>
 </body>

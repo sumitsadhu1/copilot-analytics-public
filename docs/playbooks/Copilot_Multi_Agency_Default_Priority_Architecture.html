@@ -259,7 +259,7 @@
             </div>
 
             <h3>How &ldquo;Your Group&rdquo; Scoping Works</h3>
-            <p>The Copilot Dashboard identifies senior leaders using the Entra ID manager hierarchy (<a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard#how-automatic-access-to-the-copilot-dashboard-is-determined">Auto CxO Identification</a>). Leaders automatically see two scopes:</p>
+            <p>The Copilot Dashboard identifies senior leaders using the Entra ID manager hierarchy (<a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard#how-automatic-access-to-the-copilot-dashboard-is-determined">Auto CxO Identification</a>). <strong>Automatic</strong> identification applies only to tenants with <strong>at least 2,500 Entra ID users</strong> and a majority single reporting line; within that, a separate agency&rsquo;s top leader is auto-identified only if that agency tree is <strong>at least 4% of the total tenant</strong>. Smaller tenants or sub-4% agencies must grant the CEO access manually &mdash; the &ldquo;Your group&rdquo; scope still works once access is granted. Leaders with access see two scopes:</p>
             <table>
                 <thead>
                     <tr><th>Scope</th><th>What It Shows</th><th>Default?</th></tr>
@@ -410,8 +410,8 @@ Two independent trees =            └────┬───┘
                     <ol style="margin:4px 0 0 20px;">
                         <li>Wait 1&ndash;2 hours for AutoCxO to process.</li>
                         <li>Check <strong>Manage user access for Copilot Dashboard</strong> &mdash; agency CEOs should appear in the list as auto-identified.</li>
-                        <li>Have an agency CEO navigate to <code>analysis.insights.cloud.microsoft</code> and confirm they see the Copilot Dashboard with &ldquo;Your group&rdquo; as the default scope.</li>
-                        <li>Confirm the &ldquo;Your group&rdquo; employee count matches the agency&rsquo;s expected headcount.</li>
+                        <li>Have an agency CEO navigate to <code>insights.cloud.microsoft</code> and confirm they see the Copilot Dashboard with &ldquo;Your group&rdquo; as the default scope.</li>
+                        <li>Confirm the &ldquo;Your group&rdquo; employee count is in the expected range &mdash; note it reflects <strong>Copilot-licensed</strong> employees only, and groups below the minimum group size (default 10) show &ldquo;--&rdquo;, so it tracks licensed headcount, not raw agency headcount.</li>
                     </ol>
                 </div>
             </div>
@@ -423,14 +423,14 @@ Two independent trees =            └────┬───┘
                 <p><strong>2.1 &mdash; Agency CEO Delegates to VPs</strong></p>
                 <p>Each agency CEO should:</p>
                 <ol>
-                    <li>Navigate to <code>analysis.insights.cloud.microsoft</code> &rarr; Copilot Dashboard.</li>
+                    <li>Navigate to <code>insights.cloud.microsoft</code> &rarr; Copilot Dashboard.</li>
                     <li>Select the <strong>Share</strong> or <strong>Delegate</strong> option (top-right corner of the dashboard).</li>
                     <li>Add their direct reports (VPs, directors) as delegates.</li>
                     <li>Delegates will receive access and see the same agency-scoped view (&ldquo;Your group&rdquo; inheriting the CEO&rsquo;s scope).</li>
                 </ol>
 
                 <p><strong>2.2 &mdash; Enable Manager Settings for Publish Reports</strong></p>
-                <p>Navigate to <code>analysis.insights.cloud.microsoft</code> &rarr; <strong>Admin</strong> &rarr; <strong>Manager settings</strong>.</p>
+                <p>Navigate to <code>insights.cloud.microsoft</code> &rarr; <strong>Admin</strong> &rarr; <strong>Manager settings</strong>.</p>
                 <ul>
                     <li>Enable managers to receive published reports.</li>
                     <li>Set the minimum team size threshold (this is the same tenant-wide privacy setting).</li>
@@ -458,7 +458,7 @@ Two independent trees =            └────┬───┘
 
                 <p><strong>3.1 &mdash; Run Copilot PBI Template Queries</strong></p>
                 <ul>
-                    <li>Insights analysts (Central IT or agency-level) navigate to <code>analysis.insights.cloud.microsoft</code> &rarr; Create analysis.</li>
+                    <li>Insights analysts (Central IT or agency-level) navigate to <code>insights.cloud.microsoft</code> &rarr; Create analysis.</li>
                     <li>Select a Copilot Power BI template (Copilot Adoption, Impact Explorer, Business Impact, etc.).</li>
                     <li>Run the query. If partitions are enabled, run within the appropriate partition. If not, run against the global population.</li>
                 </ul>
@@ -489,7 +489,7 @@ Two independent trees =            └────┬───┘
                 </div>
 
                 <ul>
-                    <li>Navigate to <code>analysis.insights.cloud.microsoft</code> &rarr; Admin &rarr; Privacy settings &rarr; Partitions &rarr; Enable Partitions.</li>
+                    <li>Navigate to <code>insights.cloud.microsoft</code> &rarr; Admin &rarr; Privacy settings &rarr; Partitions &rarr; Enable Partitions.</li>
                     <li>Create a partition per agency (e.g., &ldquo;Agency A&rdquo;), filtered by <code>Agency</code> attribute (CSV) or <code>Domain</code> (Entra).</li>
                     <li>Assign agency analysts to their primary partition.</li>
                     <li><strong>Key difference from Isolation Architecture:</strong> Analysts <em>may</em> be assigned to multiple partitions if cross-agency analysis is needed. There is no rule preventing an analyst from seeing multiple agencies&rsquo; data.</li>
@@ -622,7 +622,7 @@ Two independent trees =            └────┬───┘
 
             <div class="alert">
                 <strong>Limitation: Single Tenant-Wide Hourly Rate</strong><br>
-                Copilot Assisted Value is calculated as <code>Assisted Hours &times; Hourly Rate</code>. The hourly rate is configured <strong>once</strong> at <code>analysis.insights.cloud.microsoft &rarr; Admin &rarr; Impact settings</code> and applies to <strong>all employees across all agencies</strong>. There is no way to set different rates per agency, department, or role.
+                Copilot Assisted Value is calculated as <code>Assisted Hours &times; Hourly Rate</code>. The hourly rate is configured <strong>once</strong> at <code>insights.cloud.microsoft &rarr; Admin &rarr; Impact settings</code> and applies to <strong>all employees across all agencies</strong>. There is no way to set different rates per agency, department, or role.
                 <p style="margin:8px 0 4px;"><strong>Impact:</strong> If Agency A&rsquo;s average loaded labour rate is $140/hr and Agency B&rsquo;s is $65/hr, the Assisted Value figure shown to both CEOs uses the same rate &mdash; making one agency&rsquo;s ROI appear over- or under-stated.</p>
                 <p style="margin:4px 0 0;"><strong>Workaround:</strong> Use Power BI templates in partitions (<a href="#runbook">Phase 4</a>) to apply <strong>agency-specific hourly rates in the Power BI calculation layer</strong>. The raw Copilot Assisted Hours data flows into the PBI template; the analyst replaces the default rate with the agency&rsquo;s actual loaded labour rate in a DAX measure or parameter. This produces accurate per-agency Assisted Value figures outside the dashboard.</p>
             </div>

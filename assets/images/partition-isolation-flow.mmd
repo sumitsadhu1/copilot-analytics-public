@@ -1,0 +1,61 @@
+%% Multi-Agency Isolation — where "Enable Partitions" vs "Create partition" fit
+%% Source diagram. Regenerate the SVG with:
+%%   PUPPETEER_SKIP_DOWNLOAD=1 npx -y @mermaid-js/mermaid-cli \
+%%     -i assets/images/partition-isolation-flow.mmd \
+%%     -o assets/images/partition-isolation-flow.svg \
+%%     -c /tmp/mmd-config.json -p /tmp/puppeteer-config.json -b transparent
+flowchart TD
+    subgraph P1["Phase 1 · Lockdown — Global Admin"]
+        A1["VFAM-restrict the Copilot Dashboard ①<br/>so agencies can't browse tenant-wide data ②"]
+    end
+    subgraph P2["Phase 2 · Org Data — Admin"]
+        A2["Upload org data carrying the<br/>Agency / Domain attribute ③"]
+    end
+    subgraph P3["Phase 3 · Partitions — Insights Admin"]
+        direction TB
+        B1{{"STEP A — Enable Partitions ④<br/>ONE-TIME tenant switch · irreversible"}}
+        B2["STEP B — New partition: Agency A ⑤<br/>filter Agency=A / Domain=a.gov.au"]
+        B3["STEP B — New partition: Agency B ⑤<br/>filter Agency=B / Domain=b.gov.au"]
+        B4["Global partition (auto-created)<br/>Central IT analysts ONLY"]
+        B5["STEP C — Assign Agency A analyst ⑥<br/>to the Agency A partition ONLY"]
+        B6["STEP C — Assign Agency B analyst ⑥<br/>to the Agency B partition ONLY"]
+        B1 --> B2 --> B5
+        B1 --> B3 --> B6
+        B1 --> B4
+    end
+    subgraph P4["Phase 4 · Reporting — Per-Agency Analyst"]
+        C1["Analyst signs in — sees ONLY<br/>their own partition in the switcher"]
+        C2["Run Copilot adoption query<br/>auto-scoped to the partition ⑦"]
+        C3["Download PBI template +<br/>partition ID + query ID ⑦"]
+        C4["Publish .pbix to the agency's<br/>Power BI workspace ⑧"]
+    end
+    subgraph P5["Access Layer · Power BI"]
+        D1["Stakeholders = Viewer / app audience ⑧"]
+    end
+    A1 --> A2 --> B1
+    B5 --> C1
+    B6 --> C1
+    C1 --> C2 --> C3 --> C4 --> D1
+
+    click A1 "https://learn.microsoft.com/en-us/viva/feature-access-management" "Viva feature access management (VFAM)"
+    click A2 "https://learn.microsoft.com/en-us/viva/organizational-data" "Upload organizational data"
+    click B1 "https://learn.microsoft.com/viva/insights/advanced/setup-maint/privacy-settings" "Turn on partitions (Privacy settings)"
+    click B2 "https://learn.microsoft.com/viva/insights/advanced/admin/partitions#how-to-create-a-partition-and-assign-analysts-access" "Create a partition and assign analysts"
+    click B3 "https://learn.microsoft.com/viva/insights/advanced/admin/partitions#how-to-create-a-partition-and-assign-analysts-access" "Create a partition and assign analysts"
+    click B5 "https://learn.microsoft.com/viva/insights/advanced/setup-maint/assign-user-roles" "Assign Insights Analyst role"
+    click B6 "https://learn.microsoft.com/viva/insights/advanced/setup-maint/assign-user-roles" "Assign Insights Analyst role"
+    click C2 "https://learn.microsoft.com/en-us/viva/insights/advanced/analyst/templates/microsoft-365-copilot-adoption" "Microsoft 365 Copilot adoption report"
+    click C3 "https://learn.microsoft.com/en-us/viva/insights/advanced/analyst/templates/microsoft-365-copilot-adoption" "Microsoft 365 Copilot adoption report"
+    click C4 "https://learn.microsoft.com/power-bi/collaborate-share/service-create-distribute-apps" "Publish and distribute a Power BI app"
+    click D1 "https://learn.microsoft.com/power-bi/collaborate-share/service-roles-new-workspaces" "Roles in Power BI workspaces"
+
+    classDef enable fill:#fde68a,stroke:#b45309,stroke-width:3px,color:#1f2937;
+    classDef agency fill:#dbeafe,stroke:#1e40af,color:#1f2937;
+    classDef assign fill:#dcfce7,stroke:#166534,color:#1f2937;
+    classDef global fill:#f3f4f6,stroke:#6b7280,color:#374151;
+    classDef access fill:#fee2e2,stroke:#b91c1c,color:#1f2937;
+    class B1 enable;
+    class B2,B3 agency;
+    class B5,B6 assign;
+    class B4 global;
+    class D1 access;

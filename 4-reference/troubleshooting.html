@@ -56,11 +56,6 @@
   <li><a href="#escalation">Escalation Path</a></li>
 </ol>
 
-<div class="callout tip">
-  <div class="callout-title">Looking for a specific user-reported symptom?</div>
-  <p>For step-by-step walkthroughs of real user-reported symptoms &mdash; with 30-second diagnosis flows, causes ranked by likelihood, and verification steps &mdash; see the <a href="scenarios/index.html"><strong>Troubleshooting Scenarios catalogue</strong></a>. Use this page for quick single-surface lookups; use the catalogue when the symptom spans multiple surfaces or roles.</p>
-</div>
-
 <!-- ═══════════════════════ 1. ADMIN CENTRE ═══════════════════════ -->
 <h1 id="admin-centre">1. Admin Centre Reports</h1>
 
@@ -112,7 +107,7 @@
   <tr>
     <td>Impact page missing collaboration data</td>
     <td>Behavioral Experiences (formerly &ldquo;Collaboration data&rdquo;) is turned OFF in Viva Insights privacy settings.</td>
-    <td>Enable Behavioral Experiences: <code>analysis.insights.cloud.microsoft</code> &rarr; Settings &rarr; Privacy &rarr; toggle &ldquo;Behavioral Experiences&rdquo; ON. Allow 7 days for data to populate.</td>
+    <td>Enable Behavioral Experiences: <code>insights.cloud.microsoft</code> &rarr; Settings &rarr; Privacy &rarr; toggle &ldquo;Behavioral Experiences&rdquo; ON. Allow 7 days for data to populate.</td>
   </tr>
   <tr>
     <td>Only Readiness page visible (no Adoption or Impact)</td>
@@ -137,7 +132,7 @@
   <tr>
     <td>Managers can&rsquo;t see team data</td>
     <td>Manager Settings are not enabled in Viva Insights.</td>
-    <td>Enable Manager Settings: <code>analysis.insights.cloud.microsoft</code> &rarr; Settings &rarr; Manager Settings &rarr; toggle ON. The manager&rsquo;s team must also meet the minimum team size threshold.</td>
+    <td>Enable Manager Settings: <code>insights.cloud.microsoft</code> &rarr; Settings &rarr; Manager Settings &rarr; toggle ON. The manager&rsquo;s team must also meet the minimum team size threshold.</td>
   </tr>
   <tr>
     <td>Sentiment section is empty</td>
@@ -170,7 +165,7 @@
   <tr>
     <td>Agent Dashboard not visible</td>
     <td>Delegates need &ldquo;Your company&rdquo; scope (not &ldquo;Your group&rdquo;) to access the Agent Dashboard.</td>
-    <td>Update delegation scope: <code>analysis.insights.cloud.microsoft</code> &rarr; Settings &rarr; Delegation &rarr; change the delegate&rsquo;s scope to &ldquo;Your company.&rdquo;</td>
+    <td>Update delegation scope: <code>insights.cloud.microsoft</code> &rarr; Settings &rarr; Delegation &rarr; change the delegate&rsquo;s scope to &ldquo;Your company.&rdquo;</td>
   </tr>
   <tr>
     <td>Agent Dashboard disabled</td>
@@ -197,7 +192,7 @@
   <tr>
     <td>Query returns no data</td>
     <td>Analyst&rsquo;s partition does not include the target users.</td>
-    <td>Verify partition membership. The Insights Administrator can check and update partition assignments in <code>analysis.insights.cloud.microsoft</code> &rarr; Settings &rarr; Partitions.</td>
+    <td>Verify partition membership. The Insights Administrator can check and update partition assignments in <code>insights.cloud.microsoft</code> &rarr; Settings &rarr; Partitions.</td>
   </tr>
   <tr>
     <td>Query fails with time period error</td>

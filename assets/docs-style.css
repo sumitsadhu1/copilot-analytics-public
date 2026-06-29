@@ -707,13 +707,41 @@ body.has-sidebar header h1 {
 }
 
 
+/* ─── Zoomable image lightbox ─── */
+.zoomable-img { cursor: zoom-in; transition: box-shadow .15s ease; }
+.zoomable-img:hover { box-shadow: 0 6px 22px rgba(0,0,0,0.18); }
+.zoomable-img:focus-visible { outline: 3px solid var(--accent-sky, #0ea5e9); outline-offset: 3px; }
+.zoom-hint { font-size: 0.82em; color: #6b7280; margin: 8px 0 0; }
+.lightbox-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  display: none; align-items: center; justify-content: center;
+  background: rgba(15,23,42,0.82); padding: 20px;
+}
+.lightbox-overlay.open { display: flex; }
+.lightbox-figure {
+  display: flex; flex-direction: column;
+  max-width: 96vw; max-height: 92vh;
+  background: #fff; border-radius: 10px; padding: 12px;
+  box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+}
+.lightbox-toolbar { display: flex; gap: 8px; justify-content: flex-end; margin-bottom: 10px; flex: 0 0 auto; }
+.lightbox-btn {
+  border: 1px solid #d1d5db; background: #f9fafb; color: #111827;
+  border-radius: 6px; padding: 4px 11px; font-size: 0.95em; line-height: 1.4; cursor: pointer;
+}
+.lightbox-btn:hover { background: #eef2ff; border-color: #6366f1; }
+.lightbox-close { font-weight: 700; }
+.lightbox-scroll { overflow: auto; }
+.lightbox-img { display: block; height: auto; }
+
+
 /* ─── Print ─── */
 @media print {
   body { max-width: 100%; padding: 0; background: #fff; font-size: 11pt; }
   body.has-sidebar { display: block; }
   h1 { page-break-before: always; }
   .callout, table, .step, .step-card { break-inside: avoid; }
-  nav, .doc-nav, .back-to-top, .sidebar-toggle, .sidebar-overlay { display: none !important; }
+  nav, .doc-nav, .back-to-top, .sidebar-toggle, .sidebar-overlay, .lightbox-overlay, .zoom-hint { display: none !important; }
   .sidebar-nav { display: none !important; }
   body.has-nav, body.has-sidebar.has-nav { padding-top: 0; }
   body.has-sidebar main { margin-left: 0; padding: 0; max-width: 100%; box-shadow: none; }

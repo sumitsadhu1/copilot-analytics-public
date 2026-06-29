@@ -54,7 +54,12 @@
   <li><a href="#templates">Available Copilot PBI Templates</a></li>
   <li><a href="#create-report">Step-by-Step: Create a Report</a></li>
   <li><a href="#connect-pbi">Connect Power BI</a></li>
-  <li><a href="#publish">Publish Reports to Leaders</a></li>
+  <li><a href="#publish">Publish &amp; Share Reports</a>
+    <ul>
+      <li><a href="#publish-viva">5.1 Publish via Viva Insights</a></li>
+      <li><a href="#share-stakeholders">5.2 Share via Power BI</a></li>
+    </ul>
+  </li>
   <li><a href="#maintenance">Ongoing Maintenance</a></li>
   <li><a href="#analyst-departure">Analyst Departure &mdash; Transfer Guide</a></li>
   <li><a href="#next">What to Read Next</a></li>
@@ -135,8 +140,9 @@
 </table>
 
 <div class="callout note">
-  <div class="callout-title">Template Availability</div>
-  <p>Not all templates may be visible in your tenant. Templates appear based on your licence entitlements, feature rollout status, and whether prerequisites (e.g., Glint licence, business data upload) are met. Check <a href="https://learn.microsoft.com">Microsoft Learn</a> for the latest template availability.</p>
+  <div class="callout-title">Where to Find These Templates</div>
+  <p>The official Copilot templates are <strong>not distributed as standalone download links</strong>. You access them <strong>in-product</strong>: in the Viva Insights analyst experience (<a href="https://analysis.insights.viva.office.com">analysis.insights.viva.office.com</a>) select <strong>Create analysis</strong>, then pick a template from the <strong>Copilot</strong> section and select <strong>Set up analysis</strong>. The <code>.pbit</code> file is generated from the <strong>query results page</strong> after the query runs (see <a href="#connect-pbi">Section 4</a>).</p>
+  <p>For the full catalogue and per-report setup guides, see the <a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/introduction-to-templates">Microsoft Learn template catalogue</a>. Not all templates may be visible in your tenant &mdash; availability depends on your licence entitlements, feature rollout status, and whether prerequisites (e.g., Glint licence, business outcome data upload) are met.</p>
 </div>
 
 <!-- ═══════════════════════ 3. CREATE A REPORT ═══════════════════════ -->
@@ -226,14 +232,31 @@
 </ul>
 
 <!-- ═══════════════════════ 5. PUBLISH REPORTS ═══════════════════════ -->
-<h1 id="publish">5. Publish Reports to Leaders</h1>
+<h1 id="publish">5. Publish &amp; Share Reports</h1>
 
-<p>You can share query results with business leaders directly from Viva Insights using the <strong>Publish</strong> feature.</p>
+<p>Once your report is built (Sections 1&ndash;4), you have <strong>two delivery surfaces</strong> for getting it in front of leaders. They are not interchangeable &mdash; they differ in where recipients view the report, what access it grants them, and how well they respect agency boundaries. Pick the surface that matches your distribution model, then follow the matching sub-section below.</p>
 
-<h2>Step 1 &mdash; Select Publish</h2>
+<table>
+  <tr><th>&nbsp;</th><th>5.1 Publish via Viva Insights</th><th>5.2 Share via Power BI</th></tr>
+  <tr><td><strong>Where recipients view</strong></td><td>Viva Insights web app &rarr; Reports tab</td><td>Power BI service (<a href="https://app.powerbi.com">app.powerbi.com</a>) or a Power BI app</td></tr>
+  <tr><td><strong>Best for</strong></td><td>Fast, native distribution to leaders who already have Copilot Dashboard access</td><td>Controlled, named-audience distribution &mdash; especially multi-agency</td></tr>
+  <tr><td><strong>Viewer licence</strong></td><td>Viva Insights service plan (included with Copilot)</td><td>Power BI Pro / PPU, or Premium capacity</td></tr>
+  <tr><td><strong>Respects agency isolation</strong></td><td>&#9888; Risk &mdash; see the 5.1 warning</td><td>&#9989; Yes &mdash; per-workspace, optionally RLS</td></tr>
+</table>
+
+<div class="callout important">
+  <div class="callout-title">Implementing the Isolation model? Use 5.2, not 5.1</div>
+  <p>If you are delivering reports under the <a href="../docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Multi-Agency Isolation Architecture</a>, distribute to agency heads via <strong>Power BI (Section 5.2)</strong>. <strong>Do not</strong> use Viva Insights Publish (5.1) to reach agency leaders: enabling a manager so they can receive a published report grants them <strong>Copilot Dashboard access, including the &ldquo;Your company&rdquo; scope that shows aggregated data across <em>all</em> agencies</strong> &mdash; which breaks isolation. Reserve 5.1 for Central IT analysts who already have tenant-wide dashboard access. See the <a href="../docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Isolation playbook</a>, Phase 4b.</p>
+</div>
+
+<h2 id="publish-viva">5.1 Publish via Viva Insights</h2>
+
+<p>You can share query results with business leaders directly from Viva Insights using the <strong>Publish</strong> feature. This is the fastest route for leaders who already have Copilot Dashboard access.</p>
+
+<h3>Step 1 &mdash; Select Publish</h3>
 <p>In the Viva Insights analyst experience, navigate to your completed query and select <strong>Publish</strong>.</p>
 
-<h2>Step 2 &mdash; Set Report Metadata</h2>
+<h3>Step 2 &mdash; Set Report Metadata</h3>
 <p>Enter:</p>
 <ul>
   <li><strong>Title</strong> &mdash; the report title that recipients will see</li>
@@ -241,17 +264,17 @@
   <li><strong>Description</strong> &mdash; brief summary of what the report covers</li>
 </ul>
 
-<h2>Step 3 &mdash; Choose Scope</h2>
+<h3>Step 3 &mdash; Choose Scope</h3>
 <p>Select one of:</p>
 <ul>
   <li><strong>Unfiltered original</strong> &mdash; publishes the full dataset. All recipients see the same data.</li>
   <li><strong>Filter by manager hierarchy</strong> &mdash; each recipient sees only data for their reporting line.</li>
 </ul>
 
-<h2>Step 4 &mdash; Set Expiry Date</h2>
+<h3>Step 4 &mdash; Set Expiry Date</h3>
 <p>Set when the published report expires. Maximum is <strong>365 days</strong> from publication.</p>
 
-<h2>Step 5 &mdash; Publish</h2>
+<h3>Step 5 &mdash; Publish</h3>
 <p>Confirm and publish. Recipients receive an email notification with a link to view the report.</p>
 
 <div class="callout warning">
@@ -261,10 +284,58 @@
 
 <div class="callout warning">
   <div class="callout-title">Multi-Agency Tenants: Manager Hierarchy Risk</div>
-  <p>Choosing <strong>&ldquo;Filter by manager hierarchy&rdquo;</strong> grants <strong>any enabled manager</strong> dashboard access to their reporting line&rsquo;s data. In multi-agency tenants, this may unintentionally expose data across agency boundaries. <strong>Use Power BI workspaces instead</strong> for controlled distribution in multi-agency deployments &mdash; see the <a href="../2-setup/multi-agency-setup.html">Multi-Agency Setup Guide</a> for details.</p>
+  <p>Enabling a manager so they can receive a published report also grants them <strong>Copilot Dashboard access</strong> &mdash; including the <strong>&ldquo;Your company&rdquo; scope, which shows aggregated data across <em>all</em> agencies</strong>, not just their own reporting line. In a multi-agency tenant this breaks agency isolation. For agency-head delivery, use <a href="#share-stakeholders">Power BI sharing (Section 5.2)</a> instead, and reserve Viva Insights Publish for Central IT who already have tenant-wide dashboard access. See the <a href="../2-setup/multi-agency-setup.html">Multi-Agency Setup Guide</a> and the <a href="../docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Isolation playbook</a> (Phase 4b).</p>
 </div>
 
-<!-- ═══════════════════════ 6. ONGOING MAINTENANCE ═══════════════════════ -->
+<!-- ═══════════════════════ 5.2 SHARE VIA POWER BI ═══════════════════════ -->
+<h2 id="share-stakeholders">5.2 Share via Power BI</h2>
+
+<p>Unlike <a href="#publish-viva">Publish via Viva Insights (Section 5.1)</a>, which distributes results <em>natively</em> inside Viva Insights, this method uses <strong>Power BI&rsquo;s own sharing</strong>. It is the preferred method for multi-agency tenants because it delivers a report to named people <strong>without</strong> granting them any Copilot Dashboard access &mdash; whereas 5.1&rsquo;s &ldquo;Filter by manager hierarchy&rdquo; option can (see its warning).</p>
+
+<div class="callout info">
+  <div class="callout-title">New to Power BI? Start Here</div>
+  <p>This section assumes an Insights Analyst has already <strong>built the report</strong> in Sections 1&ndash;4 (run a query, connect the template, save the file). <strong>If you are an admin handling only distribution</strong>, you can start at Step 1 below with a report file the analyst hands you.</p>
+  <p>Three Power BI terms used in this section:</p>
+  <ul>
+    <li><strong><code>.pbix</code></strong> &mdash; the finished report file. When the analyst loads data into the <code>.pbit</code> template (Section 4) and saves it, it becomes a <code>.pbix</code>. That is the file you publish.</li>
+    <li><strong>Workspace</strong> &mdash; a shared container in the Power BI service that holds reports and controls who can see them.</li>
+    <li><strong>Dataset</strong> &mdash; the data behind a report; publishing a <code>.pbix</code> uploads the report and its dataset together.</li>
+  </ul>
+</div>
+
+<h3>Step 1 &mdash; Publish the .pbix to the Power BI Service</h3>
+<p>In Power BI Desktop, select <strong>Publish</strong> and choose a destination <strong>workspace</strong> (not &ldquo;My workspace&rdquo;, which can&rsquo;t be shared with others). The report and its dataset upload to <a href="https://app.powerbi.com">app.powerbi.com</a>.</p>
+
+<h3>Step 2 &mdash; Use a Dedicated Workspace per Audience</h3>
+<p>Create one workspace per agency or audience (e.g., <code>Agency A &mdash; Copilot Analytics</code>). Keeping each agency&rsquo;s reports in a separate workspace is the cleanest way to control who sees what. Store all <code>.pbix</code> files here rather than on individual machines so reporting survives staff changes.</p>
+
+<h3>Step 3 &mdash; Assign Stakeholders via Workspace Roles</h3>
+<p>In <a href="https://app.powerbi.com">app.powerbi.com</a>, open the workspace &rarr; select <strong>Manage access</strong> &rarr; <strong>Add people or groups</strong>, then assign a <a href="https://learn.microsoft.com/power-bi/collaborate-share/service-roles-new-workspaces">workspace role</a> from the table below. Prefer adding an <strong>Entra security group</strong> over individuals, so access is managed centrally and consistently with your other governance controls.</p>
+<table>
+  <tr><th>Role</th><th>Can do</th><th>Assign to</th></tr>
+  <tr><td><strong>Viewer</strong></td><td>View and interact with reports only</td><td>Most stakeholders (agency leaders)</td></tr>
+  <tr><td><strong>Contributor</strong></td><td>Create/edit content; can&rsquo;t manage access</td><td>Co-analysts who build reports</td></tr>
+  <tr><td><strong>Member</strong></td><td>Edit content and add others (below Admin)</td><td>Trusted leads who help run the workspace</td></tr>
+  <tr><td><strong>Admin</strong></td><td>Full control, including deleting the workspace</td><td>The owning analyst / Central IT</td></tr>
+</table>
+<div class="callout note">
+  <div class="callout-title">Cleaner Distribution for Wide Audiences</div>
+  <p>For a large, read-only audience, publish the workspace as a <strong>Power BI app</strong> &mdash; a packaged, read-only view of selected reports (not a desktop or mobile application). Give the audience access to the app rather than the workspace, so recipients get a curated view without seeing the underlying workspace contents.</p>
+</div>
+
+<h3>Step 4 &mdash; Confirm Viewer Licensing</h3>
+<p>Power BI sharing is licensed <strong>separately</strong> from Viva Insights and Copilot:</p>
+<ul>
+  <li>Each viewer needs a <strong>Power BI Pro</strong> or <strong>Premium Per User (PPU)</strong> licence; <em>or</em></li>
+  <li>if the workspace sits on a <strong>Power BI Premium capacity (P or F SKU)</strong>, viewers with a free Power BI licence can view the reports &mdash; removing per-viewer costs. Confirm with your licensing owner.</li>
+</ul>
+
+<div class="callout warning">
+  <div class="callout-title">Multi-Agency: Keep Boundaries Intact</div>
+  <p>Grant each agency workspace&rsquo;s <strong>Viewer</strong> role only to that agency&rsquo;s leaders &mdash; via an agency-scoped Entra group. If multiple agencies must share one workspace, add <a href="https://learn.microsoft.com/fabric/security/service-admin-row-level-security">Row-Level Security (RLS)</a> as a secondary control. The full agency-isolation delivery procedure (including the Publish Reports pitfall) is in the <a href="../docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Isolation Architecture playbook</a>, Phase 4b.</p>
+</div>
+
+<!-- ═══════════════════════ 7. ONGOING MAINTENANCE ═══════════════════════ -->
 <h1 id="maintenance">6. Ongoing Maintenance</h1>
 
 <p>Keep your Copilot analytics current with these recurring tasks:</p>
@@ -273,10 +344,10 @@
   <li><strong>Refresh org data monthly</strong> &mdash; work with your Insights Admin to ensure organisational data (new hires, transfers, departures) stays up to date. Stale org data leads to inaccurate segmentation.</li>
   <li><strong>Re-run queries periodically</strong> &mdash; either enable auto-refresh during query setup or manually re-run queries on a monthly or quarterly cadence to capture current trends.</li>
   <li><strong>Update PBI reports</strong> &mdash; when Microsoft releases updated template versions, download the new <code>.pbit</code> and reconnect to benefit from new metrics and visualisations.</li>
-  <li><strong>Share via Publish Reports or Power BI workspaces</strong> &mdash; for ongoing distribution, either re-publish through Viva Insights or save <code>.pbix</code> files to a shared Power BI workspace where leaders can access them directly.</li>
+  <li><strong>Share via Publish Reports or Power BI workspaces</strong> &mdash; for ongoing distribution, either re-publish through Viva Insights or save <code>.pbix</code> files to a shared Power BI workspace (see <a href="#share-stakeholders">Section 5.2</a> for the step-by-step).</li>
 </ul>
 
-<!-- ═══════════════════════ 7. ANALYST DEPARTURE ═══════════════════════ -->
+<!-- ═══════════════════════ 8. ANALYST DEPARTURE ═══════════════════════ -->
 <h1 id="analyst-departure">7. Analyst Departure &mdash; Transfer Guide</h1>
 
 <p>When an Insights Analyst leaves the organisation or changes roles, follow this checklist to ensure continuity:</p>
@@ -315,7 +386,7 @@
   <p>Always have <strong>at least two analysts</strong> with partition access. Store all <code>.pbix</code> files in a shared Power BI workspace rather than on individual machines. This prevents data loss and reporting gaps during transitions.</p>
 </div>
 
-<!-- ═══════════════════════ 8. WHAT TO READ NEXT ═══════════════════════ -->
+<!-- ═══════════════════════ 9. WHAT TO READ NEXT ═══════════════════════ -->
 <h1 id="next">8. What to Read Next</h1>
 
 <table>

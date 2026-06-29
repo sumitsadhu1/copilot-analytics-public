@@ -101,6 +101,8 @@
     transition: background var(--transition);
   }
   .result-links a:hover { background: var(--accent-hover); }
+  .step-notes { margin: 4px 0 0; padding-left: 18px; font-size: 0.85em; color: var(--text-secondary); line-height: 1.5; }
+  .step-notes li { margin: 2px 0; }
   .result-links a.secondary {
     background: transparent;
     color: var(--accent);
@@ -198,22 +200,22 @@
 <h3>Question 1 &mdash; Must agencies be prevented from seeing each other&rsquo;s data?</h3>
 <table>
   <tr><th>Answer</th><th>Result</th></tr>
-  <tr><td><strong>No</strong> &mdash; cross-agency visibility is acceptable</td><td>&rarr; <strong>Default Priority Architecture</strong>. Setup effort: 2&ndash;4 hours. Read: <a href="../2-setup/multi-agency-setup.html">Multi-Agency Setup Guide</a>, then optionally <a href="../2-setup/data-onboarding.html">Data Onboarding Guide</a> for enrichment.</td></tr>
+  <tr><td><strong>No</strong> &mdash; cross-agency visibility is acceptable</td><td>&rarr; <strong>Default Priority Architecture</strong>. Setup effort: 2&ndash;4 hours. Read: <a href="../2-setup/multi-agency-setup.html">Multi-Agency Setup Guide</a>, then optionally <a href="../2-setup/data-onboarding.html">Data Onboarding Guide</a> for enrichment. Build reports: <a href="../3-operate/analyst-playbook.html">Analyst Playbook</a> (optional). Full design: <a href="../docs/playbooks/Copilot_Multi_Agency_Default_Priority_Architecture.html">Default Priority playbook</a>.</td></tr>
   <tr><td><strong>Yes</strong> &mdash; hard data isolation is required</td><td>&rarr; <strong>Isolation Architecture</strong>. Continue to Question 2.</td></tr>
 </table>
 
 <h3>Question 2 &mdash; Do agencies share one email domain?</h3>
 <table>
   <tr><th>Answer</th><th>Result</th></tr>
-  <tr><td><strong>No</strong> &mdash; each agency has its own domain</td><td>&rarr; <strong>Isolation Path B</strong> (zero CSV). Setup effort: 1&ndash;3 days. Use the system-generated <code>Domain</code> attribute. Read: <a href="../2-setup/multi-agency-setup.html">Multi-Agency Setup</a>.</td></tr>
+  <tr><td><strong>No</strong> &mdash; each agency has its own domain</td><td>&rarr; <strong>Isolation Path B</strong> (zero CSV). Setup effort: 1&ndash;3 days. Use the system-generated <code>Domain</code> attribute. Read: <a href="../2-setup/multi-agency-setup.html">Multi-Agency Setup</a> &rarr; <a href="../docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Isolation playbook</a> &rarr; <a href="../3-operate/analyst-playbook.html">Analyst Playbook</a> (build &amp; publish).</td></tr>
   <tr><td><strong>Yes</strong> &mdash; shared domain</td><td>&rarr; <strong>Isolation Path A</strong> (CSV required). Continue to Question 3.</td></tr>
 </table>
 
 <h3>Question 3 &mdash; Do you need custom attribute filtering?</h3>
 <table>
   <tr><th>Answer</th><th>Result</th></tr>
-  <tr><td><strong>Yes</strong></td><td>CSV org data upload required. Read in order: <a href="../2-setup/data-onboarding.html">Data Onboarding</a> &rarr; <a href="../2-setup/multi-agency-setup.html">Multi-Agency Setup</a>.</td></tr>
-  <tr><td><strong>No</strong></td><td>CSV with <code>Agency</code> attribute only. Read: <a href="../2-setup/data-onboarding.html">Data Onboarding</a> &rarr; <a href="../2-setup/multi-agency-setup.html">Multi-Agency Setup</a>.</td></tr>
+  <tr><td><strong>Yes</strong></td><td>CSV org data upload required. Read in order: <a href="../2-setup/data-onboarding.html">Data Onboarding</a> &rarr; <a href="../2-setup/multi-agency-setup.html">Multi-Agency Setup</a> &rarr; <a href="../docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Isolation playbook</a> &rarr; <a href="../3-operate/analyst-playbook.html">Analyst Playbook</a> (build &amp; publish).</td></tr>
+  <tr><td><strong>No</strong></td><td>CSV with <code>Agency</code> attribute only. Read: <a href="../2-setup/data-onboarding.html">Data Onboarding</a> &rarr; <a href="../2-setup/multi-agency-setup.html">Multi-Agency Setup</a> &rarr; <a href="../docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Isolation playbook</a> &rarr; <a href="../3-operate/analyst-playbook.html">Analyst Playbook</a> (build &amp; publish).</td></tr>
 </table>
 
 <h3>Summary of Paths</h3>
@@ -312,10 +314,13 @@ function showResult(arch, needsCustomAttrs) {
       '<div class="result-links">' +
         '<a href="../2-setup/multi-agency-setup.html">1. Multi-Agency Setup</a>' +
         '<a href="../2-setup/data-onboarding.html" class="secondary">2. Data Onboarding (optional)</a>' +
+        '<a href="../3-operate/analyst-playbook.html" class="secondary">Analyst Playbook (optional — for Power BI reports)</a>' +
+        '<a href="../docs/playbooks/Copilot_Multi_Agency_Default_Priority_Architecture.html" class="secondary">Default Priority playbook (full design)</a>' +
       '</div>' +
+      '<ul class="step-notes"><li><strong>Multi-Agency Setup:</strong> enable agency-default scoping (AutoCxO, delegation) so each leader sees their team first.</li><li><strong>Data Onboarding:</strong> upload org data to enrich filters (optional).</li><li><strong>Analyst Playbook:</strong> only if you want Power BI reports beyond the dashboard.</li></ul>' +
       '<p style="font-size:0.85em; color:var(--text-secondary); margin-top:12px;"><strong>Skip:</strong> You do not need the Isolation Architecture guides or partition configuration.</p>' +
       '<details class="why-detail"><summary>Why this recommendation?</summary>' +
-        '<p>You indicated cross-agency data visibility is acceptable. Default Priority uses the native Entra ID manager hierarchy and AutoCxO identification to scope each agency CEO\u2019s dashboard view. No partitions, no VFAM lockdown, no monthly CSV re-uploads for partitioning.</p>' +
+        '<p>You indicated cross-agency data visibility is acceptable. Default Priority uses the native Entra ID manager hierarchy and AutoCxO identification to scope each agency CEO\u2019s dashboard view. No partitions, no Viva feature access management (VFAM) lockdown, no monthly CSV re-uploads for partitioning.</p>' +
       '</details>' +
       '<button class="restart-btn" onclick="restart()">Start over</button>' +
     '</div>';
@@ -331,7 +336,10 @@ function showResult(arch, needsCustomAttrs) {
       '<div class="result-links">' +
         '<a href="../2-setup/data-onboarding.html">1. Data Onboarding</a>' +
         '<a href="../2-setup/multi-agency-setup.html">2. Multi-Agency Setup</a>' +
+        '<a href="../docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">3. Isolation playbook (design + Phase 4b delivery)</a>' +
+        '<a href="../3-operate/analyst-playbook.html">4. Analyst Playbook (build &amp; publish the report)</a>' +
       '</div>' +
+      '<ul class="step-notes"><li><strong>Data Onboarding:</strong> upload the CSV with the Agency attribute so partitions can tell agencies apart.</li><li><strong>Multi-Agency Setup:</strong> lock down the dashboard, create one partition per agency, assign analysts.</li><li><strong>Isolation playbook:</strong> the full design + how to deliver each agency report (workspaces, RLS).</li><li><strong>Analyst Playbook:</strong> run the Copilot query, connect Power BI, publish each agency its report.</li></ul>' +
       '<p style="font-size:0.85em; color:var(--text-secondary); margin-top:12px;"><strong>Skip:</strong> Default Priority guides and Path B (Domain-based) setup.</p>' +
       '<details class="why-detail"><summary>Why this recommendation?</summary>' +
         '<p>You require hard data isolation between agencies, and all agencies share one email domain. Without distinct domains, there is no system-level attribute to tell agencies apart \u2014 you must supply an <code>Agency</code> column via CSV. Partitions are then created using this custom attribute as the filter boundary. Monthly re-upload is required to keep partition populations current.</p>' +
@@ -353,7 +361,10 @@ function showResult(arch, needsCustomAttrs) {
       '<div class="result-links">' +
         (needsCustomAttrs ? '<a href="../2-setup/data-onboarding.html">1. Data Onboarding</a>' : '') +
         '<a href="../2-setup/multi-agency-setup.html">' + (needsCustomAttrs ? '2' : '1') + '. Multi-Agency Setup</a>' +
+        '<a href="../docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">' + (needsCustomAttrs ? '3' : '2') + '. Isolation playbook (design + Phase 4b delivery)</a>' +
+        '<a href="../3-operate/analyst-playbook.html">' + (needsCustomAttrs ? '4' : '3') + '. Analyst Playbook (build &amp; publish the report)</a>' +
       '</div>' +
+      '<ul class="step-notes"><li><strong>Multi-Agency Setup:</strong> lock down the dashboard, create one partition per agency, assign analysts.</li><li><strong>Isolation playbook:</strong> the full design + how to deliver each agency report (workspaces, RLS).</li><li><strong>Analyst Playbook:</strong> run the Copilot query, connect Power BI, publish each agency its report.</li></ul>' +
       '<p style="font-size:0.85em; color:var(--text-secondary); margin-top:12px;"><strong>Skip:</strong> Default Priority guides and Path A (CSV-based partitioning).</p>' +
       '<details class="why-detail"><summary>Why this recommendation?</summary>' +
         '<p>You require hard data isolation and each agency has its own email domain. Viva Insights automatically generates a Domain attribute from users\u2019 email addresses, which can be used directly as the partition filter \u2014 no CSV needed for the partition itself.' + (needsCustomAttrs ? ' You do need a CSV upload for the additional attribute filters you requested.' : '') + '</p>' +

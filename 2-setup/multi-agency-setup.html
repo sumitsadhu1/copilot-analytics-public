@@ -73,7 +73,22 @@
 
 <p><strong>Estimated time:</strong> 2&ndash;4 hours &nbsp;|&nbsp; <strong>PowerShell required:</strong> No</p>
 
-<p>This architecture relies on the native Copilot Dashboard scoping (&ldquo;Your group&rdquo;) driven by Entra ID manager hierarchy. Each agency CEO automatically sees their agency&rsquo;s data. Cross-agency visibility is acceptable in this model.</p>
+<p>This architecture relies on the native Copilot Dashboard scoping (&ldquo;Your group&rdquo;) driven by Entra ID manager hierarchy. Each agency CEO sees their agency&rsquo;s data through the &ldquo;Your group&rdquo; scope &mdash; <strong>provided their tenant and reporting line meet Microsoft&rsquo;s automatic-access criteria</strong> (see callout below). Cross-agency visibility is acceptable in this model.</p>
+
+<div class="callout warning">
+  <div class="callout-title">Automatic Access Has Hard Prerequisites</div>
+  <p>Per <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard#how-automatic-access-to-the-copilot-dashboard-is-determined">Microsoft Learn</a>, <em>automatic</em> dashboard access for senior leaders is granted <strong>only</strong> when both tenant criteria are met:</p>
+  <ul>
+    <li>The tenant has <strong>at least 2,500 users</strong> with an Entra ID; <em>and</em></li>
+    <li>The <strong>majority of users share a single reporting line</strong> (e.g., report up to the same CEO).</li>
+  </ul>
+  <p>Within a qualifying tenant, a leader is auto-identified only if they are in the <strong>top three levels</strong> with a significant portion of the org reporting to them. A separate agency&rsquo;s top leader is auto-identified <strong>only if that agency&rsquo;s hierarchy tree is at least 4% of the overall company size</strong>. Consequences for multi-agency tenants:</p>
+  <ul>
+    <li><strong>Tenant under 2,500 users</strong> &rarr; <em>no</em> agency CEO gets automatic access. Use manual access grants + delegation (Phase 2).</li>
+    <li><strong>Small agency (&lt;4% of the tenant)</strong> &rarr; its CEO is not auto-identified, even in a large tenant. Grant access manually.</li>
+  </ul>
+  <p>The &ldquo;Your group&rdquo; scope still works once access is granted manually &mdash; these gates govern <em>automatic</em> identification only. Access is re-evaluated weekly.</p>
+</div>
 
 <!-- Phase 0 -->
 <h2 id="dp-phase0">Phase 0: Base Setup</h2>
@@ -99,27 +114,32 @@
   <tr><th>Step</th><th>Action</th><th>Where</th><th>Expected Result</th></tr>
   <tr>
     <td>1.1</td>
-    <td>Enable Auto CxO Identification</td>
-    <td>Viva Insights web app &rarr; Admin &rarr; General &rarr; Auto CxO Identification</td>
-    <td>Toggle is <strong>On</strong>. The system automatically identifies C-suite executives based on Entra ID hierarchy.</td>
+    <td>Confirm Auto CxO Identification is on</td>
+    <td>On by default &mdash; there is no web-app &ldquo;General&rdquo; toggle. If it was previously disabled, an AI Administrator re-enables it via the <code>AutoCxoIdentification</code> VFAM policy in PowerShell (tenant-level only). See <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard">MS Learn</a>.</td>
+    <td>Auto-enablement is active. Qualifying senior leaders are identified weekly from the Entra ID manager hierarchy (subject to the prerequisites above).</td>
   </tr>
   <tr>
     <td>1.2</td>
-    <td>Enable Delegation</td>
-    <td>Viva Insights web app &rarr; Admin &rarr; Delegation</td>
-    <td>Delegation is <strong>enabled</strong>. CxO-identified leaders can delegate dashboard access to others in their reporting chain.</td>
+    <td>Confirm delegation is available</td>
+    <td>No admin &ldquo;enable&rdquo; step exists. Delegation is <strong>self-service</strong> for anyone who has dashboard access, available once the tenant meets the <strong>&ge;50 Copilot <em>or</em> &ge;50 Viva Insights licence</strong> threshold. See <a href="https://learn.microsoft.com/viva/insights/org-team-insights/delegate-access">MS Learn</a>.</td>
+    <td>Leaders with access can delegate to others from <strong>Copilot Dashboard &rarr; Settings &rarr; Delegation</strong>.</td>
   </tr>
   <tr>
     <td>1.3</td>
     <td>Verify each agency CEO gets automatic &ldquo;Your group&rdquo; scope</td>
     <td>Ask each agency CEO to open the Copilot Dashboard and check the scope selector (top of dashboard)</td>
-    <td>Each CEO sees <strong>&ldquo;Your group&rdquo;</strong> scoped to their direct + indirect reports. The population count should match the agency&rsquo;s headcount.</td>
+    <td>Each CEO sees <strong>&ldquo;Your group&rdquo;</strong> scoped to their direct + indirect reports. The population reflects <strong>Copilot-licensed</strong> employees only, and groups below the minimum group size (default 10) show &ldquo;--&rdquo; &mdash; so the count tracks licensed headcount, not raw agency headcount.</td>
   </tr>
 </table>
 
 <div class="callout info">
   <div class="callout-title">If a CEO Doesn&rsquo;t See &ldquo;Your Group&rdquo;</div>
-  <p>The most common cause is incorrect or missing <code>ManagerId</code> data in Entra ID. Verify the CEO&rsquo;s reporting chain: every employee in the agency must have a valid manager chain that terminates at the agency CEO. See the <a href="data-onboarding.html">Data Onboarding Guide</a> for manager hierarchy verification steps.</p>
+  <p>Check these causes in order:</p>
+  <ol>
+    <li><strong>Automatic-access prerequisites not met</strong> &mdash; tenant under 2,500 users, no single majority reporting line, or the agency tree is under 4% of the tenant (see the warning at the top of this section). In these cases the CEO is never auto-identified; grant access manually and use delegation.</li>
+    <li><strong>Incorrect or missing <code>ManagerId</code> data in Entra ID</strong> &mdash; verify the CEO&rsquo;s reporting chain: every employee in the agency must have a valid manager chain that terminates at the agency CEO. See the <a href="data-onboarding.html">Data Onboarding Guide</a> for manager hierarchy verification steps.</li>
+    <li><strong>Licence or processing delay</strong> &mdash; data processing can take up to seven days after licences are assigned, and access is re-evaluated weekly.</li>
+  </ol>
 </div>
 
 <!-- Phase 2 -->
@@ -136,7 +156,7 @@
   <tr>
     <td>2.2</td>
     <td>Grant Central IT &ldquo;Your company&rdquo; scope</td>
-    <td>Viva Insights web app &rarr; Admin &rarr; Delegation &rarr; add Central IT lead</td>
+    <td>A senior leader who already holds <strong>&ldquo;Your company&rdquo;</strong> scope delegates to the Central IT lead via <strong>Copilot Dashboard &rarr; Settings &rarr; Delegation</strong> (delegation conveys the delegator&rsquo;s scope). If no qualifying senior leader exists, add the Central IT lead through <em>Manage access to the Viva Insights web app</em> (admin access list).</td>
     <td>Central IT lead sees <strong>&ldquo;Your company&rdquo;</strong> scope with tenant-wide data for cross-agency oversight.</td>
   </tr>
 </table>
@@ -178,6 +198,8 @@
   <li>Publishes the report to a <strong>Power BI workspace</strong> dedicated to the agency.</li>
   <li>Shares the workspace with agency leadership.</li>
 </ol>
+
+<p>For step-by-step guidance on publishing to the Power BI service and assigning stakeholders by <strong>workspace role</strong> (Viewer, Member, etc.) &mdash; plus the per-viewer licensing implications &mdash; see <a href="../3-operate/analyst-playbook.html#share-stakeholders">Analyst Playbook &mdash; Share via Power BI (&sect;5.2)</a>.</p>
 
 <div class="callout tip">
   <div class="callout-title">Default Priority Setup Complete</div>
@@ -372,6 +394,8 @@
   <li>Shares the workspace with agency leadership (CEO, CIO, designated leaders).</li>
   <li>Repeat for each agency.</li>
 </ol>
+
+<p>For the detailed publish-and-assign steps (Power BI service, workspace roles such as Viewer, Entra-group access, and per-viewer Pro/PPU/Premium licensing), see <a href="../3-operate/analyst-playbook.html#share-stakeholders">Analyst Playbook &mdash; Share via Power BI (&sect;5.2)</a>.</p>
 
 <div class="callout warning">
   <div class="callout-title">WARNING: Avoid &ldquo;Publish Reports&rdquo; in Isolation Architecture</div>

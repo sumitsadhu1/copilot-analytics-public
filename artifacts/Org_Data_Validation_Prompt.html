@@ -53,7 +53,7 @@
   <tr><th>Document Property</th><th>Value</th></tr>
   <tr><td>Type</td><td>Reusable Prompt Template</td></tr>
   <tr><td>Audience</td><td>Analysts, IT Admins, Solution Architects</td></tr>
-  <tr><td>Version</td><td>3.1 (Prompt 1 restructured for M365 Analyst Agent: verdict-first, mandatory critical-issues bullet list, anti-truncation rules)</td></tr>
+  <tr><td>Version</td><td>3.2 (Problem ID Mapping row-level register added to Prompt 1, Prompt 3 &amp; Full Prompt, with optional .xlsx export). 3.1 restructured Prompt 1 for M365 Analyst Agent: verdict-first, mandatory critical-issues bullet list, anti-truncation rules.</td></tr>
   <tr><td>Published</td><td>April 2026</td></tr>
 </table>
 
@@ -153,7 +153,7 @@ Note: TimeZone, StartDate, EndDate, IsActive, IsInternal are <span class="hl">re
 18. <span class="hl">PII column-name detection</span>: flag columns matching (ssn|social|tax_id|nino|phone|mobile|dob|birth|home_addr|home_address|emergency|bonus|salary_ytd|compensation) — these must NOT be uploaded to org data
 
 <span class="cm"># OUTPUT FORMAT — MANDATORY</span>
-<span class="hl">Produce ALL SIX sections below as VISIBLE MARKDOWN TEXT in the response. Do NOT stop after any single table. Do NOT summarise findings into "analysis complete" — every finding from your reasoning MUST appear in the visible output. The completeness table alone is NOT a complete report.</span>
+<span class="hl">Produce ALL SEVEN sections below as VISIBLE MARKDOWN TEXT in the response. Do NOT stop after any single table. Do NOT summarise findings into "analysis complete" — every finding from your reasoning MUST appear in the visible output. The completeness table alone is NOT a complete report.</span>
 
 <span class="kw">## 1. Upload Readiness Verdict</span>
 <span class="hl">State the verdict FIRST, in the first line of your response:</span> PASS / PASS WITH WARNINGS / FAIL. Follow with one sentence explaining the top reason.
@@ -183,12 +183,22 @@ Table: Attribute | Present | Type/Format Check | Sample Values | Issue Found
 <span class="kw">## 6. Full Data Quality Issue List</span>
 Numbered list of every issue, severity (CRITICAL / WARNING / INFO), and specific fix instruction. Aim for 15+ items on adversarial files; if fewer, explain why.
 
+<span class="kw">## 7. Problem ID Mapping (Row-Level Register)</span>
+A per-record register so issues are traceable to the EXACT rows, not just aggregate counts. ONE ROW PER PROBLEM RECORD (a record repeats if it has multiple issues):
+| PersonId | Row # | Column | Issue | Severity (CRITICAL/WARNING/INFO) | Fix |
+|---|---|---|---|---|---|
+Rules:
+- Key each row by PersonId. If PersonId is blank or duplicated, key by Row # and note "PersonId blank/duplicate" in the Issue column.
+- Include ONLY row-addressable issues: blank Organization, orphan/blank ManagerId, duplicate or non-email PersonId, sentinel/placeholder HireDate, invalid/out-of-range WorkDayStart/WorkDayEnd, non-integer Layer, malformed HourlyRate ($ or commas), parenthetical IDs in values, PII values in a cell. File-wide issues (forbidden/missing columns, &gt;105 attributes, dual-schema) stay in Section 2 — do NOT repeat them here.
+- Sort by Severity (CRITICAL first), then by Column. If there are &gt;200 problem rows, list the first 200, state the true total, and rely on the .xlsx export below for the full set.
+<span class="hl">.xlsx export (additive — never replaces the table above):</span> If your platform can run code — the <span class="hl">Microsoft 365 Copilot Analyst agent</span> or Copilot with <span class="hl">code interpreter</span> enabled, or GitHub Copilot (Opus) / ChatGPT / Claude — ALSO generate a downloadable Excel file named <span class="hl">OrgData_Problem_Mapping.xlsx</span> (one row per problem record, the same columns, sorted by Severity). Agent-generated files are available for <span class="hl">download during the active session only</span> and are not persisted afterwards — save it locally immediately. If your platform CANNOT run code (e.g. base Copilot Chat without code interpreter), state that explicitly; the visible Markdown table above is MANDATORY and is never skipped in favour of the file.
+
 <span class="kw">## ▶ NEXT STEP</span>
 End with: "Save this report. Then run <span class="hl">Prompt 2: Dashboard Impact Simulation</span> with the same file attached to see how this data will appear on the Copilot Dashboard."
 
 <span class="cm"># ANTI-TRUNCATION RULES</span>
-- If you produce Python-based analysis, the rendered table is NOT sufficient. You MUST also produce sections 1, 2, 5 and 6 as visible Markdown text.
-- Never end the response with "analysis has been fully executed" without the full six sections above.
+- If you produce Python-based analysis, the rendered table is NOT sufficient. You MUST also produce sections 1, 2, 5, 6 and 7 as visible Markdown text.
+- Never end the response with "analysis has been fully executed" without the full seven sections above.
 - If the file is too large to analyse exhaustively, state that explicitly in Section 1 and produce what you can for every section.
 
 Now analyse the attached file. Begin your response with the verdict on the first line.
@@ -304,13 +314,22 @@ Group by priority:
 <span class="hl">P3 — INFO</span> (optional improvements)
 Each item: what to fix, why, how (specific instruction).
 
-<span class="kw">## 4. Upload Configuration Reminders</span>
+<span class="kw">## 4. Problem ID Mapping (Row-Level Remediation Worksheet)</span>
+A per-record worksheet so the preparer fixes the exact rows — not guesses from aggregate counts. Produce ONE ROW PER PROBLEM RECORD (a record repeats if it has multiple issues):
+Table: PersonId | Row # | Column | Issue | Priority (P1/P2/P3) | Fix Action | Fixed? (Y/N)
+Rules:
+- Key each row by PersonId. If PersonId itself is blank or duplicated, key by Row # and state "PersonId blank/duplicate" in the Issue column.
+- Include ONLY row-addressable issues: blank Organization, orphan/blank ManagerId, duplicate PersonId, sentinel/placeholder HireDate, invalid/out-of-range WorkDayStart/WorkDayEnd, wrong-type Layer/HourlyRate values, parenthetical IDs, PII values in a cell, etc. File-wide issues (forbidden/missing columns, &gt;105 attributes) stay in Section 3 — do NOT repeat them here.
+- Sort by Priority (P1 first), then by Column. If there are &gt;200 problem rows, list the first 200, state the true total, and rely on the .xlsx export below for the full set.
+<span class="hl">.xlsx export (additive — never replaces the table above):</span> If your platform can run code — the <span class="hl">Microsoft 365 Copilot Analyst agent</span> or Copilot with <span class="hl">code interpreter</span> enabled, or GitHub Copilot (Opus) / ChatGPT / Claude with code execution — ALSO generate a downloadable Excel file named <span class="hl">OrgData_Problem_Mapping.xlsx</span> (one row per problem record, the same columns, sorted by Priority). Agent-generated files are available for <span class="hl">download during the active session only</span> and are not persisted afterwards — save it locally immediately. If your platform CANNOT run code (e.g. base Copilot Chat without code interpreter), state that explicitly; the visible Markdown table above is MANDATORY and is never skipped in favour of the file.
+
+<span class="kw">## 5. Upload Configuration Reminders</span>
 - DateTime format to select (MM/DD/YYYY or DD/MM/YYYY)
 - HourlyRate confidentiality setting
 - Minimum group size consideration
 - Post-upload impact awareness
 
-<span class="kw">## 5. Post-Upload Verification Checklist</span>
+<span class="kw">## 6. Post-Upload Verification Checklist</span>
 1. Organisation filter shows expected values
 2. Job Function filter appears (if FunctionType uploaded)
 3. Scope → Your group shows correct hierarchy for a sample manager
@@ -519,6 +538,16 @@ Show what to keep, rename, populate, or remove.
 Numbered, actionable checklist the customer or analyst can follow to fix the file before upload.
 Order by priority (critical fixes first).
 
+<span class="kw">## 7b. Problem ID Mapping (Row-Level Remediation Worksheet)</span>
+A per-record worksheet so the preparer fixes the exact rows — not guesses from aggregate counts. Produce ONE ROW PER PROBLEM RECORD (a record repeats if it has multiple issues):
+| PersonId | Row # | Column | Issue | Priority (P1/P2/P3) | Fix Action | Fixed? (Y/N) |
+|---|---|---|---|---|---|---|
+Rules:
+- Key each row by PersonId. If PersonId itself is blank or duplicated, key by Row # and state "PersonId blank/duplicate" in the Issue column.
+- Include ONLY row-addressable issues: blank Organization, orphan/blank ManagerId, duplicate PersonId, sentinel/placeholder HireDate, invalid/out-of-range WorkDayStart/WorkDayEnd, wrong-type Layer/HourlyRate values, parenthetical IDs, PII values in a cell, etc. File-wide issues (forbidden/missing columns, &gt;105 attributes) belong in Sections 4 and 7 — do NOT repeat them here.
+- Sort by Priority (P1 first), then by Column. If there are &gt;200 problem rows, list the first 200, state the true total, and rely on the .xlsx export for the full set.
+- <span class="hl">.xlsx export (additive — never replaces the table above):</span> Since this prompt targets code-capable platforms (GitHub Copilot Opus, ChatGPT, Claude) — or the <span class="hl">Microsoft 365 Copilot Analyst agent</span> / Copilot with <span class="hl">code interpreter</span> enabled — ALSO generate a downloadable Excel file named <span class="hl">OrgData_Problem_Mapping.xlsx</span> (one row per problem record, the same columns, sorted by Priority). Agent-generated files are available for <span class="hl">download during the active session only</span> and are not persisted afterwards — save it locally immediately. The visible Markdown table above is MANDATORY and is never skipped in favour of the file.
+
 <span class="kw">## 8. Dashboard Impact Assessment</span>
 For EACH data quality issue found, describe the specific impact on the Copilot Dashboard experience using this table format:
 
@@ -536,7 +565,7 @@ Use these rules to determine dashboard impact:
 - HourlyRate present but not Confidential → <span class="hl">Security risk</span>: If uploaded with Public access, salary data will be visible to all dashboard viewers and selected apps. Always recommend setting HourlyRate to Confidential access during upload (M365 Admin Centre path) to restrict visibility to authorised Viva Insights analysts only.
 - Organization values are system codes (CC-4023, DEPT001) → <span class="hl">Adoption + Impact pages</span>: Filter dropdowns and "View by: Organization" labels will show cryptic codes instead of readable business unit names. Leaders won't recognise the values. Recommend mapping codes to human-readable names before upload.
 - Single EffectiveDate (no monthly snapshots) → <span class="hl">Adoption + Impact pages</span>: 6-month trendlines on the dashboard are unaffected (they use M365 telemetry data, not org data). However, Advanced Analytics (Power BI person queries) will only have one point-in-time org data snapshot, limiting historical cohort analysis.
-- Parenthetical IDs in values → <span class="hl">Adoption + Impact pages</span>: Filter dropdowns and "View by" labels will display cluttered text like "Corporate Services (10000593)" instead of clean "Corporate Services".
+- Parenthetical IDs in values → <span class="hl">Adoption + Impact pages</span>: Filter dropdowns and "View by" labels will display cluttered text like "Field Operations (10000593)" instead of clean "Field Operations".
 - Too many unique values in Organisation (&gt;50) → <span class="hl">Adoption page</span>: Filter dropdown becomes unusually long and hard to navigate. Consider using a higher-level grouping.
 - Too few unique values in Organisation (&lt;3) → <span class="hl">Adoption page</span>: Limited analytical value — cannot meaningfully compare across groups.
 - &gt;50% blank values in a column → <span class="hl">Quality score</span>: Data quality score in Viva Insights will show below 95% for that attribute, and missing employees are excluded from filtered views using that attribute.

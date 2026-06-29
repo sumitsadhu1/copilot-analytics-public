@@ -1,0 +1,28 @@
+PersonId,EffectiveDate,ManagerId,Organization,FunctionType,LevelDesignation,HireDate,HourlyRate,Layer,WorkDayStart,WorkDayEnd,Location,DateOfBirth,PopulationType
+ceo@northwind.com,04/01/2026,,Executive,Leadership,CEO,01/15/2008,195.00,0,8,17,Sydney,03/20/1965,Employee
+cfo@northwind.com,04/01/2026,ceo@northwind.com,Finance,Finance,EVP,06/20/2012,160.00,1,8,17,Sydney,07/14/1970,Employee
+coo@northwind.com,04/01/2026,ceo@northwind.com,Operations,Operations,EVP,09/10/2013,155.00,1,8,17,Melbourne,11/02/1968,Employee
+cto@northwind.com,04/01/2026,ceo@northwind.com,Technology,Engineering,EVP,02/05/2014,160.00,1,8,17,Brisbane,04/18/1972,Employee
+dir.fin@northwind.com,04/01/2026,cfo@northwind.com,Finance,Finance,Director,08/19/2018,95.00,2,8,17,Sydney,09/22/1978,Employee
+dir.ops@northwind.com,04/01/2026,coo@northwind.com,Operations,Operations,Director,04/03/2019,92.00,2,8,17,Melbourne,02/11/1981,Employee
+dir.eng@northwind.com,04/01/2026,cto@northwind.com,Technology,Engineering,Director,10/27/2018,98.00,2,8,17,Brisbane,06/05/1980,Employee
+mgr.fin1@northwind.com,04/01/2026,dir.fin@northwind.com,,Finance,Manager,05/06/2020,75.00,3,8,17,Sydney,03/11/1989,Employee
+mgr.fin2@northwind.com,04/01/2026,ghost.manager@northwind.com,Finance,Finance,Manager,09/15/2020,72.00,3,8,17,Sydney,07/05/1990,Employee
+mgr.ops1@northwind.com,04/01/2026,dir.ops@northwind.com,Operations,Operations,Manager,02/28/2021,72.00,3,8,17,Melbourne,11/28/1988,Employee
+mgr.ops2@northwind.com,04/01/2026,dir.ops@northwind.com,Operations,Operations,Manager,01/01/1900,70.00,3,8,17,Melbourne,02/14/1991,Employee
+mgr.eng1@northwind.com,04/01/2026,dir.eng@northwind.com,Technology,Engineering,Manager,#N/A,82.00,3,8,17,Brisbane,10/22/1990,Employee
+mgr.eng2@northwind.com,04/01/2026,dir.eng@northwind.com,Technology (50001),Engineering,Manager,09/22/2021,81.00,3,8,17,Brisbane,05/09/1989,Employee
+analyst.fin1@northwind.com,04/01/2026,mgr.fin1@northwind.com,Finance,Finance,Analyst,03/01/2022,$55.00,4,8,17,Sydney,04/12/1993,Employee
+analyst.fin2@northwind.com,04/01/2026,mgr.fin1@northwind.com,Finance,Finance,Analyst,08/15/2022,52.00,Senior,8,17,Sydney,07/08/1994,Employee
+analyst.ops1@northwind.com,04/01/2026,mgr.ops1@northwind.com,Operations,Operations,Analyst,05/05/2023,42.00,4,25,17,Melbourne,09/14/1996,Employee
+analyst.ops2@northwind.com,04/01/2026,mgr.ops1@northwind.com,Operations,Operations,Analyst,07/18/2023,41.00,4,17,9,Melbourne,02/28/1997,Employee
+eng.sw1@northwind.com,04/01/2026,mgr.eng1@northwind.com,Technology,Engineering,Engineer,10/24/2022,68.00,4,8,17,Brisbane,08/17/1994,Employee
+eng.sw2@northwind.com,04/01/2026,,Technology,Engineering,Engineer,02/14/2023,65.00,4,8,17,Brisbane,12/03/1995,Employee
+eng.sw1@northwind.com,04/01/2026,mgr.eng1@northwind.com,Technology,Engineering,Engineer,10/24/2022,68.00,4,8,17,Brisbane,08/17/1994,Employee
+eng.mob1.northwind.com,04/01/2026,mgr.eng2@northwind.com,Technology,Engineering,Engineer,06/28/2023,67.00,4,8,17,Brisbane,05/20/1996,Employee
+hr.partner1@northwind.com,13/04/2026,coo@northwind.com,Human Resources,HR,Manager,11/15/2017,78.00,3,8,17,Sydney,06/30/1985,Employee
+hr.partner2@northwind.com,04/01/2026,coo@northwind.com,Human Resources,HR,Analyst,03/20/2024,50.00,4,8,17,Sydney,01/25/1992,Employee
+ops.assoc1@northwind.com,04/01/2026,mgr.ops2@northwind.com,Operations,Operations,Associate,09/14/2024,40.00,4,8,17,Melbourne,03/19/1998,Employee
+data.eng1@northwind.com,04/01/2026,dir.eng@northwind.com,Technology,Data Science,Engineer,01/10/2025,66.00,4,9,18,Brisbane,08/29/1993,Employee
+data.eng2@northwind.com,04/01/2026,dir.eng@northwind.com,Technology,Data Science,Engineer,NULL,64.00,4,9,18,Brisbane,11/25/1995,Employee
+finance.clerk1@northwind.com,04/01/2026,mgr.fin2@northwind.com,Finance,Finance,Associate,02/01/2025,38.00,4,8,17,Sydney,04/17/1996,Employee
