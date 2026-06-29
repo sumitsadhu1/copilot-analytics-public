@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Factual claims in our documentation sourced from Microsoft Learn. Each claim is checked against its MS Learn source on every push.",
-    "last_verified": "2026-04-23",
+    "last_verified": "2026-06-29",
     "severity_levels": {
       "critical": "Incorrect claim could cause deployment failure or data loss",
       "high": "Incorrect claim changes user decisions or procedures",
@@ -65,8 +65,7 @@
       "source_anchor": "feature-availability-based-on-licenses",
       "verify_text": [
         "at least 50 Viva Insights licenses",
-        "at least 50 Copilot licenses",
-        "50 Copilot or Viva Insights"
+        "at least 50 Copilot licenses"
       ],
       "our_files": [
         "2-setup/admin-setup.html",
@@ -363,12 +362,12 @@
     },
     {
       "id": "meeting-underreporting",
-      "claim": "Known meeting metric underreporting from September 6 through November 3 2025",
+      "claim": "Earlier meeting-metric underreporting (September 6 - November 3 2025) is resolved and is no longer separately listed on MS Learn; only the email window (Jun 1 2025-Feb 18 2026) remains documented",
       "source_page": "copilot-dashboard",
-      "source_anchor": "known-underreporting-issue-with-copilot-assisted-hours-metrics",
+      "source_anchor": "adoption",
       "verify_text": [
-        "September 6",
-        "November 3, 2025"
+        "June 1, 2025",
+        "February 18, 2026"
       ],
       "our_files": [
         "3-operate/dashboard-guide.html"

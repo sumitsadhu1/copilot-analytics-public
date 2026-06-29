@@ -1819,7 +1819,7 @@
 <h2>10.2 Viva Insights Dashboard &amp; Analytics Reports</h2>
 <table>
   <tr><th>Issue</th><th>Possible Cause</th><th>Resolution</th></tr>
-  <tr><td>Dashboard access denied</td><td>Copilot Dashboard VFAM policy is OFF or scoped to specific users</td><td>Admin Center → Settings → Viva → Viva Insights → Set up and management → Turn Advanced Insights on or off → verify <strong>Enable Copilot Dashboard</strong> is ON for Everyone (or includes the affected user)</td></tr>
+  <tr><td>Dashboard access denied</td><td>Viva Insights web app VFAM policy is OFF or scoped to specific users (pre-rollout tenants: Copilot Dashboard)</td><td>Admin Center → Settings → Viva → Viva Insights → Set up and management → Turn Advanced Insights on or off → verify the <strong>Viva Insights web app</strong> control (pre-rollout: <strong>Copilot Dashboard</strong>) is ON for Everyone (or includes the affected user)</td></tr>
   <tr><td>Dashboard access denied</td><td>AI Admin not added to access list</td><td>AI Admins must explicitly add themselves via Manage user access for Copilot Dashboard</td></tr>
   <tr><td>Dashboard access denied</td><td>Delegation VFAM policy restricts delegates</td><td>Check <strong>Copilot Dashboard Delegation</strong> policy — if scoped to specific users, delegates must be included</td></tr>
   <tr><td>Dashboard access denied</td><td>Less than 2,500 users in tenant (no auto-access)</td><td>Use manual access assignment or delegate access</td></tr>

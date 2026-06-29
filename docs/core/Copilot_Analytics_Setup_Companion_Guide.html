@@ -480,7 +480,7 @@
   </ol>
   <table>
     <tr><th>Policy</th><th>Required State</th><th>What Happens If Off</th></tr>
-    <tr><td><strong>Copilot Dashboard</strong> (Enable Copilot Dashboard)</td><td>On</td><td>Nobody can view the dashboard — all other steps are pointless</td></tr>
+    <tr><td><strong>Viva Insights web app</strong> (pre-rollout tenants: <strong>Copilot Dashboard</strong>)</td><td>On</td><td>Nobody can view the dashboard, Analytics Reports, or analyst tools — all other steps are pointless</td></tr>
     <tr><td><strong>Copilot Dashboard Delegation</strong></td><td>On</td><td>Users cannot share dashboard access with delegates</td></tr>
     <tr><td><strong>Behavioral Experiences</strong></td><td>On</td><td>Collaboration data (meeting time, email, chat) does not flow — breaks Impact page comparisons</td></tr>
     <tr><td><strong>Auto CxO Identification</strong> (Dashboard AutoEnablement)</td><td>On (recommended)</td><td>Senior leaders do not get automatic access — must be added manually</td></tr>
@@ -626,7 +626,7 @@
     <tr><td><strong>Search &amp; Summaries</strong></td><td>Copilot Chat (work) prompts, Summarize email/Word/PPT actions, Excel analysis, Chat in Word/PPT/Excel prompts</td><td>6 minutes per action (based on Microsoft study #4)</td></tr>
     <tr><td><strong>Content Creation</strong></td><td>Draft email, Draft in Word, Create presentation, Rewrite text actions</td><td>6 minutes per action</td></tr>
   </table>
-  <p><strong>Assisted Value</strong> = Assisted Hours × Hourly Rate (default $72/hour, configurable)</p>
+  <p><strong>Assisted Value</strong> = Assisted Hours × Hourly Rate (default $72/hour; configurable in-session only &mdash; the change is not saved and resets on reopen)</p>
   <p><em>These are broad approximations based on best available research. Microsoft may update the methodology.</em></p>
 </div>
 
@@ -1335,7 +1335,7 @@
 <h2>10.2 Viva Insights Dashboard &amp; Analytics Reports</h2>
 <table>
   <tr><th>Issue</th><th>Possible Cause</th><th>Resolution</th></tr>
-  <tr><td>Dashboard access denied</td><td>Copilot Dashboard VFAM policy is OFF or scoped to specific users</td><td>Admin Center → Settings → Viva → Viva Insights → Set up and management → Turn Advanced Insights on or off → verify <strong>Enable Copilot Dashboard</strong> is ON for Everyone (or includes the affected user)</td></tr>
+  <tr><td>Dashboard access denied</td><td>Viva Insights web app VFAM policy is OFF or scoped to specific users (pre-rollout tenants: Copilot Dashboard)</td><td>Admin Center → Settings → Viva → Viva Insights → Set up and management → Turn Advanced Insights on or off → verify the <strong>Viva Insights web app</strong> control (pre-rollout: <strong>Copilot Dashboard</strong>) is ON for Everyone (or includes the affected user)</td></tr>
   <tr><td>Dashboard access denied</td><td>AI Admin not added to access list</td><td>AI Admins must explicitly add themselves via Manage user access for Copilot Dashboard</td></tr>
   <tr><td>Dashboard access denied</td><td>Delegation VFAM policy restricts delegates</td><td>Check <strong>Copilot Dashboard Delegation</strong> policy — if scoped to specific users, delegates must be included</td></tr>
   <tr><td>Dashboard access denied</td><td>Less than 2,500 users in tenant (no auto-access)</td><td>Use manual access assignment or delegate access</td></tr>
