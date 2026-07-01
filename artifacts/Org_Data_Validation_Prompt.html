@@ -62,10 +62,15 @@
   <p>This page provides <strong>two formats</strong> for the same validation. Choose based on your AI platform:</p>
   <table style="margin:10px 0;">
     <tr><th>Format</th><th>Best For</th><th>Character Count</th></tr>
-    <tr><td><a href="#modular"><strong>Modular Flow (3 Prompts)</strong></a></td><td>Microsoft 365 Copilot Analyst Agent, Copilot Chat</td><td>~4,500 chars each</td></tr>
+    <tr><td><a href="#modular"><strong>Modular Flow (3 Prompts)</strong></a> <strong style="color:var(--success);">(Recommended)</strong></td><td>Microsoft 365 Copilot Analyst Agent, Copilot Chat</td><td>~4,500 chars each</td></tr>
     <tr><td><a href="#full-prompt"><strong>Full Prompt (Single)</strong></a></td><td>GitHub Copilot (Opus), ChatGPT, Claude</td><td>~18,000 chars</td></tr>
   </table>
   <p>Both formats produce the same validation. The modular flow splits the analysis into three sequential steps to fit within M365 Copilot input limits. Always <strong>attach or paste the customer&rsquo;s org data file</strong> (Excel or CSV) with each prompt.</p>
+</div>
+
+<div class="callout warning">
+  <div class="callout-title">Using a Non-Microsoft AI Tool?</div>
+  <p>The org data file contains <strong>real personnel data</strong>. Pasting or attaching it to tools outside your Microsoft 365 boundary &mdash; such as ChatGPT, Claude, or GitHub Copilot &mdash; moves that data beyond your Microsoft 365 data-protection and compliance commitments. Check your organisation&rsquo;s data-handling policy first.</p>
 </div>
 
 <!-- ═══════════════════════ 1. MODULAR FLOW ═══════════════════════ -->
@@ -77,6 +82,16 @@
   <p style="font-family:monospace; font-size:0.9em; margin-top:8px; color:var(--primary);">
     Prompt 1: Data Readiness &nbsp;&#10132;&nbsp; Prompt 2: Dashboard Impact &nbsp;&#10132;&nbsp; Prompt 3: Remediation Plan
   </p>
+  <p style="margin:14px 0 6px;"><strong>First time? Follow these steps:</strong></p>
+  <ol style="margin:0; padding-left:22px; line-height:1.7;">
+    <li>Open your AI tool &mdash; the <strong>Microsoft 365 Copilot Analyst Agent</strong> or <strong>Copilot Chat</strong> (recommended).</li>
+    <li>Have the <strong>org data file</strong> (Excel or CSV) saved and ready on your computer.</li>
+    <li>Find <strong>Prompt 1</strong> below and click its <strong>Copy</strong> button, then paste it into the AI tool.</li>
+    <li>In the same message, <strong>attach the org data file</strong>, then send it.</li>
+    <li>Read the report it produces and <strong>save it</strong> (for example, copy it into a Word or text document).</li>
+    <li>Repeat steps 3&ndash;5 for <strong>Prompt 2</strong>, then <strong>Prompt 3</strong> &mdash; attaching the <strong>same file</strong> each time.</li>
+    <li>Fix the file using the reports&rsquo; guidance, then run <strong>Prompt 1</strong> again to confirm it passes before uploading.</li>
+  </ol>
 </div>
 
 <!-- ─── PROMPT 1 ─── -->
