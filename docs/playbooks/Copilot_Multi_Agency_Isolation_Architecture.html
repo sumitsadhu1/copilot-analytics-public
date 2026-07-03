@@ -58,24 +58,6 @@
         </div>
 
         <div class="highlight-box" style="border-left:4px solid #0078d4; margin-bottom:20px;">
-            <strong>Three operating models for isolated Copilot reporting</strong>
-            <p style="margin:8px 0 10px;font-size:0.92em;">If you&rsquo;re evaluating the isolation model, there are three ways to operate it. They differ in <em>who</em> runs the analytics and <em>where</em> each agency&rsquo;s boundary is enforced &mdash; which in turn drives the setup effort.</p>
-            <table style="font-size:0.9em;margin:8px 0 12px;">
-                <thead>
-                    <tr><th style="width:5%">#</th><th style="width:50%">Operating model</th><th style="width:27%">Where the boundary sits</th><th style="width:18%">Setup effort</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td><strong>1</strong></td><td><strong>Hybrid</strong> &mdash; Central IT on the global partition, plus one partition per agency for that agency&rsquo;s own analysts</td><td>Viva Insights partition</td><td>High</td></tr>
-                    <tr><td><strong>2</strong></td><td><strong>Central, per-partition</strong> &mdash; central analysts assigned to individual agency partitions; each agency receives only its distributed report</td><td>Power BI distribution</td><td>High</td></tr>
-                    <tr><td><strong>3</strong></td><td><strong>Central + RLS</strong> &mdash; central analysts on the global partition; one shared report, with Power BI <abbr title="Row-Level Security">RLS</abbr> filtering each agency&rsquo;s view</td><td>Power BI RLS</td><td>Low</td></tr>
-                </tbody>
-            </table>
-            <p style="margin:0;font-size:0.88em;color:#8a4b00;background:#fff7ed;border:1px solid #fed7aa;border-radius:6px;padding:8px 10px;">
-                <strong>&#x26A0; Boundary strength differs &mdash; read before choosing Model&nbsp;3.</strong> Models&nbsp;1 and&nbsp;2 are anchored on <strong>Viva Insights partitions</strong> &mdash; a data-layer boundary an analyst cannot cross. Model&nbsp;3 is the lowest-effort but the <strong>softest</strong> boundary: there is no per-agency partition, so all agencies&rsquo; data co-resides in <strong>one Power BI dataset</strong>, and RLS only constrains workspace <strong>Viewers</strong> &mdash; anyone with <strong>Admin, Member, or Contributor</strong> access sees every agency (<a href="https://learn.microsoft.com/fabric/security/service-admin-row-level-security">RLS reference</a>). Choose Model&nbsp;3 only where Central IT fully governs workspace roles and <em>hard</em> data-layer isolation is not a compliance requirement; otherwise use Model&nbsp;1 or&nbsp;2, detailed below.
-            </p>
-        </div>
-
-        <div class="highlight-box" style="border-left:4px solid #0078d4; margin-bottom:20px;">
             <strong>TL;DR &mdash; Two Paths to Agency Isolation</strong>
             <p style="margin:8px 0 4px;font-size:0.92em;">Both paths share the same Phase 1 lockdown. Choose your data strategy based on your environment:</p>
             <table style="font-size:0.9em;margin:8px 0 12px;">
@@ -436,7 +418,7 @@
                 </div>
                 <ul>
                     <li><strong>Audit VFAM policies (Admin UI):</strong> Navigate to <code>admin.microsoft.com</code> &rarr; Settings &rarr; Microsoft Viva &rarr; Viva Insights &rarr; Set up and management &rarr; <strong>Turn Advanced Insights on or off</strong>. Review the status of each feature: AutoCxoIdentification, CopilotDashboardDelegation, AgentDashboard, CopilotMetricsReport. Document the current state (On/Off, scope: Everyone or Specific users).</li>
-                    <li><strong>Alternative (PowerShell):</strong> Run <code><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/viva-feature-access-management">Get-VivaModuleFeaturePolicy</a> -ModuleId VivaInsights</code> for a scripted audit of all policies.</li>
+                    <li><strong>Alternative (PowerShell):</strong> Run <code><a href="https://learn.microsoft.com/viva/feature-access-management">Get-VivaModuleFeaturePolicy</a> -ModuleId VivaInsights</code> for a scripted audit of all policies.</li>
                     <li><strong>Audit dashboard access list:</strong> Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; <strong>Manage user access for Copilot Dashboard</strong>. Check who currently has access.</li>
                     <li>Identify any agency CEOs or leaders who already have dashboard access (auto-enabled or manually added).</li>
                     <li>Verify the Entra ID ManagerID hierarchy &mdash; confirm each agency CEO reports to a different top-level node (not to each other).</li>
@@ -535,7 +517,7 @@
                     <img src="../../assets/images/partition-isolation-flow.svg"
                          class="zoomable-img"
                          title="Click to enlarge"
-                         alt="End-to-end flow showing where partition enabling fits: Phase 1 VFAM lockdown, Phase 2 org-data upload, Phase 3 partitions (Step A Enable Partitions one-time tenant switch, Step B create one partition per agency, Step C assign each analyst to their partition only, plus the auto-created global partition for Central IT), Phase 4 per-agency analyst runs the Copilot query and publishes a Power BI report, distributed via a Power BI workspace/app to a Viewer audience."
+                         alt="End-to-end flow showing where partition enabling fits: Phase 1 VFAM lockdown, Phase 2 org-data upload, Phase 3 partitions (Step A Enable Partitions one-time tenant switch, Step B create one partition per agency, Step C assign each analyst to their partition only, plus the auto-created global partition for Central IT), Phase 4 per-agency analyst runs the Copilot query and publishes a Power BI report, and a separate Power BI access layer using Viewer/app audiences and optional row-level security."
                          style="display:block;width:100%;max-width:680px;height:auto;margin:0 auto;border:1px solid #e5e7eb;border-radius:8px;padding:12px;background:#fff;">
                     <p class="zoom-hint" style="text-align:center;">&#128269; Click the diagram to enlarge &middot; use &plus;&nbsp;/&nbsp;&minus; to zoom &middot; press Esc to close</p>
                     <figcaption style="font-size:0.9em;color:#374151;margin-top:14px;line-height:1.55;">
@@ -549,7 +531,9 @@
                             <li>&#9317; Assign the Insights Analyst to their partition <strong>only</strong> &mdash; <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/assign-user-roles">Assign user roles</a></li>
                             <li>&#9318; Run the Copilot query &amp; download the Power BI template (partition&nbsp;+&nbsp;query IDs) &mdash; <a href="https://learn.microsoft.com/en-us/viva/insights/advanced/analyst/templates/microsoft-365-copilot-adoption">Microsoft&nbsp;365 Copilot adoption report</a></li>
                             <li>&#9319; Distribute via a Power BI workspace/app to a Viewer audience &mdash; <a href="https://learn.microsoft.com/power-bi/collaborate-share/service-roles-new-workspaces">Roles in workspaces</a> &middot; <a href="https://learn.microsoft.com/power-bi/collaborate-share/service-create-distribute-apps">Publish an app</a></li>
+                            <li>&#9320; Optional row-level split inside one shared report &mdash; <a href="https://learn.microsoft.com/fabric/security/service-admin-row-level-security">Row-level security (RLS)</a></li>
                         </ol>
+                        <span style="display:block;margin-top:10px;font-size:0.92em;color:#6b7280;">The Power BI access layer (&#9319;&ndash;&#9320;) is a <em>separate</em> control from partitions: partitions decide what data the analyst can query; Power BI workspace/app permissions and RLS decide who can open the published report and which rows they see.</span>
                     </figcaption>
                 </figure>
 
@@ -631,6 +615,7 @@
                 <ul>
                     <li>Create dedicated Power BI workspaces per agency (e.g., <code>Agency-A-Copilot-Analytics</code>).</li>
                     <li>Publish reports and grant Viewer access to agency leadership via Entra group.</li>
+                    <li>Configure <a href="https://learn.microsoft.com/fabric/security/service-admin-row-level-security">Row-Level Security</a> (RLS) as a secondary control if multiple agencies share a workspace.</li>
                     <li><strong>Licensing:</strong> Each viewer needs a <strong>Power BI Pro</strong> or <strong>Premium Per User (PPU)</strong> licence. Alternatively, if your organisation has a <strong>Power BI Premium capacity</strong> (P or F SKU), reports published to that capacity can be viewed by users with a free Power BI licence &mdash; eliminating per-user viewer costs. Consult your licensing/finance owner.</li>
                 </ul>
                 <p><strong>Option B: Viva Insights <a href="https://learn.microsoft.com/viva/insights/advanced/analyst/publish-reports">Publish Reports</a></strong> (prerequisites apply &mdash; review notes below)</p>

@@ -508,10 +508,10 @@ Apply these checks to the file:
    Check whether the column names or values suggest the data originates from a known HRIS platform. If detected, recommend the native M365 connector instead of CSV upload — this eliminates the entire manual validation and upload workflow.
 
    SAP SuccessFactors indicators: columns named userId, jobCode, businessUnit, division, department, costCenter, employmentNav, or values containing "SF-" prefixes, SuccessFactors-style employee IDs.
-   → Recommend: "Your data appears to originate from SAP SuccessFactors. Microsoft 365 provides a native SAP SuccessFactors connector that syncs org data automatically on a weekly/monthly schedule — no CSV preparation or upload needed. See: https://learn.microsoft.com/viva/organizational-data/sap-successfactors-connector"
+   → Recommend: "Your data appears to originate from SAP SuccessFactors. Microsoft 365 provides a native SAP SuccessFactors connector that syncs org data automatically on a weekly/monthly schedule — no CSV preparation or upload needed. See: https://learn.microsoft.com/viva/import-org-data-success-factors"
 
    Workday indicators: columns named Worker_ID, Supervisory_Organization, Cost_Center_Reference, Management_Level, or values containing Workday-style WD/WID identifiers.
-   → Recommend: "Your data appears to originate from Workday. Microsoft 365 provides a native Workday connector (for tenants with ≤100K users) that syncs org data automatically. For larger tenants, use the Workday RaaS → Azure Blob Storage path. See: https://learn.microsoft.com/viva/organizational-data/workday-connector"
+   → Recommend: "Your data appears to originate from Workday. Microsoft 365 provides a native Workday connector (for tenants with ≤100K users) that syncs org data automatically. For larger tenants, use the Workday RaaS → Azure Blob Storage path. See: https://learn.microsoft.com/viva/import-org-data-workday"
 
    If no HRIS platform is detected, skip this section silently — do not mention it.
 
