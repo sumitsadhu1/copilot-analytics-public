@@ -1,0 +1,5 @@
+# Generated at runtime — not source
+last-report.json
+link-cache.json
+__pycache__/
+*.pyc

@@ -16,7 +16,8 @@ FILES = [
     # Layer Cake structure (new)
     ("1-strategy/executive-briefing.html", "Executive Briefing"),
     ("1-strategy/data-strategy.html", "Data Strategy"),
-    ("1-strategy/multi-agency-decision.html", "Multi-Agency Decision Guide"),
+    ("decide/architecture.html", "Multi-Agency Architecture Decision"),
+    ("explain/why-multi-agency-is-hard.html", "Why Multi-Agency Is Hard"),
     ("2-setup/admin-setup.html", "Admin Setup Guide"),
     ("2-setup/data-onboarding.html", "Data Onboarding Guide"),
     ("2-setup/privacy-configuration.html", "Privacy Configuration"),
@@ -41,6 +42,7 @@ FILES = [
     ("docs/playbooks/Advanced_Viva_Insights_Collaboration_Guide.html", "Advanced Collaboration Analysis"),
     ("artifacts/Copilot_Analytics_FAQ.html", "FAQ (Legacy)"),
     ("artifacts/Copilot_Analytics_QuickStart_CheatSheet.html", "Quick-Start Cheat Sheet"),
+    ("artifacts/Org_Data_Validation_Prompt.html", "Org Data Validation Prompt"),
 ]
 
 def strip_tags(html):
