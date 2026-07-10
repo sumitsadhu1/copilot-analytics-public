@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Troubleshooting Scenarios — Copilot Analytics</title>
 <link rel="stylesheet" href="../../assets/docs-style.css">
+<script defer src="../../assets/shell.js"></script>
 <style>
   /* Scenario catalogue cards — mirrors landing-page card style, scoped here */
   .scenario-grid {
@@ -16,22 +17,22 @@
   .scenario-card {
     background: #fff;
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 16px;
     padding: 22px 22px 18px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(112,144,176,0.10);
     transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
     position: relative;
   }
   .scenario-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.04), 0 12px 32px rgba(0,0,0,0.08);
-    border-color: rgba(0,0,0,0.16);
+    box-shadow: 0 12px 30px rgba(112,144,176,0.18);
+    border-color: var(--border-strong);
   }
   .scenario-card .sc-badge {
     display: inline-block;
-    background: linear-gradient(135deg, #b45309, #dc2626);
+    background: linear-gradient(135deg, #FFB547, #EE5D50);
     color: #fff;
     font-size: 0.66em;
     font-weight: 700;
@@ -79,7 +80,7 @@
   .scenario-card .sc-cta {
     display: inline-block;
     padding: 8px 16px;
-    background: #b45309;
+    background: var(--accent);
     color: #fff;
     text-decoration: none;
     border-radius: 8px;
@@ -91,8 +92,8 @@
     transition: background 220ms ease, box-shadow 220ms ease;
   }
   .scenario-card .sc-cta:hover {
-    background: #92400e;
-    box-shadow: 0 4px 12px rgba(180,83,9,0.22);
+    background: var(--accent-hover);
+    box-shadow: 0 6px 16px rgba(66,42,251,0.28);
   }
   .placeholder-card {
     border: 1px dashed rgba(0,0,0,0.18);

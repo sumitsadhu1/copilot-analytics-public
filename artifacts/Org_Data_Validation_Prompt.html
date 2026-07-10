@@ -5,22 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Org Data Validation Prompt — Copilot Analytics</title>
 <link rel="stylesheet" href="../assets/docs-style.css">
+<script defer src="../assets/shell.js"></script>
 <style>
   body { max-width: 900px; }
   .prompt-block {
-    background: #1e1e1e; color: #d4d4d4; font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    background: #111C44; color: #d4d4d4; font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
     font-size: 0.88em; line-height: 1.65; padding: 24px 28px; border-radius: 8px;
     white-space: pre-wrap; word-wrap: break-word; margin: 20px 0;
-    border: 1px solid #333; position: relative;
+    border: 1px solid rgba(147,165,255,0.16); position: relative;
   }
   .prompt-block .kw { color: #569cd6; }
   .prompt-block .hl { color: #ce9178; }
   .prompt-block .cm { color: #6a9955; }
   .copy-btn {
-    position: absolute; top: 10px; right: 10px; background: #0078d4; color: #fff;
-    border: none; border-radius: 4px; padding: 6px 14px; cursor: pointer; font-size: 0.85em;
+    position: absolute; top: 10px; right: 10px; background: var(--accent); color: #fff;
+    border: none; border-radius: 6px; padding: 6px 14px; cursor: pointer; font-size: 0.85em;
   }
-  .copy-btn:hover { background: #106ebe; }
+  .copy-btn:hover { background: var(--accent-hover); }
   .section-label {
     display: inline-block; background: var(--accent); color: #fff; font-size: 0.78em;
     padding: 3px 10px; border-radius: 3px; margin-bottom: 8px; text-transform: uppercase;
@@ -76,7 +77,7 @@
 <!-- ═══════════════════════ 1. MODULAR FLOW ═══════════════════════ -->
 <h1 id="modular">1. Modular Flow &mdash; 3 Prompts</h1>
 
-<div class="callout" style="border-left-color:#0078d4;">
+<div class="callout" style="border-left-color:var(--accent);">
   <div class="callout-title">How the Flow Works</div>
   <p>Run these three prompts <strong>in order</strong>, attaching the <strong>same org data file</strong> to each. Each prompt produces a self-contained report you can save. The prompts guide you to the next step automatically.</p>
   <p style="font-family:monospace; font-size:0.9em; margin-top:8px; color:var(--primary);">
@@ -360,7 +361,7 @@ End with: "After completing all fixes, re-validate the file by running <span cla
 <!-- ═══════════════════════ FULL PROMPT (ADVANCED) ═══════════════════════ -->
 <h1 id="full-prompt">2. Full Prompt &mdash; Single Prompt (Advanced)</h1>
 
-<div class="callout" style="border-left-color:#8661c5;">
+<div class="callout" style="border-left-color:var(--accent-violet);">
   <div class="callout-title">For Large-Context AI Platforms</div>
   <p>This is the original monolithic prompt (~18,000 characters). Use with <strong>GitHub Copilot (Opus/Claude)</strong>, <strong>ChatGPT</strong>, or <strong>Claude</strong> which can handle the full prompt + file in a single pass. Not recommended for Microsoft 365 Copilot Chat or the Analyst Agent due to input size limits.</p>
 </div>

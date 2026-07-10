@@ -4,51 +4,119 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Browse All Guides — Copilot Analytics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&display=swap">
 <style>
   :root {
     color-scheme: light;
-    --bg: #fafafa;
-    --surface: rgba(255, 255, 255, 0.74);
-    --surface-hover: rgba(255, 255, 255, 0.94);
-    --surface-strong: rgba(0, 0, 0, 0.025);
-    --border: rgba(0, 0, 0, 0.08);
-    --border-strong: rgba(0, 0, 0, 0.14);
-    --text: rgba(0, 0, 0, 0.87);
-    --text-secondary: rgba(0, 0, 0, 0.72);
-    --muted: rgba(0, 0, 0, 0.5);
-    --accent-sky: #0284c7;
-    --accent-violet: #7c3aed;
-    --accent-sky-bg: rgba(56, 189, 248, 0.10);
-    --accent-violet-bg: rgba(139, 92, 246, 0.08);
-    --success: #047857;
-    --warning: #b45309;
-    --radius-sm: 8px;
-    --radius-md: 14px;
+    --bg: #F4F7FE;
+    --surface: #FFFFFF;
+    --surface-hover: #FFFFFF;
+    --surface-strong: #EEF2FB;
+    --border: #E3E9F5;
+    --border-strong: #D5DEF0;
+    --text: #1B2559;
+    --text-secondary: #5A6A97;
+    --muted: #8F9BBA;
+    --accent-sky: #422AFB;
+    --accent-violet: #7551FF;
+    --accent-sky-bg: rgba(66, 42, 251, 0.08);
+    --accent-violet-bg: rgba(117, 81, 255, 0.10);
+    --success: #01B574;
+    --warning: #B45309;
+    --radius-sm: 12px;
+    --radius-md: 16px;
     --radius-lg: 20px;
-    --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
-    --shadow-card-hover: 0 4px 6px rgba(0,0,0,0.04), 0 12px 32px rgba(0,0,0,0.08);
-    --shadow-elevated: 0 24px 80px rgba(15, 23, 42, 0.08);
+    --shadow-card: 0 4px 12px rgba(112,144,176,0.10);
+    --shadow-card-hover: 0 12px 30px rgba(112,144,176,0.18);
+    --shadow-elevated: 14px 17px 40px 4px rgba(112,144,176,0.18);
     --transition: 220ms ease;
+    --accent: #422AFB;
+    --accent-hover: #3311DB;
+    --accent-bg: rgba(66,42,251,0.08);
+    --nav-hover: #F0F3FB;
+    --depth-4: 0 1.6px 3.6px rgba(11,20,55,0.10), 0 0.3px 0.9px rgba(11,20,55,0.07);
+    --depth-16: 0 6.4px 14.4px rgba(11,20,55,0.11), 0 1.2px 3.6px rgba(11,20,55,0.09);
+    --app-bar-h: 48px;
+    --nav-w: 264px;
+    --nav-w-collapsed: 62px;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'DM Sans', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     color: var(--text);
-    background:
-      radial-gradient(circle at top left, rgba(59, 130, 246, 0.04), transparent 35%),
-      radial-gradient(circle at 80% 10%, rgba(168, 85, 247, 0.03), transparent 30%),
-      var(--bg);
-    min-height: 100vh;
+    letter-spacing: -0.2px;
+    background: var(--bg);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
   }
 
+  /* Icons */
+  .ic { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; }
+  .brand-tile .ic { width: 16px; height: 16px; }
+
+  /* App bar */
+  .app-bar { flex: 0 0 auto; height: var(--app-bar-h); display: flex; align-items: center; gap: 10px; padding: 0 12px; background: #fff; border-bottom: 1px solid var(--border); box-shadow: var(--depth-4); position: relative; z-index: 60; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .brand-tile { width: 28px; height: 28px; border-radius: 8px; flex: 0 0 28px; background: linear-gradient(135deg,#422AFB,#7551FF); display: grid; place-items: center; color: #fff; box-shadow: 0 2px 6px rgba(66,42,251,0.35); }
+  .brand-name { font-weight: 700; font-size: 0.95rem; color: var(--text); white-space: nowrap; }
+  .brand-name span { color: var(--muted); font-weight: 500; }
+  .app-search { flex: 1 1 auto; max-width: 560px; margin: 0 auto; position: relative; }
+  .app-search .ic { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--muted); pointer-events: none; }
+  .app-search input { width: 100%; height: 34px; border-radius: 8px; border: 1px solid var(--border-strong); background: #F7F9FE; padding: 0 34px; font: inherit; font-size: 0.85rem; color: var(--text); transition: border-color .16s, box-shadow .16s, background .16s; }
+  .app-search input::placeholder { color: var(--muted); }
+  .app-search input:focus { outline: none; background: #fff; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-bg); }
+  .app-search .search-clear { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); border: none; background: none; color: var(--muted); cursor: pointer; width: 24px; height: 24px; border-radius: 6px; display: none; place-items: center; }
+  .app-search.has-value .search-clear { display: grid; }
+  .app-search .search-clear .ic { position: static; transform: none; width: 15px; height: 15px; }
+  .app-search .search-clear:hover { background: var(--nav-hover); color: var(--text); }
+  .app-bar-right { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+  .icon-btn { width: 36px; height: 36px; border-radius: 8px; border: none; background: none; color: var(--text-secondary); cursor: pointer; display: grid; place-items: center; transition: background .15s, color .15s; text-decoration: none; }
+  .icon-btn:hover { background: var(--nav-hover); color: var(--text); }
+  .icon-btn:focus-visible, .nav-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* Body layout */
+  .app-body { flex: 1 1 auto; display: flex; min-height: 0; position: relative; }
+  .app-main { flex: 1 1 auto; overflow-y: auto; min-width: 0; background: radial-gradient(circle at 12% -5%, rgba(66,42,251,0.05), transparent 30%), radial-gradient(circle at 92% 0%, rgba(117,81,255,0.05), transparent 26%), var(--bg); }
+  .app-main > .container { max-width: 1120px; }
+
+  /* Nav rail */
+  .nav-rail { flex: 0 0 auto; width: var(--nav-w); background: #fff; border-right: 1px solid var(--border); padding: 10px 12px 24px; overflow-y: auto; overflow-x: hidden; transition: width .2s ease; z-index: 40; }
+  .nav-label { padding: 14px 12px 6px; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); font-weight: 700; white-space: nowrap; }
+  .nav-item { display: flex; align-items: center; gap: 12px; padding: 9px 12px; border-radius: 8px; color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; font-weight: 500; position: relative; white-space: nowrap; transition: background .15s, color .15s; margin-bottom: 1px; }
+  .nav-item:hover { background: var(--nav-hover); color: var(--text); }
+  .nav-item.active { background: var(--accent-bg); color: var(--accent); font-weight: 700; }
+  .nav-item.active::before { content: ''; position: absolute; left: -12px; top: 9px; bottom: 9px; width: 3px; border-radius: 0 3px 3px 0; background: var(--accent); }
+  .nav-rail hr { border: none; border-top: 1px solid var(--border); margin: 10px 4px; }
+  body.nav-collapsed .nav-rail { width: var(--nav-w-collapsed); padding-left: 8px; padding-right: 8px; }
+  body.nav-collapsed .nav-label { visibility: hidden; height: 10px; padding: 6px 0 0; }
+  body.nav-collapsed .nav-item { justify-content: center; gap: 0; }
+  body.nav-collapsed .nav-item .nav-txt { display: none; }
+  body.nav-collapsed .nav-item.active::before { left: -8px; }
+  .nav-scrim { display: none; }
+
+  @media (max-width: 860px) {
+    .nav-rail { position: fixed; top: var(--app-bar-h); bottom: 0; left: 0; width: var(--nav-w); transform: translateX(-100%); box-shadow: var(--depth-16); transition: transform .24s ease; }
+    body.nav-open .nav-rail { transform: translateX(0); }
+    body.nav-collapsed .nav-rail { width: var(--nav-w); padding: 10px 12px 24px; }
+    body.nav-collapsed .nav-item { justify-content: flex-start; gap: 12px; }
+    body.nav-collapsed .nav-item .nav-txt { display: inline; }
+    .nav-scrim { display: block; position: fixed; inset: var(--app-bar-h) 0 0 0; background: rgba(11,20,55,0.28); opacity: 0; visibility: hidden; transition: opacity .2s; z-index: 35; }
+    body.nav-open .nav-scrim { opacity: 1; visibility: visible; }
+    .brand-name span { display: none; }
+  }
+  @media (max-width: 560px) { .brand-name { display: none; } }
+
   ::selection {
-    background: rgba(14, 165, 233, 0.16);
-    color: rgba(0, 0, 0, 0.92);
+    background: rgba(66, 42, 251, 0.14);
+    color: #1B2559;
   }
 
   .container { max-width: 1120px; margin: 0 auto; padding: 36px 24px; }
@@ -81,7 +149,7 @@
     font-weight: 300;
     letter-spacing: -0.02em;
     margin-bottom: 8px;
-    background-image: linear-gradient(to right, #0284c7, #1e3a8a, #7c3aed);
+    background-image: linear-gradient(to right, #422AFB, #11047A, #7551FF);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -125,7 +193,7 @@
     letter-spacing: 0.01em;
   }
   .role-btn:hover { border-color: var(--border-strong); color: var(--text); background: var(--surface-hover); }
-  .role-btn.active { border-color: var(--accent-sky); background: var(--accent-sky); color: #fff; box-shadow: 0 0 0 1px rgba(14,165,233,0.2), 0 4px 12px rgba(14,165,233,0.15); }
+  .role-btn.active { border-color: var(--accent-sky); background: var(--accent-sky); color: #fff; box-shadow: 0 0 0 1px rgba(66,42,251,0.2), 0 4px 12px rgba(66,42,251,0.15); }
 
   /* Cards */
   .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; margin-bottom: 40px; }
@@ -158,10 +226,10 @@
     text-transform: uppercase;
     width: fit-content;
   }
-  .badge-core { background: var(--accent-sky-bg); color: var(--accent-sky); border: 1px solid rgba(14,165,233,0.18); }
-  .badge-playbook { background: rgba(245,158,11,0.10); color: var(--warning); border: 1px solid rgba(245,158,11,0.15); }
-  .badge-artifact { background: rgba(16,185,129,0.10); color: var(--success); border: 1px solid rgba(16,185,129,0.18); }
-  .badge-architecture { background: var(--accent-violet-bg); color: #6d28d9; border: 1px solid rgba(139,92,246,0.15); }
+  .badge-core { background: var(--accent-sky-bg); color: var(--accent-sky); border: 1px solid rgba(66,42,251,0.18); }
+  .badge-playbook { background: rgba(255,181,71,0.14); color: var(--warning); border: 1px solid rgba(255,181,71,0.30); }
+  .badge-artifact { background: rgba(1,181,116,0.12); color: var(--success); border: 1px solid rgba(1,181,116,0.22); }
+  .badge-architecture { background: var(--accent-violet-bg); color: #7551FF; border: 1px solid rgba(117,81,255,0.20); }
 
   .card h3 { font-size: 1em; color: var(--text); font-weight: 650; margin-bottom: 8px; letter-spacing: -0.01em; }
   .card p { font-size: 0.86em; color: var(--text-secondary); flex-grow: 1; margin-bottom: 14px; line-height: 1.6; }
@@ -187,7 +255,7 @@
     text-align: center;
     transition: all var(--transition);
   }
-  .card a:hover { background: #0369a1; box-shadow: 0 4px 12px rgba(14,165,233,0.2); }
+  .card a:hover { background: #3311DB; box-shadow: 0 6px 16px rgba(66,42,251,0.28); }
 
   /* Topic Navigator */
   .topic-nav { max-width: 900px; margin: 0 auto 28px; }
@@ -209,7 +277,7 @@
     font-family: inherit;
   }
   .topic-pill:hover { border-color: var(--border-strong); color: var(--text); background: var(--surface-hover); }
-  .topic-pill.active { border-color: var(--accent-sky); background: var(--accent-sky); color: #fff; box-shadow: 0 2px 8px rgba(14,165,233,0.2); }
+  .topic-pill.active { border-color: var(--accent-sky); background: var(--accent-sky); color: #fff; box-shadow: 0 2px 8px rgba(66,42,251,0.2); }
 
   .no-results { text-align: center; color: var(--text-secondary); padding: 30px; font-size: 0.95em; display: none; }
 
@@ -231,7 +299,7 @@
   .search-results .sr-doc { font-size: 0.77em; color: var(--accent-sky); font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 2px; }
   .search-results .sr-heading { font-size: 0.92em; font-weight: 600; color: var(--text); margin: 3px 0; }
   .search-results .sr-preview { font-size: 0.82em; color: var(--text-secondary); line-height: 1.55; margin-top: 4px; }
-  .search-results .sr-preview mark { background: rgba(56,189,248,0.14); color: var(--text); padding: 1px 4px; border-radius: 3px; font-weight: 600; }
+  .search-results .sr-preview mark { background: rgba(66,42,251,0.12); color: var(--text); padding: 1px 4px; border-radius: 3px; font-weight: 600; }
 
   /* Section headers */
   .section-title {
@@ -242,6 +310,7 @@
     padding-left: 14px;
     border-left: 3px solid var(--accent-sky);
     letter-spacing: -0.01em;
+    scroll-margin-top: 16px;
   }
   .section-subtitle {
     font-size: 0.86em;
@@ -277,10 +346,53 @@
 </head>
 <body>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20.5 20.5 16.6 16.6"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9h12v-9"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1.1"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 3v2.4M12 18.6V21M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M3 12h2.4M18.6 12H21M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 3v17h17"/><rect x="7.5" y="12" width="2.8" height="5.5" rx="0.6"/><rect x="12.6" y="8.5" width="2.8" height="9" rx="0.6"/><rect x="17.7" y="5.5" width="2.8" height="12" rx="0.6"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 1 6.5 18H19"/></symbol>
+  <symbol id="i-arch" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="4.5" rx="1"/><rect x="3" y="16.5" width="6" height="4.5" rx="1"/><rect x="15" y="16.5" width="6" height="4.5" rx="1"/><path d="M12 7.5v4.5M6 16.5v-2.5h12v2.5"/></symbol>
+  <symbol id="i-tools" viewBox="0 0 24 24"><path d="M9.5 3h5M10.5 3v5.5L6 17a2 2 0 0 0 1.8 3h8.4a2 2 0 0 0 1.8-3L13.5 8.5V3"/><path d="M8.5 14h7"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></symbol>
+  <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3.5l1.9 4.9 4.9 1.9-4.9 1.9L12 17l-1.9-4.8L5.2 10.3l4.9-1.9z"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M20.5 12a7.8 7.8 0 0 1-11.3 7L4 20.5 5.5 15.4A7.8 7.8 0 1 1 20.5 12z"/></symbol>
+</defs></svg>
+
+<header class="app-bar">
+  <button class="icon-btn" id="navToggle" aria-label="Toggle navigation" aria-expanded="true"><svg class="ic"><use href="#i-menu"/></svg></button>
+  <a class="brand" href="index.html" aria-label="Copilot Analytics home">
+    <span class="brand-tile"><svg class="ic"><use href="#i-sparkle"/></svg></span>
+    <span class="brand-name">Copilot Analytics</span>
+  </a>
+  <div class="app-search" id="browseSearchWrap">
+    <svg class="ic"><use href="#i-search"/></svg>
+    <input type="search" id="browseSearch" placeholder="Search all guides&hellip;" aria-label="Search guides" autocomplete="off">
+    <button class="search-clear" id="browseSearchClear" aria-label="Clear search"><svg class="ic"><use href="#i-close"/></svg></button>
+  </div>
+  <div class="app-bar-right"></div>
+</header>
+
+<div class="app-body">
+  <div class="nav-scrim" id="navScrim"></div>
+  <nav class="nav-rail" id="navRail" aria-label="Primary">
+    <a class="nav-item" href="index.html"><svg class="ic"><use href="#i-home"/></svg><span class="nav-txt">Home</span></a>
+    <div class="nav-label">Areas</div>
+    <a class="nav-item" href="#strategy"><svg class="ic"><use href="#i-target"/></svg><span class="nav-txt">Strategy</span></a>
+    <a class="nav-item" href="#setup"><svg class="ic"><use href="#i-gear"/></svg><span class="nav-txt">Setup</span></a>
+    <a class="nav-item" href="#operate"><svg class="ic"><use href="#i-chart"/></svg><span class="nav-txt">Operate</span></a>
+    <a class="nav-item" href="#reference"><svg class="ic"><use href="#i-book"/></svg><span class="nav-txt">Reference</span></a>
+    <hr>
+    <a class="nav-item" href="artifacts/Org_Data_Validation_Prompt.html"><svg class="ic"><use href="#i-tools"/></svg><span class="nav-txt">Tools</span></a>
+    <a class="nav-item active" href="browse.html" aria-current="page"><svg class="ic"><use href="#i-grid"/></svg><span class="nav-txt">Browse all</span></a>
+  </nav>
+  <main class="app-main">
 <div class="container">
 
 <div class="breadcrumb"><a href="index.html">Home</a> / Browse all guides</div>
-<a href="index.html" class="back-link">&larr; Back to scenarios</a>
 
 <h1 class="page-title"><strong>Browse</strong> all guides</h1>
 <p class="page-desc">Every guide in the hub, filterable by role and topic.</p>
@@ -326,7 +438,7 @@
 <div class="no-results" id="noResults">No matching guides found. Try a different topic or role.</div>
 
 <!-- ═══ STRATEGY ═══ -->
-<h2 class="section-title">Strategy</h2>
+<h2 class="section-title" id="strategy">Strategy</h2>
 <p class="section-subtitle">Read before deployment. Understand capabilities, make decisions, choose architectures.</p>
 <div class="card-grid">
   <div class="card" data-roles="leader admin analyst governance finance" data-keywords="executive briefing CIO strategy ROI decision framework RACI capabilities overview tier architecture">
@@ -366,7 +478,7 @@
 </div>
 
 <!-- ═══ SETUP ═══ -->
-<h2 class="section-title">Setup</h2>
+<h2 class="section-title" id="setup">Setup</h2>
 <p class="section-subtitle">Configure and deploy. Step-by-step guides for IT administrators.</p>
 <div class="card-grid">
   <div class="card" data-roles="admin" data-keywords="admin setup configure dashboard enable VFAM roles licences tier admin center copilot dashboard agent analytics sentiment survey exclusion list manager settings delegation group size hourly rate">
@@ -417,7 +529,7 @@
 </div>
 
 <!-- ═══ OPERATE ═══ -->
-<h2 class="section-title">Operate</h2>
+<h2 class="section-title" id="operate">Operate</h2>
 <p class="section-subtitle">Use dashboards and reports. Ongoing operational guides for leaders, analysts, and admins.</p>
 <div class="card-grid">
   <div class="card" data-roles="leader admin analyst" data-keywords="dashboard adoption impact readiness sentiment assisted hours value ROI scope filter group delegation copilot analytics reports agent dashboard detect act metrics review cadence">
@@ -466,7 +578,7 @@
 </div>
 
 <!-- ═══ REFERENCE ═══ -->
-<h2 class="section-title">Reference</h2>
+<h2 class="section-title" id="reference">Reference</h2>
 <p class="section-subtitle">Look up details and fix issues. Always-available reference material.</p>
 <div class="card-grid">
   <div class="card" data-roles="admin analyst" data-keywords="troubleshooting fix error access denied VFAM dashboard not working org data upload validation failed processing failed suppressed N/A exclusion list">
@@ -513,14 +625,14 @@
 </div>
 
 <!-- ═══ TOOLS ═══ -->
-<h2 class="section-title" style="margin-bottom:18px;">
-  <span style="display:inline-block;background:linear-gradient(135deg,#0284c7,#7c3aed);color:#fff;font-size:0.68em;padding:4px 12px;border-radius:20px;margin-right:10px;vertical-align:middle;letter-spacing:0.5px;">TOOLS</span>
+<h2 class="section-title" id="tools" style="margin-bottom:18px;">
+  <span style="display:inline-block;background:linear-gradient(135deg,#422AFB,#7551FF);color:#fff;font-size:0.68em;padding:4px 12px;border-radius:20px;margin-right:10px;vertical-align:middle;letter-spacing:0.5px;">TOOLS</span>
   AI-Powered Analyst Tools
 </h2>
 <p class="section-subtitle">Reusable prompts and utilities to accelerate common analyst workflows.</p>
 <div class="card-grid">
   <div class="card" data-roles="admin analyst" data-keywords="org data validation prompt CSV upload attribute mapping Organization FunctionType Layer HireDate PersonId ManagerId required reserved custom PII fix checklist dashboard filter">
-    <span class="card-badge" style="background:linear-gradient(135deg,#0284c7,#7c3aed);color:#fff;">TOOL</span>
+    <span class="card-badge" style="background:linear-gradient(135deg,#422AFB,#7551FF);color:#fff;">TOOL</span>
     <h3>Org Data Validation Prompt</h3>
     <p>AI-assisted validation of customer org data files. Paste this prompt into any AI assistant with an Excel/CSV file to get a full validation report: required field checks, data type errors, Dashboard filter mapping, and a prioritised fix checklist.</p>
     <div class="card-roles">
@@ -538,6 +650,8 @@
   <a href="https://learn.microsoft.com/viva/insights/">Viva Insights</a> and
   <a href="https://learn.microsoft.com/copilot/microsoft-365/">Microsoft 365 Copilot</a> documentation on Microsoft Learn for the most up-to-date information.</p>
   <p style="margin-top:12px;">Copilot Analytics Documentation Hub &bull; April 2026 &bull; <a href="CONTRIBUTING.md">Contributing guide</a></p>
+</div>
+</main>
 </div>
 
 <script>
@@ -669,7 +783,7 @@ function applyFilters() {
 }
 
 // Topic pill navigation
-var searchInput = document.getElementById('docSearch');
+var searchInput = document.getElementById('browseSearch');
 var topicClearBtn = document.getElementById('topicClear');
 var activeTopic = null;
 
@@ -699,6 +813,79 @@ function clearTopic() {
   document.getElementById('searchResults').innerHTML = '';
   applyFilters();
 }
+
+// Shell: nav toggle + suite-bar search
+(function () {
+  var b = document.body;
+  var mq = window.matchMedia('(max-width: 860px)');
+  var navToggle = document.getElementById('navToggle');
+  var navScrim = document.getElementById('navScrim');
+  function updateAria() { var e = mq.matches ? b.classList.contains('nav-open') : !b.classList.contains('nav-collapsed'); navToggle.setAttribute('aria-expanded', String(e)); }
+  navToggle.addEventListener('click', function () { if (mq.matches) { b.classList.toggle('nav-open'); } else { b.classList.toggle('nav-collapsed'); } updateAria(); });
+  navScrim.addEventListener('click', function () { b.classList.remove('nav-open'); updateAria(); });
+  mq.addEventListener('change', function () { b.classList.remove('nav-open'); updateAria(); });
+
+  var topSearch = document.getElementById('browseSearch');
+  var wrap = document.getElementById('browseSearchWrap');
+  var clr = document.getElementById('browseSearchClear');
+  topSearch.addEventListener('input', function () {
+    wrap.classList.toggle('has-value', this.value.length > 0);
+    activeTopic = null;
+    var pills = document.querySelectorAll('.topic-pill');
+    for (var i = 0; i < pills.length; i++) { pills[i].classList.remove('active'); }
+    if (topicClearBtn) { topicClearBtn.style.display = 'none'; }
+    searchTerm = this.value;
+    applyFilters();
+  });
+  clr.addEventListener('click', function () { topSearch.value = ''; wrap.classList.remove('has-value'); searchTerm = ''; applyFilters(); topSearch.focus(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { b.classList.remove('nav-open'); updateAria(); } });
+  var q0 = new URLSearchParams(location.search).get('q');
+  if (q0) { topSearch.value = q0; wrap.classList.add('has-value'); searchTerm = q0; applyFilters(); }
+  function scrollToHash() {
+    var h = location.hash;
+    if (h && h.length > 1) { var el = document.querySelector(h); if (el) { el.scrollIntoView({ block: 'start' }); } }
+  }
+  window.addEventListener('hashchange', scrollToHash);
+  if (location.hash) { setTimeout(scrollToHash, 60); }
+})();
+
+// Nav-rail scroll-spy: highlight the area whose section is in view (releases "Browse all").
+(function () {
+  var main = document.querySelector('.app-main');
+  var rail = document.getElementById('navRail');
+  if (!main || !rail) { return; }
+  var items = ['strategy', 'setup', 'operate', 'reference'].map(function (id) {
+    return { sec: document.getElementById(id), link: rail.querySelector('a[href="#' + id + '"]') };
+  }).filter(function (x) { return x.sec && x.link; });
+  var toolsSec = document.getElementById('tools');
+  var toolsLink = rail.querySelector('.nav-item[href*="Org_Data_Validation"]');
+  if (toolsSec && toolsLink) { items.push({ sec: toolsSec, link: toolsLink }); }
+  var browseAll = rail.querySelector('a[href="browse.html"]');
+  function setActive(link) {
+    items.forEach(function (x) { x.link.classList.remove('active'); x.link.removeAttribute('aria-current'); });
+    if (browseAll) { browseAll.classList.remove('active'); browseAll.removeAttribute('aria-current'); }
+    if (link) { link.classList.add('active'); link.setAttribute('aria-current', 'true'); }
+    else if (browseAll) { browseAll.classList.add('active'); browseAll.setAttribute('aria-current', 'page'); }
+  }
+  var ticking = false;
+  function spy() {
+    ticking = false;
+    var current = null;
+    for (var i = 0; i < items.length; i++) {
+      var sec = items[i].sec;
+      if (sec.offsetParent !== null && sec.getBoundingClientRect().top <= 130) { current = items[i].link; }
+    }
+    if (main.scrollTop + main.clientHeight >= main.scrollHeight - 4) {
+      for (var j = items.length - 1; j >= 0; j--) {
+        if (items[j].sec.offsetParent !== null) { current = items[j].link; break; }
+      }
+    }
+    setActive(current);
+  }
+  main.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(spy); } }, { passive: true });
+  window.addEventListener('hashchange', function () { setTimeout(spy, 70); });
+  setTimeout(spy, 80);
+})();
 </script>
 
 </body>

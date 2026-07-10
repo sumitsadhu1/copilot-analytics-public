@@ -29,13 +29,14 @@ flowchart TD
         C3["Download PBI template +<br/>partition ID + query ID ⑦"]
         C4["Publish .pbix to the agency's<br/>Power BI workspace ⑧"]
     end
-    subgraph P5["Access Layer · Power BI"]
+    subgraph P5["Access Layer · Power BI (separate control from partitions)"]
         D1["Stakeholders = Viewer / app audience ⑧"]
+        D2["Optional: RLS for a row-level split<br/>inside one shared report ⑨"]
     end
     A1 --> A2 --> B1
     B5 --> C1
     B6 --> C1
-    C1 --> C2 --> C3 --> C4 --> D1
+    C1 --> C2 --> C3 --> C4 --> D1 --> D2
 
     click A1 "https://learn.microsoft.com/en-us/viva/feature-access-management" "Viva feature access management (VFAM)"
     click A2 "https://learn.microsoft.com/en-us/viva/organizational-data" "Upload organizational data"
@@ -48,6 +49,7 @@ flowchart TD
     click C3 "https://learn.microsoft.com/en-us/viva/insights/advanced/analyst/templates/microsoft-365-copilot-adoption" "Microsoft 365 Copilot adoption report"
     click C4 "https://learn.microsoft.com/power-bi/collaborate-share/service-create-distribute-apps" "Publish and distribute a Power BI app"
     click D1 "https://learn.microsoft.com/power-bi/collaborate-share/service-roles-new-workspaces" "Roles in Power BI workspaces"
+    click D2 "https://learn.microsoft.com/fabric/security/service-admin-row-level-security" "Row-level security (RLS) in Power BI"
 
     classDef enable fill:#fde68a,stroke:#b45309,stroke-width:3px,color:#1f2937;
     classDef agency fill:#dbeafe,stroke:#1e40af,color:#1f2937;
@@ -58,4 +60,4 @@ flowchart TD
     class B2,B3 agency;
     class B5,B6 assign;
     class B4 global;
-    class D1 access;
+    class D1,D2 access;

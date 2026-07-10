@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solution Architecture: Copilot Dashboard & Analytics for Multi-Agency Single Tenant</title>
     <link rel="stylesheet" href="../../assets/docs-style.css">
+    <script defer src="../../assets/shell.js"></script>
 <style>
   /* Page-specific: code color for architecture page */
   code { color: var(--warning); }
@@ -57,7 +58,7 @@
             <strong>&#x1F513; Don&rsquo;t need hard data isolation?</strong> If agencies are comfortable seeing each other&rsquo;s aggregate data and just want their own dashboards as the <em>default</em> view, use the simpler <a href="Copilot_Multi_Agency_Default_Priority_Architecture.html"><strong>Multi-Agency Default-Priority Architecture</strong></a> instead. It leverages native AutoCxO, delegation, and &ldquo;Your group&rdquo; scoping &mdash; no lockdowns or partitions required.
         </div>
 
-        <div class="highlight-box" style="border-left:4px solid #0078d4; margin-bottom:20px;">
+        <div class="highlight-box" style="border-left:4px solid var(--accent); margin-bottom:20px;">
             <strong>TL;DR &mdash; Two Paths to Agency Isolation</strong>
             <p style="margin:8px 0 4px;font-size:0.92em;">Both paths share the same Phase 1 lockdown. Choose your data strategy based on your environment:</p>
             <table style="font-size:0.9em;margin:8px 0 12px;">
