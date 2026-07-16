@@ -819,6 +819,7 @@ body.has-shell {
 .app-crumb .breadcrumb { color: var(--text); font-weight: 600; overflow: hidden; text-overflow: ellipsis; }
 .app-crumb #currentSection { color: var(--text-muted); font-weight: 500; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 
+.app-bar-spacer { flex: 1 1 auto; }
 .app-search { flex: 1 1 auto; max-width: 420px; margin: 0 auto; position: relative; }
 .app-search .ic { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
 .app-search input { width: 100%; height: 34px; border-radius: 8px; border: 1px solid var(--border-strong); background: #F7F9FE; padding: 0 14px 0 34px; font: inherit; font-size: 0.85rem; color: var(--text); transition: border-color .16s, box-shadow .16s, background .16s; }
@@ -828,6 +829,7 @@ body.has-shell {
 .app-bar-right { display: flex; align-items: center; gap: 4px; margin-left: auto; flex: 0 0 auto; }
 .app-bar .icon-btn { width: 36px; height: 36px; border-radius: 8px; border: none; background: none; color: var(--text-secondary); cursor: pointer; display: grid; place-items: center; transition: background .15s, color .15s; text-decoration: none; }
 .app-bar .icon-btn:hover { background: var(--nav-hover); color: var(--text); }
+.app-bar .search-launcher[aria-expanded="true"] { background: var(--accent-bg); color: var(--accent); }
 .app-bar .pdf-btn { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--border-strong); background: #fff; color: var(--text-secondary); font-size: 0.82rem; font-weight: 600; text-decoration: none; white-space: nowrap; }
 .app-bar .pdf-btn:hover { background: var(--nav-hover); color: var(--text); }
 .icon-btn:focus-visible, .nav-item:focus-visible, .app-search input:focus-visible, .app-crumb a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -836,6 +838,35 @@ body.has-shell {
 .app-main { flex: 1 1 auto; overflow-y: auto; min-width: 0; background: radial-gradient(circle at 12% -5%, rgba(66,42,251,0.05), transparent 30%), radial-gradient(circle at 92% 0%, rgba(117,81,255,0.05), transparent 26%), var(--bg); }
 .doc-content { max-width: 960px; margin: 0 auto; padding: 32px 44px 72px; }
 .doc-content > .cover:first-child { padding-top: 8px; }
+
+.search-panel {
+  flex: 0 0 clamp(320px, 28vw, 420px); min-width: 0; overflow: hidden;
+  background: #fff; border-left: 1px solid var(--border); box-shadow: -8px 0 24px rgba(11,20,55,0.08);
+  display: flex; flex-direction: column; z-index: 45;
+}
+.search-panel[hidden] { display: none; }
+.search-panel-header { display: flex; align-items: flex-start; gap: 12px; padding: 18px 16px 14px; border-bottom: 1px solid var(--border); }
+.search-panel-header > div { flex: 1 1 auto; min-width: 0; }
+.search-panel-header strong { display: block; color: var(--text); font-size: 1rem; }
+.search-panel-header span { display: block; color: var(--text-muted); font-size: 0.78rem; margin-top: 3px; line-height: 1.4; }
+.search-panel .icon-btn { width: 34px; height: 34px; border: none; border-radius: 8px; background: transparent; color: var(--text-secondary); cursor: pointer; display: grid; place-items: center; flex: 0 0 auto; }
+.search-panel .icon-btn:hover { background: var(--nav-hover); color: var(--text); }
+.search-panel-controls { padding: 14px 16px 10px; }
+.search-panel-input { position: relative; display: block; }
+.search-panel-input .ic { position: absolute; left: 11px; top: 50%; width: 16px; height: 16px; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
+.search-panel-input input { width: 100%; height: 40px; padding: 0 12px 0 36px; border: 1px solid var(--border-strong); border-radius: 8px; background: #F7F9FE; color: var(--text); font: inherit; font-size: 0.88rem; }
+.search-panel-input input:focus { outline: none; border-color: var(--accent); background: #fff; box-shadow: 0 0 0 3px var(--accent-bg); }
+.search-keep { display: inline-flex; align-items: center; gap: 8px; margin-top: 12px; color: var(--text-secondary); font-size: 0.8rem; cursor: pointer; }
+.search-keep input { accent-color: var(--accent); }
+.search-panel-status { margin: 0; padding: 4px 16px 10px; color: var(--text-muted); font-size: 0.78rem; }
+.search-panel-results { overflow-y: auto; padding: 0 10px 18px; }
+.search-result { display: block; padding: 12px; border-radius: 8px; color: var(--text); text-decoration: none; border: 1px solid transparent; }
+.search-result + .search-result { margin-top: 3px; }
+.search-result:hover, .search-result:focus-visible { background: var(--nav-hover); border-color: var(--border); color: var(--text); outline: none; }
+.search-result-source { display: block; color: var(--accent); font-size: 0.68rem; font-weight: 700; text-transform: uppercase; }
+.search-result strong { display: block; margin-top: 3px; font-size: 0.9rem; line-height: 1.35; }
+.search-result-preview { display: -webkit-box; margin-top: 5px; overflow: hidden; color: var(--text-secondary); font-size: 0.77rem; line-height: 1.45; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+.search-result mark { background: #FFF2A8; color: inherit; padding: 0; }
 
 .nav-rail { flex: 0 0 auto; width: var(--nav-w); background: #fff; border-right: 1px solid var(--border); padding: 10px 12px 24px; overflow-y: auto; overflow-x: hidden; transition: width .2s ease; z-index: 40; }
 .nav-rail .nav-label { padding: 14px 12px 6px; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); font-weight: 700; white-space: nowrap; }
@@ -854,6 +885,10 @@ body.nav-collapsed .nav-item .nav-txt { display: none; }
 body.nav-collapsed .nav-item.active::before { left: -8px; }
 
 .nav-scrim { display: none; }
+
+@media (max-width: 1100px) {
+  .search-panel { position: fixed; top: var(--app-bar-h); right: 0; bottom: 0; width: min(92vw, 420px); box-shadow: var(--depth-16); z-index: 55; }
+}
 
 @media (max-width: 860px) {
   .app-crumb { display: none; }
@@ -874,7 +909,7 @@ body.nav-collapsed .nav-item.active::before { left: -8px; }
 }
 @media print {
   body.has-shell { display: block; height: auto; overflow: visible; }
-  body.has-shell .app-bar, body.has-shell .nav-rail, body.has-shell .nav-scrim { display: none !important; }
+  body.has-shell .app-bar, body.has-shell .nav-rail, body.has-shell .nav-scrim, body.has-shell .search-panel { display: none !important; }
   body.has-shell .app-main { overflow: visible; height: auto; background: #fff; }
   body.has-shell .doc-content { max-width: 100%; padding: 0; }
 }

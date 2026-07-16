@@ -107,10 +107,10 @@
       '<span class="brand-name">Copilot Analytics</span>' +
     '</a>' +
     '<nav class="app-crumb" id="shCrumb" aria-label="Breadcrumb"></nav>' +
-    '<div class="app-search" id="shSearchWrap">' + icon('sh-search') +
-      '<input type="search" id="shSearch" placeholder="Search all guides&hellip;" aria-label="Search guides" autocomplete="off">' +
-    '</div>' +
-    '<div class="app-bar-right" id="shRight"></div>';
+    '<div class="app-bar-spacer"></div>' +
+    '<div class="app-bar-right" id="shRight">' +
+      '<button class="icon-btn search-launcher" id="shSearchOpen" type="button" aria-label="Search guides" aria-controls="shSearchPanel" aria-expanded="false">' + icon('sh-search') + '</button>' +
+    '</div>';
 
   var rail = doc.createElement('nav');
   rail.className = 'nav-rail';
@@ -138,10 +138,29 @@
   var scrim = doc.createElement('div'); scrim.className = 'nav-scrim'; scrim.id = 'shScrim';
   var appBody = doc.createElement('div'); appBody.className = 'app-body';
   var main = doc.createElement('main'); main.className = 'app-main'; main.id = 'main-content'; main.tabIndex = -1;
+  var searchPanel = doc.createElement('aside');
+  searchPanel.className = 'search-panel';
+  searchPanel.id = 'shSearchPanel';
+  searchPanel.setAttribute('aria-label', 'Search guides');
+  searchPanel.hidden = true;
+  searchPanel.innerHTML =
+    '<div class="search-panel-header">' +
+      '<div><strong>Search guides</strong><span>Find a section across the documentation hub.</span></div>' +
+      '<button class="icon-btn" id="shSearchClose" type="button" aria-label="Close search panel">' + icon('sh-close') + '</button>' +
+    '</div>' +
+    '<div class="search-panel-controls">' +
+      '<label class="search-panel-input">' + icon('sh-search') +
+        '<input type="search" id="shSearch" placeholder="Search all guides&hellip;" aria-label="Search all guides" autocomplete="off">' +
+      '</label>' +
+      '<label class="search-keep"><input type="checkbox" id="shSearchKeep"> <span>Keep open while navigating</span></label>' +
+    '</div>' +
+    '<p class="search-panel-status" id="shSearchStatus" role="status" aria-live="polite">Enter at least two characters.</p>' +
+    '<div class="search-panel-results" id="shSearchResults"></div>';
   main.appendChild(content);
   appBody.appendChild(scrim);
   appBody.appendChild(rail);
   appBody.appendChild(main);
+  appBody.appendChild(searchPanel);
 
   body.appendChild(spriteHost);
   body.appendChild(skipLink);
@@ -207,18 +226,151 @@
   scrim.addEventListener('click', function () { body.classList.remove('nav-open'); aria(); });
   if (mq.addEventListener) { mq.addEventListener('change', function () { body.classList.remove('nav-open'); aria(); }); }
 
+  var searchOpen = doc.getElementById('shSearchOpen');
+  var searchClose = doc.getElementById('shSearchClose');
   var searchBox = doc.getElementById('shSearch');
-  searchBox.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter') {
-      var q = searchBox.value.trim();
-      location.href = prefix + 'browse.html' + (q ? '?q=' + encodeURIComponent(q) : '');
+  var searchKeep = doc.getElementById('shSearchKeep');
+  var searchStatus = doc.getElementById('shSearchStatus');
+  var searchResults = doc.getElementById('shSearchResults');
+  var searchIndex = null;
+  var searchTimer = null;
+
+  function setSearchOpen(open, focusInput) {
+    var scrollTop = main.scrollTop;
+    searchPanel.hidden = !open;
+    body.classList.toggle('search-panel-open', open);
+    searchOpen.setAttribute('aria-expanded', String(open));
+    requestAnimationFrame(function () { main.scrollTop = scrollTop; });
+    if (open && focusInput) { searchBox.focus(); }
+  }
+
+  function appendHighlightedText(parent, text, terms) {
+    var pattern = terms.map(function (term) {
+      return term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }).join('|');
+    if (!pattern) { parent.textContent = text; return; }
+    var matcher = new RegExp('(' + pattern + ')', 'gi');
+    var offset = 0;
+    text.replace(matcher, function (match, _capture, index) {
+      if (index > offset) { parent.appendChild(doc.createTextNode(text.slice(offset, index))); }
+      var mark = doc.createElement('mark');
+      mark.textContent = match;
+      parent.appendChild(mark);
+      offset = index + match.length;
+      return match;
+    });
+    if (offset < text.length) { parent.appendChild(doc.createTextNode(text.slice(offset))); }
+  }
+
+  function renderSearch() {
+    var query = searchBox.value.trim();
+    var terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+    searchResults.textContent = '';
+    if (query.length < 2) {
+      searchStatus.textContent = 'Enter at least two characters.';
+      return;
+    }
+    if (!searchIndex) {
+      searchStatus.textContent = 'Loading the search index...';
+      return;
+    }
+    var matches = searchIndex.filter(function (entry) {
+      var haystack = (entry.heading + ' ' + entry.content).toLowerCase();
+      return terms.every(function (term) { return haystack.indexOf(term) !== -1; });
+    }).slice(0, 20);
+    searchStatus.textContent = matches.length
+      ? matches.length + ' matching section' + (matches.length === 1 ? '' : 's') + (matches.length === 20 ? ' shown. Refine your search for fewer results.' : '.')
+      : 'No matching sections. Try a broader term.';
+    matches.forEach(function (entry) {
+      var link = doc.createElement('a');
+      link.className = 'search-result';
+      link.href = prefix + entry.url;
+      var source = doc.createElement('span');
+      source.className = 'search-result-source';
+      source.textContent = entry.doc;
+      var heading = doc.createElement('strong');
+      appendHighlightedText(heading, entry.heading, terms);
+      var preview = doc.createElement('span');
+      preview.className = 'search-result-preview';
+      var lower = entry.content.toLowerCase();
+      var first = terms.reduce(function (found, term) {
+        var index = lower.indexOf(term);
+        return index !== -1 && (found === -1 || index < found) ? index : found;
+      }, -1);
+      var start = first > 70 ? first - 50 : 0;
+      var excerpt = (start ? '...' : '') + entry.content.slice(start, start + 220);
+      if (start + 220 < entry.content.length) { excerpt += '...'; }
+      appendHighlightedText(preview, excerpt, terms);
+      link.appendChild(source);
+      link.appendChild(heading);
+      link.appendChild(preview);
+      link.addEventListener('click', function () {
+        if (searchKeep.checked) {
+          sessionStorage.setItem('copilotSearchOpen', 'true');
+          sessionStorage.setItem('copilotSearchQuery', query);
+        } else {
+          sessionStorage.removeItem('copilotSearchOpen');
+          sessionStorage.removeItem('copilotSearchQuery');
+        }
+      });
+      searchResults.appendChild(link);
+    });
+  }
+
+  function loadSearchIndex() {
+    if (searchIndex) { renderSearch(); return; }
+    fetch(prefix + 'assets/search-index.json')
+      .then(function (response) { if (!response.ok) { throw new Error('Search index unavailable'); } return response.json(); })
+      .then(function (entries) { searchIndex = entries; renderSearch(); })
+      .catch(function () { searchIndex = []; searchStatus.textContent = 'Search is temporarily unavailable.'; });
+  }
+
+  searchOpen.addEventListener('click', function () {
+    setSearchOpen(true, true);
+    loadSearchIndex();
+  });
+  searchClose.addEventListener('click', function () {
+    searchKeep.checked = false;
+    sessionStorage.removeItem('copilotSearchOpen');
+    sessionStorage.removeItem('copilotSearchQuery');
+    setSearchOpen(false, false);
+    searchOpen.focus();
+  });
+  searchKeep.addEventListener('change', function () {
+    if (searchKeep.checked) {
+      sessionStorage.setItem('copilotSearchOpen', 'true');
+      sessionStorage.setItem('copilotSearchQuery', searchBox.value.trim());
+    } else {
+      sessionStorage.removeItem('copilotSearchOpen');
+      sessionStorage.removeItem('copilotSearchQuery');
     }
   });
+  searchBox.addEventListener('input', function () {
+    if (searchKeep.checked) { sessionStorage.setItem('copilotSearchQuery', searchBox.value.trim()); }
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(renderSearch, 120);
+  });
+
+  if (sessionStorage.getItem('copilotSearchOpen') === 'true') {
+    searchKeep.checked = true;
+    searchBox.value = sessionStorage.getItem('copilotSearchQuery') || '';
+    setSearchOpen(true, false);
+    loadSearchIndex();
+  }
+
   doc.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && body.classList.contains('nav-open')) {
-      body.classList.remove('nav-open');
-      aria();
-      toggle.focus();
+    if (e.key === 'Escape') {
+      if (!searchPanel.hidden) {
+        searchKeep.checked = false;
+        sessionStorage.removeItem('copilotSearchOpen');
+        sessionStorage.removeItem('copilotSearchQuery');
+        setSearchOpen(false, false);
+        searchOpen.focus();
+      } else if (body.classList.contains('nav-open')) {
+        body.classList.remove('nav-open');
+        aria();
+        toggle.focus();
+      }
     }
   });
 })();
