@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Operate the Consumption Dashboard for Copilot Credits, covered services, usage concentration, and spending-policy limits.">
+<link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/3-operate/consumption-dashboard.html">
+<title>Consumption Dashboard Operations — Copilot Analytics</title>
+<link rel="stylesheet" href="../assets/docs-style.css">
+<script defer src="../assets/shell.js"></script>
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Operate</span>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Consumption Dashboard</span>
+  </div>
+  <div class="doc-nav-right">
+    <a href="../artifacts/pdfs/Consumption_Dashboard_Operations.pdf" class="pdf-btn" title="Download PDF">&#128196; PDF</a>
+  </div>
+</nav>
+
+<div class="cover">
+  <h1>Microsoft 365 Copilot Analytics</h1>
+  <div class="subtitle">Consumption Dashboard Operations</div>
+  <div class="sub2">Monitor Copilot Credit consumption, usage concentration, and spending-policy limits</div>
+</div>
+
+<table>
+  <tr><th scope="col">Document Property</th><th scope="col">Value</th></tr>
+  <tr><td>Section</td><td>Operate</td></tr>
+  <tr><td>Audience</td><td>FinOps, Insights Analysts, Managers, Microsoft 365 Global Administrators</td></tr>
+  <tr><td>Version</td><td>1.0</td></tr>
+  <tr><td>Last validated</td><td>16 July 2026</td></tr>
+  <tr><td>Source snapshot</td><td>Microsoft Learn pages dated 9 February, 27 April, and 1 July 2026</td></tr>
+</table>
+
+<div class="callout important">
+  <div class="callout-title">Reference view, not the billing system of record</div>
+  <p>The Consumption Dashboard helps identify consumption patterns and limits that may need attention. Its credit information is <strong>for reference only</strong>. Reconcile official Copilot Credit billing and detailed charges in the <strong>Microsoft 365 admin center</strong>; reconcile GitHub AI credit charges in <strong>GitHub.com</strong>. Do not use a dashboard total as an invoice, chargeback ledger, or contractual entitlement record.</p>
+</div>
+
+<h1 id="toc">Table of Contents</h1>
+<ol>
+  <li><a href="#purpose">Purpose and Current Coverage</a></li>
+  <li><a href="#access">Access and Scope</a></li>
+  <li><a href="#prerequisites">Prerequisites and Availability Checks</a></li>
+  <li><a href="#operate">Operating the Dashboard</a></li>
+  <li><a href="#export">Export and Reconciliation</a></li>
+  <li><a href="#success">Success Criteria</a></li>
+  <li><a href="#troubleshooting">Troubleshooting and Escalation</a></li>
+  <li><a href="#sources">Dated Microsoft Learn Sources</a></li>
+</ol>
+
+<h1 id="purpose">1. Purpose and Current Coverage</h1>
+
+<p>The Consumption Dashboard is one of the six current Copilot Analytics areas documented by Microsoft. It is intended for operational monitoring: identify active users, review credit usage over time, see which services and employee groups drive usage, understand whether consumption is concentrated among a small number of users, and find spending policies whose users are near their limits.</p>
+
+<table>
+  <tr><th scope="col">Question</th><th scope="col">Use the dashboard for</th><th scope="col">Do not infer</th></tr>
+  <tr><td>Who is using covered services?</td><td>Active users and sessions for the selected month-to-date scope</td><td>All Copilot or agent activity across every Microsoft product</td></tr>
+  <tr><td>Where are credits being consumed?</td><td>Trends and breakdowns by covered service, group, organization, or job function</td><td>Invoice-level allocation or final chargeback</td></tr>
+  <tr><td>Is usage concentrated?</td><td>Usage-intensity segments and per-user/per-session averages</td><td>Whether high usage is productive, wasteful, or anomalous without business context</td></tr>
+  <tr><td>Which policies need attention?</td><td>Users and policies near or at displayed limits</td><td>That the dashboard configures, changes, or guarantees enforcement of a spending policy</td></tr>
+</table>
+
+<div class="callout warning">
+  <div class="callout-title">Current Microsoft 365 services coverage is narrow</div>
+  <p>As documented on 1 July 2026, consumption data on the <strong>Microsoft 365 services</strong> page is currently available only for <strong>Copilot Cowork</strong> and the <strong>Work IQ API</strong>. Its active-user and session cards use activity from those services. Absence of other Copilot, Copilot Studio, or agent usage is not evidence that no such activity occurred.</p>
+</div>
+
+<p>The dashboard introduction also describes visibility for <strong>Copilot Credits and GitHub AI Credits</strong>. Keep the data boundary explicit: Insights Analyst queries with consumption metrics exclude GitHub data, and official GitHub AI credit charges remain in GitHub.com.</p>
+
+<h1 id="access">2. Access and Scope</h1>
+
+<table>
+  <tr><th scope="col">Role</th><th scope="col">Dashboard access</th><th scope="col">Scope</th><th scope="col">Consumption queries</th></tr>
+  <tr><td><strong>Insights Analyst with global partition access</strong></td><td>Yes</td><td>Entire organization</td><td>Yes, for consumption metrics; GitHub data excluded</td></tr>
+  <tr><td><strong>Manager enabled through Manager settings</strong></td><td>Yes</td><td>Manager's group</td><td>No</td></tr>
+  <tr><td><strong>Microsoft 365 Global Administrator</strong></td><td>Yes</td><td>Entire organization</td><td>No</td></tr>
+  <tr><td>Insights Analyst with only a non-global partition</td><td>No</td><td>None</td><td>No</td></tr>
+  <tr><td>Copilot Dashboard or Agent Dashboard viewer without a role above</td><td>No automatic access</td><td>None</td><td>No</td></tr>
+</table>
+
+<div class="callout important">
+  <div class="callout-title">No delegation</div>
+  <p>Consumption Dashboard access <strong>cannot currently be delegated</strong>. Delegation for the Microsoft Copilot Dashboard or Agent Dashboard does not grant access here. Assign the least-privileged supported role and scope instead.</p>
+</div>
+
+<p>An Insights Administrator manages analyst access by adding or removing the analyst from the <strong>global partition</strong>. Removing that access also removes the analyst from every other experience in that global partition. Managers are controlled through <strong>Manager settings</strong>; consumption insights are enabled for all managers by default unless the setting is changed.</p>
+
+<h1 id="prerequisites">3. Prerequisites and Availability Checks</h1>
+
+<table>
+  <tr><th scope="col">Check</th><th scope="col">Expected state</th><th scope="col">Owner</th></tr>
+  <tr><td>Supported identity</td><td>User is a global-partition Insights Analyst, enabled manager, or Microsoft 365 Global Administrator</td><td>Global Administrator / Insights Administrator</td></tr>
+  <tr><td>Scope source</td><td>Manager hierarchy and employee attributes resolve for the intended population</td><td>Insights Administrator / org-data owner</td></tr>
+  <tr><td>Covered activity</td><td>Copilot Cowork or Work IQ API activity exists in the current month</td><td>Service owner</td></tr>
+  <tr><td>Privacy threshold</td><td>Manager group is large enough for insights; the service breakdown matrix additionally requires a manager of managers with a sufficiently large group</td><td>Insights Administrator</td></tr>
+  <tr><td>Official billing access</td><td>FinOps can compare the dashboard with the Microsoft 365 admin center or GitHub.com</td><td>Billing / GitHub administrator</td></tr>
+</table>
+
+<div class="callout note">
+  <div class="callout-title">GCC, preview, and tenant rollout validation</div>
+  <p>The reviewed Consumption Dashboard article dated 1 July 2026 does <strong>not</strong> label the dashboard as preview and does not state national-cloud availability. The Copilot Studio licensing article states that Copilot Studio is available in GCC, but that statement does <strong>not</strong> establish that this Viva Insights dashboard is available there. For GCC or any tenant where the feature is absent, validate the tenant UI, Message Center, service plan, and current supported-environments documentation before promising availability. Escalate unresolved eligibility questions to Microsoft Support.</p>
+</div>
+
+<h1 id="operate">4. Operating the Dashboard</h1>
+
+<h2>Step 1 &mdash; Open Insights and confirm scope</h2>
+<p>Open the Viva Insights web app and select the <strong>Consumption Dashboard</strong>. Confirm the scope before interpreting any value:</p>
+<ul>
+  <li><strong>Company</strong> is available only to global-partition Insights Analysts and Microsoft 365 Global Administrators.</li>
+  <li><strong>Group</strong> limits the view to the manager's group.</li>
+  <li><strong>Organization</strong> and <strong>Job function</strong> use the same employee-attribute sources as the Copilot Dashboard.</li>
+  <li><strong>Time period</strong> is currently month to date.</li>
+</ul>
+
+<p>Organization can be derived from Microsoft Entra ID or uploaded organizational data. Job function depends on the corresponding uploaded organizational attribute; a missing field can produce an empty or incomplete filter.</p>
+
+<h2>Step 2 &mdash; Read the summary cards</h2>
+<table>
+  <tr><th scope="col">Metric</th><th scope="col">Operational meaning</th><th scope="col">Validation question</th></tr>
+  <tr><td><strong>Active users</strong></td><td>Unique users who took at least one action in Copilot Cowork or the Work IQ API</td><td>Did covered activity occur in this scope during the current month?</td></tr>
+  <tr><td><strong>Total Copilot credit usage</strong></td><td>Credits consumed by covered activity in the selected scope</td><td>Does the direction align with the official billing view, allowing for scope and timing?</td></tr>
+  <tr><td><strong>Total session count</strong></td><td>Copilot Cowork or Work IQ API sessions initiated by users</td><td>Did a rollout, campaign, integration, or automation change session volume?</td></tr>
+</table>
+
+<h2>Step 3 &mdash; Analyze trends and service drivers</h2>
+<p>Use the trend controls to change the plotted metric, break it down by group, organization, or job function, and choose the available date granularity. Then use the service breakdown to identify which covered service and employee segment account for the largest share. Treat this as a prioritization signal, then validate against service ownership and business context.</p>
+
+<h2>Step 4 &mdash; Review usage intensity</h2>
+<p>Usage intensity shows whether consumption is broadly distributed or concentrated. Review these segments:</p>
+<ul>
+  <li>All users</li>
+  <li>Top 1 percent of users</li>
+  <li>Top 5 percent of users</li>
+  <li>Top 6&ndash;25 percent of users</li>
+  <li>Top 26&ndash;50 percent of users</li>
+</ul>
+<p>For each segment, compare total credits, average credits per user, average credits per session, average sessions per user, and active users. A concentrated distribution is a prompt to investigate workload design, automation, value, and policy fit; it is not by itself evidence of misuse.</p>
+
+<h2>Step 5 &mdash; Review spending-policy limits</h2>
+<p>Use the spending-policy table to identify the top policies in use, average credits used per user, the displayed spending limit, and the number of users near or at that limit. Contact the policy owner before users are depleted. The dashboard reports the condition; policy configuration and capacity enforcement occur in the relevant administration and billing surfaces.</p>
+
+<div class="callout warning">
+  <div class="callout-title">Capacity has contractual and service consequences</div>
+  <p>Copilot Studio documentation states that purchased capacity is enforced monthly, unused Copilot Credits do not carry over, and exceeding purchased capacity can lead to technical enforcement and service denial. Confirm the applicable licensing model, included usage, zero-rated scenarios, and current terms in the official licensing and Copilot Credit guides before taking purchasing or enforcement action.</p>
+</div>
+
+<h1 id="export">5. Export and Reconciliation</h1>
+
+<p>The Consumption Dashboard export is a <strong>public-preview</strong> feature for de-identified, user-level AI cost metrics. It is currently available to <strong>Insights Analysts with global partition access</strong> and <strong>Microsoft 365 Global Administrators</strong>. Manager export is not yet generally available in the 1 July 2026 source. The export does <strong>not</strong> include GitHub metrics.</p>
+
+<table>
+  <tr><th scope="col">Export</th><th scope="col">Window and freshness</th><th scope="col">Use</th></tr>
+  <tr><td><strong>Export by week</strong></td><td>Complete data for the previous five months plus month-to-date data for the current month; activity is usually 2&ndash;8 days behind</td><td>Weekly and monthly trend review or longer-term planning</td></tr>
+  <tr><td><strong>Export by day</strong></td><td>Start of the previous month through the export date; activity is usually up to two days behind</td><td>Day-to-day cost review and emerging usage trends</td></tr>
+</table>
+
+<p>Only complete days or weeks are included. Each download is a ZIP containing two CSV files joined by <code>PeopleHistoricalId</code>:</p>
+<ul>
+  <li><code>PersonServiceCreditsMetrics.csv</code> &mdash; one row per person, service, and date, with hashed person ID, service, policy, sessions, limits, credits, licence status, and join key.</li>
+  <li><code>PeopleMetaData.csv</code> &mdash; one row per person, with the join key plus Organization and Job function where available.</li>
+</ul>
+
+<ol>
+  <li>At the top right of the dashboard, select the <strong>download</strong> button.</li>
+  <li>Select <strong>Export by week</strong> or <strong>Export by day</strong> and allow the ZIP download to complete.</li>
+  <li>Record the export type, timestamp, complete-period boundary, service coverage, role, and source URL.</li>
+  <li>Keep both CSVs together and join only on <code>PeopleHistoricalId</code>. Treat the hashed identifier and HR attributes as protected data.</li>
+  <li>Check that the services and population match the documented export fields; do not silently blend them with broader Copilot or GitHub activity.</li>
+  <li>Reconcile Copilot Credit totals against the Microsoft 365 admin center. Reconcile GitHub AI credits separately in GitHub.com; they are not in this export. Document scope, timing, and coverage differences rather than forcing the figures to match.</li>
+</ol>
+
+<div class="callout note">
+  <div class="callout-title">Do not substitute the Copilot Dashboard export</div>
+  <p>The separate Copilot Dashboard export is a public-preview, de-identified user-level usage export with week-level and day-level options. It answers adoption questions; it is not the Consumption Dashboard export and is not an official billing record.</p>
+</div>
+
+<h1 id="success">6. Success Criteria</h1>
+
+<p>Before operationalizing a recurring review, verify all of the following:</p>
+<ul>
+  <li>The expected role can open the dashboard and sees only the documented company or group scope.</li>
+  <li>A manager cannot switch to Company scope.</li>
+  <li>A non-global partition analyst cannot open the dashboard or run consumption-metric queries.</li>
+  <li>Covered Cowork or Work IQ API activity produces month-to-date users, sessions, and credits after processing.</li>
+  <li>Organization and job-function filters return the expected population and change the totals coherently.</li>
+  <li>Usage-intensity totals reconcile internally and do not exceed the selected population.</li>
+  <li>Displayed spending-policy limits are confirmed with the policy owner.</li>
+  <li>The export completes, carries the expected scope, and is stored under appropriate access controls.</li>
+  <li>The official billing surface remains the source of record, with any discrepancy documented.</li>
+</ul>
+
+<h1 id="troubleshooting">7. Troubleshooting and Escalation</h1>
+
+<table>
+  <tr><th scope="col">Symptom</th><th scope="col">Likely cause</th><th scope="col">Action</th></tr>
+  <tr><td>Dashboard is absent</td><td>Unsupported role, analyst lacks global partition, manager disabled, or feature not available in the tenant/cloud</td><td>Verify the access table, global partition membership, Manager settings, tenant UI, and Message Center.</td></tr>
+  <tr><td>Company scope is absent</td><td>User is a manager</td><td>Expected behavior. Managers receive group scope only; do not attempt delegation.</td></tr>
+  <tr><td>Values are zero or unexpectedly low</td><td>No current-month Cowork/Work IQ API activity, processing delay, or filters exclude users</td><td>Clear filters, confirm covered service activity and date, then compare with the source service. Do not use unrelated Copilot activity as the test.</td></tr>
+  <tr><td>Organization or job function is blank</td><td>Missing, stale, or low-quality organizational attributes</td><td>Validate Entra and uploaded org data, then allow the documented processing cycle before retesting.</td></tr>
+  <tr><td>Service-by-group matrix is absent</td><td>User is not a manager of managers or the group is below the required size</td><td>Verify hierarchy and group size; use supported summary views instead.</td></tr>
+  <tr><td>Consumption query is unavailable</td><td>User is not a global-partition Insights Analyst</td><td>Use the dashboard, or have the Insights Administrator assess least-privileged global partition access. GitHub data remains excluded.</td></tr>
+  <tr><td>Dashboard and invoice differ</td><td>Reference-only dashboard, different scope/coverage/timing, or billing adjustments</td><td>Use the official billing surface as authoritative and document the discrepancy.</td></tr>
+  <tr><td>Export is missing or fails</td><td>Feature availability, role, browser download, or transient service issue</td><td>Reconfirm eligibility, retry once, test another supported browser/network, and capture the error before escalation.</td></tr>
+</table>
+
+<h2>Escalation evidence</h2>
+<p>Before escalating, capture:</p>
+<ul>
+  <li>Tenant and cloud environment, user role, and whether the analyst has global partition access</li>
+  <li>Manager setting and expected group size, where relevant</li>
+  <li>Dashboard URL, selected scope and filters, month-to-date boundary, and covered service</li>
+  <li>Timestamp, screenshot, exact error text, and export behavior</li>
+  <li>Expected Cowork or Work IQ API activity and the official billing comparison</li>
+  <li>Any relevant Message Center or Service Health advisory</li>
+</ul>
+<p>Route access, partition, manager-setting, and org-data issues to the <strong>Insights Administrator</strong>; role and tenant-policy issues to the <strong>Microsoft 365 Global Administrator</strong>; billing differences to the <strong>billing or GitHub administrator</strong>; and unresolved feature, cloud, or data-processing issues to <strong>Microsoft Support</strong>.</p>
+
+<h1 id="sources">8. Dated Microsoft Learn Sources</h1>
+
+<table>
+  <tr><th scope="col">Source</th><th scope="col">Last updated</th><th scope="col">Used for</th></tr>
+  <tr><td><a href="https://learn.microsoft.com/viva/insights/copilot-analytics-introduction">Copilot Analytics introduction</a></td><td>9 February 2026</td><td>Six-area capability map and Consumption Dashboard audience</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/ai-cost-dashboard">How to use the Consumption Dashboard in Insights</a></td><td>1 July 2026</td><td>Roles, scope, no delegation, filters, coverage, usage intensity, policy limits, and billing caveat</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/export-ai-cost-metrics">Export AI cost metrics from the Consumption Dashboard</a></td><td>1 July 2026</td><td>Preview roles, daily/weekly windows, GitHub exclusion, and ZIP/CSV data shape</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/export-copilot-metrics">Export Copilot metrics from the Microsoft Copilot Dashboard</a></td><td>15 July 2026</td><td>Boundary between the separate adoption export and consumption operations</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/microsoft-copilot-studio/billing-licensing">Copilot Studio licensing</a></td><td>27 April 2026</td><td>Copilot Credits, monthly enforcement, no rollover, zero-rated usage, GCC statement, and source-of-truth caveats</td></tr>
+</table>
+
+<div class="callout note">
+  <div class="callout-title">Source discipline</div>
+  <p>Microsoft may change coverage, licensing, roles, interfaces, and cloud availability. Revalidate the dated sources and the tenant before each material process or customer-facing decision.</p>
+</div>
+
+<h1 id="next">9. What to Read Next</h1>
+<table>
+  <tr><th scope="col">Document</th><th scope="col">Use it for</th></tr>
+  <tr><td><a href="billing-operations.html"><strong>Billing Operations</strong></a></td><td>Licensing models, lifecycle events, capacity, and chargeback controls</td></tr>
+  <tr><td><a href="analyst-playbook.html#programmatic-reporting"><strong>Programmatic Reporting Options</strong></a></td><td>Choose dashboard export, Advanced queries, Graph APIs, or audit data</td></tr>
+  <tr><td><a href="../tools/index.html"><strong>Tools &amp; Reporting Options</strong></a></td><td>Find reusable validation and reporting journeys</td></tr>
+  <tr><td><a href="../4-reference/troubleshooting.html"><strong>Troubleshooting Guide</strong></a></td><td>Resolve wider Copilot Analytics access and data issues</td></tr>
+</table>
+
+<hr>
+<p>
+  <strong>Disclaimer:</strong> This guide is an independent procedural reference validated on 16 July 2026. It is not official Microsoft documentation, an invoice, or licensing advice. Verify current product behavior and commercial terms in Microsoft Learn and the applicable billing portal.
+</p>
+
+</body>
+</html>

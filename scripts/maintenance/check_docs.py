@@ -41,6 +41,7 @@ import re
 import subprocess
 import sys
 import time
+import xml.etree.ElementTree as ET
 from pathlib import Path
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
@@ -56,7 +57,7 @@ REPORT_FILE = SCRIPT_DIR / "last-report.json"
 
 # Directories whose *.html are published documentation pages.
 CONTENT_DIRS = ("1-strategy", "2-setup", "3-operate", "4-reference",
-                "decide", "explain", "artifacts", "docs")
+                "decide", "explain", "artifacts", "docs", "tools")
 # Root-level published pages.
 ROOT_PAGES = ("index.html", "browse.html")
 
@@ -101,8 +102,8 @@ def run_git(*args):
 
 
 def tracked_files():
-    """Files git tracks (falls back to a filesystem walk if git is unavailable)."""
-    out = run_git("ls-files")
+    """Tracked and untracked non-ignored files (falls back to a filesystem walk)."""
+    out = run_git("ls-files", "--cached", "--others", "--exclude-standard")
     if out is not None:
         return [REPO / line for line in out.splitlines() if line.strip()]
     files = []
@@ -333,12 +334,68 @@ def check_structure(f, pages):
         if not title or not title.group(1).strip():
             f.add(WARN, "structure", "missing or empty <title>", page)
 
+        if not re.search(r'<html\b[^>]*\blang="[^"]+"', html, re.IGNORECASE):
+            f.add(WARN, "structure", "missing html lang attribute", page)
+
+        if not is_redirect(html):
+            if not re.search(r'<meta\s+name="description"\s+content="[^"]+"', html, re.IGNORECASE):
+                f.add(WARN, "structure", "missing meta description", page)
+            if not re.search(r'<link\s+rel="canonical"\s+href="https://sumitsadhu1\.github\.io/copilot-analytics-public/[^"]*"', html, re.IGNORECASE):
+                f.add(WARN, "structure", "missing or non-public canonical URL", page)
+            for match in re.finditer(r'<th\b(?![^>]*\bscope=)[^>]*>', html, re.IGNORECASE):
+                f.add(WARN, "structure", "table header missing scope attribute", page, line_at(html, match.start()))
+                break
+
+        malformed_thead = re.search(r'<th\s+scope=["\']col["\']ead\b', html, re.IGNORECASE)
+        if malformed_thead:
+            f.add(ERROR, "structure", 'malformed <thead> token: <th scope="col"ead>',
+                  page, line_at(html, malformed_thead.start()))
+
+        for tag in ("table", "thead", "tbody", "tr"):
+            opens = len(re.findall(rf'<{tag}\b[^>]*>', html, re.IGNORECASE))
+            closes = len(re.findall(rf'</{tag}\s*>', html, re.IGNORECASE))
+            if opens != closes:
+                f.add(ERROR, "structure",
+                      f"unbalanced <{tag}> elements: {opens} opening, {closes} closing",
+                      page)
+
         seen, dupes = set(), set()
         for i in collect_ids(html):
             (dupes if i in seen else seen).add(i)
         for d in sorted(dupes):
             f.add(ERROR, "structure",
                   f'duplicate id="{d}" (breaks anchor navigation)', page)
+
+    repo_pages = []
+    for page in pages:
+        try:
+            page.resolve().relative_to(REPO.resolve())
+            repo_pages.append(page)
+        except ValueError:
+            pass
+
+    if len(repo_pages) == len(pages):
+        for required in ("404.html", "robots.txt", "sitemap.xml"):
+            if not (REPO / required).exists():
+                f.add(WARN, "structure", f"public web control missing: {required}", REPO / required)
+
+        sitemap = REPO / "sitemap.xml"
+        if sitemap.exists():
+            try:
+                root = ET.parse(sitemap).getroot()
+                urls = {node.text for node in root.findall("{http://www.sitemaps.org/schemas/sitemap/0.9}url/{http://www.sitemaps.org/schemas/sitemap/0.9}loc")}
+                expected = set()
+                site = "https://sumitsadhu1.github.io/copilot-analytics-public/"
+                for page in repo_pages:
+                    if page.name == "404.html" or is_redirect(read_text(page)):
+                        continue
+                    expected.add(site + page.relative_to(REPO).as_posix())
+                for missing in sorted(expected - urls):
+                    f.add(WARN, "structure", f"canonical page missing from sitemap: {missing}", sitemap)
+                for extra in sorted(urls - expected):
+                    f.add(WARN, "structure", f"non-canonical or missing page in sitemap: {extra}", sitemap)
+            except (ET.ParseError, OSError) as exc:
+                f.add(ERROR, "structure", f"sitemap.xml does not parse: {exc}", sitemap)
 
 
 # ── check 5: secret / credential leakage ──────────────────────────────────────

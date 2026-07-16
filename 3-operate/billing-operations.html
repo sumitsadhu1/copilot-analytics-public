@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Copilot Lifecycle &amp; Billing Playbook. Last validated 16 July 2026.">
+<link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/3-operate/billing-operations.html">
+
     <title>Copilot Lifecycle &amp; Billing Playbook</title>
     <link rel="stylesheet" href="../assets/docs-style.css">
     <script defer src="../assets/shell.js"></script>
@@ -11,6 +14,14 @@
   h2 { border-left: 4px solid var(--primary); border-bottom: none; padding-left: 12px; }
   /* Callout default (info-style) for this page */
   .callout { background: rgba(66,42,251,0.06); border-color: var(--accent); }
+</style>
+
+<style id="generated-inline-styles">
+.u-df47f196dd { background:rgba(255,181,71,0.14);font-size:0.9em;padding:12px 16px; }
+.u-118b947d4e { border-left:4px solid var(--accent); background:rgba(66,42,251,0.06); padding:14px 18px; border-radius:8px; margin:16px 0; }
+.u-709e55f12b { margin:8px 0 0 20px; }
+.u-1872868539 { opacity:0.3 }
+.u-fcab3f93be { opacity:0.6;font-size:0.9em }
 </style>
 </head>
 <body class="has-nav">
@@ -21,8 +32,8 @@
     <span class="breadcrumb">Operate</span>
     <span class="separator">/</span>
     <span class="breadcrumb">Billing Operations</span>
-    <span class="separator" style="opacity:0.3">/</span>
-    <span class="breadcrumb current-section" id="currentSection" style="opacity:0.6;font-size:0.9em"></span>
+    <span class="separator u-1872868539">/</span>
+    <span class="breadcrumb current-section u-fcab3f93be" id="currentSection"></span>
   </div>
   <div class="doc-nav-right">
     <a href="../artifacts/pdfs/Copilot_Lifecycle_Billing_Playbook.pdf" class="pdf-btn" title="Download PDF">&#128196; PDF</a>
@@ -32,11 +43,11 @@
 <h1>Copilot Lifecycle &amp; Billing Playbook</h1>
 <p class="subtitle">Operational Guide for Licence Management, Billing Models &amp; Analytics Data Impact</p>
 
-<div class="callout" style="border-left:4px solid var(--accent); background:rgba(66,42,251,0.06); padding:14px 18px; border-radius:8px; margin:16px 0;">
+<div class="callout u-118b947d4e">
     <strong>TL;DR &mdash; Key Facts</strong>
-    <ul style="margin:8px 0 0 20px;">
+    <ul class="u-709e55f12b">
         <li>Every <strong>M365 Copilot licence includes Viva Insights</strong> &mdash; no separate purchase needed (<a href="#licensing">Section 2</a>)</li>
-        <li>Core dashboard (Readiness, Adoption, Impact) available with <strong>1+ Copilot licences</strong>; <strong>50+ licences</strong> required for advanced features (benchmarks, Agent Dashboard, sentiment, delegation) (<a href="#lifecycle">Section 3</a>)</li>
+        <li>Core dashboard capabilities are available with <strong>1+ Copilot licences</strong>; for 50-plan capabilities, count assigned Viva Insights service plans and validate the documented mixed-licence conflict in the tenant (<a href="#lifecycle">Section 3</a>)</li>
         <li>Copilot Credits <strong>do not roll over</strong> &mdash; monitor weekly and set alerts (<a href="#credits">Section 4</a>)</li>
         <li>When credits are exhausted, <strong>agents are blocked immediately</strong> &mdash; see emergency procedure (<a href="#credits">Section 4</a>)</li>
         <li>Licence changes take <strong>up to 7 days</strong> to appear in dashboards (<a href="#lifecycle">Section 3</a>)</li>
@@ -76,9 +87,9 @@
 <table>
     <thead>
         <tr>
-            <th>Licensing Model</th>
-            <th>Billing Type</th>
-            <th>Key Features</th>
+            <th scope="col">Licensing Model</th>
+            <th scope="col">Billing Type</th>
+            <th scope="col">Key Features</th>
         </tr>
     </thead>
     <tbody>
@@ -100,8 +111,8 @@
             </td>
         </tr>
         <tr>
-            <td colspan="3" style="background:rgba(255,181,71,0.14);font-size:0.9em;padding:12px 16px;">
-                <strong>&#x2139;&#xFE0F; Analytics note:</strong> Copilot Chat is available to <strong>all</strong> M365 E3/E5/Business users without the paid Copilot add-on. The Copilot Dashboard includes a <strong>Copilot Chat licence filter</strong> that tracks free Copilot Chat adoption (available with 1+ Copilot licences; Copilot Chat reporting must be enabled). However, free users are <strong>not tracked</strong> by Admin Center Copilot usage reports or Viva Insights custom queries. For deeper free Copilot Chat analysis (e.g., building a paid-licence business case), organisations can supplement with M365 Audit Logs (Purview) or M365 Usage Analytics.
+            <td colspan="3" class="u-df47f196dd">
+                <strong>&#x2139;&#xFE0F; Analytics note:</strong> The Microsoft 365 admin center now provides a dedicated <strong>Microsoft 365 Copilot Chat usage report</strong> for users without a Microsoft 365 Copilot licence, including exportable user activity. The Copilot Dashboard also provides a Copilot Chat licence view when enabled and available. These are distinct from Viva Insights custom queries, Microsoft Graph&rsquo;s licensed-user-only Copilot usage endpoint, and Purview audit evidence. Source: <a href="https://learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-copilot-usage?view=o365-worldwide">Microsoft 365 Copilot Chat usage report</a> (Last updated 10 July 2026) and <a href="https://learn.microsoft.com/microsoft-365/copilot/microsoft-365-copilot-reports-for-admins">Microsoft 365 Copilot reporting options for admins</a> (Last updated 16 September 2025).
             </td>
         </tr>
         <tr>
@@ -143,9 +154,9 @@
 <table>
     <thead>
         <tr>
-            <th>Event</th>
-            <th>Impact on Copilot Dashboard</th>
-            <th>Impact on Advanced Analytics (Viva Insights)</th>
+            <th scope="col">Event</th>
+            <th scope="col">Impact on Copilot Dashboard</th>
+            <th scope="col">Impact on Advanced Analytics (Viva Insights)</th>
         </tr>
     </thead>
     <tbody>
@@ -181,7 +192,7 @@
         </tr>
         <tr>
             <td><strong>Scale-down below 50 licences</strong></td>
-            <td>Core dashboard pages (Readiness, Adoption, Impact with group-level metrics) remain available with 1+ Copilot licences. <strong>Advanced features</strong> become unavailable: Agent Dashboard, benchmarks, intelligent summaries, sentiment survey metrics, trendlines, manager group-level views with delegation, and the &ldquo;All&rdquo; licence type view. <em>Data is retained</em> &mdash; restoring to 50+ licences re-enables advanced features without data loss.</td>
+            <td>Core dashboard capabilities remain available with 1+ Copilot licences. For capabilities gated at 50, Microsoft&rsquo;s Environment Requirements article counts assigned Viva Insights service plans and explicitly treats 30 Copilot + 20 Viva Insights as 50; the Dashboard article instead says 50 Copilot or 50 Viva Insights. Verify assigned service plans and tenant feature presence before forecasting a loss of access. Agent Dashboard preview should conservatively be treated as requiring 50 Copilot licences plus agent activity.</td>
             <td>Advanced Analytics workbench remains accessible if existing Viva Insights licences total &ge;50. If total drops below 50, the analyst experience shows <em>&ldquo;Viva Insights is below the minimum assigned licence requirement&rdquo;</em>. Existing query results and Power BI reports remain intact but new queries cannot be created.</td>
         </tr>
     </tbody>
@@ -190,10 +201,10 @@
 <div class="callout">
     <strong>Key Point:</strong> The 7-day data appearance window is a processing delay, not a
     configuration requirement. No manual action is needed — the system detects new licence
-    assignments automatically. For dashboard enablement steps, see the <a href="../docs/core/Copilot_Analytics_Implementation_Guide.html#s5">Implementation Guide Section 5</a>.
+    assignments automatically. For dashboard enablement steps, see the <a href="../2-setup/admin-setup.html#tier2">Admin Setup Guide: Copilot Dashboard Enablement</a>.
 </div>
 
-<p><strong>Reference:</strong> <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard#faqs">Copilot Dashboard FAQs</a></p>
+<p><strong>References:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/environment-requirements">Environment requirements for Viva Insights</a> (Last updated 12 May 2026), <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (Last updated 1 July 2026), and <a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">Connect to the Agent Dashboard (preview)</a> (Last updated 16 June 2026). The first two sources conflict on mixed-plan threshold wording; the Agent article conflicts with the broader Dashboard article on the preview prerequisite. Validate in the tenant and raise Microsoft Support if the documented service plans do not produce the expected entitlement after processing.</p>
 
 <!-- Section 4 -->
 <h2 id="credits">4. Copilot Credits — Understanding Consumption</h2>
@@ -224,6 +235,15 @@
     <li>Overage behaviour: when credits are exhausted, model runs are blocked until more credits are purchased or allocated.</li>
     <li>Credits are pooled at the tenant level for prepaid plans, or billed per-environment for <a href="https://learn.microsoft.com/power-platform/admin/pay-as-you-go-overview">pay-as-you-go</a>.</li>
 </ul>
+
+<h3>Consumption Dashboard in Insights</h3>
+<p>The <strong>Consumption Dashboard</strong> is one of Microsoft&rsquo;s six Copilot Analytics areas. It helps eligible global or group-scoped viewers understand Copilot Credit consumption by supported service and organizational scope.</p>
+<ul>
+    <li>Use it for operational trend and scope analysis, not as the invoice, entitlement ledger, or official billing system of record.</li>
+    <li>Reconcile its output with Power Platform Admin Center, Microsoft 365 admin center credit reports, and Azure billing records before chargeback or accrual decisions.</li>
+    <li>Access depends on the documented role and scope model; delegation is not a substitute for Consumption Dashboard eligibility.</li>
+</ul>
+<p><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/insights/org-team-insights/ai-cost-dashboard">How to use the Consumption Dashboard in Insights</a> (Last updated 1 July 2026) and <a href="https://learn.microsoft.com/viva/insights/copilot-analytics-introduction">Copilot Analytics introduction</a> (Last updated 9 February 2026).</p>
 
 <div class="callout-warning">
     <strong>Warning:</strong> Credits do not roll over. Monitor consumption weekly to avoid
@@ -356,7 +376,7 @@
     organisations with fewer than 10 agencies.
 </div>
 
-<div class="callout" style="border-left:4px solid var(--accent); background:rgba(66,42,251,0.06); padding:14px 18px; border-radius:8px; margin:16px 0;">
+<div class="callout u-118b947d4e">
     <strong>Agent Billing Governance:</strong> For detailed credit mechanics, safe scaling patterns,
     irreversible billing decisions, and the billing boundary design framework, see the
     <strong>Copilot &amp; Agent Governance project</strong> &mdash; specifically the
@@ -373,6 +393,7 @@
     <li>Reallocate unused licences to requesting users or business units</li>
     <li>Check for blocked agent runs due to credit exhaustion</li>
     <li>Review new licence assignments and confirm dashboard data appearance</li>
+    <li>Check Microsoft 365 admin center <strong>Service Health</strong> and <strong>Message Center</strong> before attributing report gaps, metric changes, or missing preview features to configuration</li>
 </ul>
 
 <h3>Quarterly Tasks</h3>
@@ -395,8 +416,8 @@
 <table>
     <thead>
         <tr>
-            <th>Topic</th>
-            <th>URL</th>
+            <th scope="col">Topic</th>
+            <th scope="col">URL</th>
         </tr>
     </thead>
     <tbody>
@@ -419,6 +440,14 @@
         <tr>
             <td>Copilot Credits Activity Report</td>
             <td><a href="https://learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-365-copilot-credits">learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-365-copilot-credits</a></td>
+        </tr>
+        <tr>
+            <td>Microsoft 365 Copilot Chat usage report (Last updated 10 July 2026)</td>
+            <td><a href="https://learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-copilot-usage?view=o365-worldwide">learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-copilot-usage</a></td>
+        </tr>
+        <tr>
+            <td>How to use the Consumption Dashboard in Insights (Last updated 1 July 2026)</td>
+            <td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/ai-cost-dashboard">learn.microsoft.com/viva/insights/org-team-insights/ai-cost-dashboard</a></td>
         </tr>
         <tr>
             <td>Agent Usage Estimator Tool</td>

@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Browse Microsoft 365 Copilot Analytics guides by role, task, and reporting capability.">
+<link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/browse.html">
 <title>Browse All Guides — Copilot Analytics</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -57,6 +59,23 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  .skip-link {
+    position: fixed; top: 8px; left: 12px; z-index: 2000;
+    padding: 8px 12px; border-radius: 6px; background: #fff;
+    color: var(--text); font-weight: 700; text-decoration: none;
+    box-shadow: var(--depth-16); transform: translateY(-160%);
+    transition: transform 120ms ease;
+  }
+  .skip-link:focus { transform: translateY(0); }
+  .trust-strip {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px;
+    margin-bottom: 20px; padding: 10px 14px; border: 1px solid var(--border-strong);
+    border-left: 4px solid var(--accent); border-radius: 8px; background: #fff;
+    color: var(--text-secondary); font-size: 0.82rem; box-shadow: var(--shadow-card);
+  }
+  .trust-strip strong { color: var(--text); }
+  .trust-strip a { color: var(--accent); font-weight: 700; }
 
   /* Icons */
   .ic { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; }
@@ -170,8 +189,8 @@
     justify-content: center;
     margin: 0 auto 28px;
     background: var(--surface);
-    backdrop-filter: blur(16px) saturate(180%);
     -webkit-backdrop-filter: blur(16px) saturate(180%);
+    backdrop-filter: blur(16px) saturate(180%);
     padding: 14px 24px;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-elevated);
@@ -280,6 +299,7 @@
   .topic-pill.active { border-color: var(--accent-sky); background: var(--accent-sky); color: #fff; box-shadow: 0 2px 8px rgba(66,42,251,0.2); }
 
   .no-results { text-align: center; color: var(--text-secondary); padding: 30px; font-size: 0.95em; display: none; }
+  .search-status { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
   /* Deep search results */
   .search-results {
@@ -335,18 +355,29 @@
 
   @media (max-width: 700px) {
     .card-grid { grid-template-columns: 1fr; }
-    .role-bar { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; -webkit-overflow-scrolling: touch; }
+    .role-bar { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; }
     .role-btn { flex-shrink: 0; }
-    .topic-pills { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .topic-pills { flex-wrap: nowrap; overflow-x: auto; }
     .topic-pill { flex-shrink: 0; }
     .container { padding: 24px 16px; }
     .page-title { font-size: 1.4em; }
   }
 </style>
+
+<style id="generated-inline-styles">
+.u-58e3b31280 { background:linear-gradient(135deg,#422AFB,#7551FF);color:#fff; }
+.u-39b63f4cb6 { display:inline-block;background:linear-gradient(135deg,#422AFB,#7551FF);color:#fff;font-size:0.68em;padding:4px 12px;border-radius:20px;margin-right:10px;vertical-align:middle;letter-spacing:0.5px; }
+.u-6b99de8b69 { display:none }
+.u-51e16f7616 { font-size:0.85em;color:var(--muted);align-self:center;margin-right:8px; }
+.u-5b6aad9a3f { margin-bottom:18px; }
+.u-9374e84210 { margin-top:12px; }
+.u-bb6a43fd28 { position:absolute }
+</style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
 
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<svg width="0" height="0" class="u-bb6a43fd28" aria-hidden="true" focusable="false"><defs>
   <symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></symbol>
   <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20.5 20.5 16.6 16.6"/></symbol>
   <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
@@ -386,11 +417,17 @@
     <a class="nav-item" href="#operate"><svg class="ic"><use href="#i-chart"/></svg><span class="nav-txt">Operate</span></a>
     <a class="nav-item" href="#reference"><svg class="ic"><use href="#i-book"/></svg><span class="nav-txt">Reference</span></a>
     <hr>
-    <a class="nav-item" href="artifacts/Org_Data_Validation_Prompt.html"><svg class="ic"><use href="#i-tools"/></svg><span class="nav-txt">Tools</span></a>
+    <a class="nav-item" href="tools/index.html"><svg class="ic"><use href="#i-tools"/></svg><span class="nav-txt">Tools</span></a>
     <a class="nav-item active" href="browse.html" aria-current="page"><svg class="ic"><use href="#i-grid"/></svg><span class="nav-txt">Browse all</span></a>
   </nav>
-  <main class="app-main">
+  <main class="app-main" id="main-content" tabindex="-1">
 <div class="container">
+
+<aside class="trust-strip" aria-label="Publication status">
+  <strong>Independent publication</strong><span>Last validated 16 July 2026</span><span>Owner: Sumit Sadhu</span>
+  <a href="4-reference/change-history.html">Change history</a>
+  <a href="https://github.com/sumitsadhu1/copilot-analytics-public/issues/new">Report a correction</a>
+</aside>
 
 <div class="breadcrumb"><a href="index.html">Home</a> / Browse all guides</div>
 
@@ -399,7 +436,7 @@
 
 <!-- Role filter bar -->
 <div class="role-bar" role="group" aria-label="Filter by role">
-  <span style="font-size:0.85em;color:var(--muted);align-self:center;margin-right:8px;">I am a:</span>
+  <span class="u-51e16f7616">I am a:</span>
   <button class="role-btn active" aria-pressed="true" onclick="filterCards('all', this)">Show All</button>
   <button class="role-btn" aria-pressed="false" onclick="filterCards('admin', this)">IT Admin</button>
   <button class="role-btn" aria-pressed="false" onclick="filterCards('leader', this)">Business Leader</button>
@@ -412,7 +449,7 @@
 <div class="topic-nav" role="navigation" aria-label="Browse by topic">
   <div class="topic-header">
     <span class="topic-label">Explore topics</span>
-    <button class="topic-clear" id="topicClear" style="display:none" onclick="clearTopic()">Clear &times;</button>
+    <button class="topic-clear u-6b99de8b69" id="topicClear" onclick="clearTopic()">Clear &times;</button>
   </div>
   <div class="topic-pills" id="topicPills">
     <button class="topic-pill" data-topic="dashboard">Dashboard</button>
@@ -425,6 +462,9 @@
     <button class="topic-pill" data-topic="sentiment">Sentiment</button>
     <button class="topic-pill" data-topic="delegation">Delegation</button>
     <button class="topic-pill" data-topic="billing">Billing</button>
+    <button class="topic-pill" data-topic="consumption">Consumption</button>
+    <button class="topic-pill" data-topic="Copilot Chat reporting">Chat Reporting</button>
+    <button class="topic-pill" data-topic="Graph API export">Export &amp; API</button>
     <button class="topic-pill" data-topic="ROI">ROI</button>
     <button class="topic-pill" data-topic="multi-agency">Multi-Agency</button>
     <button class="topic-pill" data-topic="privacy">Privacy</button>
@@ -434,7 +474,8 @@
   </div>
 </div>
 <input type="hidden" id="docSearch" value="">
-<div class="search-results" id="searchResults"></div>
+<p class="search-status" id="resultStatus" role="status" aria-live="polite" aria-atomic="true"></p>
+<div class="search-results" id="searchResults" aria-label="Search results" aria-live="polite"></div>
 <div class="no-results" id="noResults">No matching guides found. Try a different topic or role.</div>
 
 <!-- ═══ STRATEGY ═══ -->
@@ -467,7 +508,7 @@
   <div class="card" data-roles="admin governance leader" data-keywords="multi-agency isolation default priority partition single tenant delegation agency architecture decision">
     <span class="card-badge badge-architecture">STRATEGY</span>
     <h3>Multi-Agency Decision Guide</h3>
-    <p>Choose between Default Priority (agencies see their own data by default) and Isolation (hard data boundaries via partitions). Decision tree and data strategy for each path.</p>
+    <p>Choose between two author-created patterns: Default Priority or Restricted Reporting. Partitions scope analyst queries; separate controls and negative tests are required across other surfaces.</p>
     <div class="card-roles">
       <span class="card-role">Solution Architect</span>
       <span class="card-role">IT Admin</span>
@@ -481,10 +522,10 @@
 <h2 class="section-title" id="setup">Setup</h2>
 <p class="section-subtitle">Configure and deploy. Step-by-step guides for IT administrators.</p>
 <div class="card-grid">
-  <div class="card" data-roles="admin" data-keywords="admin setup configure dashboard enable VFAM roles licences tier admin center copilot dashboard agent analytics sentiment survey exclusion list manager settings delegation group size hourly rate">
+  <div class="card" data-roles="admin" data-keywords="admin setup configure dashboard enable VFAM roles licences current six areas capabilities admin center copilot dashboard agent analytics sentiment survey exclusion list manager settings delegation group size hourly rate consumption">
     <span class="card-badge badge-core">SETUP</span>
     <h3>Admin Setup Guide</h3>
-    <p>End-to-end setup for all 5 analytics tiers. Global Admin readiness checklist, Viva feature access management (VFAM) policy verification, dashboard enablement, manager settings, sentiment configuration, and Advanced Analytics.</p>
+    <p>End-to-end setup across current Copilot Analytics capabilities. Global Admin readiness checklist, Viva feature access management (VFAM) policy verification, dashboard enablement, manager settings, sentiment configuration, and Advanced Analytics.</p>
     <div class="card-roles">
       <span class="card-role">IT Admin</span>
       <span class="card-role">AI Admin</span>
@@ -544,7 +585,7 @@
     <a href="3-operate/dashboard-guide.html">Open Guide</a>
   </div>
 
-  <div class="card" data-roles="analyst" data-keywords="analyst playbook power bi template query partition copilot impact adoption business impact headlines glint publish reports before after cohort segmentation">
+  <div class="card" data-roles="analyst" data-keywords="analyst playbook power bi template query partition copilot impact adoption business impact Agent Assisted Hours value headlines glint publish reports before after cohort segmentation programmatic Graph API Reports.Read.All export Purview Management Activity Copilot Chat reporting">
     <span class="card-badge badge-playbook">OPERATE</span>
     <h3>Analyst Playbook</h3>
     <p>Advanced Analytics workflow for Insights Analysts. PBI template catalog, step-by-step query creation, Power BI connection, report publishing, and analyst departure transfer guide.</p>
@@ -563,6 +604,31 @@
       <span class="card-role">Finance</span>
     </div>
     <a href="3-operate/billing-operations.html">Open Guide</a>
+  </div>
+
+  <div class="card" data-roles="admin analyst leader finance" data-keywords="consumption dashboard Copilot Credits GitHub AI Credits Cowork Work IQ API active users sessions usage intensity top 1 percent spending policy limit export billing reconciliation">
+    <span class="card-badge badge-playbook">OPERATE</span>
+    <h3>Consumption Dashboard Operations</h3>
+    <p>Role and scope matrix, current Cowork and Work IQ coverage, filters, usage intensity, spending-policy limits, export, billing caveat, validation, and escalation.</p>
+    <div class="card-roles">
+      <span class="card-role">FinOps</span>
+      <span class="card-role">Insights Analyst</span>
+      <span class="card-role">Manager</span>
+      <span class="card-role">Global Admin</span>
+    </div>
+    <a href="3-operate/consumption-dashboard.html">Open Guide</a>
+  </div>
+
+  <div class="card" data-roles="admin analyst governance" data-keywords="Copilot Chat reporting unlicensed admin report licensed Graph API v1.0 Reports.Read.All D7 D30 D90 D180 ALL dashboard export Advanced queries Purview audit Search-UnifiedAuditLog Office 365 Management Activity national cloud">
+    <span class="card-badge badge-playbook">REPORTING</span>
+    <h3>Programmatic Reporting &amp; Copilot Chat</h3>
+    <p>Compare Dashboard export, Advanced queries, Microsoft Graph v1.0 licensed-user APIs, the unlicensed Copilot Chat admin report, and Purview audit sources.</p>
+    <div class="card-roles">
+      <span class="card-role">Insights Analyst</span>
+      <span class="card-role">Data Engineer</span>
+      <span class="card-role">Compliance</span>
+    </div>
+    <a href="3-operate/analyst-playbook.html#programmatic-reporting">Compare Options</a>
   </div>
 
   <div class="card" data-roles="analyst leader" data-keywords="meeting time focus time wellbeing manager effectiveness collaboration template query 27 months behavioural metrics HR people analytics after hours email overload network Viva Insights advanced">
@@ -625,14 +691,24 @@
 </div>
 
 <!-- ═══ TOOLS ═══ -->
-<h2 class="section-title" id="tools" style="margin-bottom:18px;">
-  <span style="display:inline-block;background:linear-gradient(135deg,#422AFB,#7551FF);color:#fff;font-size:0.68em;padding:4px 12px;border-radius:20px;margin-right:10px;vertical-align:middle;letter-spacing:0.5px;">TOOLS</span>
+<h2 class="section-title u-5b6aad9a3f" id="tools">
+  <span class="u-39b63f4cb6">TOOLS</span>
   AI-Powered Analyst Tools
 </h2>
 <p class="section-subtitle">Reusable prompts and utilities to accelerate common analyst workflows.</p>
 <div class="card-grid">
+  <div class="card" data-roles="admin analyst governance finance" data-keywords="tools index reporting options consumption Copilot Chat export API Microsoft Graph Purview org data validation prompt Entra hierarchy PowerShell download README">
+    <span class="card-badge badge-architecture">TOOLS</span>
+    <h3>Tools &amp; Reporting Options</h3>
+    <p>Start here for reusable data utilities and a decision guide covering Consumption, Chat reporting, Dashboard export, Advanced queries, Graph APIs, and audit.</p>
+    <div class="card-roles">
+      <span class="card-role">All technical roles</span>
+    </div>
+    <a href="tools/index.html">Open Tools Index</a>
+  </div>
+
   <div class="card" data-roles="admin analyst" data-keywords="org data validation prompt CSV upload attribute mapping Organization FunctionType Layer HireDate PersonId ManagerId required reserved custom PII fix checklist dashboard filter">
-    <span class="card-badge" style="background:linear-gradient(135deg,#422AFB,#7551FF);color:#fff;">TOOL</span>
+    <span class="card-badge u-58e3b31280">TOOL</span>
     <h3>Org Data Validation Prompt</h3>
     <p>AI-assisted validation of customer org data files. Paste this prompt into any AI assistant with an Excel/CSV file to get a full validation report: required field checks, data type errors, Dashboard filter mapping, and a prioritised fix checklist.</p>
     <div class="card-roles">
@@ -649,7 +725,7 @@
   <p><strong>Disclaimer:</strong> These guides are provided as procedural references and may not reflect the latest product changes. Always refer to the official
   <a href="https://learn.microsoft.com/viva/insights/">Viva Insights</a> and
   <a href="https://learn.microsoft.com/copilot/microsoft-365/">Microsoft 365 Copilot</a> documentation on Microsoft Learn for the most up-to-date information.</p>
-  <p style="margin-top:12px;">Copilot Analytics Documentation Hub &bull; April 2026</p>
+  <p class="u-9374e84210">Independent Copilot Analytics guidance &bull; Last validated 16 July 2026 &bull; <a href="4-reference/accessibility.html">Accessibility</a></p>
 </div>
 </main>
 </div>
@@ -734,7 +810,7 @@ function deepSearch(term) {
   }
   html += '</div>';
   resultsDiv.innerHTML = html;
-  resultsDiv.style.display = '';
+  resultsDiv.style.display = 'block';
 }
 
 function applyFilters() {
@@ -779,6 +855,7 @@ function applyFilters() {
     }
   }
   document.getElementById('noResults').style.display = (visibleCount === 0) ? '' : 'none';
+  document.getElementById('resultStatus').textContent = visibleCount + ' guide' + (visibleCount === 1 ? '' : 's') + ' match the current filters.';
   deepSearch(term);
 }
 
@@ -838,7 +915,11 @@ function clearTopic() {
     applyFilters();
   });
   clr.addEventListener('click', function () { topSearch.value = ''; wrap.classList.remove('has-value'); searchTerm = ''; applyFilters(); topSearch.focus(); });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { b.classList.remove('nav-open'); updateAria(); } });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && b.classList.contains('nav-open')) {
+      b.classList.remove('nav-open'); updateAria(); navToggle.focus();
+    }
+  });
   var q0 = new URLSearchParams(location.search).get('q');
   if (q0) { topSearch.value = q0; wrap.classList.add('has-value'); searchTerm = q0; applyFilters(); }
   function scrollToHash() {

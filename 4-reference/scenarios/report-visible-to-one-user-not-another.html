@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Scenario 02 — Who can see the Copilot Dashboard &amp; reports (and why two colleagues differ). Last validated 16 July 2026.">
+<link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/4-reference/scenarios/report-visible-to-one-user-not-another.html">
 <title>Scenario 02 — Who can see the Copilot Dashboard &amp; reports (and why two colleagues differ) — Copilot Analytics</title>
 <link rel="stylesheet" href="../../assets/docs-style.css">
 <script defer src="../../assets/shell.js"></script>
@@ -25,6 +27,14 @@
   .bucket-sub { font-size: 0.85em; color: var(--muted, #777); }
   .bucket-list { margin: 0; padding-left: 18px; }
   .vfam-row { background: rgba(255,181,71,0.14); }
+</style>
+
+<style id="generated-inline-styles">
+.u-49807340de { position:fixed; bottom:32px; right:32px; background:var(--accent,#0078d4); color:#fff;
+  border:none; border-radius:50%; width:44px; height:44px; font-size:22px;
+  text-align:center; line-height:44px; text-decoration:none; cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,0.18); display:none; z-index:999; }
+.u-772845a273 { font-size:0.85em; color:var(--text-muted); margin-top:32px; }
 </style>
 </head>
 <body class="has-nav">
@@ -50,69 +60,53 @@
 <div class="scenario-meta">
   <div><strong>Typically reported by</strong>A user whose colleague (same team, similar licence) sees nothing or a permission-denied page &mdash; or an admin asking &ldquo;who is <em>supposed</em> to see this, and how do I grant or restrict it?&rdquo;</div>
   <div><strong>Surfaces involved</strong><code>analysis.insights.cloud.microsoft</code>, M365 Admin Center (VFAM), Entra ID</div>
-  <div><strong>Roles touched</strong>Global Admin, Insights Admin, AI Admin, AutoCxO leaders, Delegated users, People-managers</div>
-  <div><strong>Version</strong>1.0 &bull; Published June 2026</div>
+  <div><strong>Roles touched</strong>Global Admin, Insights Admin, AI Admin, Insights Analyst, qualified senior leaders, explicitly assigned users, delegates, people-managers</div>
+  <div><strong>Version</strong>1.1 &bull; Published June 2026 &bull; Validated 16 July 2026</div>
 </div>
 
 <!-- ─────────── Quick answer ─────────── -->
 <h1 id="quick-answer">Quick answer</h1>
 
-<p>The <strong>Reports</strong> surface has <em>no</em> permission model of its own &mdash; it only shows reports to people who <em>already</em> have Copilot Dashboard access. That access comes from <strong>three buckets</strong>, with a <strong>VFAM gate</strong> sitting on top that can block any of them. Crucially, most &ldquo;why can&rsquo;t my colleague see it?&rdquo; cases are <strong>not a misconfiguration</strong> &mdash; the colleague is an individual contributor who was never meant to see team or company reports.</p>
+<p>The <strong>Reports</strong> surface shows reports to people who already have a qualifying Copilot Dashboard access source. Administrative roles are independent and non-cumulative: <strong>AI Administrator does not automatically receive a Dashboard view, and Insights Administrator receives neither analyst rights nor automatic viewing</strong>. Entitlement and Viva feature access management (VFAM) remain separate gates that can still block a qualified user.</p>
 
-<h2 id="access-model">The access model &mdash; three buckets + one gate</h2>
+<h2 id="access-model">The access model &mdash; exact access sources plus gates</h2>
 <table>
-  <tr><th>Bucket</th><th>Who gets in this way</th><th>Mechanism</th><th>Scope they see</th></tr>
-  <tr>
-    <td><strong>1. Automatic</strong><br><span class="bucket-sub">by who you are</span></td>
-    <td>
-      <ul class="bucket-list">
-        <li>Tenant admins</li>
-        <li>Senior leaders (AutoCxO)</li>
-        <li>People-managers</li>
-      </ul>
-    </td>
-    <td>
-      <ul class="bucket-list">
-        <li>Global / Insights / AI Administrator role</li>
-        <li>Auto-identified from the org hierarchy</li>
-        <li>Manager Settings &ldquo;Grant managers scoped access&rdquo; ON + team meets minimum team size</li>
-      </ul>
-    </td>
-    <td>Company / hierarchy / own team</td>
-  </tr>
-  <tr>
-    <td><strong>2. Granted</strong><br><span class="bucket-sub">someone gave it to you</span></td>
-    <td>Anyone a leader or admin shares with</td>
-    <td>Delegation (max 75, no cascading)</td>
-    <td>Whatever the delegator&rsquo;s scope is</td>
-  </tr>
-  <tr>
-    <td><strong>3. Licensed baseline</strong><br><span class="bucket-sub">the price of entry</span></td>
-    <td>Every user in bucket 1 or 2 must <em>also</em> be licensed</td>
-    <td>Viva Insights / Copilot entitlement</td>
-    <td>Necessary, not sufficient</td>
-  </tr>
+  <tr><th scope="col">Access source</th><th scope="col">How it is obtained</th><th scope="col">Scope</th><th scope="col">Important boundary</th></tr>
+  <tr><td><strong>Global Administrator</strong></td><td>Role-derived automatic access</td><td>Your company</td><td>The only administrator role in this scenario that grants company access by role.</td></tr>
+  <tr><td><strong>Qualified senior leader</strong></td><td>Automatic identification from supported hierarchy and tenant criteria</td><td>Eligible hierarchy / company experience</td><td>Eligibility and auto-enablement must be active.</td></tr>
+  <tr><td><strong>Explicitly assigned user</strong></td><td>Added through Dashboard access management</td><td>Assigned company access</td><td>Use this for an AI Administrator or Insights Administrator who also needs to view.</td></tr>
+  <tr><td><strong>Insights Analyst on Global partition</strong></td><td>Insights Analyst role plus Global partition assignment</td><td>Your company</td><td>A non-Global partition does not grant company Dashboard access.</td></tr>
+  <tr><td><strong>Manager</strong></td><td>Manager Settings enabled; valid hierarchy, entitlement, and minimum team size</td><td>Your group</td><td>Manager access does not include Agent Dashboard.</td></tr>
+  <tr><td><strong>Eligible delegate</strong></td><td>An eligible Dashboard user delegates access</td><td>The granted group or company scope</td><td>No cascading; Agent Dashboard requires company scope and separate preview prerequisites.</td></tr>
+  <tr><td><strong>AI Administrator / Insights Administrator only</strong></td><td>Administrative role assignment</td><td><strong>No view by role</strong></td><td>AI Administrator needs explicit access; Insights Administrator also needs Insights Analyst separately to run queries.</td></tr>
   <tr class="vfam-row">
-    <td><strong>Gate: VFAM</strong><br><span class="bucket-sub">sits on top, can block any bucket</span></td>
+    <td><strong>Gate: VFAM</strong></td>
     <td>Any user or group</td>
     <td>Viva Feature Access Management &mdash; group-scoped policy on the Viva Insights web app / Copilot Dashboard feature</td>
-    <td>Overrides to <em>no access</em>, regardless of bucket</td>
+    <td>Can override a qualifying source to <em>no access</em>.</td>
+  </tr>
+  <tr>
+    <td><strong>Gate: entitlement</strong></td>
+    <td>Required Viva Insights / Copilot service plan</td>
+    <td>Necessary, not sufficient</td>
+    <td>A licence does not grant a Dashboard scope by itself.</td>
   </tr>
 </table>
 
-<p>The whole model reduces to four questions: <strong>Am I in bucket 1 or 2? Am I licensed (bucket 3)? Is a VFAM gate blocking me?</strong> Every variant of &ldquo;who can see this&rdquo; &mdash; including &ldquo;why me but not my colleague&rdquo; &mdash; is answered by those four.</p>
+<p>The diagnosis reduces to three questions: <strong>Which exact access source grants my scope? Do I have the required entitlement? Is VFAM or current service/rollout state blocking me?</strong></p>
+<p><strong>Sources:</strong> <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (Last updated 1 July 2026), <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/user-roles">Roles in Viva Insights</a> (Last updated 7 July 2026), <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, and Viva Insights web app</a> (Last updated 20 March 2026), <a href="https://learn.microsoft.com/viva/insights/org-team-insights/delegate-access">Delegate access to the Copilot Dashboard, Agent Dashboard, and Copilot insights</a> (Last updated 9 February 2026), and <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/manager-settings">Configure manager settings</a> (Last updated 25 June 2026).</p>
 
 <div class="callout info">
   <div class="callout-title">The most likely answer is &ldquo;working as designed&rdquo;</div>
-  <p>Before hunting for a broken setting: if your colleague is an <strong>individual contributor</strong> (no direct reports) and isn&rsquo;t an admin or a delegate, they are <em>correctly</em> seeing nothing. The Copilot Dashboard reports on a <em>group</em> &mdash; an IC has no team to report on. Only treat this as a fault once you&rsquo;ve confirmed the colleague genuinely <em>should</em> qualify via bucket 1 (automatic) or bucket 2 (delegation).</p>
+  <p>Before hunting for a broken setting: if your colleague is an <strong>individual contributor</strong> with no Global Administrator role, qualifying senior-leader status, explicit assignment, Global-partition analyst assignment, manager scope, or delegation, they are correctly seeing nothing. An AI Administrator or Insights Administrator role alone does not change that result.</p>
 </div>
 
 <!-- ─────────── 30-second diagnosis ─────────── -->
 <h1 id="diagnosis">30-second diagnosis</h1>
 
 <ol>
-  <li><strong>Should the colleague see it at all?</strong> If they&rsquo;re an IC with no direct reports, no admin role, and no delegation &mdash; <strong>stop: this is working as designed.</strong> Nothing to fix.</li>
-  <li><strong>Which bucket grants <em>your</em> access?</strong> Check <code>myaccount.microsoft.com</code> &rarr; <em>My roles</em> (admin), whether you&rsquo;re a people-manager (automatic), or whether a leader delegated to you (granted). That tells you exactly what the colleague is missing.</li>
+  <li><strong>Should the colleague see it at all?</strong> Check every access source in the matrix. If none applies, <strong>stop: this is working as designed.</strong></li>
+  <li><strong>Which source grants <em>your</em> access?</strong> Confirm role, explicit assignment, Global partition, senior-leader eligibility, Manager Settings, or delegation. Do not infer viewing from AI Administrator or Insights Administrator.</li>
   <li><strong>Colleague is a manager but sees nothing?</strong> Confirm Manager Settings is ON (<code>analysis.insights.cloud.microsoft</code> &rarr; <strong>Admin</strong> &rarr; <strong>Manager settings</strong> &rarr; &ldquo;Grant managers scoped access&rdquo;), their team meets the minimum team size (default 10, floor 5, manager counts), and their <code>Manager</code> attribute is populated.</li>
   <li><strong>Should qualify but still can&rsquo;t load the surface?</strong> Check for a <strong>VFAM gate</strong> blocking their group, then confirm their Viva Insights / Copilot licence.</li>
 </ol>
@@ -121,34 +115,34 @@
 <h1 id="causes">Causes ranked by likelihood</h1>
 
 <table>
-  <tr><th>#</th><th>Cause</th><th>Why it happens</th><th>Fix &amp; verification</th></tr>
+  <tr><th scope="col">#</th><th scope="col">Cause</th><th scope="col">Why it happens</th><th scope="col">Fix &amp; verification</th></tr>
   <tr>
     <td>1</td>
-    <td><strong>The colleague is an IC &mdash; not a manager, admin, or delegate. <em>Working as designed.</em></strong></td>
-    <td>The Copilot Dashboard reports on a <em>group</em> (company, hierarchy, or team). An individual contributor with no direct reports, no admin role, and no delegation has nothing to report on, so the surface is intentionally empty for them. This is the single most common &ldquo;why not my colleague&rdquo; case &mdash; and there is nothing to fix.</td>
+    <td><strong>The colleague has no qualifying access source. <em>Working as designed.</em></strong></td>
+    <td>An individual contributor with no Global Administrator role, qualified senior-leader status, explicit assignment, Global-partition analyst assignment, manager scope, or delegation has no Dashboard scope. A licence or administrative role alone is not enough.</td>
     <td>
       <ul>
-        <li>Confirm the colleague has no direct reports (org chart / Entra <code>Manager</code> attribute), no admin role (<code>myaccount.microsoft.com</code> &rarr; <em>My roles</em>), and no delegation.</li>
-        <li>If all three are true, <strong>close the case as expected behaviour.</strong> If the colleague <em>legitimately</em> needs access, grant it via <strong>delegation</strong> (bucket 2) &mdash; don&rsquo;t hand out an admin role.</li>
+        <li>Check all access sources in the matrix, including explicit assignment and Global-partition analyst access.</li>
+        <li>If none applies, <strong>close the case as expected behaviour.</strong> If access is legitimate, use explicit assignment or delegation rather than an unrelated privileged role.</li>
       </ul>
     </td>
   </tr>
   <tr>
     <td>2</td>
-    <td><strong>You hold an admin role (bucket 1); the colleague does not.</strong></td>
-    <td>Global Administrator, Insights Administrator, and AI Administrator all grant tenant-wide (&ldquo;Your company&rdquo;) access. A colleague without any of these has no admin-derived access.</td>
+    <td><strong>You are a Global Administrator, or you have another company-wide access source; the colleague does not.</strong></td>
+    <td>Only Global Administrator is role-derived company access here. AI Administrator needs explicit Dashboard assignment. Insights Administrator has no automatic view and no analyst rights; an Insights Analyst receives company access only when assigned to the Global partition.</td>
     <td>
       <ul>
-        <li>Check both users at <code>myaccount.microsoft.com</code> &rarr; <em>My roles</em>.</li>
-        <li>If the colleague needs access, prefer <strong>delegation</strong> over a new admin role (least privilege).</li>
-        <li><strong>Verify:</strong> your scope chip reads <em>&ldquo;Your company.&rdquo;</em></li>
+        <li>Check both users&rsquo; roles, explicit Dashboard assignments, analyst partitions, senior-leader eligibility, and delegations.</li>
+        <li>If the colleague needs read-only access, prefer explicit assignment or an eligible company-scoped delegation over a new admin role.</li>
+        <li><strong>Verify:</strong> identify the exact source that produces the &ldquo;Your company&rdquo; scope chip.</li>
       </ul>
     </td>
   </tr>
   <tr>
     <td>3</td>
     <td><strong>Manager Settings is OFF tenant-wide.</strong></td>
-    <td>If the Insights Admin has never enabled <em>&ldquo;Grant managers scoped access,&rdquo;</em> then <em>no</em> manager sees team-level data &mdash; so if your colleague is a manager expecting their team report, this is why. (You would still see reports if your access comes from an admin role or a delegation.)</td>
+    <td>If Manager Settings has never enabled <em>&ldquo;Grant managers scoped access,&rdquo;</em>, no qualifying manager sees team-level data. A Global Administrator, explicitly assigned user, qualified senior leader, Global-partition analyst, or delegate may still see reports through a different source.</td>
     <td>
       <ul>
         <li><code>analysis.insights.cloud.microsoft</code> &rarr; <strong>Admin</strong> &rarr; <strong>Manager settings</strong> &rarr; toggle <em>&ldquo;Grant managers scoped access&rdquo;</em> ON.</li>
@@ -173,7 +167,7 @@
   <tr>
     <td>5</td>
     <td><strong>The colleague&rsquo;s <code>Manager</code> attribute (or manager hierarchy) isn&rsquo;t populated.</strong></td>
-    <td>Manager access and AutoCxO (both bucket 1) depend on a manager hierarchy &mdash; either the Entra ID <code>Manager</code> attribute or a <code>ManagerId</code> column in uploaded org data. Missing hierarchy means the platform can&rsquo;t establish who reports to whom.</td>
+    <td>Manager access and automatic senior-leader identification depend on a manager hierarchy &mdash; either the Entra ID <code>Manager</code> attribute or a <code>ManagerId</code> column in uploaded org data. Missing hierarchy means the platform can&rsquo;t establish who reports to whom.</td>
     <td>
       <ul>
         <li>Check the colleague&rsquo;s Entra profile (<code>Manager</code> field) and, if org data is uploaded, the <code>ManagerId</code> mapping.</li>
@@ -184,8 +178,8 @@
   </tr>
   <tr>
     <td>6</td>
-    <td><strong>You received a delegation (bucket 2); the colleague did not.</strong></td>
-    <td>A leader or admin can delegate dashboard access to specific people (up to 75 delegates; no cascading). If you were delegated access and your colleague wasn&rsquo;t, you see the reports and they don&rsquo;t.</td>
+    <td><strong>You received a delegation; the colleague did not.</strong></td>
+    <td>An eligible Dashboard user can delegate access to specific people (up to 75 delegates; no cascading). If you were delegated access and your colleague wasn&rsquo;t, you see the reports and they don&rsquo;t.</td>
     <td>
       <ul>
         <li>Ask whether a leader shared access with you. The delegating leader can add the colleague the same way.</li>
@@ -197,7 +191,7 @@
   <tr>
     <td>7</td>
     <td><strong>A VFAM gate blocks the colleague&rsquo;s web-app or Copilot Dashboard access.</strong></td>
-    <td>Viva Feature Access Management sits on top of every bucket and can disable the Viva Insights web app or the Copilot Dashboard feature for specific groups. If the colleague is in a group covered by a restrictive policy, the surface simply doesn&rsquo;t load &mdash; even if they would otherwise qualify. (This may also be <em>deliberate</em> &mdash; see &ldquo;Deliberately restricting access&rdquo; below.)</td>
+    <td>Viva Feature Access Management can disable the Viva Insights web app or Copilot Dashboard feature for specific groups regardless of their access source. If the colleague is in a group covered by a restrictive policy, the surface does not load. This may be deliberate; see &ldquo;Deliberately restricting access&rdquo; below.</td>
     <td>
       <ul>
         <li><code>admin.microsoft.com</code> &rarr; Viva &rarr; <strong>Feature Access Management</strong> &rarr; Viva Insights &rarr; verify the <strong>Viva Insights web app</strong> and <strong>Copilot Dashboard</strong> features are ON for the colleague&rsquo;s group.</li>
@@ -208,7 +202,7 @@
   </tr>
   <tr>
     <td>8</td>
-    <td><strong>The colleague lacks a Viva Insights / Copilot licence (bucket 3).</strong></td>
+    <td><strong>The colleague lacks the required Viva Insights / Copilot entitlement.</strong></td>
     <td>Even with the right role or manager hierarchy, the web-app surface requires the appropriate licence assignment. An unlicensed (or differently licensed) colleague is blocked at the door.</td>
     <td>
       <ul>
@@ -233,14 +227,14 @@
 
 <div class="callout warning">
   <div class="callout-title">Most common misdiagnosis</div>
-  <p>This is usually escalated as &ldquo;the same licence behaves differently for two people &mdash; it must be a bug.&rdquo; In practice the two users almost always differ on <strong>(1) manager / admin status</strong> &mdash; and very often the colleague is simply an IC seeing the surface <em>correctly</em> empty. Identical licences do <em>not</em> imply identical dashboard access &mdash; the licence is necessary but never sufficient.</p>
+  <p>This is usually escalated as &ldquo;the same licence behaves differently for two people &mdash; it must be a bug.&rdquo; In practice the users differ on an access source, hierarchy, assignment, partition, delegation, or gate. Identical licences do <em>not</em> imply identical Dashboard access &mdash; entitlement is necessary but never sufficient.</p>
 </div>
 
 <div class="callout info">
   <div class="callout-title">Surface vs. scope &mdash; keep these separate</div>
   <p>Two different questions are easy to conflate:</p>
   <ul>
-    <li><strong>Does the dashboard / Reports surface appear at all?</strong> &rarr; governed by your bucket (admin role, AutoCxO, manager access, or delegation), your licence, and the VFAM gate.</li>
+    <li><strong>Does the dashboard / Reports surface appear at all?</strong> &rarr; governed by an exact access source from the matrix, entitlement, VFAM, and current service/rollout state.</li>
     <li><strong>Does a <em>manager</em> see <em>team-level</em> data within it?</strong> &rarr; governed by Manager Settings + manager hierarchy + minimum team size.</li>
   </ul>
   <p>Diagnose which question you&rsquo;re actually answering before chasing a fix.</p>
@@ -258,10 +252,10 @@
 
 <p><strong>Why &ldquo;manager&rdquo; is the wrong lever.</strong> In Viva Insights, <em>&ldquo;manager&rdquo;</em> is not a statement about seniority or importance &mdash; it is a literal test of whether the person has <strong>direct or indirect reports</strong>, established by the <code>PersonId</code> / <code>ManagerId</code> hierarchy. You cannot enable someone as a manager who has nobody reporting to them, no matter how senior they are. And even if James <em>did</em> have a small team, manager access would only show <strong>that team&rsquo;s</strong> adoption &mdash; not the <strong>company-wide</strong> view an executive sponsor actually needs.</p>
 
-<p><strong>The correct lever is delegation (bucket 2).</strong> A non-manager reaches the dashboard exactly one of these ways: automatic senior-leader identification (only if Entra ID places them at the top of the hierarchy &mdash; not James), an admin/analyst role (over-privileged for a read-only sponsor), Global Admin (far too much), or <strong>delegation</strong>. Delegation is the right answer twice over: it is the <em>only</em> mechanism open to a non-manager, <em>and</em> it is the only one that can carry a <strong>&ldquo;Your company&rdquo;</strong> scope &mdash; the org-wide adoption picture James is asking for.</p>
+<p><strong>The correct lever here is delegation.</strong> James could receive company access through explicit assignment, qualifying senior-leader identification, Global-partition analyst assignment, Global Administrator, or an eligible company-scoped delegation. For a read-only sponsor who does not otherwise qualify, delegation is the least-privilege choice; do not assign an administrative or analyst role merely to create a view.</p>
 
 <table>
-  <tr><th>Step</th><th>Action</th></tr>
+  <tr><th scope="col">Step</th><th scope="col">Action</th></tr>
   <tr>
     <td>1</td>
     <td>Identify a delegator who already has <strong>company-level</strong> access &mdash; a senior leader with automatic access, or a Global Administrator.</td>
@@ -272,7 +266,7 @@
   </tr>
   <tr>
     <td>3</td>
-    <td>Confirm James holds a <strong>Viva Insights / Copilot licence</strong> (bucket 3 &mdash; necessary even for delegates).</td>
+    <td>Confirm James holds the required <strong>Viva Insights / Copilot entitlement</strong>, which is necessary but not sufficient.</td>
   </tr>
   <tr>
     <td>4</td>
@@ -300,10 +294,10 @@
 
 <p>The harder, higher-stakes version of this question is the reverse: <strong>&ldquo;How do I make sure a particular leader or group <em>cannot</em> see the dashboard, even though their role or hierarchy would normally grant it?&rdquo;</strong> This is the everyday reality in regulated, multi-agency, or shared-tenant deployments where one agency&rsquo;s leaders must not see another&rsquo;s data.</p>
 
-<p>Buckets 1&ndash;3 are mostly <em>automatic</em> &mdash; you can&rsquo;t easily stop the platform from auto-identifying a senior leader (AutoCxO) or a people-manager. The <strong>VFAM gate is the supported lever for removing access</strong>:</p>
+<p>Some access sources are automatic, including qualified senior-leader and enabled manager access. The <strong>VFAM gate is the supported surface-control lever for removing access</strong>:</p>
 
 <table>
-  <tr><th>Goal</th><th>How</th><th>Watch out for</th></tr>
+  <tr><th scope="col">Goal</th><th scope="col">How</th><th scope="col">Watch out for</th></tr>
   <tr>
     <td>Block a specific set of users from the dashboard</td>
     <td>Create a <strong>group-scoped</strong> VFAM policy that turns the <strong>Copilot Dashboard</strong> (and/or Viva Insights web app) feature <strong>OFF</strong> for an Entra group (e.g. <code>AgencyUsers-NoDashboard</code>).</td>
@@ -330,8 +324,8 @@
 <h1 id="done">What &ldquo;done&rdquo; looks like</h1>
 
 <ul>
-  <li>You can name <em>which bucket</em> grants <strong>your</strong> access &mdash; automatic (admin role / AutoCxO / manager access), granted (delegation), plus a valid licence and no VFAM gate.</li>
-  <li>You&rsquo;ve confirmed the colleague either matches <em>no</em> bucket &mdash; in which case it&rsquo;s <strong>correct by design</strong> (most often an IC with no team) &mdash; or you&rsquo;ve found the single missing, fixable item (enable Manager Settings, populate the <code>Manager</code> attribute, add a delegation, or lift a VFAM block).</li>
+  <li>You can name the exact source that grants <strong>your</strong> access and scope, plus the required entitlement and absence of a VFAM block.</li>
+  <li>You&rsquo;ve confirmed the colleague either has no qualifying source &mdash; in which case it&rsquo;s <strong>correct by design</strong> &mdash; or you&rsquo;ve found the missing item: explicit access, Global partition, eligible hierarchy, Manager Settings, delegation, entitlement, or VFAM.</li>
   <li>If the goal was the <em>inverse</em> &mdash; restricting access &mdash; the right users are blocked via a <strong>group-scoped</strong> VFAM policy (never &ldquo;Everyone&rdquo;), verified by a test user in the blocked group.</li>
 </ul>
 
@@ -350,17 +344,12 @@
 
 <!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
 <hr>
-<p style="font-size:0.85em; color:var(--text-muted); margin-top:32px;">
-  <strong>Disclaimer:</strong> This scenario is provided for informational purposes only and reflects Microsoft 365 capabilities as of June 2026. Microsoft may change features, interfaces, and availability without notice. Always verify current guidance on <a href="https://learn.microsoft.com">Microsoft Learn</a>. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
+<p class="u-772845a273">
+  <strong>Disclaimer:</strong> This scenario is provided for informational purposes only and was last validated on 16 July 2026. Microsoft may change features, interfaces, and availability without notice. Verify current guidance in Microsoft Learn, Message Center, Service Health, and the tenant UI. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
 </p>
 
 <!-- Back to Top -->
-<a href="#" id="back-to-top" style="
-  position:fixed; bottom:32px; right:32px; background:var(--accent,#0078d4); color:#fff;
-  border:none; border-radius:50%; width:44px; height:44px; font-size:22px;
-  text-align:center; line-height:44px; text-decoration:none; cursor:pointer;
-  box-shadow:0 2px 8px rgba(0,0,0,0.18); display:none; z-index:999;
-" title="Back to top">&uarr;</a>
+<a href="#" id="back-to-top" class="u-49807340de" title="Back to top">&uarr;</a>
 <script>
 (function(){
   var btn = document.getElementById('back-to-top');

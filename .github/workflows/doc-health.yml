@@ -17,6 +17,10 @@ on:
       - 'explain/**'
       - 'artifacts/**'
       - 'docs/**'
+      - 'tools/**'
+      - '404.html'
+      - 'robots.txt'
+      - 'sitemap.xml'
       - 'index.html'
       - 'browse.html'
       - 'assets/search-index.json'
@@ -32,6 +36,10 @@ on:
       - 'explain/**'
       - 'artifacts/**'
       - 'docs/**'
+      - 'tools/**'
+      - '404.html'
+      - 'robots.txt'
+      - 'sitemap.xml'
       - 'index.html'
       - 'browse.html'
       - 'assets/search-index.json'
@@ -58,6 +66,9 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install maintenance dependencies
+        run: python3 -m pip install -r scripts/requirements-maintenance.txt
+
       - name: Self-test the checker
         run: python3 scripts/maintenance/test_check_docs.py
 
@@ -67,6 +78,9 @@ jobs:
       # "regenerate PDFs in the same commit as the HTML" convention.
       - name: Doc-health checks (links, PDFs, index, structure, secrets)
         run: python3 scripts/maintenance/check_docs.py --ci --strict
+
+      - name: PDF structural accessibility preflight
+        run: python3 scripts/maintenance/check_pdf_accessibility.py
 
       - name: Restore outbound-link cache
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'

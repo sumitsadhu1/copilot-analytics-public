@@ -6,10 +6,22 @@ Copilot Dashboard whose hierarchy "collapses" or rolls up incorrectly. Validatio
 downstream with the **Microsoft 365 Copilot Analyst Agent** — this tool only produces the
 extract.
 
-Use this when the tenant is running on **Entra ID data only** (no organizational data
-file has been uploaded). In that mode the Entra manager chain *is* the dashboard
-hierarchy, so the problem is almost always in the directory data, not in dashboard
-delegation.
+Use this when Microsoft Entra currently owns the Viva Insights / Copilot Dashboard
+**`ManagerId`** source, either because the tenant uses Entra for organizational data or
+because **parallel ingestion** explicitly selects Entra for `ManagerId`. The fact that a
+file was uploaded at some point does not determine the current source.
+
+Before interpreting the export, record the tenant's source state:
+
+1. In the Viva Insights organizational-data admin experience, review **Configure Entra
+  connection** and record whether Entra is selected for `ManagerId` and `Organization`.
+2. Review active **Organizational Data in Microsoft 365** connections and the apps/fields
+  they supply.
+3. Check the latest tenant-specific Message Center migration notice and the actual controls
+  present in both admin surfaces. Current Microsoft Learn pages conflict about whether Viva
+  web-app add/edit uploads remain supported, so do not infer state from a date or missing tile.
+4. If Entra is not the current `ManagerId` source, use the export only as a comparison against
+  the authoritative uploaded/connector hierarchy; do not diagnose the dashboard solely from it.
 
 ---
 
@@ -27,7 +39,7 @@ delegation.
   that tree is at least 4 percent of the overall company size**. Trees under 4% are
   effectively **dropped** from the Scope picker — which presents as a "collapsed" or
   incomplete hierarchy.
-- On **Entra-only** data, the **only** populated grouping attribute is **`Organization`**
+- When Entra supplies the relevant Dashboard/Viva attributes, the populated grouping attribute is **`Organization`**
   (from Entra `Department`). **`Job function`** does *not* appear unless an admin uploads
   `FunctionType` / `Microsoft_JobDiscipline`.
 
@@ -35,8 +47,10 @@ The dashboard's own FAQ confirms the failure mode: *"Why can't I see my senior l
 members as a selectable option within the Scope dropdown menu? Your Entra data isn't
 reliable, or it doesn't accurately reflect the reporting structure at your company."*
 
-So the validation target is: **one connected tree, one top leader, no broken/cyclic
-links, and intended branches large enough to clear 4%.**
+So the validation target is: **one connected intended tree (or documented side-trees), no
+broken/cyclic links, and intended branches large enough to clear 4%.** Treat the
+"one top leader" rule as the target for a single-tree design, not a universal requirement
+for a tenant that intentionally has multiple valid organizations.
 
 ---
 
@@ -102,8 +116,9 @@ Connect-MgGraph -Scopes "User.Read.All"
 ./Export-EntraOrgHierarchy.ps1 -OutputPath ./entra-org-hierarchy.csv -UsePerUserManagerLookup
 ```
 
-Output columns map straight onto the Viva Insights org-data fields so the same file can
-later be adapted into an upload if needed:
+Output columns map onto the Viva Insights organizational-data concepts. The extract is a
+diagnostic snapshot; do not upload it without separately confirming the tenant path,
+required schema, selected apps, data classification, and rollback plan:
 
 | CSV column | Entra source | Viva Insights field |
 |---|---|---|
@@ -132,6 +147,9 @@ the issues that distort the Copilot Dashboard **Scope** rollup:
 - fragmented side-trees (each tree under ~4% of the company is dropped from Scope)
 - blank `Organization` (Entra `Department`) values that collapse the grouping filter
 
+Tell the Analyst Agent which source-state evidence you recorded in Step 0. A header pattern
+identifies a file schema; it does not prove which tenant portal or data source is active.
+
 This tool deliberately stops at extraction — no local analysis is performed.
 
 ---
@@ -140,7 +158,7 @@ This tool deliberately stops at extraction — no local analysis is performed.
 
 | Check | What a failure means | Remediation |
 |---|---|---|
-| **Reporting-link integrity** — blank-manager rows | More than one "root" = multiple top leaders; the dashboard rolls up only the largest tree | Ensure exactly **one** person (the CEO/top) has a blank manager; give the rest a valid manager |
+| **Reporting-link integrity** — blank-manager rows | Multiple roots can indicate intentional side-trees or broken hierarchy; the Dashboard bases senior-leader selection on the largest tree and applies the documented 4% rule to other trees | Confirm every root is intentional. For a single-tree design, ensure exactly one top leader; otherwise document valid side-trees and test their Dashboard visibility |
 | **Broken manager links** | A `ManagerId` points to someone who isn't in the directory; that branch can't connect to the top | Fix the manager value in Entra (or re-enable / re-create the missing manager account) |
 | **Cycle detection** | A loops to B loops to A; the chain never reaches a top leader | Break the loop; correct whichever manager assignment is wrong |
 | **Hierarchy trees / 4% rule** | Side-trees under 4% of the company are dropped from Scope → "collapsed" view | Reconnect side-trees into the main tree, or grow/merge them above the 4% threshold |
@@ -155,7 +173,7 @@ instantly.
 
 ## Symptom → likely cause → check
 
-| Symptom | Likely cause (Entra-only) | What to look for |
+| Symptom | Likely cause when Entra owns `ManagerId` | What to look for |
 |---|---|---|
 | Hierarchy "collapses" to one level | Many small trees under 4%, or broken links | tree fragmentation, broken manager links |
 | Only "Your company" shows, no groups | No clean second level under one root / fragmented chain | multiple roots, tree fragmentation |
@@ -176,23 +194,54 @@ instantly.
   custom taxonomy means uploading organizational data (and, for advanced analysis,
   custom person queries in the Viva Insights web app). Confirm the customer's licensing
   before promising that path.
-- **Uploading an org-data file permanently switches the dashboard's source** from Entra
-  ID to the uploaded file for both the `Scope` and `Organization` filters, and must then
-  be kept current with regular uploads.
+- **Source precedence is surface- and attribute-specific:**
+  - Microsoft 365 User Profile keeps Entra as the default unless Organizational Data in
+    Microsoft 365 is prioritised; uploaded data can fill Profile gaps.
+  - Copilot Dashboard / Viva Insights use the organizational attributes shared with those
+    apps. Microsoft documents merged Dashboard data with the more recent upload taking
+    priority when multiple uploads exist.
+  - Parallel ingestion can keep or restore Entra as the default for Viva `ManagerId`
+    and/or `Organization`, while uploaded files or connectors supply other attributes.
+  - `FunctionType` / `Microsoft_JobDiscipline` has no documented Entra Job-function fallback.
+- Do not describe an upload as universally or permanently replacing Entra. Record the
+  source owner for each surface and attribute, then test Profile and Dashboard/Viva
+  independently.
+
+## Supported correction and rollback paths
+
+- For Organizational Data in Microsoft 365 updates, upload only affected users and the
+  values to change. Blank or omitted values preserve existing data.
+- Use documented deletion markers when a value must be removed: `''` for a string in CSV
+  (three single quotes in Excel), `-1` for an integer, a nonexistent in-tenant address for
+  an email, and `01-01-0001` for a date.
+- Use CSV **Historical import** with **File valid as of** for retroactive Viva Insights
+  corrections.
+- To return Viva `ManagerId` or `Organization` to Entra, select those attributes under
+  **Configure Entra connection**, allow about 24 hours, and then remove optional uploaded
+  attributes that are no longer needed.
+- Do not use a one-row dummy **Replace All** file as a general rollback. For a critical
+  migration failure, preserve import/source evidence and use Microsoft Support; Microsoft
+  documents temporary rollback only in special cases.
 
 ---
 
 ## Microsoft Learn references
 
-- Copilot Dashboard — Scope, "Your company"/"Your group", manager hierarchy, 4% senior-leader rule, upload-replaces-source behaviour:
+- Copilot Dashboard — Scope, "Your company"/"Your group", manager hierarchy, and 4% senior-leader rule (updated 1 July 2026):
   <https://learn.microsoft.com/en-us/viva/insights/org-team-insights/copilot-dashboard#adoption>
 - How automatic access is determined (single reporting line, weekly recompute):
   <https://learn.microsoft.com/en-us/viva/insights/org-team-insights/copilot-dashboard#how-automatic-access-to-the-copilot-dashboard-is-determined>
-- Organizational data in Viva Insights — Entra → Viva attribute mapping (`UserPrincipalName`→`PersonId`, `Manager/UserPrincipalName`→`ManagerId`, `Department`→`Organization`):
-  <https://learn.microsoft.com/en-us/viva/insights/advanced/admin/org-data-overview#about-data-sources>
+- Organizational Data in Microsoft 365 — app requirements and Profile precedence (updated 2 December 2025):
+  <https://learn.microsoft.com/en-us/viva/organizational-data>
+- Parallel Entra plus uploaded data — `ManagerId`/`Organization` source control and restoration (visible date 30 June 2025; content refreshed 7 July 2026):
+  <https://learn.microsoft.com/en-us/viva/insights/advanced/admin/entra-plus-csv-upload>
+- Current CSV update/delete markers and Historical import (updated 2 April 2026):
+  <https://learn.microsoft.com/en-us/viva/import-orgdata>
+- Tenant-wave migration, Message Center control, and Support rollback (updated 5 December 2025):
+  <https://learn.microsoft.com/en-us/viva/insights/advanced/admin/upload-org-data-admin-center>
 - Prepare an organizational data file upload (required fields, hierarchy concepts, `Layer`, `SupervisorIndicator`):
   <https://learn.microsoft.com/en-us/viva/insights/advanced/admin/prepare-org-data>
-- Manage settings — required Copilot Dashboard attributes and the Viva vs `Microsoft_*` (MODIS) names:
+- Manage settings — required Copilot Dashboard attributes and the Viva versus `Microsoft_*` names (updated 20 March 2026; conflicts with the parallel-ingestion page on Viva add/edit availability):
   <https://learn.microsoft.com/en-us/viva/insights/advanced/admin/manage-settings-copilot-dashboard#upload-organizational-data-for-the-copilot-dashboard-and-agent-dashboard>
 - `Get-MgUser`:
   <https://learn.microsoft.com/en-us/powershell/module/microsoft.graph.users/get-mguser>

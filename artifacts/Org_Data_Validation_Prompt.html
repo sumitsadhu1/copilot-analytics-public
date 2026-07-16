@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Org Data Validation Prompt. Last validated 16 July 2026.">
+<link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/artifacts/Org_Data_Validation_Prompt.html">
 <title>Org Data Validation Prompt — Copilot Analytics</title>
 <link rel="stylesheet" href="../assets/docs-style.css">
 <script defer src="../assets/shell.js"></script>
@@ -31,6 +33,21 @@
   .use-case { background: var(--bg-subtle); border-left: 3px solid var(--accent); padding: 14px 18px; margin: 14px 0; border-radius: 0 6px 6px 0; }
   .use-case strong { color: var(--primary); }
 </style>
+
+<style id="generated-inline-styles">
+.u-49807340de { position:fixed; bottom:32px; right:32px; background:var(--accent,#0078d4); color:#fff;
+  border:none; border-radius:50%; width:44px; height:44px; font-size:22px;
+  text-align:center; line-height:44px; text-decoration:none; cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,0.18); display:none; z-index:999; }
+.u-122f7f2eee { border-left-color:var(--accent); }
+.u-86f8c96d5c { border-left-color:var(--accent-violet); }
+.u-6221ced1fe { color:var(--success); }
+.u-f428949d1a { font-family:monospace; font-size:0.9em; margin-top:8px; color:var(--primary); }
+.u-772845a273 { font-size:0.85em; color:var(--text-muted); margin-top:32px; }
+.u-faebd87ccb { margin:0; padding-left:22px; line-height:1.7; }
+.u-0272b68607 { margin:10px 0; }
+.u-ebdb795fb7 { margin:14px 0 6px; }
+</style>
 </head>
 <body class="has-nav">
 <nav class="doc-nav">
@@ -51,19 +68,19 @@
 </div>
 
 <table>
-  <tr><th>Document Property</th><th>Value</th></tr>
+  <tr><th scope="col">Document Property</th><th scope="col">Value</th></tr>
   <tr><td>Type</td><td>Reusable Prompt Template</td></tr>
   <tr><td>Audience</td><td>Analysts, IT Admins, Solution Architects</td></tr>
-  <tr><td>Version</td><td>3.2 (Problem ID Mapping row-level register added to Prompt 1, Prompt 3 &amp; Full Prompt, with optional .xlsx export). 3.1 restructured Prompt 1 for M365 Analyst Agent: verdict-first, mandatory critical-issues bullet list, anti-truncation rules.</td></tr>
-  <tr><td>Published</td><td>April 2026</td></tr>
+  <tr><td>Version</td><td>3.3 (tenant-state gate, surface-specific source precedence, current import limits, and supported correction operations). 3.2 added Problem ID Mapping to Prompt 1, Prompt 3, and Full Prompt.</td></tr>
+  <tr><td>Last validated</td><td>16 July 2026</td></tr>
 </table>
 
 <div class="callout info">
   <div class="callout-title">Choose Your Prompt Format</div>
   <p>This page provides <strong>two formats</strong> for the same validation. Choose based on your AI platform:</p>
-  <table style="margin:10px 0;">
-    <tr><th>Format</th><th>Best For</th><th>Character Count</th></tr>
-    <tr><td><a href="#modular"><strong>Modular Flow (3 Prompts)</strong></a> <strong style="color:var(--success);">(Recommended)</strong></td><td>Microsoft 365 Copilot Analyst Agent, Copilot Chat</td><td>~4,500 chars each</td></tr>
+  <table class="u-0272b68607">
+    <tr><th scope="col">Format</th><th scope="col">Best For</th><th scope="col">Character Count</th></tr>
+    <tr><td><a href="#modular"><strong>Modular Flow (3 Prompts)</strong></a> <strong class="u-6221ced1fe">(Recommended)</strong></td><td>Microsoft 365 Copilot Analyst Agent, Copilot Chat</td><td>~4,500 chars each</td></tr>
     <tr><td><a href="#full-prompt"><strong>Full Prompt (Single)</strong></a></td><td>GitHub Copilot (Opus), ChatGPT, Claude</td><td>~18,000 chars</td></tr>
   </table>
   <p>Both formats produce the same validation. The modular flow splits the analysis into three sequential steps to fit within M365 Copilot input limits. Always <strong>attach or paste the customer&rsquo;s org data file</strong> (Excel or CSV) with each prompt.</p>
@@ -74,17 +91,23 @@
   <p>The org data file contains <strong>real personnel data</strong>. Pasting or attaching it to tools outside your Microsoft 365 boundary &mdash; such as ChatGPT, Claude, or GitHub Copilot &mdash; moves that data beyond your Microsoft 365 data-protection and compliance commitments. Check your organisation&rsquo;s data-handling policy first.</p>
 </div>
 
+<div class="callout warning">
+  <div class="callout-title">File Schema Does Not Prove the Tenant Upload Path</div>
+  <p><code>Microsoft_*</code> versus <code>PersonId</code>/<code>ManagerId</code> headers identify a file schema, not whether the tenant currently supports add/edit uploads in a particular portal. Microsoft Learn sources conflict about Viva web-app upload. The tenant&rsquo;s latest Message Center notice and actual controls in both admin surfaces are the operational authority. The prompts below must report the path as <strong>unconfirmed</strong> when that evidence is not supplied.</p>
+  <p><strong>Sources:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#upload-organizational-data-for-the-copilot-dashboard-and-agent-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, and Viva Insights web app</a> (Microsoft Learn, updated 20 March 2026); <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Use Microsoft Entra plus .csv files for parallel data uploads</a> (visible date 30 June 2025; content refreshed 7 July 2026); and <a href="https://learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center#migration-and-timeline">Upload and maintain data through the Microsoft 365 admin center &mdash; Migration and timeline</a> (5 December 2025).</p>
+</div>
+
 <!-- ═══════════════════════ 1. MODULAR FLOW ═══════════════════════ -->
 <h1 id="modular">1. Modular Flow &mdash; 3 Prompts</h1>
 
-<div class="callout" style="border-left-color:var(--accent);">
+<div class="callout u-122f7f2eee">
   <div class="callout-title">How the Flow Works</div>
   <p>Run these three prompts <strong>in order</strong>, attaching the <strong>same org data file</strong> to each. Each prompt produces a self-contained report you can save. The prompts guide you to the next step automatically.</p>
-  <p style="font-family:monospace; font-size:0.9em; margin-top:8px; color:var(--primary);">
+  <p class="u-f428949d1a">
     Prompt 1: Data Readiness &nbsp;&#10132;&nbsp; Prompt 2: Dashboard Impact &nbsp;&#10132;&nbsp; Prompt 3: Remediation Plan
   </p>
-  <p style="margin:14px 0 6px;"><strong>First time? Follow these steps:</strong></p>
-  <ol style="margin:0; padding-left:22px; line-height:1.7;">
+  <p class="u-ebdb795fb7"><strong>First time? Follow these steps:</strong></p>
+  <ol class="u-faebd87ccb">
     <li>Open your AI tool &mdash; the <strong>Microsoft 365 Copilot Analyst Agent</strong> or <strong>Copilot Chat</strong> (recommended).</li>
     <li>Have the <strong>org data file</strong> (Excel or CSV) saved and ready on your computer.</li>
     <li>Find <strong>Prompt 1</strong> below and click its <strong>Copy</strong> button, then paste it into the AI tool.</li>
@@ -106,12 +129,15 @@ You are a <span class="kw">Microsoft Viva Insights Organizational Data Validatio
 <span class="cm"># TASK</span>
 Validate this org data file for upload readiness to the Copilot Dashboard / Viva Insights platform.
 
-<span class="cm"># UPLOAD PATH DETECTION</span>
-- If columns start with "Microsoft_" → M365 Admin Centre (MODIS) path
-- If columns use PersonId/ManagerId/Organization → Viva Insights (Legacy) path
+<span class="cm"># FILE SCHEMA AND TENANT-STATE GATE</span>
+- If columns start with "Microsoft_" → Organizational Data in Microsoft 365 schema
+- If columns use PersonId/ManagerId/Organization → Viva Insights organizational-data schema
 - If NEITHER matches → CRITICAL: non-standard column names. Produce a rename mapping.
+- Header detection identifies schema only. It does NOT prove which add/edit portal is enabled for the tenant.
+- The operational path is controlled by the tenant's latest Message Center migration notice and the actual add/edit controls in Microsoft 365 admin center and Viva Insights. If this evidence is not supplied, report "Tenant upload path: UNCONFIRMED" and do not direct the user to either portal.
+- Microsoft sources conflict: https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard still recommends Viva upload for Viva customers; https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload says Viva add/edit is no longer supported. Surface the conflict; never resolve it from file headers or date.
 
-<span class="cm"># REQUIRED ATTRIBUTES (Legacy)</span>
+<span class="cm"># REQUIRED ATTRIBUTES (VIVA SCHEMA, ONLY WHEN TENANT-ENABLED)</span>
 | Attribute | Type | Rules |
 |---|---|---|
 | PersonId | Email | Must contain @, unique per EffectiveDate |
@@ -119,8 +145,8 @@ Validate this org data file for upload readiness to the Copilot Dashboard / Viva
 | ManagerId | Email | Must contain @, blank only for CEO row |
 | Organization | String | Non-blank for every row |
 
-<span class="cm"># REQUIRED ATTRIBUTES (MODIS)</span>
-PersonId → Microsoft_PersonEmail, ManagerId → Microsoft_ManagerEmail, Organization → Microsoft_Organization. EffectiveDate is set via UI date picker (no column needed).
+<span class="cm"># REQUIRED ATTRIBUTES (ORGANIZATIONAL DATA IN MICROSOFT 365)</span>
+Platform-wide: Microsoft_PersonEmail is required. For Copilot Dashboard / Viva Insights as selected apps, also require Microsoft_ManagerEmail and Microsoft_Organization. EffectiveDate is set with the File valid as of date in the UI (no column needed).
 
 <span class="cm"># RESERVED OPTIONAL ATTRIBUTES</span>
 If present, must use exact names and correct types:
@@ -167,6 +193,8 @@ Note: TimeZone, StartDate, EndDate, IsActive, IsInternal are <span class="hl">re
 16. <span class="hl">WorkDayStart / WorkDayEnd</span>: integer 0-23 only; WorkDayStart &lt; WorkDayEnd per row; flag if &gt;30% of rows share the same value (suspicious mass-default from HRIS); flag if &gt;5% rows = 0 (likely blank→0 sentinel). These trigger the Data Quality page warning triangle and degrade after-hours / focus-time metrics.
 17. StartDate &lt;= EffectiveDate &lt;= EndDate per row (record validity window)
 18. <span class="hl">PII column-name detection</span>: flag columns matching (ssn|social|tax_id|nino|phone|mobile|dob|birth|home_addr|home_address|emergency|bonus|salary_ytd|compensation) — these must NOT be uploaded to org data
+19. File size and import route: up to 25 MB can be uploaded directly from local files; files over 25 MB and up to 2 GB use SharePoint. Flag anything above 2 GB as unsupported by the documented CSV path.
+20. Environment gate: CSV import is supported in Worldwide and GCC; API and Azure blob organizational-data imports are Public Preview in Worldwide and unavailable in GCC. Do not infer GCC High or DoD parity.
 
 <span class="cm"># OUTPUT FORMAT — MANDATORY</span>
 <span class="hl">Produce ALL SEVEN sections below as VISIBLE MARKDOWN TEXT in the response. Do NOT stop after any single table. Do NOT summarise findings into "analysis complete" — every finding from your reasoning MUST appear in the visible output. The completeness table alone is NOT a complete report.</span>
@@ -178,7 +206,7 @@ Note: TimeZone, StartDate, EndDate, IsActive, IsInternal are <span class="hl">re
 Before any table, list every CRITICAL finding as plain bullets. Include at minimum (if present in the file):
 - Forbidden column names detected (list them)
 - PII columns detected (list them — SSN, DOB, HomeAddress, Bonus, etc.)
-- Dual-schema detected (both legacy PersonId and Microsoft_PersonEmail present)
+- Dual-schema detected (both Viva <code>PersonId</code> and Microsoft 365 <code>Microsoft_PersonEmail</code> present)
 - Duplicate PersonIds on the same EffectiveDate (list row numbers)
 - Orphan managers (ManagerId values not present as PersonId — list them)
 - Manager self-references or hierarchy loops (list them)
@@ -187,7 +215,7 @@ Before any table, list every CRITICAL finding as plain bullets. Include at minim
 - Sentinel strings in HireDate (#N/A, NULL, none, TBD, unknown, 01/01/1900)
 
 <span class="kw">## 3. File Summary</span>
-File name, format, total rows, total columns, EffectiveDate range, unique PersonId count, upload path detected (Legacy / MODIS / Ambiguous).
+File name, format, total rows, total columns, EffectiveDate range, unique PersonId count, schema detected (Viva / Organizational Data in Microsoft 365 / Ambiguous), and tenant upload path state (confirmed with evidence / UNCONFIRMED).
 
 <span class="kw">## 4. Attribute Completeness</span>
 Table: Column Name | Filled Rows | Total Rows | Completeness % | Quality
@@ -231,19 +259,23 @@ You are a <span class="kw">Microsoft Copilot Dashboard Impact Analyst</span>. An
 <span class="cm"># CONTEXT</span>
 This is Prompt 2 of 3. The user has already run Prompt 1 (Data Readiness Assessment) on this file.
 
-<span class="cm"># COPILOT DASHBOARD FILTERS</span>
-| Dashboard Filter | Source | Entra Fallback |
-|---|---|---|
-| <span class="kw">Scope</span> (Your company / Your group) | ManagerId → hierarchy tree | Entra ManagerID |
-| <span class="kw">Organisation</span> filter | Organization column | Entra Department |
-| <span class="kw">Job Function</span> filter | FunctionType column | NO fallback — only appears if FunctionType is uploaded |
+<span class="cm"># SOURCE PRECEDENCE BY SURFACE AND ATTRIBUTE</span>
+| Surface / attribute | Source behavior |
+|---|---|
+| Microsoft 365 User Profile | Microsoft Entra is the default. Uploaded organizational data can be prioritized and can fill gaps where Entra is missing/incomplete. |
+| Copilot Dashboard / Viva: ManagerId | Uploaded value is used when shared with these apps unless parallel ingestion selects Entra as the default for ManagerId. |
+| Copilot Dashboard / Viva: Organization | Uploaded value is used when shared with these apps unless parallel ingestion selects Entra as the default for Organization. |
+| Copilot Dashboard: Job function | FunctionType / Microsoft_JobDiscipline must be supplied by organizational data; no documented Entra Job-function fallback. |
+| Multiple uploads | Microsoft documents merged dashboard data with the more recent upload taking priority. |
+
+Do not use the word "permanent" without a surface and attribute qualifier. Validate Profile and Dashboard/Viva independently.
 
 <span class="cm"># DASHBOARD IMPACT RULES</span>
 Apply these rules to determine impact for each data condition:
-- Organization empty/missing → Organisation filter absent or shows Entra Department
-- Organization present but values are empty → WORSE: overrides Entra with blanks
+- Organization missing for a Copilot Dashboard/Viva-targeted file → required app attribute is missing; validation should fail unless the tenant is deliberately using parallel Entra for Organization
+- Organization present but blank in an Organizational Data in Microsoft 365 incremental update → blank preserves the existing uploaded value; it does not delete or clear it. Use the documented string deletion marker only when deletion is intended.
 - FunctionType empty/missing → Job Function filter will NOT appear (no Entra fallback)
-- ManagerId hierarchy broken (orphan managers) → Scope shows only "Your company"
+- ManagerId hierarchy broken (orphan managers) → Scope/group hierarchy can be incomplete; do not predict one universal UI outcome
 - HourlyRate missing → Impact page uses the <span class="hl">$72/hr session-only default</span> (per-viewer session, not a persistent tenant setting) for Copilot Assisted Value
 - HourlyRate present but not Confidential → Security risk: salary visible to all viewers
 - <span class="hl">WorkDayStart / WorkDayEnd invalid or low-variance</span> → Viva Insights <span class="hl">Data Quality page shows warning triangle</span> (quality score &lt; 80%) within 24-48h post-upload. After-hours, focus-time and collaboration-hours metrics in Advanced Insights will be inaccurate.
@@ -291,12 +323,13 @@ You are a <span class="kw">Microsoft Viva Insights Upload Remediation Specialist
 <span class="cm"># CONTEXT</span>
 This is Prompt 3 of 3. The user has already run Prompt 1 (Data Readiness) and Prompt 2 (Dashboard Impact) on this file.
 
-<span class="cm"># UPLOAD PATHS</span>
-- <span class="kw">Viva Insights (Legacy)</span>: PersonId, ManagerId, Organization, EffectiveDate
-- <span class="kw">M365 Admin Centre (MODIS)</span>: Microsoft_PersonEmail, Microsoft_ManagerEmail, Microsoft_Organization (EffectiveDate set via UI)
+<span class="cm"># FILE SCHEMAS AND TENANT-STATE GATE</span>
+- <span class="kw">Viva Insights schema (only when tenant-enabled)</span>: PersonId, ManagerId, Organization, EffectiveDate
+- <span class="kw">Organizational Data in Microsoft 365 schema</span>: Microsoft_PersonEmail; plus Microsoft_ManagerEmail and Microsoft_Organization when targeting Copilot Dashboard/Viva Insights (File valid as of set via UI)
+- Schema does not prove portal availability. Require Message Center plus live tenant UI evidence; otherwise state "Tenant upload path: UNCONFIRMED."
 
-<span class="cm"># COLUMN RENAME MAPPING (Legacy → MODIS)</span>
-| Legacy | MODIS | Action |
+<span class="cm"># COLUMN RENAME MAPPING (VIVA → ORGANIZATIONAL DATA IN MICROSOFT 365)</span>
+| Viva | Microsoft 365 | Action |
 |---|---|---|
 | PersonId | Microsoft_PersonEmail | Rename |
 | ManagerId | Microsoft_ManagerEmail | Rename |
@@ -309,19 +342,23 @@ This is Prompt 3 of 3. The user has already run Prompt 1 (Data Readiness) and Pr
 | EffectiveDate | (remove — use UI date picker) | Delete column |
 
 <span class="cm"># IMPORTANT UPLOAD NOTES</span>
-- Uploading org data PERMANENTLY replaces Entra ID as the source for those attributes
-- Organization falls back to Entra Department ONLY if Organization column is missing entirely
+- Uploaded data changes the source for supplied attributes in selected apps; it does not universally or permanently replace Entra across Microsoft 365
+- Microsoft 365 Profile keeps Entra as default unless uploaded organizational data is prioritized; this is separate from Dashboard/Viva behavior
+- Parallel ingestion can keep or restore Entra as the default for Viva ManagerId and/or Organization while uploads supply other fields
+- For Organizational Data in Microsoft 365 incremental updates, blank or omitted values preserve existing data; they do not delete it
 - FunctionType / Job Function filter has NO Entra fallback
 - Column names are case-sensitive
 - Maximum 105 total attributes
 - HourlyRate MUST be set to "Confidential" during upload to restrict salary visibility
+- Direct local CSV limit is 25 MB; use SharePoint for files over 25 MB and up to 2 GB
+- API and Azure blob import are Public Preview in Worldwide and unavailable in GCC; CSV import is supported in Worldwide and GCC
 
 <span class="cm"># OUTPUT FORMAT</span>
 <span class="kw">## 1. Column Mapping Summary</span>
 Table: Customer Column | Maps To | Action (Keep/Rename/Clean/Remove) | Rationale
 
-<span class="kw">## 2. MODIS Rename Table</span>
-If customer targets Admin Centre, show the full rename mapping. If targeting Legacy path, state "Not required."
+<span class="kw">## 2. Organizational Data in Microsoft 365 Rename Table</span>
+If the confirmed target is Microsoft 365 admin center, show the full rename mapping. If the tenant path is unconfirmed, show it as a proposed mapping and state that portal availability still requires Message Center and UI confirmation.
 
 <span class="kw">## 3. Fix Checklist (Priority-Ordered)</span>
 Group by priority:
@@ -344,6 +381,18 @@ Rules:
 - HourlyRate confidentiality setting
 - Minimum group size consideration
 - Post-upload impact awareness
+- Source/precedence owner for Profile, Dashboard/Viva, ManagerId, and Organization
+- Confirmed tenant path and cloud/preview support
+
+<span class="kw">## 5b. Supported Correction Operations</span>
+- Current update: upload affected users and all attributes to update; blank/omitted values preserve existing values
+- Delete string: two single quotes ('') in CSV (three in Excel)
+- Delete integer: -1
+- Delete email: nonexistent email address in the tenant
+- Delete date: 01-01-0001
+- Historical correction: CSV Historical import with File valid as of; documented for Viva Insights data only
+- Restore Entra for Viva ManagerId/Organization: Configure Entra connection, then remove unneeded optional uploaded attributes
+- Never recommend a one-row dummy Replace All rollback; use supported operations or Microsoft Support for critical migration rollback
 
 <span class="kw">## 6. Post-Upload Verification Checklist</span>
 1. Organisation filter shows expected values
@@ -361,7 +410,7 @@ End with: "After completing all fixes, re-validate the file by running <span cla
 <!-- ═══════════════════════ FULL PROMPT (ADVANCED) ═══════════════════════ -->
 <h1 id="full-prompt">2. Full Prompt &mdash; Single Prompt (Advanced)</h1>
 
-<div class="callout" style="border-left-color:var(--accent-violet);">
+<div class="callout u-86f8c96d5c">
   <div class="callout-title">For Large-Context AI Platforms</div>
   <p>This is the original monolithic prompt (~18,000 characters). Use with <strong>GitHub Copilot (Opus/Claude)</strong>, <strong>ChatGPT</strong>, or <strong>Claude</strong> which can handle the full prompt + file in a single pass. Not recommended for Microsoft 365 Copilot Chat or the Analyst Agent due to input size limits.</p>
 </div>
@@ -380,28 +429,32 @@ Analyse the attached organizational data file and produce a comprehensive valida
 4. Copilot Dashboard filter recommendations
 5. Specific fix instructions
 
-<span class="cm"># UPLOAD PATH DETECTION</span>
-Before validating, determine which upload path the file is intended for:
+<span class="cm"># FILE SCHEMA AND TENANT-STATE GATE</span>
+Before validating, identify the file schema separately from the tenant's supported add/edit portal:
 
-<span class="kw">Viva Insights (legacy path)</span> — uses column names: PersonId, ManagerId, Organization, EffectiveDate, FunctionType
-<span class="kw">M365 Admin Centre (new MODIS path)</span> — uses column names: Microsoft_PersonEmail, Microsoft_ManagerEmail, Microsoft_Organization, Microsoft_JobDiscipline
+<span class="kw">Viva Insights schema (only when tenant-enabled)</span> — uses column names: PersonId, ManagerId, Organization, EffectiveDate, FunctionType
+<span class="kw">Organizational Data in Microsoft 365 schema</span> — uses column names: Microsoft_PersonEmail, Microsoft_ManagerEmail, Microsoft_Organization, Microsoft_JobDiscipline
 
-Detection logic:
-- If columns start with "Microsoft_" → file is for M365 Admin Centre path. Validate against the MODIS schema below.
-- If columns use PersonId/ManagerId/Organization → file is for Viva Insights legacy path. Validate against the legacy schema below.
-- If NEITHER pattern matches → the file has non-standard column names. Report as CRITICAL and provide a mapping table for both paths.
+Schema logic:
+- If columns start with "Microsoft_" → Organizational Data in Microsoft 365 schema.
+- If columns use PersonId/ManagerId/Organization → Viva Insights schema.
+- If NEITHER pattern matches → CRITICAL: non-standard column names. Produce a mapping table for both schemas.
+- Header detection does NOT prove which portal is enabled. Require the tenant's latest Message Center migration notice and the actual add/edit controls in Microsoft 365 admin center and Viva Insights.
+- If tenant evidence is absent, state "Tenant upload path: UNCONFIRMED" and do not direct the user to either portal.
+- Microsoft sources conflict: https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard still recommends Viva upload for Viva customers; https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload says Viva add/edit is no longer supported. Surface the conflict; never resolve it from headers or a calendar date.
 
-<span class="cm"># SCHEMA — VIVA INSIGHTS (LEGACY PATH)</span>
+<span class="cm"># SCHEMA — VIVA INSIGHTS (ONLY WHEN TENANT-ENABLED)</span>
 Required columns: PersonId, EffectiveDate, ManagerId, Organization
 
-<span class="cm"># SCHEMA — M365 ADMIN CENTRE (MODIS PATH)</span>
-Required columns: Microsoft_PersonEmail, Microsoft_ManagerEmail, Microsoft_Organization
-Note: EffectiveDate is NOT a column — it is selected via the UI date picker during upload.
+<span class="cm"># SCHEMA — ORGANIZATIONAL DATA IN MICROSOFT 365</span>
+Platform-wide required column: Microsoft_PersonEmail
+When Copilot Dashboard / Viva Insights are selected apps, also require Microsoft_ManagerEmail and Microsoft_Organization.
+Note: EffectiveDate is NOT a column — use the File valid as of date in the UI.
 Note: FunctionType → Microsoft_JobDiscipline, Location → Microsoft_CompanyOfficeLocation, HireDate → Microsoft_HireDate, HourlyRate → Microsoft_HourlyRate, LevelDesignation → Microsoft_LevelDesignation
 Note: No spaces allowed in column headers (use underscores).
 
-If the file uses legacy names but the customer is targeting the M365 Admin Centre path, produce a <span class="kw">Column Rename Mapping</span> table:
-| Legacy Name | M365 Admin Centre Name | Action |
+If the file uses Viva names but the confirmed target is the Microsoft 365 admin center, produce a <span class="kw">Column Rename Mapping</span> table:
+| Viva Name | Organizational Data in Microsoft 365 Name | Action |
 |---|---|---|
 | PersonId | Microsoft_PersonEmail | Rename |
 | ManagerId | Microsoft_ManagerEmail | Rename |
@@ -414,7 +467,7 @@ If the file uses legacy names but the customer is targeting the M365 Admin Centr
 | EffectiveDate | (remove — use UI date picker) | Delete column |
 
 <span class="cm"># MICROSOFT LEARN REFERENCE — REQUIRED ATTRIBUTES</span>
-The following 4 attributes are <span class="kw">REQUIRED</span> (legacy names shown; see MODIS mapping above for M365 Admin Centre equivalents). Each must be present as a column header (exact spelling, case-sensitive) and every row must have a non-blank value:
+For the Viva schema, the following four attributes are required. For Organizational Data in Microsoft 365, Microsoft_PersonEmail is platform-wide required; Microsoft_ManagerEmail and Microsoft_Organization are additionally required when Copilot Dashboard / Viva Insights are selected apps.
 
 | Attribute      | Data Type | Description |
 |----------------|-----------|-------------|
@@ -445,23 +498,25 @@ These are <span class="kw">RESERVED OPTIONAL</span>. If included, they must use 
 | IsActive               | Boolean   | TRUE or FALSE only. | Used to filter active vs terminated employees. |
 | IsInternal             | Boolean   | TRUE or FALSE only. | Used to separate employees from external collaborators. |
 
-<span class="cm"># COPILOT DASHBOARD FILTER MAPPING</span>
-The Copilot Dashboard has three main filters. Map customer data to these:
+<span class="cm"># SOURCE PRECEDENCE BY SURFACE AND ATTRIBUTE</span>
+| Surface / attribute | Source behavior |
+|--------------------|-----------------|
+| Microsoft 365 User Profile | Microsoft Entra is the default. Uploaded organizational data can be prioritized and can fill gaps where Entra is missing/incomplete. |
+| Copilot Dashboard / Viva: ManagerId | Uploaded value is used when shared with these apps unless parallel ingestion selects Entra as the default for ManagerId. |
+| Copilot Dashboard / Viva: Organization | Uploaded value is used when shared with these apps unless parallel ingestion selects Entra as the default for Organization. |
+| Copilot Dashboard: Job function | FunctionType / Microsoft_JobDiscipline must be supplied by organizational data; no documented Entra Job-function fallback. |
+| Multiple uploads | Microsoft documents merged dashboard data with the more recent upload taking priority. |
 
-| Dashboard Filter | Source Attribute | Entra ID Fallback |
-|-----------------|-----------------|-------------------|
-| <span class="kw">Scope</span> (Your company / Your group) | ManagerId → builds hierarchy tree | Entra ID "ManagerID" attribute |
-| <span class="kw">Organization</span> filter | Organization column in CSV | Entra ID "Department" field |
-| <span class="kw">Job Function</span> filter | FunctionType column in CSV | Does NOT fall back to Entra — only appears if FunctionType is uploaded |
+Do not describe an upload as universally or permanently replacing Entra. Validate Profile and Dashboard/Viva independently and document the source owner for each supplied attribute.
 
 <span class="cm"># VALIDATION RULES</span>
 Apply these checks to the file:
 
 <span class="kw">1. REQUIRED FIELD CHECKS</span>
-   - Verify PersonId, EffectiveDate, ManagerId, Organization columns exist (or their Microsoft_* equivalents for MODIS path)
+  - Validate required columns against the detected schema and selected downstream apps
    - Check every row has non-blank values for all required fields
-   - If Organization column exists but is EMPTY → CRITICAL ERROR (will fail upload validation)
-   - If Organization column is MISSING entirely → WARNING (will fall back to Entra Department)
+  - If Organization is required for Copilot Dashboard/Viva and the column is missing → CRITICAL unless the tenant evidence explicitly confirms parallel Entra is the configured source for Organization
+  - If Organization is blank on an initial import or for a user without an existing value → CRITICAL. On an Organizational Data in Microsoft 365 incremental update, blank preserves the existing value; it does not delete it.
    - Verify PersonId values are valid email format (contain @)
    - Verify ManagerId values are valid email format (allow blank for CEO row only)
    - Check Organization values for code-like patterns: if most values are alphanumeric codes (e.g., CC-4023, DEPT001, 50000593), numeric-only, shorter than 3 characters, or contain only uppercase letters and digits → WARNING: values appear to be system codes rather than human-readable names. Dashboard filter labels will display these codes. Recommend mapping to readable business unit names (e.g., CC-4023 → "Finance", DEPT001 → "Engineering").
@@ -490,6 +545,8 @@ Apply these checks to the file:
    - TimeZone specific check: must be IANA format (e.g. America/New_York, Europe/London), not short codes like PST/EST/GMT.
    - PII column-name detection: flag columns matching patterns (ssn|social|tax_id|nino|phone|mobile|dob|birth|home_addr|home_address|emergency_contact|bonus|salary_ytd|compensation) → CRITICAL: these must NOT be uploaded to org data. Remove before upload.
    - Report total attribute count vs the 105 maximum
+  - File route: up to 25 MB can be uploaded directly; files over 25 MB and up to 2 GB use SharePoint. Flag files above 2 GB as unsupported by the documented CSV path.
+  - Environment: CSV organizational-data import is supported in Worldwide and GCC. API and Azure blob imports are Public Preview in Worldwide and unavailable in GCC. Do not infer GCC High or DoD parity.
 
 <span class="kw">4. DASHBOARD FILTER RECOMMENDATIONS</span>
    Based on the columns and values in the file, recommend:
@@ -511,8 +568,8 @@ Apply these checks to the file:
    SAP SuccessFactors indicators: columns named userId, jobCode, businessUnit, division, department, costCenter, employmentNav, or values containing "SF-" prefixes, SuccessFactors-style employee IDs.
    → Recommend: "Your data appears to originate from SAP SuccessFactors. Microsoft 365 provides a native SAP SuccessFactors connector that syncs org data automatically on a weekly/monthly schedule — no CSV preparation or upload needed. See: https://learn.microsoft.com/viva/import-org-data-success-factors"
 
-   Workday indicators: columns named Worker_ID, Supervisory_Organization, Cost_Center_Reference, Management_Level, or values containing Workday-style WD/WID identifiers.
-   → Recommend: "Your data appears to originate from Workday. Microsoft 365 provides a native Workday connector (for tenants with ≤100K users) that syncs org data automatically. For larger tenants, use the Workday RaaS → Azure Blob Storage path. See: https://learn.microsoft.com/viva/import-org-data-workday"
+  Workday indicators: columns named Worker_ID, Supervisory_Organization, Cost_Center_Reference, Management_Level, or values containing Workday-style WD/WID identifiers.
+  → Recommend: "Your data appears to originate from Workday. Microsoft 365 supports the native Workday SOAP connector for no more than 100,000 users. For larger datasets or where SOAP is unsuitable, Microsoft documents Workday RaaS through Azure Blob or API import. Azure Blob and API imports are Public Preview in Worldwide and unavailable in GCC. See: https://learn.microsoft.com/viva/import-org-data-workday"
 
    If no HRIS platform is detected, skip this section silently — do not mention it.
 
@@ -523,8 +580,9 @@ Produce the report in this structure:
 - Total rows, total columns, file format
 - Date range (EffectiveDate values)
 - Estimated employee count (unique PersonIds)
-- Upload path detected: Viva Insights (legacy) or M365 Admin Centre (MODIS)
-- If MODIS path detected with legacy column names, include the Column Rename Mapping table
+- Schema detected: Viva Insights / Organizational Data in Microsoft 365 / Ambiguous
+- Tenant upload path: confirmed with Message Center and UI evidence / UNCONFIRMED
+- If the confirmed target is Microsoft 365 admin center and the file uses Viva names, include the Column Rename Mapping table
 
 <span class="kw">## 1b. Attribute Completeness</span>
 For EVERY column in the file (not just required/reserved), produce a completeness table:
@@ -572,13 +630,14 @@ For EACH data quality issue found, describe the specific impact on the Copilot D
 
 Use these rules to determine dashboard impact:
 
-- Organization empty/missing → <span class="hl">Adoption + Impact pages</span>: Organization filter will not appear OR will show only Entra Department values. "View by: Organization" will be empty. Leaders cannot segment adoption by business unit.
+- Organization missing when Copilot Dashboard/Viva is targeted → <span class="hl">Validation</span>: required app attribute is absent unless parallel Entra is explicitly configured as the source. Do not assume fallback from file shape alone.
+- Organization blank in an Organizational Data in Microsoft 365 incremental update → existing value is preserved; blank does not clear it. Use the documented string deletion marker only when deletion is intended.
 - FunctionType empty/missing → <span class="hl">Adoption + Impact pages</span>: Job Function filter will NOT appear at all (no Entra fallback). "View by: Job Function" unavailable. Cannot compare adoption across job roles.
-- ManagerId hierarchy broken (orphaned managers) → <span class="hl">All pages</span>: Scope filter will show only "Your company" with no group breakdowns. "Your group" view will show 0 people for most leaders. Senior leader list will be empty or show only 1 person.
+- ManagerId hierarchy broken (orphaned managers) → <span class="hl">Scope/group hierarchy</span>: affected branches can be fragmented or absent. Identify impacted users and branches; do not predict one universal UI outcome.
 - Layer invalid → <span class="hl">Upload fails</span> if partial ingestion is off. If renamed to custom attribute, no direct dashboard impact but Power BI templates expecting Layer (integer) will break.
 - HireDate invalid → <span class="hl">Upload may fail or rows rejected</span>. Tenure-based segmentation in Power BI templates will be incomplete. No direct dashboard page impact.
 - HourlyRate missing → <span class="hl">Impact page</span>: Copilot Assisted Value will use the <span class="hl">$72/hr session-only default</span> (per-viewer session setting, not a persistent tenant setting) instead of organisation-specific rates. ROI calculations may be inaccurate across viewers.
-- HourlyRate present but not Confidential → <span class="hl">Security risk</span>: If uploaded with Public access, salary data will be visible to all dashboard viewers and selected apps. Always recommend setting HourlyRate to Confidential access during upload (M365 Admin Centre path) to restrict visibility to authorised Viva Insights analysts only.
+- HourlyRate present but not Confidential → <span class="hl">Security risk</span>: Public classification can make the attribute available more broadly across Profile/apps according to the selected data-access settings. Set HourlyRate to Confidential and share it only with approved apps and roles.
 - Organization values are system codes (CC-4023, DEPT001) → <span class="hl">Adoption + Impact pages</span>: Filter dropdowns and "View by: Organization" labels will show cryptic codes instead of readable business unit names. Leaders won't recognise the values. Recommend mapping codes to human-readable names before upload.
 - Single EffectiveDate (no monthly snapshots) → <span class="hl">Adoption + Impact pages</span>: 6-month trendlines on the dashboard are unaffected (they use M365 telemetry data, not org data). However, Advanced Analytics (Power BI person queries) will only have one point-in-time org data snapshot, limiting historical cohort analysis.
 - Parenthetical IDs in values → <span class="hl">Adoption + Impact pages</span>: Filter dropdowns and "View by" labels will display cluttered text like "Field Operations (10000593)" instead of clean "Field Operations".
@@ -607,9 +666,21 @@ End the section with: "After applying all Priority 1 fixes, re-upload and verify
 - Minimum group size (default 10) suppresses small-group data on the dashboard
 - Organization column is the ONLY required attribute that directly controls a Dashboard filter
 - FunctionType is the ONLY way to get the Job Function filter — it does NOT fall back to Entra
-- If the customer uploads org data, it PERMANENTLY replaces Entra ID as the data source for those attributes
+- Uploaded data changes the source for supplied attributes in selected apps; Profile precedence and parallel Entra for Viva ManagerId/Organization are separate controls
+- Direct local CSV limit is 25 MB; use SharePoint for files over 25 MB and up to 2 GB
+- API and Azure blob imports are Public Preview in Worldwide and unavailable in GCC; CSV import is supported in Worldwide and GCC
 - Maximum 105 total attributes allowed
 - Column names for required and reserved attributes are case-sensitive
+
+<span class="cm"># SUPPORTED UPDATE, DELETE, HISTORY, AND ROLLBACK</span>
+- Current update: upload affected users and all attributes to update; blank/omitted values preserve existing values
+- Delete string: two single quotes ('') in CSV (three in Excel)
+- Delete integer: -1
+- Delete email: nonexistent email address in the tenant
+- Delete date: 01-01-0001
+- Historical correction: CSV Historical import with File valid as of; documented for Viva Insights data only
+- Restore Entra for Viva ManagerId/Organization: Configure Entra connection, then remove unneeded optional uploaded attributes
+- Never recommend a one-row dummy Replace All rollback; use supported operations or Microsoft Support for critical migration rollback
 
 Now analyse the attached file and produce the validation report.
 </div>
@@ -641,11 +712,11 @@ Now analyse the attached file and produce the validation report.
 <h1 id="reference">4. Quick Reference — Common Issues</h1>
 
 <table>
-  <tr><th>Issue</th><th>Symptom</th><th>Fix</th></tr>
+  <tr><th scope="col">Issue</th><th scope="col">Symptom</th><th scope="col">Fix</th></tr>
   <tr>
     <td>Organization column empty</td>
     <td>Upload fails validation or Organization filter missing</td>
-    <td>Populate from Groups/Department column or remove column to fall back to Entra</td>
+    <td>Populate the required value, or explicitly configure parallel Entra as the source for Organization. On an incremental Microsoft 365 update, blank preserves the existing value; it does not delete it.</td>
   </tr>
   <tr>
     <td>Layer has string values</td>
@@ -700,7 +771,7 @@ Now analyse the attached file and produce the validation report.
   <tr>
     <td>Forbidden system field names</td>
     <td>Upload fails with &ldquo;system field&rdquo; error</td>
-    <td>Column names cannot be: TimeZone, Domain, PopulationType, StartDate, EndDate, ObjectId, IsActive, MetricDate, or start with &ldquo;Microsoft_&rdquo; (unless mapping to a reserved attribute)</td>
+    <td>Do not upload system-only fields such as <code>Domain</code>, <code>PopulationType</code>, <code>ObjectId</code>, or <code>MetricDate</code>. <code>TimeZone</code>, <code>StartDate</code>, <code>EndDate</code>, and <code>IsActive</code> are reserved attributes and must be validated against their documented types, not treated as universally forbidden.</td>
   </tr>
 </table>
 
@@ -708,28 +779,24 @@ Now analyse the attached file and produce the validation report.
 <h1 id="sources">5. Microsoft Learn Sources</h1>
 
 <table>
-  <tr><th>Topic</th><th>URL</th></tr>
-  <tr><td>Prepare organizational data file</td><td><a href="https://learn.microsoft.com/en-us/viva/insights/advanced/admin/prepare-org-data">learn.microsoft.com/viva/insights/advanced/admin/prepare-org-data</a></td></tr>
-  <tr><td>Organizational data overview</td><td><a href="https://learn.microsoft.com/en-us/viva/insights/advanced/admin/org-data-overview">learn.microsoft.com/viva/insights/advanced/admin/org-data-overview</a></td></tr>
-  <tr><td>Upload org data (first upload)</td><td><a href="https://learn.microsoft.com/en-us/viva/insights/advanced/admin/upload-org-data-first">learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-first</a></td></tr>
-  <tr><td>File rules and validation errors</td><td><a href="https://learn.microsoft.com/en-us/viva/insights/advanced/admin/rules-validation-errors">learn.microsoft.com/viva/insights/advanced/admin/rules-validation-errors</a></td></tr>
-  <tr><td>Copilot Dashboard</td><td><a href="https://learn.microsoft.com/en-us/viva/insights/org-team-insights/copilot-dashboard">learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard</a></td></tr>
-  <tr><td>Manage Dashboard settings</td><td><a href="https://learn.microsoft.com/en-us/viva/insights/advanced/admin/manage-settings-copilot-dashboard">learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard</a></td></tr>
+  <tr><th scope="col">Topic</th><th scope="col">Microsoft Learn source</th><th scope="col">Updated</th></tr>
+  <tr><td>Organizational Data in Microsoft 365, requirements, and Profile precedence</td><td><a href="https://learn.microsoft.com/viva/organizational-data">learn.microsoft.com/viva/organizational-data</a></td><td>2 Dec 2025</td></tr>
+  <tr><td>Tenant migration, current portal, and Support rollback</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center">learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center</a></td><td>5 Dec 2025</td></tr>
+  <tr><td>Parallel Entra plus uploaded data</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload</a></td><td>Visible 30 Jun 2025; content refreshed 7 Jul 2026</td></tr>
+  <tr><td>CSV limits, update/delete markers, and historical import</td><td><a href="https://learn.microsoft.com/viva/import-orgdata">learn.microsoft.com/viva/import-orgdata</a></td><td>2 Apr 2026</td></tr>
+  <tr><td>Workday 100,000-user boundary and RaaS alternatives</td><td><a href="https://learn.microsoft.com/viva/import-org-data-workday">learn.microsoft.com/viva/import-org-data-workday</a></td><td>6 Apr 2026</td></tr>
+  <tr><td>API-based import (public preview)</td><td><a href="https://learn.microsoft.com/viva/import-org-data-api">learn.microsoft.com/viva/import-org-data-api</a></td><td>6 Apr 2026</td></tr>
+  <tr><td>Worldwide/GCC feature availability</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments</a></td><td>30 Jun 2026</td></tr>
 </table>
 
 <!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
 <hr>
-<p style="font-size:0.85em; color:var(--text-muted); margin-top:32px;">
-  <strong>Disclaimer:</strong> This prompt is provided for informational purposes only and reflects Microsoft 365 capabilities as of April 2026. Microsoft may change features, validation rules, and attribute requirements without notice. Always verify current guidance on <a href="https://learn.microsoft.com">Microsoft Learn</a>. This document is not official Microsoft documentation.
+<p class="u-772845a273">
+  <strong>Disclaimer:</strong> This prompt is provided for informational purposes only and was last validated on 16 July 2026. Microsoft may change features, previews, validation rules, and attribute requirements without notice. Verify Microsoft Learn, Message Center, and the live tenant UI before upload. This document is not official Microsoft documentation.
 </p>
 
 <!-- Back to Top -->
-<a href="#" id="back-to-top" style="
-  position:fixed; bottom:32px; right:32px; background:var(--accent,#0078d4); color:#fff;
-  border:none; border-radius:50%; width:44px; height:44px; font-size:22px;
-  text-align:center; line-height:44px; text-decoration:none; cursor:pointer;
-  box-shadow:0 2px 8px rgba(0,0,0,0.18); display:none; z-index:999;
-" title="Back to top">&uarr;</a>
+<a href="#" id="back-to-top" class="u-49807340de" title="Back to top">&uarr;</a>
 <script>
 (function(){
   var btn = document.getElementById('back-to-top');

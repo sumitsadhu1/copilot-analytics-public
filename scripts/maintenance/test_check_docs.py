@@ -35,7 +35,12 @@ def main():
         '<html><head><title>J</title></head><body>'
         '<a href="' + "' + m.url + '" + '">x</a></body></html>')
 
-    pages = [tmp / "target.html", tmp / "bad.html", tmp / "js.html"]
+    (tmp / "tables.html").write_text(
+        '<html><head><title>Tables</title></head><body>'
+        '<table><th scope="col"ead><tr><th>Name</th></tr></thead>'
+        '<tbody><tr><td>Example</td></tbody></table></body></html>')
+
+    pages = [tmp / "target.html", tmp / "bad.html", tmp / "js.html", tmp / "tables.html"]
 
     f = cd.Findings()
     cd.check_internal_links(f, pages)
@@ -48,6 +53,8 @@ def main():
         "duplicate id": any('duplicate id="dup"' in m for m in msgs),
         "empty <title>": any("<title>" in m for m in msgs),
         "no false positive on JS href": not any("m.url" in m for m in msgs),
+        "malformed thead detected": any("malformed <thead>" in m for m in msgs),
+        "unbalanced table row detected": any("unbalanced <tr>" in m for m in msgs),
     }
 
     # secret detection — build the token at runtime so THIS file never contains it

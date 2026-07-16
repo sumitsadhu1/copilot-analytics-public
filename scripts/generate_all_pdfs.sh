@@ -8,9 +8,16 @@ set -e
 REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 PDF_DIR="$REPO_DIR/artifacts/pdfs"
+PYTHON="$REPO_DIR/.venv/bin/python"
 
 mkdir -p "$PDF_DIR"
 mkdir -p "$PDF_DIR/scenarios"
+
+if [ ! -x "$PYTHON" ]; then
+  echo "Missing project Python environment: $PYTHON"
+  echo "Create .venv and install scripts/requirements-maintenance.txt before generating PDFs."
+  exit 1
+fi
 
 echo "Generating PDFs..."
 echo "Output: $PDF_DIR"
@@ -32,6 +39,7 @@ declare -a DOCS=(
   "3-operate/analyst-playbook.html|Analyst_Playbook.pdf"
   "3-operate/billing-operations.html|Billing_Operations.pdf"
   "3-operate/collaboration-analysis.html|Collaboration_Analysis.pdf"
+  "3-operate/consumption-dashboard.html|Consumption_Dashboard_Operations.pdf"
   "4-reference/troubleshooting.html|Troubleshooting_Guide.pdf"
   "4-reference/scenarios/index.html|scenarios/Troubleshooting_Scenarios_Catalogue.pdf"
   "4-reference/scenarios/upload-org-data-missing.html|scenarios/Scenario_01_Upload_Org_Data_Missing.pdf"
@@ -39,14 +47,14 @@ declare -a DOCS=(
   "4-reference/faq.html|FAQ.pdf"
   "4-reference/glossary.html|Glossary_Resources.pdf"
   "4-reference/attribute-reference.html|Attribute_Reference.pdf"
-  # Legacy guides (kept for backward compatibility)
-  "docs/core/Copilot_Analytics_Implementation_Guide.html|Copilot_Analytics_Implementation_Guide.pdf"
-  "docs/core/Copilot_Analytics_Setup_Companion_Guide.html|Copilot_Analytics_Setup_Companion_Guide.pdf"
-  "docs/playbooks/Copilot_Lifecycle_Billing_Playbook.html|Copilot_Lifecycle_Billing_Playbook.pdf"
-  "docs/playbooks/Advanced_Viva_Insights_Collaboration_Guide.html|Advanced_Viva_Insights_Collaboration_Guide.pdf"
+  # Backward-compatible filenames generated from canonical sources.
+  "2-setup/admin-setup.html|Copilot_Analytics_Implementation_Guide.pdf"
+  "2-setup/admin-setup.html|Copilot_Analytics_Setup_Companion_Guide.pdf"
+  "3-operate/billing-operations.html|Copilot_Lifecycle_Billing_Playbook.pdf"
+  "3-operate/collaboration-analysis.html|Advanced_Viva_Insights_Collaboration_Guide.pdf"
   "docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html|Copilot_Multi_Agency_Isolation_Architecture.pdf"
   "docs/playbooks/Copilot_Multi_Agency_Default_Priority_Architecture.html|Copilot_Multi_Agency_Default_Priority_Architecture.pdf"
-  "artifacts/Copilot_Analytics_FAQ.html|Copilot_Analytics_FAQ.pdf"
+  "4-reference/faq.html|Copilot_Analytics_FAQ.pdf"
   "artifacts/Copilot_Analytics_QuickStart_CheatSheet.html|Copilot_Analytics_QuickStart_CheatSheet.pdf"
 )
 
@@ -85,6 +93,9 @@ if [ -f "$PDF_DIR/Copilot_Analytics_Setup_Companion_Guide.pdf" ]; then
   cp "$PDF_DIR/Copilot_Analytics_Setup_Companion_Guide.pdf" "$REPO_DIR/artifacts/Copilot_Analytics_Setup_Companion_Guide.pdf"
   echo "  Copied Setup Companion Guide to artifacts/"
 fi
+
+"$PYTHON" "$REPO_DIR/scripts/postprocess_pdfs.py"
+"$PYTHON" "$REPO_DIR/scripts/maintenance/check_pdf_accessibility.py"
 
 echo ""
 echo "Complete: $SUCCESS succeeded, $FAIL failed"

@@ -4,11 +4,12 @@ Generate a search index JSON from all HTML documentation files.
 Extracts headings (h1-h4) and nearby paragraph text to create
 a searchable index that the landing page can use for deep search.
 """
-import os
-import re
 import json
+import os
+from pathlib import Path
+import re
 
-REPO = "/Users/sumitsadhu/Projects/copilot-analytics-public"
+REPO = str(Path(__file__).resolve().parent.parent)
 OUTPUT = os.path.join(REPO, "assets", "search-index.json")
 
 # Files to index (relative to repo root)
@@ -26,6 +27,7 @@ FILES = [
     ("3-operate/analyst-playbook.html", "Analyst Playbook"),
     ("3-operate/billing-operations.html", "Billing Operations"),
     ("3-operate/collaboration-analysis.html", "Collaboration Analysis"),
+    ("3-operate/consumption-dashboard.html", "Consumption Dashboard Operations"),
     ("4-reference/troubleshooting.html", "Troubleshooting Guide"),
     ("4-reference/scenarios/index.html", "Troubleshooting Scenarios"),
     ("4-reference/scenarios/upload-org-data-missing.html", "Scenario 01: Upload Org Data Missing"),
@@ -33,16 +35,13 @@ FILES = [
     ("4-reference/faq.html", "FAQ"),
     ("4-reference/glossary.html", "Glossary & Resources"),
     ("4-reference/attribute-reference.html", "Attribute Reference"),
-    # Legacy guides (kept for backward compatibility)
-    ("docs/core/Copilot_Analytics_Implementation_Guide.html", "Copilot Analytics Implementation Guide"),
-    ("docs/core/Copilot_Analytics_Setup_Companion_Guide.html", "Setup Companion Guide"),
+    ("4-reference/change-history.html", "Change History & Content Governance"),
+    ("4-reference/accessibility.html", "Accessibility Statement"),
     ("docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html", "Multi-Agency Isolation Architecture"),
     ("docs/playbooks/Copilot_Multi_Agency_Default_Priority_Architecture.html", "Multi-Agency Default Priority Architecture"),
-    ("docs/playbooks/Copilot_Lifecycle_Billing_Playbook.html", "Lifecycle & Billing Playbook"),
-    ("docs/playbooks/Advanced_Viva_Insights_Collaboration_Guide.html", "Advanced Collaboration Analysis"),
-    ("artifacts/Copilot_Analytics_FAQ.html", "FAQ (Legacy)"),
     ("artifacts/Copilot_Analytics_QuickStart_CheatSheet.html", "Quick-Start Cheat Sheet"),
     ("artifacts/Org_Data_Validation_Prompt.html", "Org Data Validation Prompt"),
+    ("tools/index.html", "Tools & Reporting Options"),
 ]
 
 def strip_tags(html):
@@ -84,7 +83,7 @@ def extract_sections(filepath, doc_title):
         if heading_text.startswith('Solution Architecture') and tag == 'h3':
             continue
         
-        # Get content between this heading and the next (up to 500 chars)
+        # Get content between this heading and the next.
         start_pos = match.end()
         if i + 1 < len(matches):
             end_pos = matches[i + 1].start()
@@ -94,9 +93,9 @@ def extract_sections(filepath, doc_title):
         content_html = html[start_pos:end_pos]
         content_text = strip_tags(content_html)
         
-        # Limit content preview
-        if len(content_text) > 300:
-            content_text = content_text[:297] + '...'
+        # Keep enough section text for exact role, permission, API, and setting searches.
+        if len(content_text) > 1200:
+            content_text = content_text[:1197] + '...'
         
         # Build the URL
         url = filepath

@@ -3,9 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Attribute Reference. Last validated 16 July 2026.">
+<link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/4-reference/attribute-reference.html">
 <title>Attribute Reference — Copilot Analytics</title>
 <link rel="stylesheet" href="../assets/docs-style.css">
 <script defer src="../assets/shell.js"></script>
+
+<style id="generated-inline-styles">
+.u-49807340de { position:fixed; bottom:32px; right:32px; background:var(--accent,#0078d4); color:#fff;
+  border:none; border-radius:50%; width:44px; height:44px; font-size:22px;
+  text-align:center; line-height:44px; text-decoration:none; cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,0.18); display:none; z-index:999; }
+.u-772845a273 { font-size:0.85em; color:var(--text-muted); margin-top:32px; }
+</style>
 </head>
 <body class="has-nav">
 <nav class="doc-nav">
@@ -26,18 +36,18 @@
 </div>
 
 <table>
-  <tr><th>Document Property</th><th>Value</th></tr>
+  <tr><th scope="col">Document Property</th><th scope="col">Value</th></tr>
   <tr><td>Section</td><td>Reference</td></tr>
   <tr><td>Audience</td><td>IT Admin, Insights Admin</td></tr>
-  <tr><td>Version</td><td>4.0</td></tr>
-  <tr><td>Published</td><td>April 2026</td></tr>
+  <tr><td>Version</td><td>4.1</td></tr>
+  <tr><td>Last validated</td><td>16 July 2026</td></tr>
 </table>
 
 <div class="callout info">
   <div class="callout-title">How This Document Fits</div>
   <p>This is a <strong>Reference</strong> guide. Use it when preparing CSV uploads or configuring HRIS connectors. For the step-by-step upload process, see the <a href="../2-setup/data-onboarding.html">Data Onboarding Guide</a>.</p>
   <table>
-    <tr><th>Section</th><th>Purpose</th><th>Who Reads</th></tr>
+    <tr><th scope="col">Section</th><th scope="col">Purpose</th><th scope="col">Who Reads</th></tr>
     <tr><td><a href="../1-strategy/executive-briefing.html">Strategy</a></td><td>Decide what to implement</td><td>CIO, SA, Business Leaders</td></tr>
     <tr><td><a href="../2-setup/admin-setup.html">Setup</a></td><td>Configure and deploy</td><td>IT Admin, Insights Admin</td></tr>
     <tr><td><a href="../3-operate/dashboard-guide.html">Operate</a></td><td>Use dashboards and reports daily</td><td>Leaders, Analysts, Managers</td></tr>
@@ -49,42 +59,44 @@
 <h1 id="toc">Table of Contents</h1>
 <ol>
   <li><a href="#attribute-mapping">Attribute Mapping Table</a></li>
+  <li><a href="#scope-precedence">Requirements and Source Precedence</a></li>
   <li><a href="#data-classification">Data Classification</a></li>
   <li><a href="#naming-conventions">Naming Conventions</a></li>
   <li><a href="#reserved-names">Reserved Attribute Names</a></li>
+  <li><a href="#data-changes">Update, Delete, and Historical Correction</a></li>
   <li><a href="#learn-references">Microsoft Learn References</a></li>
 </ol>
 
 <!-- ═══════════════════════ 1. ATTRIBUTE MAPPING ═══════════════════════ -->
 <h1 id="attribute-mapping">1. Attribute Mapping Table</h1>
 
-<p>This table maps legacy Viva Insights attribute names to the new M365 Admin Center naming convention (MODIS). Use this when migrating from the legacy upload path or preparing a new CSV.</p>
+<p>This table maps Viva Insights organizational-data names to the <strong>Organizational Data in Microsoft 365</strong> reserved names used in the Microsoft 365 admin center. Use the names required by the active tenant path and target app; do not infer the path from a date alone.</p>
 
 <table>
-  <tr><th>Legacy Name (Viva Insights)</th><th>M365 Admin Center Name</th><th>Required?</th><th>Description / Notes</th></tr>
+  <tr><th scope="col">Legacy Name (Viva Insights)</th><th scope="col">M365 Admin Center Name</th><th scope="col">Required?</th><th scope="col">Description / Notes</th></tr>
   <tr>
     <td><code>PersonId</code></td>
     <td><code>Microsoft_PersonEmail</code></td>
-    <td><strong>Required</strong></td>
-    <td>Employee&rsquo;s primary email address (UPN). Must match Entra ID. Every row must have a value.</td>
+    <td><strong>Platform required</strong></td>
+    <td>Employee&rsquo;s work email used to associate data with a person. This is the single platform-wide required Organizational Data in Microsoft 365 attribute.</td>
   </tr>
   <tr>
     <td><code>ManagerId</code></td>
     <td><code>Microsoft_ManagerEmail</code></td>
-    <td><strong>Required</strong></td>
-    <td>Manager&rsquo;s email address. Must exist in Entra ID or upload causes orphan warnings. Every <code>ManagerEmail</code> value should match a <code>PersonEmail</code> in the same file.</td>
+    <td><strong>Required for Viva Insights / Copilot Dashboard</strong></td>
+    <td>Manager&rsquo;s email address. Required when sharing data with Viva Insights and the Copilot Dashboard; validate each reporting link and intended root.</td>
   </tr>
   <tr>
     <td><code>Organization</code></td>
     <td><code>Microsoft_Organization</code></td>
-    <td><strong>Required</strong></td>
-    <td>Department or organisational unit. Drives the Organisation filter on dashboards.</td>
+    <td><strong>Required for Viva Insights / Copilot Dashboard</strong></td>
+    <td>Department or organizational unit. Required when sharing data with Viva Insights and the Copilot Dashboard and used for organization grouping.</td>
   </tr>
   <tr>
     <td><code>EffectiveDate</code></td>
     <td>N/A (date picker in UI)</td>
-    <td>Required (legacy) / Not needed (new)</td>
-    <td>Legacy path: include in CSV, must be earlier than upload date. New M365 Admin Center path: the date is selected via the UI instead.</td>
+    <td>Tenant-path dependent</td>
+    <td>Viva upload path: include in the file as documented by the live workflow. Microsoft 365 admin center: remove the column and set <strong>File valid as of</strong> in the UI; use Historical import for retroactive Viva corrections.</td>
   </tr>
   <tr>
     <td><code>FunctionType</code></td>
@@ -136,26 +148,42 @@
   </tr>
 </table>
 
-<!-- ═══════════════════════ 2. DATA CLASSIFICATION ═══════════════════════ -->
-<h1 id="data-classification">2. Data Classification</h1>
+<p><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/organizational-data#organizational-data-in-microsoft-365-requirements">Organizational Data in Microsoft 365 &mdash; requirements</a> (Microsoft Learn, updated 2 December 2025) defines <code>Microsoft_PersonEmail</code> as the platform requirement and the app matrix; <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#upload-organizational-data-for-the-copilot-dashboard-and-agent-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, and Viva Insights web app</a> (20 March 2026) defines the three Dashboard/Viva attributes.</p>
+
+<!-- ═══════════════════════ 2. REQUIREMENTS AND PRECEDENCE ═══════════════════════ -->
+<h1 id="scope-precedence">2. Requirements and Source Precedence</h1>
+
+<table>
+  <tr><th scope="col">Surface / attribute</th><th scope="col">Requirement or precedence</th><th scope="col">Validation</th></tr>
+  <tr><td><strong>Organizational Data in Microsoft 365</strong></td><td><code>Microsoft_PersonEmail</code> is required. Additional attributes depend on the selected apps.</td><td>Review the target-app selections and mapping before validation.</td></tr>
+  <tr><td><strong>Copilot Dashboard and Viva Insights</strong></td><td><code>Microsoft_PersonEmail</code>, <code>Microsoft_ManagerEmail</code>, and <code>Microsoft_Organization</code> are required. <code>Microsoft_JobDiscipline</code> is optional and enables Job function.</td><td>Verify hierarchy, Organization, and Job function in Viva data quality and the Dashboard after processing.</td></tr>
+  <tr><td><strong>Microsoft 365 User Profile</strong></td><td>Microsoft Entra is the default source. Uploaded organizational data can be prioritised and can fill gaps where Entra data is missing or incomplete.</td><td>Record the Profile precedence setting and spot-check profile cards in Outlook or Teams.</td></tr>
+  <tr><td><strong>Viva <code>ManagerId</code> and <code>Organization</code></strong></td><td>Parallel ingestion can select Entra as the default for either attribute while uploaded data continues to supply other fields.</td><td>Review <strong>Configure Entra connection</strong>; allow about 24 hours after a change.</td></tr>
+  <tr><td><strong>Multiple upload sources</strong></td><td>Microsoft documents merged Dashboard data with the more recent upload taking priority.</td><td>Record source owner, attribute, selected app, import ID, and timestamp; avoid overlapping unowned sources.</td></tr>
+</table>
+
+<p><strong>Sources:</strong> <a href="https://learn.microsoft.com/viva/organizational-data#data-precedence">Organizational Data in Microsoft 365 &mdash; Data precedence</a> (Microsoft Learn, updated 2 December 2025); <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#upload-organizational-data-for-the-copilot-dashboard-and-agent-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, and Viva Insights web app</a> (20 March 2026); and <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Use Microsoft Entra plus .csv files for parallel data uploads</a> (visible date 30 June 2025; content refreshed 7 July 2026).</p>
+
+<!-- ═══════════════════════ 3. DATA CLASSIFICATION ═══════════════════════ -->
+<h1 id="data-classification">3. Data Classification</h1>
 
 <p>When uploading organisational data, each attribute is assigned an access classification that controls which applications and roles can read the data.</p>
 
 <table>
-  <tr><th>Classification</th><th>Visibility</th><th>Example Attributes</th></tr>
+  <tr><th scope="col">Classification</th><th scope="col">Visibility</th><th scope="col">Example Attributes</th></tr>
   <tr>
     <td><strong>Public</strong></td>
-    <td>Visible to all users and all apps that consume Viva Insights data.</td>
+    <td>Well-known organizational attributes made available to Microsoft 365 Profile and accessible to tenant users and Microsoft 365 apps, subject to the platform&rsquo;s app-sharing and precedence behavior.</td>
     <td><code>Organization</code>, <code>Location</code>, <code>LevelDesignation</code></td>
   </tr>
   <tr>
     <td><strong>Confidential</strong></td>
-    <td>Visible only to apps and roles you explicitly choose. Not available for dashboard filters.</td>
+    <td>Sensitive well-known attributes for which the uploader chooses the apps that can receive the data.</td>
     <td><code>HourlyRate</code>, <code>CostCentre</code></td>
   </tr>
   <tr>
     <td><strong>Custom</strong></td>
-    <td>You choose which apps and roles can access the attribute (per-attribute granularity).</td>
+    <td>Tenant-defined attributes with controls for choosing which apps can access the data.</td>
     <td>Any custom attribute where selective access is needed.</td>
   </tr>
 </table>
@@ -164,12 +192,13 @@
   <div class="callout-title">Best Practice</div>
   <p>Set <code>HourlyRate</code> and any compensation-related attributes to <strong>Confidential</strong>. Set demographic attributes like <code>Organization</code>, <code>Location</code>, and <code>FunctionType</code> to <strong>Public</strong> so they are available as dashboard filters.</p>
 </div>
+<p><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/organizational-data">Organizational Data in Microsoft 365</a> (Microsoft Learn, updated 2 December 2025) defines public, confidential, and custom organizational data and app access controls.</p>
 
-<!-- ═══════════════════════ 3. NAMING CONVENTIONS ═══════════════════════ -->
-<h1 id="naming-conventions">3. Naming Conventions</h1>
+<!-- ═══════════════════════ 4. NAMING CONVENTIONS ═══════════════════════ -->
+<h1 id="naming-conventions">4. Naming Conventions</h1>
 
 <table>
-  <tr><th>Rule</th><th>Details</th></tr>
+  <tr><th scope="col">Rule</th><th scope="col">Details</th></tr>
   <tr>
     <td>Use underscores, not spaces</td>
     <td>Column names must not contain spaces. Use <code>Business_Unit</code> or <code>BusinessUnit</code>, not <code>Business Unit</code>.</td>
@@ -196,13 +225,13 @@
   </tr>
 </table>
 
-<!-- ═══════════════════════ 4. RESERVED ATTRIBUTE NAMES ═══════════════════════ -->
-<h1 id="reserved-names">4. Reserved Attribute Names</h1>
+<!-- ═══════════════════════ 5. RESERVED ATTRIBUTE NAMES ═══════════════════════ -->
+<h1 id="reserved-names">5. Reserved Attribute Names</h1>
 
 <p>The following attribute names are reserved by the system and <strong>cannot be used for custom attributes</strong>. If you need a similar concept, use a different name (e.g., <code>Agency_Location</code> instead of <code>Location</code>).</p>
 
 <table>
-  <tr><th>Reserved Name (Legacy)</th><th>Reserved Name (M365 Admin Center)</th></tr>
+  <tr><th scope="col">Reserved Name (Legacy)</th><th scope="col">Reserved Name (M365 Admin Center)</th></tr>
   <tr><td><code>PersonId</code></td><td><code>Microsoft_PersonEmail</code></td></tr>
   <tr><td><code>ManagerId</code></td><td><code>Microsoft_ManagerEmail</code></td></tr>
   <tr><td><code>Organization</code></td><td><code>Microsoft_Organization</code></td></tr>
@@ -221,14 +250,44 @@
   <p>Any custom attribute name beginning with <code>Microsoft_</code> will be rejected during validation. If you need to add custom attributes with similar concepts, use your own naming convention (e.g., <code>Agency</code>, <code>CostCentre</code>, <code>Region</code>).</p>
 </div>
 
-<!-- ═══════════════════════ 5. LEARN REFERENCES ═══════════════════════ -->
-<h1 id="learn-references">5. Microsoft Learn References</h1>
+<!-- ═══════════════════════ 6. DATA CHANGES ═══════════════════════ -->
+<h1 id="data-changes">6. Update, Delete, and Historical Correction</h1>
+
+<p>Organizational Data in Microsoft 365 uses incremental merge. Upload only affected users and include attributes you intend to update. An omitted or blank value preserves the existing value; use the documented marker when a value must be deleted.</p>
 
 <table>
-  <tr><th>Topic</th><th>Link</th></tr>
+  <tr><th scope="col">Data type / operation</th><th scope="col">Supported value or path</th></tr>
+  <tr><td>Delete string value</td><td>Two single quotes (<code>''</code>) in CSV; three single quotes when editing through Excel</td></tr>
+  <tr><td>Delete integer value</td><td><code>-1</code></td></tr>
+  <tr><td>Delete email value</td><td>A nonexistent email in the tenant, for example <code>noname@contoso.com</code></td></tr>
+  <tr><td>Delete date value</td><td><code>01-01-0001</code></td></tr>
+  <tr><td>Correct historical data</td><td>CSV <strong>Historical import</strong> with the appropriate <strong>File valid as of</strong> date; Microsoft documents this for Viva Insights data only</td></tr>
+  <tr><td>Restore Entra for Viva hierarchy attributes</td><td>Enable <code>ManagerId</code> and/or <code>Organization</code> under <strong>Configure Entra connection</strong>, then remove uploaded optional attributes no longer needed</td></tr>
+</table>
+
+<div class="callout warning">
+  <div class="callout-title">No Dummy-Row Workaround</div>
+  <p>Do not use a one-row &ldquo;Replace All&rdquo; file as a general rollback. It can create an artificial hierarchy and disrupt filters, partitions, and reports. Use the supported operations above or Microsoft Support for a critical migration rollback.</p>
+</div>
+
+<p><strong>Sources:</strong> <a href="https://learn.microsoft.com/viva/import-orgdata#update-or-make-other-changes-to-your-data">Import and manage your organizational data with a .csv file &mdash; Update or make other changes</a> and <a href="https://learn.microsoft.com/viva/import-orgdata#make-retroactive-updates-to-existing-data">Make retroactive updates</a> (Microsoft Learn, updated 2 April 2026); <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload#faqs">Use Microsoft Entra plus .csv files for parallel data uploads &mdash; FAQs</a> (visible date 30 June 2025; refreshed 7 July 2026).</p>
+
+<!-- ═══════════════════════ 7. LEARN REFERENCES ═══════════════════════ -->
+<h1 id="learn-references">7. Microsoft Learn References</h1>
+
+<table>
+  <tr><th scope="col">Topic</th><th scope="col">Link</th></tr>
   <tr>
     <td>Organizational Data in Microsoft 365</td>
     <td><a href="https://learn.microsoft.com/viva/organizational-data">learn.microsoft.com/viva/organizational-data</a></td>
+  </tr>
+  <tr>
+    <td>CSV import, update, delete, and historical correction</td>
+    <td><a href="https://learn.microsoft.com/viva/import-orgdata">learn.microsoft.com/viva/import-orgdata</a></td>
+  </tr>
+  <tr>
+    <td>Parallel Entra and uploaded data</td>
+    <td><a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload</a></td>
   </tr>
   <tr>
     <td>Org Data Attribute Reference</td>
@@ -250,17 +309,12 @@
 
 <!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
 <hr>
-<p style="font-size:0.85em; color:var(--text-muted); margin-top:32px;">
-  <strong>Disclaimer:</strong> This document is provided for informational purposes only and reflects Microsoft 365 capabilities as of April 2026. Microsoft may change features, interfaces, and availability without notice. Always verify current guidance on <a href="https://learn.microsoft.com">Microsoft Learn</a>. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
+<p class="u-772845a273">
+  <strong>Disclaimer:</strong> This document is provided for informational purposes only and was last validated on 16 July 2026. Microsoft may change features, interfaces, and availability without notice. Verify Microsoft Learn, Message Center, and the live tenant UI before implementation. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
 </p>
 
 <!-- Back to Top -->
-<a href="#" id="back-to-top" style="
-  position:fixed; bottom:32px; right:32px; background:var(--accent,#0078d4); color:#fff;
-  border:none; border-radius:50%; width:44px; height:44px; font-size:22px;
-  text-align:center; line-height:44px; text-decoration:none; cursor:pointer;
-  box-shadow:0 2px 8px rgba(0,0,0,0.18); display:none; z-index:999;
-" title="Back to top">&uarr;</a>
+<a href="#" id="back-to-top" class="u-49807340de" title="Back to top">&uarr;</a>
 <script>
 (function(){
   var btn = document.getElementById('back-to-top');

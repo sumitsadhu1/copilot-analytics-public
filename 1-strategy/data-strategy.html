@@ -3,9 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Data Strategy. Last validated 16 July 2026.">
+<link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/1-strategy/data-strategy.html">
 <title>Data Strategy — Copilot Analytics</title>
 <link rel="stylesheet" href="../assets/docs-style.css">
 <script defer src="../assets/shell.js"></script>
+
+<style id="generated-inline-styles">
+.u-9f7cb1fbb6 { margin-top:40px; }
+</style>
 </head>
 <body class="has-nav">
 <nav class="doc-nav">
@@ -28,11 +34,11 @@
 </div>
 
 <table>
-  <tr><th>Document Property</th><th>Value</th></tr>
+  <tr><th scope="col">Document Property</th><th scope="col">Value</th></tr>
   <tr><td>Section</td><td>Strategy</td></tr>
   <tr><td>Audience</td><td>Solution Architect, IT Admin, CIO</td></tr>
-  <tr><td>Version</td><td>4.0</td></tr>
-  <tr><td>Published</td><td>April 2026</td></tr>
+  <tr><td>Version</td><td>4.1</td></tr>
+  <tr><td>Last validated</td><td>16 July 2026</td></tr>
 </table>
 
 <div class="callout info">
@@ -47,7 +53,7 @@
 <p>Entra ID provides a baseline, but org data uploads unlock significantly more analytics capability:</p>
 
 <table>
-  <tr><th>Capability</th><th>Entra ID Only</th><th>With Org Data Upload</th></tr>
+  <tr><th scope="col">Capability</th><th scope="col">Entra ID Only</th><th scope="col">With Org Data Upload</th></tr>
   <tr><td>Department filter on dashboard</td><td>Yes (Entra ID &ldquo;Department&rdquo; attribute)</td><td>Yes (from CSV — can use different/cleaner values)</td></tr>
   <tr><td>Job Function / Job Discipline filter</td><td>No</td><td>Yes (via <code>FunctionType</code> / <code>Microsoft_JobDiscipline</code>)</td></tr>
   <tr><td>Location filter</td><td>No</td><td>Yes (via <code>Location</code> attribute)</td></tr>
@@ -69,7 +75,7 @@
 
 <p>If the Entra ID <code>Manager</code> attribute is missing or inconsistent for many users:</p>
 <table>
-  <tr><th>Feature</th><th>Impact</th></tr>
+  <tr><th scope="col">Feature</th><th scope="col">Impact</th></tr>
   <tr><td>Auto CxO Identification</td><td>Fewer leaders are auto-identified. Users without a clear reporting line are excluded from the &ldquo;top 3 levels&rdquo; calculation.</td></tr>
   <tr><td>Manager Settings (team-level data)</td><td>Managers without a populated <code>Manager</code> attribute or without enough direct reports won't see team-level data.</td></tr>
   <tr><td>Filter by manager hierarchy (Publish Reports)</td><td>Published reports with &ldquo;Filter by manager hierarchy&rdquo; will show incomplete data.</td></tr>
@@ -77,16 +83,34 @@
 </table>
 <p><strong>Recommendation:</strong> If more than 20% of users lack a Manager attribute, prioritise fixing directory data or supplement with an org data CSV upload that includes correct <code>ManagerId</code> values.</p>
 
-<!-- ═══════════════════════ 3. IRREVERSIBILITY ═══════════════════════ -->
-<h1 id="irreversible">3. The Data Source Change Warning</h1>
+<!-- ═══════════════════════ 3. SOURCE PRECEDENCE ═══════════════════════ -->
+<h1 id="irreversible">3. Source Precedence Is Surface- and Attribute-Specific</h1>
 
-<p>Once org data is uploaded, it <strong>replaces Entra ID as the data source</strong> for the uploaded attributes in dashboard filters:</p>
+<p>An upload changes the source for the attributes supplied to the apps you select; it does <strong>not</strong> universally or permanently replace Microsoft Entra ID across Microsoft 365.</p>
+
+<table>
+  <tr><th scope="col">Surface / attribute</th><th scope="col">Controlling behaviour</th><th scope="col">Operational rule</th></tr>
+  <tr><td><strong>Microsoft 365 User Profile</strong></td><td>Microsoft Entra is the default source. Organizational Data in Microsoft 365 can be prioritised; when Entra is missing or incomplete, uploaded data can fill gaps.</td><td>Keep Profile precedence at Entra unless there is an approved reason to override it.</td></tr>
+  <tr><td><strong>Copilot Dashboard and Viva Insights</strong></td><td>Uploaded data shared with these apps supplies the mapped dashboard and analysis attributes. If both Viva and Microsoft 365 uploads exist, Microsoft documents a merge with the more recent upload taking priority.</td><td>Document the owner and source for every supplied attribute; verify values in Dashboard filters and Viva data quality after each change.</td></tr>
+  <tr><td><strong>Viva <code>ManagerId</code> and <code>Organization</code></strong></td><td>Parallel ingestion can make Entra the default for either attribute, even when the upload also contains it. Other uploaded fields continue to come from CSV or connectors.</td><td>Use <strong>Configure Entra connection</strong> when the directory owns these two attributes; allow about 24 hours for the change.</td></tr>
+  <tr><td><strong>Uploaded optional and custom attributes</strong></td><td>They remain upload/connector sourced unless an app has its own documented precedence rule.</td><td>Do not assume an Entra fallback. Keep the source current and test each consuming app.</td></tr>
+</table>
+
+<p><strong>Sources:</strong> <a href="https://learn.microsoft.com/viva/organizational-data#data-precedence">Organizational Data in Microsoft 365 &mdash; Data precedence</a> (Microsoft Learn, updated 2 December 2025); <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#upload-organizational-data-for-the-copilot-dashboard-and-agent-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, and Viva Insights web app</a> (20 March 2026); and <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Use Microsoft Entra plus .csv files for parallel data uploads</a> (visible date 30 June 2025; page content refreshed 7 July 2026).</p>
+
+<h2>Supported correction and rollback paths</h2>
 <ul>
-  <li>Department values come from the CSV, not from Entra ID — even if they differ</li>
-  <li>If you stop uploading, the data becomes stale (not reverted to Entra ID)</li>
-  <li><strong>Reversal is now self-service:</strong> You can use <strong>parallel data ingestion</strong> to keep Entra as the source for <code>ManagerId</code> and <code>Organization</code> while adding custom attributes via CSV. To stop using uploaded data entirely, clear the Entra connection selections or use the &ldquo;Replace All data&rdquo; option with a single dummy row. See <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Microsoft Learn</a>.</li>
-  <li><strong>Before uploading:</strong> Confirm readiness to own the ongoing refresh cycle (monthly re-uploads recommended)</li>
+  <li><strong>Update:</strong> Upload only affected users and all attributes you intend to change. A blank value preserves the existing value because new uploads merge with previous data.</li>
+  <li><strong>Delete a value:</strong> Use the documented type-specific marker: two single quotes (<code>''</code>) in CSV for strings (three in Excel), <code>-1</code> for integers, a nonexistent in-tenant address for email values, or <code>01-01-0001</code> for dates.</li>
+  <li><strong>Correct history:</strong> Use <strong>Historical import</strong> with a CSV and a <strong>File valid as of</strong> date. Microsoft documents historical updates for Viva Insights data only.</li>
+  <li><strong>Return <code>ManagerId</code>/<code>Organization</code> to Entra:</strong> Enable those attributes under <strong>Configure Entra connection</strong>, then delete uploaded optional attributes you no longer need.</li>
+  <li><strong>Migration failure:</strong> Stop further imports and open a Microsoft support request. Microsoft documents temporary rollback only for critical migration issues in special cases.</li>
 </ul>
+<div class="callout warning">
+  <div class="callout-title">Do Not Use a Dummy-Row Rollback</div>
+  <p>Do not use a one-row &ldquo;Replace All&rdquo; file as a general removal or rollback technique. It can leave an artificial hierarchy and break filters, partitions, or reports. Use the supported update/delete markers, parallel Entra restoration, or Microsoft Support instead.</p>
+</div>
+<p><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/import-orgdata#update-or-make-other-changes-to-your-data">Import and manage your organizational data with a .csv file &mdash; Update or make other changes</a> (Microsoft Learn, updated 2 April 2026), including <a href="https://learn.microsoft.com/viva/import-orgdata#make-retroactive-updates-to-existing-data">retroactive updates</a>; migration rollback is documented in <a href="https://learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center#support-and-rollback">Upload and maintain data through the Microsoft 365 admin center</a> (5 December 2025).</p>
 
 <!-- ═══════════════════════ 4. CHOOSE YOUR METHOD ═══════════════════════ -->
 <h1 id="methods">4. Choose Your Upload Method</h1>
@@ -94,21 +118,23 @@
 <p>Start with <em>"What HRIS do you use?"</em> — not <em>"how do I upload a CSV."</em></p>
 
 <table>
-  <tr><th>Method</th><th>Who Manages</th><th>Status</th><th>Best For</th></tr>
+  <tr><th scope="col">Method</th><th scope="col">Who Manages</th><th scope="col">Status</th><th scope="col">Best For</th></tr>
   <tr><td><strong>SAP SuccessFactors Connector</strong></td><td>Global Admin + SAP SF Admin</td><td>GA</td><td>Organisations using SAP SuccessFactors. No CSV needed. Auto-sync weekly/monthly.</td></tr>
-  <tr><td><strong>Workday Connector</strong></td><td>Global Admin + Workday Admin</td><td>GA</td><td>Organisations using Workday (≤100K users). For &gt;100K, use Workday RaaS → Azure Blob.</td></tr>
-  <tr><td><strong>Azure Blob Storage</strong></td><td>Global Admin + Data Engineer</td><td>GA</td><td>Automated CSV drop. Good for data engineering teams or Workday RaaS export.</td></tr>
-  <tr><td><strong>API-Based Import</strong></td><td>Global Admin + Developer</td><td>Preview</td><td>Programmatic push via REST API. Supports incremental refresh.</td></tr>
+  <tr><td><strong>Workday Connector</strong></td><td>Global Admin + Workday Admin</td><td>Supported, up to 100,000 users</td><td>Workday SOAP integration. For larger datasets or where SOAP is unsuitable, use Workday RaaS through Azure Blob or API import.</td></tr>
+  <tr><td><strong>Azure Blob Storage</strong></td><td>Global Admin + Data Engineer</td><td>Public Preview; Worldwide only</td><td>Automated CSV drop. Unavailable in GCC; confirm tenant rollout before production use.</td></tr>
+  <tr><td><strong>API-Based Import</strong></td><td>Global Admin + Developer</td><td>Public Preview; Worldwide only</td><td>Programmatic import using CSV payloads. Unavailable in GCC; confirm tenant rollout before production use.</td></tr>
   <tr><td><strong>CSV Upload — M365 Admin Center</strong></td><td>Org Data Source Administrator</td><td>GA</td><td>Universal fallback. Lowest technical barrier. Works with any HRIS (export to CSV).</td></tr>
-  <tr><td><strong>CSV Upload — Viva Insights</strong></td><td>Insights Administrator</td><td>Deprecated (mid-2026)</td><td>Legacy path. Use only if your tenant has not been migrated.</td></tr>
+  <tr><td><strong>CSV Upload — Viva Insights web app</strong></td><td>Insights Administrator</td><td>Official sources conflict; tenant-specific</td><td>Do not infer availability from a date. Follow Message Center and the actual tenant UI; use only when both explicitly show add/edit upload is supported.</td></tr>
 </table>
+
+<p><strong>Sources:</strong> <a href="https://learn.microsoft.com/viva/import-org-data-workday">Import organizational data from Workday</a> (Microsoft Learn, updated 6 April 2026); <a href="https://learn.microsoft.com/viva/import-org-data-api">Import organizational data using API-based import (preview)</a> (6 April 2026); and <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported Microsoft 365 environments for Viva Insights features</a> (30 June 2026).</p>
 
 <div class="callout info">
   <div class="callout-title">NOTE: Decision Logic</div>
   <ul>
     <li><strong>Use SAP SuccessFactors or Workday</strong> if your org runs either HRIS — eliminates manual CSV entirely</li>
-    <li><strong>Use Azure Blob Storage</strong> if you want automated CSV drops from a data warehouse</li>
-    <li><strong>Use API-based import</strong> if you need incremental refresh or have a custom HRIS</li>
+    <li><strong>Consider Azure Blob Storage</strong> for automated CSV drops from a data warehouse, subject to public-preview, cloud, and tenant availability</li>
+    <li><strong>Consider API-based import</strong> for programmatic integration or a custom HRIS, subject to public-preview, cloud, and tenant availability</li>
     <li><strong>Use CSV upload</strong> for everything else — universal compatibility</li>
   </ul>
 </div>
@@ -125,51 +151,48 @@
 <p>Complete this before any upload. Share answers with your IT team when you hand off to the <a href="../2-setup/data-onboarding.html">Data Onboarding Guide</a>.</p>
 
 <table>
-  <tr><th>#</th><th>Question</th><th>Your Answer</th></tr>
+  <tr><th scope="col">#</th><th scope="col">Question</th><th scope="col">Your Answer</th></tr>
   <tr><td>1</td><td>Which HRIS does your organisation use? (SAP SF, Workday, Oracle, Custom, None)</td><td></td></tr>
   <tr><td>2</td><td>Can your HRIS export a CSV with employee email, manager email, and department?</td><td></td></tr>
   <tr><td>3</td><td>Which dashboard filters do you need beyond Department? (Job Function, Location, Level, Cost Centre, Agency, Region)</td><td></td></tr>
   <tr><td>4</td><td>Do you need custom attributes for segmentation in Power BI reports? (e.g., Copilot Pilot Group, Hire Date, BU)</td><td></td></tr>
   <tr><td>5</td><td>Who will own the monthly data refresh? (HR, IT, Data Engineering)</td><td></td></tr>
-  <tr><td>6</td><td>Is your tenant migrated to "Organizational Data in Microsoft 365" in M365 Admin Center?</td><td></td></tr>
+  <tr><td>6</td><td>What does the latest Message Center migration notice say, and which add/edit controls are visible in the tenant UI?</td><td></td></tr>
   <tr><td>7</td><td>Do multiple agencies share a single email domain? (If yes, you'll need a custom <code>Agency</code> attribute for partitioning)</td><td></td></tr>
   <tr><td>8</td><td>Do you need to share org data with apps beyond Viva Insights? (M365 Profile, People Skills)</td><td></td></tr>
 </table>
 
 <!-- ═══════════════════════ 6. MIGRATION ═══════════════════════ -->
-<h1 id="migration">6. Organizational Data Upload Migration</h1>
+<h1 id="migration">6. Determine the Current Tenant State</h1>
 
 <div class="callout warning">
-  <div class="callout-title">IMPORTANT: April 2026 Migration</div>
-  <p>Microsoft is migrating all tenants from the Viva Insights web app to the <strong>M365 Admin Center</strong> as the single upload point. By mid-2026, all tenants will be migrated.</p>
-  <ul>
-    <li>New platform: <strong>Organizational Data in Microsoft 365</strong> at <code>admin.microsoft.com</code> → Setup → Migration and imports</li>
-    <li>New role: <strong>Organizational Data Source Administrator</strong> manages uploads</li>
-    <li>Supports HRIS connectors, Azure Blob, API-based import — not just CSV</li>
-    <li>Data serves multiple M365 apps (Copilot Dashboard, Viva Insights, M365 User Profile)</li>
-  </ul>
+  <div class="callout-title">Official Microsoft Sources Conflict</div>
+  <p><a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#upload-organizational-data-for-the-copilot-dashboard-and-agent-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, and Viva Insights web app</a> (20 March 2026) still calls Viva web-app upload the recommended path for Viva Insights customers. <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Use Microsoft Entra plus .csv files for parallel data uploads</a> (visible date 30 June 2025; refreshed 7 July 2026) says adding and editing uploads is no longer supported there. <a href="https://learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center">Upload and maintain data through the Microsoft 365 admin center</a> (5 December 2025) says migration occurs in tenant-specific waves announced in Message Center.</p>
+  <p><strong>Safest rule:</strong> Message Center and the actual tenant UI control the procedure. A calendar date or missing tile alone does not prove which path is supported.</p>
 </div>
 
-<h3>Which path am I on?</h3>
+<h3>Current-state gate</h3>
 <ol>
-  <li>Go to <code>admin.microsoft.com</code> → Setup → Migration and imports</li>
-  <li>If you see <strong>"Organizational Data in Microsoft 365"</strong> → you're migrated → follow the M365 Admin Center path in the <a href="../2-setup/data-onboarding.html">Data Onboarding Guide</a></li>
-  <li>If you don't see it → you're pre-migration → follow the Viva Insights legacy path</li>
-  <li>If unsure → check Message Center for migration notifications</li>
+  <li>Read the latest tenant-specific Message Center post for organizational-data migration.</li>
+  <li>Open <code>admin.microsoft.com</code> &rarr; <strong>Setup</strong> &rarr; <strong>Migration and imports</strong> and record whether <strong>Organizational Data in Microsoft 365</strong> and its add/edit controls are available.</li>
+  <li>Open the Viva Insights web app and record whether organizational-data add/edit, delete, and Replace All controls are present. Do not assume all four move together.</li>
+  <li>Review existing connections so a second source is not introduced unintentionally.</li>
+  <li>If Message Center and the live UI agree, follow that path in the <a href="../2-setup/data-onboarding.html">Data Onboarding Guide</a>.</li>
+  <li>If they conflict, or neither surface offers a supported add/edit path, <strong>stop</strong>. Capture the Message Center post ID/date, screenshots, roles, tenant cloud, and existing connection status; then escalate through Microsoft Support or the account team before uploading.</li>
 </ol>
 
 <!-- ═══════════════════════ 7. WHAT NEXT ═══════════════════════ -->
 <h1 id="next">7. What to Read Next</h1>
 
 <table>
-  <tr><th>Ready to...</th><th>Read this</th></tr>
+  <tr><th scope="col">Ready to...</th><th scope="col">Read this</th></tr>
   <tr><td>Upload data (step-by-step)</td><td><a href="../2-setup/data-onboarding.html">Data Onboarding Guide</a> (Setup layer)</td></tr>
   <tr><td>See the full attribute mapping table</td><td><a href="../4-reference/attribute-reference.html">Attribute Reference</a> (Reference layer)</td></tr>
   <tr><td>Troubleshoot a failed upload</td><td><a href="../4-reference/troubleshooting.html">Troubleshooting Guide</a> (Reference layer)</td></tr>
   <tr><td>Understand multi-agency data isolation</td><td><a href="../decide/architecture.html">Multi-Agency Decision Guide</a> (Strategy layer)</td></tr>
 </table>
 
-<div class="callout info" style="margin-top:40px;">
+<div class="callout info u-9f7cb1fbb6">
   <div class="callout-title">Disclaimer</div>
   <p>This guide is provided as a procedural reference. Always refer to <a href="https://learn.microsoft.com/viva/organizational-data">Organizational Data in Microsoft 365</a> on Microsoft Learn for the most up-to-date information.</p>
 </div>

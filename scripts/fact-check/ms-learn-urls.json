@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "MS Learn pages our documentation depends on. Checked on every push.",
-    "last_verified": "2026-04-23",
+    "last_verified": "2026-07-16",
     "categories": {
       "copilot-dashboard": "Copilot Dashboard features, licensing, access",
       "admin-settings": "Admin configuration, VFAM, manager settings",
@@ -169,6 +169,96 @@
       "category": "admin-settings",
       "our_files": [
         "2-setup/admin-setup.html"
+      ]
+    },
+    {
+      "id": "environment-requirements",
+      "url": "https://learn.microsoft.com/viva/insights/advanced/setup-maint/environment-requirements",
+      "title": "Environment requirements for Viva Insights",
+      "category": "licensing-billing",
+      "our_files": [
+        "1-strategy/executive-briefing.html",
+        "2-setup/admin-setup.html",
+        "3-operate/dashboard-guide.html",
+        "4-reference/faq.html"
+      ]
+    },
+    {
+      "id": "copilot-chat-report",
+      "url": "https://learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-copilot-usage?view=o365-worldwide",
+      "title": "Microsoft 365 Copilot Chat usage report",
+      "category": "copilot-dashboard",
+      "our_files": [
+        "1-strategy/executive-briefing.html",
+        "3-operate/dashboard-guide.html",
+        "4-reference/faq.html",
+        "tools/index.html"
+      ]
+    },
+    {
+      "id": "copilot-metrics-export",
+      "url": "https://learn.microsoft.com/viva/insights/org-team-insights/export-copilot-metrics",
+      "title": "Export Copilot metrics from the Microsoft Copilot Dashboard (preview)",
+      "category": "copilot-dashboard",
+      "our_files": [
+        "3-operate/dashboard-guide.html",
+        "3-operate/analyst-playbook.html"
+      ]
+    },
+    {
+      "id": "consumption-dashboard",
+      "url": "https://learn.microsoft.com/viva/insights/org-team-insights/ai-cost-dashboard",
+      "title": "How to use the Consumption Dashboard in Insights",
+      "category": "licensing-billing",
+      "our_files": [
+        "3-operate/consumption-dashboard.html",
+        "3-operate/billing-operations.html",
+        "tools/index.html"
+      ]
+    },
+    {
+      "id": "user-roles",
+      "url": "https://learn.microsoft.com/viva/insights/advanced/setup-maint/user-roles",
+      "title": "Roles in Viva Insights",
+      "category": "admin-settings",
+      "our_files": [
+        "2-setup/admin-setup.html",
+        "3-operate/analyst-playbook.html",
+        "4-reference/troubleshooting.html"
+      ]
+    },
+    {
+      "id": "supported-environments",
+      "url": "https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments",
+      "title": "Supported Microsoft 365 environments for Viva Insights features",
+      "category": "admin-settings",
+      "our_files": [
+        "2-setup/admin-setup.html",
+        "2-setup/multi-agency-setup.html",
+        "3-operate/dashboard-guide.html"
+      ]
+    },
+    {
+      "id": "copilot-dlp",
+      "url": "https://learn.microsoft.com/purview/dlp-microsoft365-copilot-location-learn-about",
+      "title": "Learn about using Microsoft Purview Data Loss Prevention to protect interactions with Microsoft 365 Copilot and Copilot Chat",
+      "category": "privacy",
+      "our_files": [
+        "2-setup/privacy-configuration.html",
+        "4-reference/faq.html"
+      ]
+    },
+    {
+      "id": "entra-plus-csv",
+      "url": "https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload",
+      "title": "Use Microsoft Entra plus .csv files for parallel data uploads",
+      "category": "org-data",
+      "our_files": [
+        "1-strategy/data-strategy.html",
+        "2-setup/data-onboarding.html",
+        "4-reference/attribute-reference.html",
+        "artifacts/Org_Data_Validation_Prompt.html",
+        "tools/entra-hierarchy-validation/README.md"
       ]
     }
   ],

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Accessibility Statement. Last validated 16 July 2026.">
+<link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/4-reference/accessibility.html">
+<title>Accessibility Statement — Copilot Analytics</title>
+<link rel="stylesheet" href="../assets/docs-style.css">
+<script defer src="../assets/shell.js"></script>
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Reference</span>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Accessibility</span>
+  </div>
+</nav>
+
+<div class="cover">
+  <h1>Microsoft 365 Copilot Analytics</h1>
+  <div class="subtitle">Accessibility Statement</div>
+  <div class="sub2">Current support, known limits, and correction path</div>
+</div>
+
+<table>
+  <tr><th scope="col">Property</th><th scope="col">Value</th></tr>
+  <tr><td>Target</td><td>WCAG 2.2 Level AA for HTML content</td></tr>
+  <tr><td>Canonical format</td><td>HTML</td></tr>
+  <tr><td>Last reviewed</td><td>16 July 2026</td></tr>
+  <tr><td>Owner</td><td>Sumit Sadhu</td></tr>
+</table>
+
+<h1 id="current-support">Current Support</h1>
+<ul>
+  <li>Semantic headings, main and navigation landmarks, labels for icon controls, keyboard focus indicators, and skip-to-content links.</li>
+  <li>Keyboard-operated navigation, role filters, topic filters, search, flyout panels, and Escape-to-close behavior.</li>
+  <li>Responsive layouts with horizontally scrollable data tables on narrow screens and print-specific styling.</li>
+  <li>Text alternatives for content images and tagged PDF structure generated from HTML.</li>
+  <li>Visible focus restoration after dismissing modal/flyout or mobile-navigation surfaces.</li>
+</ul>
+
+<h1 id="pdfs">PDF Accessibility</h1>
+<p>HTML is the canonical and preferred accessible format. Generated PDFs receive document title, author, language, tagged structure, and link annotations, and they pass a structural preflight. That automation does <strong>not</strong> prove PDF/UA conformance or replace manual testing of reading order, headings, tables, alternative text, links, reflow, and screen-reader behavior.</p>
+
+<h1 id="known-limits">Known Limits</h1>
+<ul>
+  <li>Wide technical tables may require horizontal scrolling on mobile or high zoom.</li>
+  <li>Some command examples and architecture diagrams are easier to interpret in the HTML version than in print/PDF.</li>
+  <li>The site is maintained in English. Official product/UI labels retain Microsoft's documented spelling even when surrounding prose uses Australian English.</li>
+  <li>Third-party destinations, including Microsoft Learn and GitHub, have their own accessibility behavior and policies.</li>
+</ul>
+
+<h1 id="report">Report an Accessibility Problem</h1>
+<p><a href="https://github.com/sumitsadhu1/copilot-analytics-public/issues/new"><strong>Open an accessibility issue</strong></a> and include the page URL, browser, operating system, assistive technology, zoom level, steps to reproduce, expected behavior, and observed behavior. Do not include confidential or personal data.</p>
+<p>If an HTML page and its PDF differ, report both URLs and use the HTML page until the PDF is corrected.</p>
+
+<h1 id="test">Release Test Checklist</h1>
+<ul>
+  <li>Keyboard-only navigation and visible focus at desktop and 375px mobile width.</li>
+  <li>Skip link reaches the main content.</li>
+  <li>Escape closes navigation/flyouts and returns focus to the invoking control.</li>
+  <li>Search/filter result changes are announced to assistive technology.</li>
+  <li>No overlap or loss of content at 320px width and 200%, 320%, and 400% zoom.</li>
+  <li>Heading hierarchy, landmarks, link purpose, image alternatives, and table headers are checked.</li>
+  <li>Generated PDFs pass structural preflight and manual screen-reader/reading-order spot checks.</li>
+</ul>
+
+<hr>
+<p>This statement describes the project's target and current validation controls; it is not a certification of conformance. See the <a href="change-history.html">change history and content governance</a> for ownership and review cadence.</p>
+</body>
+</html>

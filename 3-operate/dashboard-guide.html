@@ -3,9 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Dashboard &amp; Reports Guide. Last validated 16 July 2026.">
+<link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/3-operate/dashboard-guide.html">
 <title>Dashboard &amp; Reports Guide — Copilot Analytics</title>
 <link rel="stylesheet" href="../assets/docs-style.css">
 <script defer src="../assets/shell.js"></script>
+
+<style id="generated-inline-styles">
+.u-49807340de { position:fixed; bottom:32px; right:32px; background:var(--accent,#0078d4); color:#fff;
+  border:none; border-radius:50%; width:44px; height:44px; font-size:22px;
+  text-align:center; line-height:44px; text-decoration:none; cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,0.18); display:none; z-index:999; }
+.u-772845a273 { font-size:0.85em; color:var(--text-muted); margin-top:32px; }
+</style>
 </head>
 <body class="has-nav">
 <nav class="doc-nav">
@@ -29,18 +39,18 @@
 </div>
 
 <table>
-  <tr><th>Document Property</th><th>Value</th></tr>
+  <tr><th scope="col">Document Property</th><th scope="col">Value</th></tr>
   <tr><td>Section</td><td>Operate</td></tr>
   <tr><td>Audience</td><td>Business Leaders / Managers / Analysts</td></tr>
   <tr><td>Version</td><td>4.0</td></tr>
-  <tr><td>Published</td><td>April 2026</td></tr>
+  <tr><td>Published</td><td>April 2026; validated 16 July 2026</td></tr>
 </table>
 
 <div class="callout info">
   <div class="callout-title">How This Document Fits</div>
   <p>This is a <strong>Operate</strong> guide. It covers how to <em>read</em> and <em>use</em> the Copilot Dashboard, Analytics Reports, and Agent Dashboard on a daily basis. It does <strong>not</strong> cover setup &mdash; see the <a href="../2-setup/admin-setup.html">Admin Setup Guide</a> for configuration steps.</p>
   <table>
-    <tr><th>Section</th><th>Purpose</th><th>Who Reads</th></tr>
+    <tr><th scope="col">Section</th><th scope="col">Purpose</th><th scope="col">Who Reads</th></tr>
     <tr><td><a href="../1-strategy/executive-briefing.html">Strategy</a></td><td>Decide what to implement</td><td>CIO, SA, Business Leaders</td></tr>
     <tr><td><a href="../2-setup/admin-setup.html">Setup</a></td><td>Configure and deploy</td><td>IT Admin, Insights Admin</td></tr>
     <tr><td><strong>Operate</strong> (you are here)</td><td>Use dashboards and reports daily</td><td>Leaders, Analysts, Managers</td></tr>
@@ -84,7 +94,8 @@
 
 <div class="callout info">
   <div class="callout-title">Feature Availability by Licence Count</div>
-  <p>Tenants with <strong>1+ assigned Copilot licences</strong> get the Readiness, Adoption, and Impact pages with tenant-level and group-level metrics and HR filters. Tenants with at least <strong>50 assigned Copilot licences</strong> <em>or</em> at least <strong>50 assigned Viva Insights licences</strong> additionally get agent-related insights (Agent Dashboard), benchmarks, intelligent summaries, sentiment survey metrics, week/month-level trendlines, manager group-level views with delegation, and the consolidated &ldquo;All&rdquo; licence type view. The two thresholds are <strong>independent &mdash; not summed</strong> (a tenant with 30 Copilot + 20 Viva Insights does <em>not</em> qualify).</p>
+  <p>Tenants with <strong>1+ assigned Copilot licences</strong> get core Readiness, Adoption, and Impact capabilities. For capabilities using the 50-plan threshold, Microsoft&rsquo;s <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/environment-requirements">Environment requirements for Viva Insights</a> (Last updated 12 May 2026) explicitly counts the Viva Insights service plan included with Copilot and gives <strong>30 Copilot + 20 Viva Insights = 50 qualifying service plans</strong>. The newer, Dashboard-specific <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (Last updated 1 July 2026) instead says 50 Copilot or 50 Viva Insights licences. Do not assume a mixed deployment fails: verify assigned service plans, feature presence, and processing in the tenant; escalate to Microsoft Support if the documented qualifying mix does not unlock the capability.</p>
+  <p>For <strong>Agent Dashboard (preview)</strong>, conservatively require 50 assigned Microsoft 365 Copilot licences plus qualifying agent activity. Microsoft&rsquo;s feature-specific Agent article conflicts with the broader Dashboard article on this prerequisite.</p>
 </div>
 
 <!-- ─── 1.2 Adoption ─── -->
@@ -94,7 +105,7 @@
 
 <h3>Key Metrics</h3>
 <table>
-  <tr><th>Metric</th><th>Definition</th></tr>
+  <tr><th scope="col">Metric</th><th scope="col">Definition</th></tr>
   <tr><td><strong>Active Copilot users</strong></td><td>Number of licensed users who had <strong>at least one Copilot interaction</strong> in the 28-day measurement window.</td></tr>
   <tr><td><strong>Copilot Actions Taken</strong></td><td>Total count of Copilot interactions across all users. <strong>Excludes</strong> agent interactions &mdash; those are tracked on the Agent Dashboard.</td></tr>
   <tr><td><strong>Usage Intensity</strong></td><td>Average number of actions per active user (Actions Taken &divide; Active Users). Measures depth of engagement beyond simple headcount.</td></tr>
@@ -106,30 +117,37 @@
 <h3>Per-App Breakdown</h3>
 <p>The Adoption page breaks down usage across individual M365 applications:</p>
 <table>
-  <tr><th>App</th><th>What It Tracks</th></tr>
+  <tr><th scope="col">App</th><th scope="col">What It Tracks</th></tr>
   <tr><td>Teams</td><td>Meeting summaries, chat Copilot interactions, Teams Copilot actions</td></tr>
   <tr><td>Outlook</td><td>Email drafting, summarisation, coaching suggestions</td></tr>
   <tr><td>Word</td><td>Document drafting, rewriting, summarisation</td></tr>
   <tr><td>PowerPoint</td><td>Slide generation, design suggestions, narrative creation</td></tr>
   <tr><td>Excel</td><td>Formula generation, data analysis, chart creation</td></tr>
-  <tr><td>Copilot Chat (work)</td><td>Chat interactions grounded in <strong>tenant data</strong> (SharePoint, emails, calendar)</td></tr>
-  <tr><td>Copilot Chat (web)</td><td>Chat interactions grounded in <strong>internet data</strong> only</td></tr>
+  <tr><td>Copilot Chat</td><td>Current merged Copilot Chat usage metric across the supported Chat experience</td></tr>
+  <tr><td>Copilot Chat (web) &mdash; legacy</td><td>Historical transition series only; expect it to trend toward zero as activity moves into the merged Copilot Chat metric</td></tr>
 </table>
 
 <div class="callout note">
   <div class="callout-title">License Filter: Microsoft 365 Copilot vs Copilot Chat</div>
-  <p>At the top of the Adoption page, a <strong>License</strong> filter lets you toggle between <strong>Microsoft 365 Copilot</strong> and <strong>Copilot Chat</strong> views. The Microsoft 365 Copilot filter shows insights for employees with a paid Copilot licence. The Copilot Chat filter shows insights for active users of the free, web-based Copilot Chat app &mdash; employees with an M365 licence but <em>without</em> the paid Copilot add-on. The Copilot Chat filter appears only if your tenant has Copilot Chat reporting enabled.</p>
+  <p>At the top of the Adoption page, a <strong>License</strong> filter lets you compare <strong>Microsoft 365 Copilot</strong>, <strong>Copilot Chat</strong>, and, where the 50-plan experience is available, <strong>All</strong>. The Copilot Chat view covers active users without the paid Microsoft 365 Copilot add-on when reporting is enabled.</p>
 </div>
 
 <div class="callout note">
-  <div class="callout-title">Copilot Chat (work) vs Copilot Chat (web)</div>
-  <p><strong>Copilot Chat (work)</strong> uses your organisation&rsquo;s tenant data &mdash; files in SharePoint, emails, calendar events, and Teams messages &mdash; to generate responses. <strong>Copilot Chat (web)</strong> searches the public internet for answers. The distinction matters because &ldquo;work&rdquo; mode reflects enterprise data utilisation, while &ldquo;web&rdquo; mode shows general AI assistance patterns.</p>
+  <div class="callout-title">Merged metric and legacy-web transition</div>
+  <p>Use <strong>Copilot Chat</strong> as the current reporting metric. Do not interpret a decline in the legacy <strong>Copilot Chat (web)</strong> series as declining adoption by itself; Microsoft is merging current activity into Copilot Chat, so the legacy series is expected to approach zero.</p>
+  <p><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (Last updated 1 July 2026), Adoption section, and <a href="https://learn.microsoft.com/viva/insights/org-team-insights/export-copilot-metrics">Export Copilot metrics from the Microsoft Copilot Dashboard (preview)</a> (Last updated 15 July 2026), Metrics section.</p>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">Current admin reporting for unlicensed Copilot Chat</div>
+  <p>The Microsoft 365 admin center has a dedicated <strong>Microsoft 365 Copilot Chat usage report</strong> for users without a Microsoft 365 Copilot licence, with user activity and CSV export. This is separate from the paid-Copilot usage report, the Viva Dashboard view, Microsoft Graph&rsquo;s licensed-user-only Copilot usage endpoint, and Purview audit evidence.</p>
+  <p><strong>Source:</strong> <a href="https://learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-copilot-usage?view=o365-worldwide">Microsoft 365 Copilot Chat usage report</a> (Last updated 10 July 2026) and <a href="https://learn.microsoft.com/microsoft-365/copilot/microsoft-365-copilot-reports-for-admins">Microsoft 365 Copilot reporting options for admins</a> (Last updated 16 September 2025).</p>
 </div>
 
 <h3>Intent Patterns (Preview)</h3>
-<p>The Adoption page includes <strong>intent-based metrics</strong> that categorise individual Copilot Chat (work) prompts into common intent categories. These help you understand <em>how</em> people use Copilot, not just <em>how much</em>.</p>
+<p>The Adoption page includes <strong>intent-based metrics</strong> that categorise supported Copilot Chat prompts into common intent categories. These help you understand <em>how</em> people use Copilot, not just <em>how much</em>.</p>
 <table>
-  <tr><th>Intent Category</th><th>What It Captures</th><th>Example Prompts</th></tr>
+  <tr><th scope="col">Intent Category</th><th scope="col">What It Captures</th><th scope="col">Example Prompts</th></tr>
   <tr><td><strong>Ask and find</strong></td><td>Questions and information retrieval</td><td>&ldquo;Find the recording of meeting X from May&rdquo;, &ldquo;Who is the project lead for initiative Y?&rdquo;</td></tr>
   <tr><td><strong>Catch up</strong></td><td>Summaries, recaps, and action items</td><td>&ldquo;Recap this meeting with key takeaways&rdquo;, &ldquo;Summarise what happened while I was out&rdquo;</td></tr>
   <tr><td><strong>Draft and brainstorm</strong></td><td>Content generation and creative ideation</td><td>&ldquo;Draft a status update email about project X&rdquo;, &ldquo;Brainstorm creative presentation ideas&rdquo;</td></tr>
@@ -140,7 +158,7 @@
 <h3>Expanded App Coverage</h3>
 <p>Beyond the core M365 apps listed above, the Dashboard also tracks Copilot usage in additional surfaces. Scenario-level breakdowns (e.g., suggested reply, translate, coach, clean data) are available for some apps:</p>
 <table>
-  <tr><th>App/Surface</th><th>Scenarios Tracked</th></tr>
+  <tr><th scope="col">App/Surface</th><th scope="col">Scenarios Tracked</th></tr>
   <tr><td><strong>Microsoft 365 Copilot App</strong></td><td>Copilot Chat prompts and interactions</td></tr>
   <tr><td><strong>Edge</strong></td><td>Copilot Chat interactions in the browser sidebar</td></tr>
   <tr><td><strong>OneNote</strong></td><td>Summarise, organise, and create content from notes</td></tr>
@@ -157,7 +175,7 @@
 <h3>&ldquo;View by&rdquo; Options</h3>
 <p>The Adoption page can be sliced by different organisational dimensions. Each requires specific data to be present:</p>
 <table>
-  <tr><th>View By</th><th>What It Shows</th><th>Data Requirement</th></tr>
+  <tr><th scope="col">View By</th><th scope="col">What It Shows</th><th scope="col">Data Requirement</th></tr>
   <tr><td><strong>Group</strong></td><td>Adoption by manager&rsquo;s direct/indirect reports</td><td>Requires <strong>manager hierarchy</strong> (ManagerId in org data CSV or Entra&rsquo;s Manager field)</td></tr>
   <tr><td><strong>Job Function</strong></td><td>Adoption by role category (Engineering, Sales, HR, etc.)</td><td>Requires <strong>FunctionType</strong> attribute in org data</td></tr>
   <tr><td><strong>Organization</strong></td><td>Adoption by business unit or department</td><td>Requires <strong>Organization</strong> attribute in org data or Entra <strong>Department</strong> field</td></tr>
@@ -171,11 +189,12 @@
 
 <h3>Scope Filter</h3>
 <table>
-  <tr><th>Scope</th><th>What It Shows</th><th>Who Gets It</th></tr>
-  <tr><td><strong>Your company</strong></td><td>Entire tenant (all licensed Copilot users)</td><td>Global Admin, Insights Admin, users with &ldquo;Your company&rdquo; delegation</td></tr>
+  <tr><th scope="col">Scope</th><th scope="col">What It Shows</th><th scope="col">Who Gets It</th></tr>
+  <tr><td><strong>Your company</strong></td><td>Entire eligible tenant population</td><td>Global Administrator; qualified senior leader; explicitly assigned company-wide user; Insights Analyst assigned to the Global partition; or eligible company-scoped delegate. AI Administrator and Insights Administrator roles alone do not grant this view.</td></tr>
   <tr><td><strong>&lt;Leader Name&gt;</strong></td><td>That leader&rsquo;s reporting chain (direct + indirect reports)</td><td>Leaders with enabled Copilot Dashboard access whose hierarchy is in org data</td></tr>
-  <tr><td><strong>Your group</strong></td><td>Your own direct and indirect reports</td><td>Any leader or manager with dashboard access and a manager hierarchy in org data</td></tr>
+  <tr><td><strong>Your group</strong></td><td>Your own eligible direct and indirect reports</td><td>Manager enabled through Manager Settings and meeting licence, hierarchy, and minimum-group requirements; or a group-scoped delegate</td></tr>
 </table>
+<p><strong>Sources:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/user-roles">Roles in Viva Insights</a> (Last updated 7 July 2026), <a href="https://learn.microsoft.com/viva/insights/org-team-insights/delegate-access">Delegate access to the Copilot Dashboard, Agent Dashboard, and Copilot insights</a> (Last updated 9 February 2026), and <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/manager-settings">Configure manager settings</a> (Last updated 25 June 2026).</p>
 
 <h3>Suppressed Values (&ldquo;--&rdquo;)</h3>
 <p>When you see <strong>&ldquo;--&rdquo;</strong> instead of a number, it means the group size is below the <strong>minimum group size</strong> threshold (default: 10). This is a <strong>privacy protection</strong>, not an error. Data is present but suppressed to prevent identification of individuals. If you need to see data for smaller teams, an Insights Admin can adjust the minimum group size in privacy settings &mdash; but this should be done carefully with HR and legal approval.</p>
@@ -184,7 +203,7 @@
 <p>In addition to the core Adoption insights (overview, usage intensity, returning users, per-app breakdown), the Adoption page now surfaces two <strong>agent-focused insight cards</strong> when your tenant has agent activity. These are independent of the Agent Dashboard itself and are visible to anyone who can already view the Adoption page.</p>
 
 <table>
-  <tr><th>Card</th><th>What It Shows</th><th>Requires</th></tr>
+  <tr><th scope="col">Card</th><th scope="col">What It Shows</th><th scope="col">Requires</th></tr>
   <tr>
     <td><strong>Agent adoption by Copilot users</strong> (preview)</td>
     <td>The number of Copilot users who have used at least one agent, the number of agents with at least one active Copilot user, and the top three agents sorted by active users (with change-over-time and agent-response counts). Lets you jump directly into the agent deep-dive page from the Adoption page.</td>
@@ -207,58 +226,75 @@
 
 <p>The Impact page answers: <em>&ldquo;What value is Copilot delivering?&rdquo;</em></p>
 
+<div class="callout warning">
+  <div class="callout-title">Check diagnostic coverage before interpreting impact</div>
+  <p>Optional diagnostic data affects <strong>Copilot assisted hours</strong>, <strong>emails sent using Copilot</strong>, <strong>Teams meetings summarized or recapped</strong>, <strong>meeting hours summarized or recapped</strong>, and <strong>Teams chats summarized</strong>. Required diagnostic data still provides a subset, so the metrics may populate while remaining materially undercounted. Record the tenant&rsquo;s optional diagnostic-data policy and keep it stable across comparison periods.</p>
+  <p><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (Last updated 1 July 2026), Impact section.</p>
+</div>
+
 <h3>Top-Level Metrics</h3>
 <table>
-  <tr><th>Metric</th><th>Definition</th><th>How It&rsquo;s Calculated</th></tr>
+  <tr><th scope="col">Metric</th><th scope="col">Definition</th><th scope="col">How It&rsquo;s Calculated</th></tr>
   <tr><td><strong>Copilot Actions Taken</strong></td><td>Total Copilot interactions in the period</td><td>Direct count of all Copilot actions (same as Adoption page)</td></tr>
   <tr><td><strong>Copilot Assisted Hours</strong></td><td>Estimated hours saved by Copilot</td><td>Meeting summaries + search/summaries valued at 6 min each + content creation valued at 6 min each</td></tr>
   <tr><td><strong>Copilot Assisted Value</strong></td><td>Dollar value of time saved</td><td>Assisted Hours &times; hourly rate (default <strong>$72/hr</strong>). Hourly rate is <strong>session-only</strong> &mdash; changes are not saved between visits.</td></tr>
   <tr><td><strong>Satisfaction Rate</strong></td><td>User satisfaction with Copilot responses</td><td>Thumbs up &divide; (thumbs up + thumbs down) reactions, <strong>28-day rolling</strong> window. No survey required &mdash; based on in-app feedback.</td></tr>
 </table>
 
-<div class="callout warning">
-  <div class="callout-title">Known Metric Underreporting Periods</div>
-  <p>Microsoft disclosed two periods where certain metrics were underreported due to telemetry issues. Data from these windows may appear lower than actual usage.</p>
-  <table>
-    <tr><th>Metric Category</th><th>Affected Period</th><th>Details</th></tr>
-    <tr><td>Email (Outlook Copilot)</td><td>June 1, 2025 &ndash; February 18, 2026</td><td>Generate email draft and Summarise email thread metrics underreported. Fix applied from February 18, 2026; historical data restoration pending.</td></tr>
-    <tr><td>Meetings (Teams Copilot)</td><td>September 6 &ndash; November 3, 2025</td><td>Copilot assisted hours, assisted value, and meeting summary metrics underreported due to data loss. Fix applied from November 4, 2025; historical data cannot be corrected.</td></tr>
-  </table>
-  <p>If you see dips in these periods, the underreporting issue &mdash; not reduced usage &mdash; is the most likely explanation.</p>
+<div class="callout note">
+  <div class="callout-title">Estimate, not causal proof</div>
+  <p>Assisted Hours and Assisted Value are modeled estimates using Microsoft&rsquo;s assumptions and the hourly rate entered for the current session. They are not realized cash savings and do not establish that Copilot caused an outcome. For decision-grade analysis, document the assumptions, use a stable baseline and diagnostic-data policy, compare suitable cohorts or periods, and pair usage measures with independently governed business outcome data.</p>
 </div>
 
-<h3>Export Dashboard Data</h3>
-<p>You can export de-identified Copilot Dashboard data as a <strong>CSV file</strong> covering weekly metrics for the past six months. This enables offline analysis, board-ready reporting, or integration with other analytics tools.</p>
+<div class="callout warning">
+  <div class="callout-title">Current documented metric issue and incident validation</div>
+  <p>The current controlling Dashboard article documents the email issue below. A previously documented meeting issue is not present in that article as of 1 July 2026, so do not carry that older qualifier into a current report without a dated source.</p>
+  <table>
+    <tr><th scope="col">Metric Category</th><th scope="col">Affected Period</th><th scope="col">Details</th></tr>
+    <tr><td>Email (Outlook Copilot)</td><td>June 1, 2025 &ndash; February 18, 2026</td><td>Generate email draft and Summarise email thread metrics underreported. Fix applied from February 18, 2026; historical data restoration pending.</td></tr>
+  </table>
+  <p>Do not automatically attribute a dip to this issue. Check Microsoft 365 admin center <strong>Service Health</strong> for current incidents and <strong>Message Center</strong> for rollout or metric-change notices, then compare the incident dates, cloud, apps, and affected metrics with the observed pattern.</p>
+</div>
+
+<h3>Export Copilot Metrics Safely (Preview)</h3>
+<p>The Copilot metrics export is a <strong>preview</strong> feature with a fixed, non-customizable schema. It exports anonymized <strong>user-level</strong> metric rows, not the aggregated chart currently visible on screen.</p>
+
+<h4>Prerequisites</h4>
+<ul>
+  <li>The tenant must meet the documented <strong>50-licence</strong> threshold. Because Microsoft pages conflict on mixed service-plan counting, verify assigned service plans and export availability in the tenant.</li>
+  <li>The exporter must have <strong>global / Your company access</strong>. A manager or &ldquo;Your group&rdquo; delegate cannot export.</li>
+  <li>The Copilot Metrics Export feature must be enabled for the user, and the capability must be available in the tenant&rsquo;s cloud. It is not available in GCC.</li>
+</ul>
 
 <h4>How to Export</h4>
 <ol>
   <li>Open the Copilot Dashboard in the Viva Insights web app.</li>
-  <li>Navigate to the page containing the data you want to export (Adoption or Impact).</li>
-  <li>Select the <strong>Export</strong> button (typically in the top-right area of the dashboard).</li>
-  <li>The download starts automatically as a <strong>.csv file</strong>.</li>
+  <li>Select the Copilot metrics <strong>Export</strong> control.</li>
+  <li>Choose <strong>Week</strong> for weekly rows covering the past six months or <strong>Day</strong> for daily rows covering the past 28 days.</li>
+  <li>Download the CSV and record the export date, granularity, source article date, and tenant/cloud used.</li>
 </ol>
 
 <h4>What&rsquo;s in the Export</h4>
 <table>
-  <tr><th>Field</th><th>Description</th></tr>
-  <tr><td><strong>Time period</strong></td><td>Weekly data points covering the <strong>past 6 months</strong></td></tr>
-  <tr><td><strong>Metrics</strong></td><td>Adoption and impact metrics matching the dashboard view (active users, actions, assisted hours, etc.)</td></tr>
-  <tr><td><strong>Groupings</strong></td><td>Metrics broken down by the filters/groups currently applied in the dashboard</td></tr>
-  <tr><td><strong>Privacy</strong></td><td>All data is <strong>de-identified</strong> &mdash; no user-level details are included</td></tr>
+  <tr><th scope="col">Property</th><th scope="col">Correct interpretation</th></tr>
+  <tr><td><strong>Grain and period</strong></td><td>One anonymized user-level record per time interval: up to six months for Week, or 28 days for Day.</td></tr>
+  <tr><td><strong>Identity</strong></td><td>De-identified user identifiers are included. The export is therefore anonymized user-level data, not aggregate-only data.</td></tr>
+  <tr><td><strong>Customization</strong></td><td>The schema and metric selection are not customizable, and Dashboard filters/groupings do not redefine the export.</td></tr>
+  <tr><td><strong>Metrics</strong></td><td>The documented export metrics are provided in the fixed schema. <strong>Copilot Assisted Hours is not included.</strong></td></tr>
 </table>
 
-<h4>Practical Use Cases</h4>
+<h4>Privacy Handling</h4>
 <ul>
-  <li><strong>Board and executive presentations:</strong> Import the CSV into Excel or Power BI to create polished charts with your organisation&rsquo;s branding.</li>
-  <li><strong>Trend analysis beyond 28 days:</strong> The export covers 6 months of weekly data, overcoming the dashboard&rsquo;s 28-day rolling limitation for visual trend tracking.</li>
-  <li><strong>Cross-tool integration:</strong> Feed Copilot metrics into existing BI pipelines, data warehouses, or reporting platforms.</li>
-  <li><strong>Snapshot archiving:</strong> Schedule regular exports to build a historical archive of adoption and impact data.</li>
-  <li><strong>Multi-agency reporting:</strong> Export tenant-level data and combine with org data in Power BI for agency-specific views.</li>
+  <li>Treat the CSV as sensitive analytics data even though direct identities are removed; repeated user-level rows and joins with organizational data can increase re-identification risk.</li>
+  <li>Store it in an access-controlled location, apply retention and sensitivity requirements, restrict downstream joins, and document every recipient and purpose.</li>
+  <li>Do not present row-level data or attempt re-identification. Aggregate under approved minimum-group and privacy rules before wider distribution.</li>
+  <li>Validate row counts, dates, granularity, metric definitions, missing values, and diagnostic-data coverage before publishing trends.</li>
 </ul>
 
 <div class="callout note">
   <div class="callout-title">Export vs Advanced Analytics</div>
-  <p>The dashboard export provides <strong>aggregated, de-identified</strong> data matching what you see on screen. For user-level or custom-segmented analysis, use <strong>Advanced Analytics</strong> (person queries in the Viva Insights analyst workbench). The export is ideal for quick reporting; Advanced Analytics is needed for deeper, customisable analysis.</p>
+  <p>The preview export provides a fixed anonymized user-level dataset. Use Advanced Reporting when an Insights Analyst needs governed metric selection, partition-scoped queries, or custom segmentation. Neither route removes the need for privacy review.</p>
+  <p><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/insights/org-team-insights/export-copilot-metrics">Export Copilot metrics from the Microsoft Copilot Dashboard (preview)</a> (Last updated 15 July 2026).</p>
 </div>
 
 <!-- ─── 1.4 Sentiment ─── -->
@@ -267,7 +303,7 @@
 <p>The Sentiment section lives <strong>within the Impact page</strong> and shows qualitative user feedback about Copilot.</p>
 
 <table>
-  <tr><th>Component</th><th>What It Shows</th><th>Notes</th></tr>
+  <tr><th scope="col">Component</th><th scope="col">What It Shows</th><th scope="col">Notes</th></tr>
   <tr><td><strong>Sentiment results by question</strong></td><td>Aggregated responses to Copilot experience questions</td><td>Includes benchmark comparison against similar orgs</td></tr>
   <tr><td><strong>Sentiment by group</strong></td><td>Heat map showing sentiment across organisational groups</td><td><strong>Viva Insights customers only</strong> &mdash; requires Viva Insights licence</td></tr>
   <tr><td><strong>Manager team view</strong></td><td>Sentiment breakdown for a manager&rsquo;s direct reports</td><td>Subject to minimum group size suppression</td></tr>
@@ -285,14 +321,14 @@
 
 <h3>Two Methods to Add Delegates</h3>
 <table>
-  <tr><th>Method</th><th>Steps</th></tr>
+  <tr><th scope="col">Method</th><th scope="col">Steps</th></tr>
   <tr><td><strong>Method 1: Settings</strong></td><td>Dashboard &rarr; <strong>Settings</strong> (gear icon) &rarr; <strong>Delegation</strong> &rarr; <strong>Add</strong> &rarr; search for user &rarr; select scope &rarr; Save</td></tr>
   <tr><td><strong>Method 2: Share</strong></td><td>Dashboard &rarr; <strong>Share</strong> button (top right) &rarr; <strong>Add</strong> &rarr; search for user &rarr; select scope &rarr; Save</td></tr>
 </table>
 
 <h3>Delegation Rules</h3>
 <table>
-  <tr><th>Rule</th><th>Detail</th></tr>
+  <tr><th scope="col">Rule</th><th scope="col">Detail</th></tr>
   <tr><td><strong>Maximum delegates</strong></td><td>75 per delegator</td></tr>
   <tr><td><strong>No cascading</strong></td><td>Delegation does not flow downward. If Alice delegates to Bob, Bob cannot re-delegate to Carol.</td></tr>
   <tr><td><strong>&ldquo;Your group&rdquo; scope</strong></td><td>Delegate sees the delegator&rsquo;s reporting chain only</td></tr>
@@ -313,7 +349,7 @@
 
 <h3>Report Types</h3>
 <table>
-  <tr><th>Type</th><th>Examples</th><th>Description</th></tr>
+  <tr><th scope="col">Type</th><th scope="col">Examples</th><th scope="col">Description</th></tr>
   <tr><td><strong>Out-of-the-box</strong></td><td>Copilot Studio Agents, Copilot for Sales Adoption</td><td>Pre-built by Microsoft. Available automatically once prerequisites are met.</td></tr>
   <tr><td><strong>Shared</strong></td><td>Custom reports published by your analysts</td><td>Analysts with partition access can create queries and publish results as shared reports visible to others in the Reports section.</td></tr>
 </table>
@@ -334,7 +370,7 @@
 
 <h3>Which Template Do I Need?</h3>
 <table>
-  <tr><th>Question You&rsquo;re Asking</th><th>Recommended Template</th></tr>
+  <tr><th scope="col">Question You&rsquo;re Asking</th><th scope="col">Recommended Template</th></tr>
   <tr><td>&ldquo;Is Copilot paying for itself?&rdquo;</td><td><strong>Copilot Impact</strong></td></tr>
   <tr><td>&ldquo;Which teams are using Copilot?&rdquo;</td><td><strong>Copilot Adoption</strong></td></tr>
   <tr><td>&ldquo;Quick executive talking points&rdquo;</td><td><strong>Copilot Headlines</strong> (preview)</td></tr>
@@ -346,7 +382,7 @@
 
 <h3>Template Reference</h3>
 <table>
-  <tr><th>Template</th><th>Purpose</th><th>Special Requirements</th><th>Learn More</th></tr>
+  <tr><th scope="col">Template</th><th scope="col">Purpose</th><th scope="col">Special Requirements</th><th scope="col">Learn More</th></tr>
   <tr>
     <td><strong>Copilot Impact</strong></td>
     <td>ROI analysis: Assisted Hours, Assisted Value, time savings by app</td>
@@ -392,13 +428,19 @@
 </table>
 
 <!-- ═══════════════════════ 5. AGENT DASHBOARD ═══════════════════════ -->
-<h1 id="agent-dashboard">5. Agent Dashboard</h1>
+<h1 id="agent-dashboard">5. Agent Dashboard (Preview)</h1>
 
-<p>The Agent Dashboard provides visibility into Copilot Studio agents and declarative agents running in your tenant. It is accessible from the Copilot Dashboard for users with <strong>&ldquo;Your company&rdquo;</strong> scope.</p>
+<p>The Agent Dashboard preview provides visibility into supported Copilot Studio and declarative-agent activity for eligible users with <strong>&ldquo;Your company&rdquo;</strong> scope. Managers and &ldquo;Your group&rdquo; delegates do not receive Agent Dashboard access.</p>
+
+<div class="callout warning">
+  <div class="callout-title">Preview prerequisite conflict and cloud limits</div>
+  <p><a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">Connect to the Agent Dashboard (preview)</a> (Last updated 16 June 2026) and <a href="https://learn.microsoft.com/viva/insights/copilot-analytics-introduction">Copilot Analytics introduction</a> (Last updated 9 February 2026) require at least <strong>50 Microsoft 365 Copilot licences</strong> plus agent activity. The broader Dashboard article (Last updated 1 July 2026) also lists a 50-Viva-Insights route. Use 50 Copilot licences plus activity as the conservative prerequisite; validate a Viva-Insights-only tenant through its UI, Message Center, and Microsoft Support.</p>
+  <p>The Agent Dashboard is unavailable in GCC and other national or regional clouds. Preview behavior, metrics, filters, and data handling can change. Confirm current support in <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported Microsoft 365 environments for Viva Insights features</a> (Last updated 30 June 2026) before using this procedure.</p>
+</div>
 
 <h3>Key Metrics</h3>
 <table>
-  <tr><th>Metric</th><th>Definition</th></tr>
+  <tr><th scope="col">Metric</th><th scope="col">Definition</th></tr>
   <tr><td><strong>Active agents</strong></td><td>Number of agents that received at least one user interaction in the period</td></tr>
   <tr><td><strong>Active users</strong></td><td>Unique users who interacted with any agent</td></tr>
   <tr><td><strong>Agent responses</strong></td><td>Total number of responses generated by agents</td></tr>
@@ -409,7 +451,7 @@
 
 <h3>Unique Insights</h3>
 <table>
-  <tr><th>Insight</th><th>What It Tells You</th></tr>
+  <tr><th scope="col">Insight</th><th scope="col">What It Tells You</th></tr>
   <tr><td><strong>Most popular agent</strong></td><td>Agent with the highest number of active users</td></tr>
   <tr><td><strong>Most versatile agent</strong></td><td>Agent used across the widest variety of use cases or groups</td></tr>
   <tr><td><strong>Most shared agent</strong></td><td>Agent shared with the most users or groups in the tenant</td></tr>
@@ -417,7 +459,7 @@
 
 <h3>Filters</h3>
 <table>
-  <tr><th>Filter</th><th>Options</th></tr>
+  <tr><th scope="col">Filter</th><th scope="col">Options</th></tr>
   <tr><td><strong>Agent creator type</strong></td><td>User, Your org, Microsoft, Partner</td></tr>
   <tr><td><strong>Agent source</strong></td><td>Filter by where the agent was built or published</td></tr>
 </table>
@@ -453,7 +495,7 @@
 
 <h3>Detect &rarr; Act Workflow</h3>
 <table>
-  <tr><th>Stage</th><th>Tool</th><th>Action</th></tr>
+  <tr><th scope="col">Stage</th><th scope="col">Tool</th><th scope="col">Action</th></tr>
   <tr><td><strong>Detect</strong></td><td>Agent Dashboard</td><td>Identify agents that are unapproved, high-cost, or widely shared without governance review</td></tr>
   <tr><td><strong>Decide</strong></td><td>Governance process</td><td>Evaluate the agent against your organisation&rsquo;s AI governance policy (data access, compliance, purpose)</td></tr>
   <tr><td><strong>Act Quick</strong></td><td>M365 Admin Centre</td><td>Immediate actions: <strong>Block</strong> (disable agent), <strong>Approve</strong> (whitelist), or <strong>Review</strong> (flag for governance team)</td></tr>
@@ -463,8 +505,13 @@
 <!-- ═══════════════════════ 6. REVIEW CADENCE ═══════════════════════ -->
 <h1 id="cadence">6. Suggested Review Cadence</h1>
 
+<div class="callout info">
+  <div class="callout-title">Operational validation before diagnosis</div>
+  <p>Before treating a missing page, changed metric, or sudden data dip as tenant misconfiguration, check Microsoft 365 admin center <strong>Service Health</strong> for incidents and <strong>Message Center</strong> for rollout, preview, or reporting changes. Record the notice ID and date alongside the report, then retest the affected surface after the published recovery or rollout window.</p>
+</div>
+
 <table>
-  <tr><th>Frequency</th><th>Who</th><th>What to Review</th><th>Where</th></tr>
+  <tr><th scope="col">Frequency</th><th scope="col">Who</th><th scope="col">What to Review</th><th scope="col">Where</th></tr>
   <tr><td><strong>Weekly</strong></td><td>IT Admin</td><td>Licence utilisation, assignment trends</td><td>M365 Admin Centre</td></tr>
   <tr><td><strong>Fortnightly</strong></td><td>Leaders / Managers</td><td>Assisted Hours, Assisted Value, adoption trends, Satisfaction Rate</td><td>Copilot Dashboard (Adoption + Impact pages)</td></tr>
   <tr><td><strong>Monthly</strong></td><td>Leaders / Managers</td><td>Analytics Reports, agent adoption, new agent activity</td><td>Copilot Dashboard (Reports + Agent Dashboard)</td></tr>
@@ -475,7 +522,7 @@
 <h1 id="next">7. What to Read Next</h1>
 
 <table>
-  <tr><th>Document</th><th>When to Read It</th></tr>
+  <tr><th scope="col">Document</th><th scope="col">When to Read It</th></tr>
   <tr><td><a href="analyst-playbook.html"><strong>Analyst Playbook</strong></a></td><td>You need to run custom queries, connect Power BI templates, or build cross-group reports</td></tr>
   <tr><td><a href="billing-operations.html"><strong>Billing Operations</strong></a></td><td>You need to manage licence costs, billing cycles, or PAYG credit governance</td></tr>
   <tr><td><a href="../4-reference/troubleshooting.html"><strong>Troubleshooting Guide</strong></a></td><td>Something isn&rsquo;t working &mdash; missing data, access issues, or unexpected behaviour</td></tr>
@@ -484,17 +531,12 @@
 
 <!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
 <hr>
-<p style="font-size:0.85em; color:var(--text-muted); margin-top:32px;">
-  <strong>Disclaimer:</strong> This document is provided for informational purposes only and reflects Microsoft 365 capabilities as of April 2026. Microsoft may change features, interfaces, and availability without notice. Always verify current guidance on <a href="https://learn.microsoft.com">Microsoft Learn</a>. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
+<p class="u-772845a273">
+  <strong>Disclaimer:</strong> This document is provided for informational purposes only and was last validated on 16 July 2026. Microsoft may change features, interfaces, preview behavior, and availability without notice. Always verify current guidance on <a href="https://learn.microsoft.com">Microsoft Learn</a>, Message Center, Service Health, and the tenant UI. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
 </p>
 
 <!-- Back to Top -->
-<a href="#" id="back-to-top" style="
-  position:fixed; bottom:32px; right:32px; background:var(--accent,#0078d4); color:#fff;
-  border:none; border-radius:50%; width:44px; height:44px; font-size:22px;
-  text-align:center; line-height:44px; text-decoration:none; cursor:pointer;
-  box-shadow:0 2px 8px rgba(0,0,0,0.18); display:none; z-index:999;
-" title="Back to top">&uarr;</a>
+<a href="#" id="back-to-top" class="u-49807340de" title="Back to top">&uarr;</a>
 <script>
 (function(){
   var btn = document.getElementById('back-to-top');

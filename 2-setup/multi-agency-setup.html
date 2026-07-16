@@ -3,9 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Multi-Agency Setup. Last validated 16 July 2026.">
+<link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/2-setup/multi-agency-setup.html">
 <title>Multi-Agency Setup — Copilot Analytics</title>
 <link rel="stylesheet" href="../assets/docs-style.css">
 <script defer src="../assets/shell.js"></script>
+
+<style id="generated-inline-styles">
+.u-49807340de { position:fixed; bottom:32px; right:32px; background:var(--accent,#0078d4); color:#fff;
+  border:none; border-radius:50%; width:44px; height:44px; font-size:22px;
+  text-align:center; line-height:44px; text-decoration:none; cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,0.18); display:none; z-index:999; }
+.u-772845a273 { font-size:0.85em; color:var(--text-muted); margin-top:32px; }
+</style>
 </head>
 <body class="has-nav">
 <nav class="doc-nav">
@@ -29,18 +39,18 @@
 </div>
 
 <table>
-  <tr><th>Document Property</th><th>Value</th></tr>
+  <tr><th scope="col">Document Property</th><th scope="col">Value</th></tr>
   <tr><td>Section</td><td>Setup</td></tr>
   <tr><td>Audience</td><td>IT Admin, Solution Architect</td></tr>
-  <tr><td>Version</td><td>4.0</td></tr>
-  <tr><td>Published</td><td>April 2026</td></tr>
+  <tr><td>Version</td><td>4.1</td></tr>
+  <tr><td>Last validated</td><td>16 July 2026</td></tr>
 </table>
 
 <div class="callout info">
   <div class="callout-title">How This Document Fits</div>
   <p>This is a <strong>Setup</strong> guide. It provides the hands-on configuration steps for deploying Copilot Analytics across multiple agencies in a shared M365 tenant. You should have already chosen your architecture before arriving here.</p>
   <table>
-    <tr><th>Section</th><th>Purpose</th><th>Who Reads</th></tr>
+    <tr><th scope="col">Section</th><th scope="col">Purpose</th><th scope="col">Who Reads</th></tr>
     <tr><td><a href="../1-strategy/executive-briefing.html">Strategy</a></td><td>Decide what to implement</td><td>CIO, SA, Business Leaders</td></tr>
     <tr><td><strong>Setup</strong> (you are here)</td><td>Configure and deploy</td><td>IT Admin, Insights Admin</td></tr>
     <tr><td><a href="../3-operate/dashboard-guide.html">Operate</a></td><td>Use dashboards and reports daily</td><td>Leaders, Analysts, Managers</td></tr>
@@ -50,31 +60,78 @@
 
 <div class="callout warning">
   <div class="callout-title">Read the Decision Guide First</div>
-  <p>Read the <a href="../decide/architecture.html">Multi-Agency Architecture Decision Guide</a> first to choose between the <strong>Default Priority</strong> and <strong>Isolation</strong> architectures. This setup guide assumes you have already made that decision. Jump to the section that matches your choice:</p>
+  <p>Read the <a href="../decide/architecture.html">Multi-Agency Reporting Pattern Decision Guide</a> first to choose between <strong>Default Priority</strong> and <strong>Restricted Reporting</strong>. These are this guide&rsquo;s author-created patterns, not Microsoft product or security architectures. This setup guide assumes you have documented the decision and accepted the residual risks. Jump to the section that matches your choice:</p>
   <ul>
-    <li><a href="#default-priority">Section 1 &mdash; Default Priority Architecture Setup</a> (2&ndash;4 hours)</li>
-    <li><a href="#isolation">Section 2 &mdash; Isolation Architecture Setup</a> (1&ndash;3 days)</li>
+    <li><a href="#default-priority">Section 1 &mdash; Default Priority Pattern Setup</a> (2&ndash;4 hours)</li>
+    <li><a href="#isolation">Section 2 &mdash; Restricted Reporting Pattern Setup</a> (1&ndash;3 days; legacy anchor retained)</li>
   </ul>
+</div>
+
+<div class="callout warning">
+  <div class="callout-title">THIS GUIDE&rsquo;S AUTHOR-CREATED ARCHITECTURE PATTERNS</div>
+  <p><strong>Default Priority</strong> and <strong>Restricted Reporting</strong> (formerly labelled &ldquo;Isolation&rdquo; in this guide and retained in existing URLs) are editorial names created by this guide. They are <strong>not</strong> Microsoft product, security, compliance, sovereignty, or licensing terms. Microsoft Learn documents the component capabilities; it does not document this guide&rsquo;s combined pattern as an end-to-end security boundary.</p>
 </div>
 
 <!-- ═══════════════════════ TOC ═══════════════════════ -->
 <h1 id="toc">Table of Contents</h1>
 <ol>
-  <li><a href="#default-priority">Default Priority Architecture Setup</a></li>
-  <li><a href="#isolation">Isolation Architecture Setup</a></li>
+  <li><a href="#control-boundary">Control Boundary and Go-Live Gates</a></li>
+  <li><a href="#default-priority">Default Priority Pattern Setup</a></li>
+  <li><a href="#isolation">Restricted Reporting Pattern Setup</a></li>
   <li><a href="#governance">Ongoing Governance</a></li>
   <li><a href="#csv-templates">CSV Templates</a></li>
   <li><a href="#next">What to Read Next</a></li>
 </ol>
 
+<h1 id="control-boundary">0. Control Boundary and Go-Live Gates</h1>
+
+<p>Viva Insights partitions are controls for <strong>analyst query workspaces</strong>: they determine the rows and columns available to an assigned analyst in a partition. They do not, by themselves, govern the Copilot Dashboard, Analytics Reports, Agent Dashboard, metrics export, delegation, manager access, privileged roles, the global partition, downloaded results, or Power BI. Restricted Reporting is therefore a <strong>defense-in-depth reporting-segmentation pattern</strong>, not cryptographic, tenant, product-security, or certified compliance isolation. See <a href="https://learn.microsoft.com/viva/insights/advanced/admin/partitions">Partitions in Viva Insights</a> (last updated 23 June 2025).</p>
+
+<h2 id="surface-boundary">Surface-by-Actor Boundary Matrix</h2>
+<table>
+  <tr><th scope="col">Actor / surface</th><th scope="col">Primary control</th><th scope="col">Residual risk and mandatory action</th></tr>
+  <tr><td>Agency leader or manager &mdash; Copilot Dashboard and Analytics Reports</td><td>Access list, hierarchy-derived scope, AutoCxO and group-scoped VFAM</td><td>A shared executive or cross-agency manager can span agencies. Tenant-wide access sources remain broader. Test every leader and manager account. See <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (1 July 2026) and <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/manager-settings">Configure manager settings</a> (25 June 2026).</td></tr>
+  <tr><td>Delegate &mdash; Dashboard, Agent Dashboard, and Copilot insights</td><td>Delegation eligibility, delegator scope, and delegation audit</td><td>A delegate receives the delegator&rsquo;s scope; a broad delegator creates broad access. Test delegated and revoked access. See <a href="https://learn.microsoft.com/viva/insights/org-team-insights/delegate-access">Delegate access to the Copilot Dashboard, Agent Dashboard, and Copilot insights</a> (9 February 2026).</td></tr>
+  <tr><td>Agency analyst &mdash; advanced query workspace</td><td>Insights Analyst role plus agency partition assignment</td><td>Wrong filters, overlap, multi-partition assignment, global-partition assignment, or a conflict-of-interest analyst can broaden query access. Roles are independent and non-cumulative. See <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/user-roles">Roles in Viva Insights</a> (7 July 2026).</td></tr>
+  <tr><td>Global Administrator, globally assigned user, or global-partition analyst</td><td>Least-privilege role and assignment governance</td><td>Tenant-wide visibility can remain by design. Record owner, purpose, expiry, conflict-of-interest review, and quarterly recertification.</td></tr>
+  <tr><td>Leader or analyst &mdash; Agent Dashboard and metrics export</td><td>Separate feature/access policy and product eligibility</td><td>Partitions do not scope either surface. Both require independent negative tests; previews and cloud restrictions apply.</td></tr>
+  <tr><td>Report viewer or workspace role &mdash; Power BI</td><td>Dedicated workspace/app audience, Viewer role, sharing settings, optional RLS, export/Build controls</td><td>Power BI is a separate authorization layer. Test Member/Contributor, Viewer, resharing, export, Analyze in Excel, subscriptions, and copied files.</td></tr>
+</table>
+
+<h2 id="environment-licensing-gate">Supported Environment and Licensing Gate</h2>
+<div class="callout warning">
+  <div class="callout-title">Do Not Proceed on Plan-Level Assumptions</div>
+  <p>Availability is feature- and cloud-specific. <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported Microsoft 365 environments for Viva Insights features</a> (30 June 2026) says GCC does not support Agent Dashboard, Copilot metrics export, or Copilot Power BI reports. <a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">Connect to the Agent Dashboard (preview)</a> (16 June 2026) says Agent Dashboard is unavailable in national and regional clouds. Base plan support in <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/environment-requirements">Environment requirements for Viva Insights</a> (12 May 2026) does not establish feature parity. Record the exact cloud and verify every required surface in the tenant UI and Message Center before design.</p>
+  <p>For advanced access, Microsoft pages describe the threshold differently. The environment article explicitly gives <strong>30 Microsoft 365 Copilot + 20 Viva Insights</strong> as 50 assigned Viva Insights service plans; the Dashboard article describes 50 Copilot or 50 Viva Insights. Do <strong>not</strong> state that mixed licence assignments fail. Verify assigned service plans, feature presence, and processing state. For Agent Dashboard, use the conservative feature-specific prerequisite of <strong>50 Microsoft 365 Copilot licences plus agent activity</strong>; a 50-Viva-Insights-only tenant must validate availability. Escalate a documented mismatch to Microsoft Support.</p>
+</div>
+
+<h2 id="org-data-gate">Organizational Data Source and Precedence Gate</h2>
+<div class="callout warning">
+  <div class="callout-title">Record Attribute Ownership Before Upload</div>
+  <p>Do not describe an upload as universally or permanently replacing Entra. Uploaded data changes the source for supplied dashboard attributes; parallel ingestion can keep or restore Entra for <code>ManagerId</code> and <code>Organization</code>; Microsoft 365 Profile precedence is separate. Before change, record each required attribute, current source, owner, effective date, coverage, and target surface in Data Quality and Profile. Check <strong>Setup &rarr; Migration and imports</strong>, Message Center, and the actual tenant UI. Use Organizational Data in Microsoft 365 for new or edited uploads unless the tenant explicitly exposes a supported legacy path; use documented update/delete behavior, never a dummy-row workaround.</p>
+  <p>Source basis: <a href="https://learn.microsoft.com/viva/organizational-data">Use your organizational data in Microsoft 365 and Microsoft Viva</a> (2 December 2025); <a href="https://learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center">Upload and maintain data through the Microsoft 365 admin center</a> (5 December 2025); <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Use Microsoft Entra plus .csv files for parallel data uploads</a> (30 June 2025); and <a href="https://learn.microsoft.com/viva/import-orgdata">Import and manage your organizational data with a .csv file</a> (2 April 2026). Workday import has a documented 100,000-user limit (<a href="https://learn.microsoft.com/viva/import-org-data-workday">Import organizational data from Workday</a>, 6 April 2026), and API-based import remains preview (<a href="https://learn.microsoft.com/viva/import-org-data-api">Import organizational data using API-based import (preview)</a>, 6 April 2026).</p>
+</div>
+
+<h2 id="change-control">Change Control, Negative Tests, and Evidence</h2>
+<ol>
+  <li><strong>Before change:</strong> export or capture VFAM policies, access lists, role assignments, delegations, manager hierarchy, partition filters and analysts, org-data source/quality, query assets, and Power BI workspace/app/RLS/export settings. Define owner, maintenance window, approvers, success/failure criteria, and restoration sequence.</li>
+  <li><strong>Test cohort first:</strong> use representative agency, shared-services, cross-agency, and privileged accounts. Treat enabling partitions as a high-impact tenant change; turning partitions off requires Microsoft Support. Export query assets before enabling, and confirm deletion impact before removing a partition.</li>
+  <li><strong>Mandatory actors:</strong> agency leader, cross-agency manager, shared executive, delegate, agency analyst, multi-partition analyst, global-partition analyst, report Viewer, Power BI Member/Contributor, AI Administrator, Insights Administrator, Insights Analyst, and Global Administrator.</li>
+  <li><strong>Mandatory surfaces:</strong> Copilot Dashboard, Analytics Reports, Agent Dashboard, weekly/daily metrics export, advanced query workspace, query-result download, delegation, manager-published reports, Power BI workspace/app, report export, Analyze in Excel, subscriptions, and resharing.</li>
+  <li><strong>Evidence:</strong> capture test date, tester identity/role, group/partition membership, policy export, org-data snapshot, expected denial or allowed result, observed result, screenshot/audit record, Power BI permissions, owner, and remediation ticket.</li>
+  <li><strong>Publication and go-live veto:</strong> any failed or unexecutable negative test blocks publication and production rollout. Roll back the change or remove access, preserve evidence, and open Microsoft Support when documented and observed behavior differ.</li>
+  <li><strong>Approval:</strong> obtain written Security, Compliance/Legal, Privacy/DPO, Viva Insights owner, and Power BI owner sign-off on tested behavior and residual risks. Product documentation is not a compliance attestation.</li>
+  <li><strong>Retest:</strong> run the full suite quarterly and after any role, hierarchy, delegation, org-data, partition, VFAM, licence, cloud, preview-status, or Power BI sharing change.</li>
+</ol>
+
 <!-- ═══════════════════════════════════════════════════════════════════════
      1. DEFAULT PRIORITY ARCHITECTURE SETUP
      ═══════════════════════════════════════════════════════════════════════ -->
-<h1 id="default-priority">1. Default Priority Architecture Setup</h1>
+<h1 id="default-priority">1. Default Priority Pattern Setup</h1>
 
 <p><strong>Estimated time:</strong> 2&ndash;4 hours &nbsp;|&nbsp; <strong>PowerShell required:</strong> No</p>
 
-<p>This architecture relies on the native Copilot Dashboard scoping (&ldquo;Your group&rdquo;) driven by Entra ID manager hierarchy. Each agency CEO sees their agency&rsquo;s data through the &ldquo;Your group&rdquo; scope &mdash; <strong>provided their tenant and reporting line meet Microsoft&rsquo;s automatic-access criteria</strong> (see callout below). Cross-agency visibility is acceptable in this model.</p>
+<p>This author-created pattern relies on native Copilot Dashboard scoping (&ldquo;Your group&rdquo;) driven by Entra ID manager hierarchy. An agency CEO can receive that scope <strong>only when access, tenant, and reporting-line conditions are met</strong> (see callout below). Cross-agency and tenant-wide visibility from other access sources is explicitly accepted in this model.</p>
 
 <div class="callout warning">
   <div class="callout-title">Automatic Access Has Hard Prerequisites</div>
@@ -94,9 +151,9 @@
 <!-- Phase 0 -->
 <h2 id="dp-phase0">Phase 0: Base Setup</h2>
 
-<p>Complete <strong>all five tiers</strong> in the <a href="admin-setup.html">Admin Setup Guide</a> before proceeding. This establishes:</p>
+<p>Complete <strong>all five steps in this guide&rsquo;s implementation framework</strong> in the <a href="admin-setup.html">Admin Setup Guide</a> before proceeding. The five-step sequence is an author-created implementation aid, not Microsoft&rsquo;s capability taxonomy. This establishes:</p>
 <ul>
-  <li>Copilot licence assignment (1+ Copilot licence for the core dashboard; <strong>&ge;50 Copilot licences <em>or</em> &ge;50 Viva Insights licences</strong> &mdash; independent, not summed &mdash; for advanced features including benchmarks, Agent Dashboard, delegation)</li>
+  <li>Copilot and Viva Insights service-plan assignment using the conflict-safe licensing wording in <a href="#environment-licensing-gate">Section 0</a>; Agent Dashboard has a separate conservative preview prerequisite</li>
   <li>Insights Admin and Insights Analyst roles</li>
   <li>VFAM feature access policies (dashboard, advanced analytics, behavioural experiences)</li>
   <li>Org data upload (Entra connection or CSV)</li>
@@ -112,7 +169,7 @@
 <h2 id="dp-phase1">Phase 1: Verify AutoCxO and Delegation</h2>
 
 <table>
-  <tr><th>Step</th><th>Action</th><th>Where</th><th>Expected Result</th></tr>
+  <tr><th scope="col">Step</th><th scope="col">Action</th><th scope="col">Where</th><th scope="col">Expected Result</th></tr>
   <tr>
     <td>1.1</td>
     <td>Confirm Auto CxO Identification is on</td>
@@ -122,7 +179,7 @@
   <tr>
     <td>1.2</td>
     <td>Confirm delegation is available</td>
-    <td>No admin &ldquo;enable&rdquo; step exists. Delegation is <strong>self-service</strong> for anyone who has dashboard access, available once the tenant meets the <strong>&ge;50 Copilot <em>or</em> &ge;50 Viva Insights licence</strong> threshold. See <a href="https://learn.microsoft.com/viva/insights/org-team-insights/delegate-access">MS Learn</a>.</td>
+    <td>No admin &ldquo;enable&rdquo; step exists. Delegation is <strong>self-service</strong> for eligible Dashboard users once the tenant meets the applicable 50-assigned-service-plan gate. Apply the source-conflict and tenant-validation rule in <a href="#environment-licensing-gate">Section 0</a>; do not reject a mixed assignment by shorthand. See <a href="https://learn.microsoft.com/viva/insights/org-team-insights/delegate-access">Delegate access to the Copilot Dashboard, Agent Dashboard, and Copilot insights</a> (last updated 9 February 2026).</td>
     <td>Leaders with access can delegate to others from <strong>Copilot Dashboard &rarr; Settings &rarr; Delegation</strong>.</td>
   </tr>
   <tr>
@@ -147,7 +204,7 @@
 <h2 id="dp-phase2">Phase 2: Grant Additional Access</h2>
 
 <table>
-  <tr><th>Step</th><th>Action</th><th>Where</th><th>Expected Result</th></tr>
+  <tr><th scope="col">Step</th><th scope="col">Action</th><th scope="col">Where</th><th scope="col">Expected Result</th></tr>
   <tr>
     <td>2.1</td>
     <td>Delegate to agency CIOs / senior leaders</td>
@@ -176,7 +233,7 @@
 <!-- Phase 3 -->
 <h2 id="dp-phase3">Phase 3: Create Partitions (Optional)</h2>
 
-<p>Partitions are <strong>optional</strong> in the Default Priority architecture but recommended if you want analyst-level reporting scoped to each agency.</p>
+<p>Partitions are <strong>optional</strong> in the Default Priority pattern. Use them when you want the rows and columns available in an analyst query workspace scoped to an agency; they do not scope the other surfaces listed in the <a href="#surface-boundary">boundary matrix</a>.</p>
 
 <ol>
   <li>Navigate to <strong>Viva Insights web app &rarr; Admin &rarr; Privacy settings &rarr; Partitions</strong>.</li>
@@ -204,45 +261,45 @@
 
 <div class="callout tip">
   <div class="callout-title">Default Priority Setup Complete</div>
-  <p>At this point, each agency CEO sees their data via the native dashboard, delegation is configured, and optional partitions and Power BI reports are in place. Skip to <a href="#governance">Section 3 &mdash; Ongoing Governance</a> for maintenance procedures.</p>
+  <p>Configuration is complete only after the expected leader and delegate scopes, optional analyst query workspaces, and Power BI permissions pass the negative-test and evidence gate in <a href="#change-control">Section 0</a>. Continue to <a href="#governance">Ongoing Governance</a>.</p>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════════════════
-     2. ISOLATION ARCHITECTURE SETUP
+  2. RESTRICTED REPORTING PATTERN SETUP
      ═══════════════════════════════════════════════════════════════════════ -->
-<h1 id="isolation">2. Isolation Architecture Setup</h1>
+<h1 id="isolation">2. Restricted Reporting Pattern Setup</h1>
 
-<p><strong>Estimated time:</strong> 1&ndash;3 days &nbsp;|&nbsp; <strong>PowerShell required:</strong> Yes (VFAM lockdown only; partitions are created via the Viva Insights web app UI)</p>
+<p><strong>Estimated time:</strong> 1&ndash;3 days &nbsp;|&nbsp; <strong>PowerShell required:</strong> Yes (group-scoped VFAM restrictions; partitions are created via the Viva Insights web app UI)</p>
 
-<p>This architecture enforces hard data boundaries via Viva Insights partitions. Agency A <strong>cannot</strong> see Agency B&rsquo;s data under any circumstance. The native Copilot Dashboard is locked down to prevent cross-agency browsing, and reports are delivered via Power BI workspaces.</p>
+<p>This author-created pattern combines group-scoped dashboard restrictions, partition-scoped analyst query workspaces, controlled privileged access, and dedicated Power BI delivery. A partition limits rows and columns in its assigned analyst workspace; it does not guarantee what that person can access through Dashboard, Agent, export, delegation, manager, global, administrative, downloaded-result, or Power BI surfaces. The design is defense in depth and reporting segmentation, not tenant or security isolation.</p>
 
 <!-- Phase 0 -->
 <h2 id="iso-phase0">Phase 0: Prerequisites</h2>
 
 <p>Complete through <strong>Tier 2, Step 3</strong> in the <a href="admin-setup.html">Admin Setup Guide</a>. This establishes:</p>
 <ul>
-  <li>Copilot licence assignment (1+ Copilot licence for the core dashboard; <strong>&ge;50 Copilot licences <em>or</em> &ge;50 Viva Insights licences</strong> &mdash; independent, not summed &mdash; for advanced features)</li>
+  <li>Copilot and Viva Insights service-plan assignment using the conflict-safe licensing wording in <a href="#environment-licensing-gate">Section 0</a></li>
   <li>Insights Admin and Insights Analyst roles</li>
   <li>VFAM verification that the dashboard toggle and Advanced Analytics toggle are accessible</li>
 </ul>
 
 <div class="callout warning">
   <div class="callout-title">Do NOT Enable Broad Access</div>
-  <p>Stop after verifying VFAM in Tier 2, Step 3. Do <strong>not</strong> enable AutoCxO, delegation, or broad dashboard access for &ldquo;Everyone&rdquo;. The Isolation architecture requires a controlled lockdown of these features (Phase 1 below).</p>
+  <p>Stop after verifying VFAM in Tier 2, Step 3. Do <strong>not</strong> enable AutoCxO, delegation, or broad dashboard access for &ldquo;Everyone&rdquo;. Restricted Reporting applies group-scoped controls in Phase 1 and then verifies each surface independently.</p>
 </div>
 
 <!-- Phase 1 -->
-<h2 id="iso-phase1">Phase 1: VFAM Lockdown</h2>
+<h2 id="iso-phase1">Phase 1: Group-Scoped VFAM Restrictions</h2>
 
-<p>Lock down access so that only Central IT can browse the Copilot Dashboard. All other users &mdash; including agency CEOs &mdash; will receive reports via Power BI only.</p>
+<p>Target direct Viva Insights web-app and Copilot Dashboard access to the approved Central IT population, while agency leaders receive reports through separately governed Power BI delivery. This is one layer of the pattern and must be tested alongside all other surfaces.</p>
 
 <div class="callout info">
   <div class="callout-title">Important: Dashboard Access Is Now Managed via the Viva Insights Web App Toggle</div>
-  <p>Microsoft has retired the standalone <code>CopilotDashboard</code> VFAM control and the legacy &ldquo;Copilot Dashboard&rdquo; access page in the Microsoft 365 admin center. Per <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#enable-or-disable-the-viva-insights-web-app">MS Learn</a>, access to the dashboard is now controlled by enabling or disabling the <strong>Viva Insights web app</strong> &mdash; either through the admin-center UI (<em>Manage access to the Viva Insights web app for individual users and groups</em>) or via the <code>VivaInsightsWebApp</code> VFAM feature in PowerShell. Disabling this toggle removes the user&rsquo;s access to the dashboard, Copilot Analytics Reports, Agent Dashboard, and the advanced analyst tools in a single step. This is the intended lockdown for the Isolation architecture, since per-agency users should reach data only through Power BI.</p>
+  <p>Per <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#enable-or-disable-the-viva-insights-web-app">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, and Viva Insights web app</a> (last updated 20 March 2026), the target state uses the <strong>Viva Insights web app</strong> control; pre-rollout tenants may still display the legacy <strong>Copilot Dashboard</strong> name, and existing policies carry forward. Disabling the web-app control removes the targeted user&rsquo;s access to the dashboard, Copilot Analytics Reports, Agent Dashboard, and advanced analyst tools. Confirm the actual tenant label and effective policy before relying on it.</p>
 </div>
 
 <table>
-  <tr><th>Step</th><th>Action</th><th>Details</th></tr>
+  <tr><th scope="col">Step</th><th scope="col">Action</th><th scope="col">Details</th></tr>
   <tr>
     <td>1.1</td>
     <td>Disable Auto CxO Identification</td>
@@ -296,7 +353,7 @@
 <h3 id="iso-path-decision">Choose Your Path</h3>
 
 <table>
-  <tr><th>Criterion</th><th>Path A &mdash; CSV with Agency Attribute</th><th>Path B &mdash; Entra Domain Filter (Zero CSV)</th></tr>
+  <tr><th scope="col">Criterion</th><th scope="col">Path A &mdash; CSV with Agency Attribute</th><th scope="col">Path B &mdash; Entra Domain Filter (Zero CSV)</th></tr>
   <tr>
     <td><strong>When to use</strong></td>
     <td>Agencies share a common email domain, or you need custom grouping that doesn&rsquo;t align with email domains</td>
@@ -349,7 +406,7 @@
 <p>Create one partition per agency. Optionally, create a global partition for CIO-level cross-agency reporting.</p>
 
 <table>
-  <tr><th>Step</th><th>Action</th><th>Details</th></tr>
+  <tr><th scope="col">Step</th><th scope="col">Action</th><th scope="col">Details</th></tr>
   <tr>
     <td>3.1</td>
     <td>Navigate to partitions</td>
@@ -368,7 +425,7 @@
   <tr>
     <td>3.3</td>
     <td>Assign analyst(s)</td>
-    <td>Assign the per-agency analyst to the partition. This analyst can only see data within this partition.</td>
+    <td>Assign the per-agency analyst to the partition. In that partition&rsquo;s analyst query workspace, available rows and columns are scoped by the partition filter. Verify the analyst has no unintended global or multi-partition assignment and test their other access surfaces separately.</td>
   </tr>
   <tr>
     <td>3.4</td>
@@ -385,7 +442,7 @@
 <!-- Phase 4 -->
 <h2 id="iso-phase4">Phase 4: Report Delivery</h2>
 
-<p>In the Isolation architecture, report delivery uses <strong>Power BI workspaces</strong> rather than the native Copilot Dashboard.</p>
+<p>In Restricted Reporting, the recommended agency-facing delivery path uses <strong>Power BI workspaces/apps</strong> rather than direct Copilot Dashboard access. Power BI permissions are a separate control plane and require their own least-privilege design and negative tests.</p>
 
 <ol>
   <li>Each per-agency analyst opens their partition in the Viva Insights web app.</li>
@@ -399,13 +456,13 @@
 <p>For the detailed publish-and-assign steps (Power BI service, workspace roles such as Viewer, Entra-group access, and per-viewer Pro/PPU/Premium licensing), see <a href="../3-operate/analyst-playbook.html#share-stakeholders">Analyst Playbook &mdash; Share via Power BI (&sect;5.2)</a>.</p>
 
 <div class="callout warning">
-  <div class="callout-title">WARNING: Avoid &ldquo;Publish Reports&rdquo; in Isolation Architecture</div>
-  <p><strong>&ldquo;Publish Reports&rdquo;</strong> with a manager hierarchy filter grants automatic Copilot Dashboard access to all enabled managers in the scope. In an Isolation architecture, this may expose cross-agency data if managers have reporting chains that span agencies. Use <strong>Power BI workspaces</strong> instead for controlled, agency-specific report delivery.</p>
+  <div class="callout-title">WARNING: Manager Publishing Can Broaden Access</div>
+  <p><strong>&ldquo;Publish Reports&rdquo;</strong> with a manager hierarchy filter can make enabled managers eligible for additional Viva Insights experiences. A shared executive or cross-agency manager hierarchy may span agencies. Use dedicated <strong>Power BI workspaces/apps</strong> as the primary agency delivery path and test manager publishing, Dashboard scope, export, and delegation before any exception.</p>
 </div>
 
 <div class="callout tip">
-  <div class="callout-title">Isolation Setup Complete</div>
-  <p>At this point, the dashboard is locked down, partitions enforce data boundaries, and each agency receives reports via Power BI workspaces. Continue to <a href="#governance">Section 3 &mdash; Ongoing Governance</a> for maintenance procedures.</p>
+  <div class="callout-title">Restricted Reporting Configuration Complete</div>
+  <p>Configuration is not approved for publication or go-live until every required actor and surface passes the negative-test suite, evidence is retained, residual risks are signed off, and rollback is ready. Continue to <a href="#governance">Ongoing Governance</a>.</p>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════════════════
@@ -416,11 +473,11 @@
 <p>Multi-agency configurations require ongoing attention. Use the table below as a maintenance schedule.</p>
 
 <table>
-  <tr><th>Frequency</th><th>Task</th><th>Architecture</th><th>Details</th></tr>
+  <tr><th scope="col">Frequency</th><th scope="col">Task</th><th scope="col">Architecture</th><th scope="col">Details</th></tr>
   <tr>
     <td><strong>Monthly</strong></td>
     <td>Refresh org data</td>
-    <td>Both (Path A only for Isolation)</td>
+    <td>Both (Path A only for Restricted Reporting)</td>
     <td>Re-upload CSV with current employee data. Path B (Domain filter) requires no action.</td>
   </tr>
   <tr>
@@ -443,9 +500,9 @@
   </tr>
   <tr>
     <td><strong>Quarterly</strong></td>
-    <td>Verify VFAM policies unchanged</td>
-    <td>Isolation</td>
-    <td>Confirm the <code>DisableForNonCentralIT</code> policy is still active. Run <code>Get-VivaModuleFeaturePolicy</code> to verify.</td>
+    <td>Repeat full boundary test and access recertification</td>
+    <td>Restricted Reporting</td>
+    <td>Re-run all actor/surface negative tests; recertify global, multi-partition, shared-executive, cross-agency-manager, delegation, VFAM, Agent/export, and Power BI access. A failure vetoes continued publication until remediated.</td>
   </tr>
   <tr>
     <td><strong>Quarterly</strong></td>
@@ -457,12 +514,12 @@
     <td><strong>On org change</strong></td>
     <td>Update partitions</td>
     <td>Both (if using partitions)</td>
-    <td>If agencies merge, split, or rename &mdash; update partition filters and analyst assignments accordingly.</td>
+    <td>Use approved change control for agency merge, split, rename, shared-services reassignment, or analyst conflict-of-interest changes. Capture pre-change state, update filters/assignments, retest every surface, and retain evidence.</td>
   </tr>
   <tr>
     <td><strong>On org change</strong></td>
     <td>Update CSV</td>
-    <td>Path A (Isolation)</td>
+    <td>Path A (Restricted Reporting)</td>
     <td>Re-upload CSV immediately when new hires join, employees transfer between agencies, or agencies restructure.</td>
   </tr>
 </table>
@@ -484,7 +541,7 @@ eve@contoso.gov,frank@contoso.gov,Engineering,2026-04-01,Agency B,Leadership
 grace@contoso.gov,frank@contoso.gov,Operations,2026-04-01,Agency C,Operations</code></pre>
 
 <table>
-  <tr><th>Column</th><th>Required</th><th>Description</th></tr>
+  <tr><th scope="col">Column</th><th scope="col">Required</th><th scope="col">Description</th></tr>
   <tr><td><code>Microsoft_PersonEmail</code></td><td>Yes</td><td>Employee&rsquo;s primary email address (must match Entra ID UPN)</td></tr>
   <tr><td><code>Microsoft_ManagerEmail</code></td><td>Yes</td><td>Direct manager&rsquo;s email address (builds the reporting chain)</td></tr>
   <tr><td><code>Microsoft_Organization</code></td><td>Yes</td><td>Department or business unit name</td></tr>
@@ -498,7 +555,7 @@ grace@contoso.gov,frank@contoso.gov,Operations,2026-04-01,Agency C,Operations</c
 <p>No CSV is needed. The <code>Domain</code> attribute is automatically derived from each user&rsquo;s email address in Entra ID. Ensure each agency uses a distinct email domain:</p>
 
 <table>
-  <tr><th>Agency</th><th>Email Domain</th><th>Partition Filter</th></tr>
+  <tr><th scope="col">Agency</th><th scope="col">Email Domain</th><th scope="col">Partition Filter</th></tr>
   <tr><td>Agency A</td><td><code>@agencyA.gov</code></td><td><code>Domain = "agencyA.gov"</code></td></tr>
   <tr><td>Agency B</td><td><code>@agencyB.gov</code></td><td><code>Domain = "agencyB.gov"</code></td></tr>
   <tr><td>Agency C</td><td><code>@agencyC.gov</code></td><td><code>Domain = "agencyC.gov"</code></td></tr>
@@ -510,26 +567,21 @@ grace@contoso.gov,frank@contoso.gov,Operations,2026-04-01,Agency C,Operations</c
 <h1 id="next">5. What to Read Next</h1>
 
 <table>
-  <tr><th>Document</th><th>When to Read</th></tr>
-  <tr><td><a href="../decide/architecture.html"><strong>Multi-Agency Architecture Decision Guide</strong></a></td><td>If you haven&rsquo;t yet chosen between Default Priority and Isolation, start here</td></tr>
+  <tr><th scope="col">Document</th><th scope="col">When to Read</th></tr>
+  <tr><td><a href="../decide/architecture.html"><strong>Multi-Agency Reporting Pattern Decision Guide</strong></a></td><td>If you haven&rsquo;t yet chosen between Default Priority and Restricted Reporting, start here</td></tr>
   <tr><td><a href="data-onboarding.html"><strong>Data Onboarding Guide</strong></a></td><td>Detailed steps for CSV upload, Entra connection, attribute mapping, and verification</td></tr>
-  <tr><td><a href="admin-setup.html"><strong>Admin Setup Guide</strong></a></td><td>Complete base setup for all five analytics tiers (prerequisite for both architectures)</td></tr>
+  <tr><td><a href="admin-setup.html"><strong>Admin Setup Guide</strong></a></td><td>Complete all five steps in this guide&rsquo;s author-created implementation framework (prerequisite for both patterns)</td></tr>
   <tr><td><a href="../3-operate/dashboard-guide.html"><strong>Dashboard Guide</strong></a></td><td>Understanding each dashboard page, metrics, and how to interpret scoped views</td></tr>
 </table>
 
 <!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
 <hr>
-<p style="font-size:0.85em; color:var(--text-muted); margin-top:32px;">
-  <strong>Disclaimer:</strong> This document is provided for informational purposes only and reflects Microsoft 365 capabilities as of April 2026. Microsoft may change features, interfaces, and availability without notice. Always verify current guidance on <a href="https://learn.microsoft.com">Microsoft Learn</a>. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
+<p class="u-772845a273">
+  <strong>Source and status notice:</strong> Last validated 16 July 2026 against the dated Microsoft Learn sources linked next to each material claim, including Dashboard (1 July 2026), Agent Dashboard preview (16 June 2026), environment requirements (12 May 2026), supported environments (30 June 2026), dashboard settings (20 March 2026), roles (7 July 2026), delegation (9 February 2026), manager settings (25 June 2026), partitions (23 June 2025), privacy settings (20 November 2025), technical privacy (10 December 2025), and organizational-data sources (30 June 2025&ndash;6 April 2026). This independent guide&rsquo;s named patterns are not Microsoft product or security terms. Verify current Learn, Message Center, Service Health, tenant UI, and Microsoft Support guidance before implementation.
 </p>
 
 <!-- Back to Top -->
-<a href="#" id="back-to-top" style="
-  position:fixed; bottom:32px; right:32px; background:var(--accent,#0078d4); color:#fff;
-  border:none; border-radius:50%; width:44px; height:44px; font-size:22px;
-  text-align:center; line-height:44px; text-decoration:none; cursor:pointer;
-  box-shadow:0 2px 8px rgba(0,0,0,0.18); display:none; z-index:999;
-" title="Back to top">&uarr;</a>
+<a href="#" id="back-to-top" class="u-49807340de" title="Back to top">&uarr;</a>
 <script>
 (function(){
   var btn = document.getElementById('back-to-top');

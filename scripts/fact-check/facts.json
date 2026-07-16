@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Factual claims in our documentation sourced from Microsoft Learn. Each claim is checked against its MS Learn source on every push.",
-    "last_verified": "2026-06-29",
+    "last_verified": "2026-07-16",
     "severity_levels": {
       "critical": "Incorrect claim could cause deployment failure or data loss",
       "high": "Incorrect claim changes user decisions or procedures",
@@ -59,24 +59,26 @@
       "category": "licensing"
     },
     {
-      "id": "licence-threshold-independent",
-      "claim": "The 50-licence threshold is independent across Copilot and Viva Insights: either 50+ Copilot OR 50+ Viva Insights qualifies, but a mixed total such as 30 Copilot + 20 Viva Insights does NOT qualify (the two counts are not summed)",
-      "source_page": "copilot-dashboard",
-      "source_anchor": "feature-availability-based-on-licenses",
+      "id": "licence-threshold-mixed-service-plans",
+      "claim": "Environment Requirements explicitly counts the Viva Insights service plan included with Copilot and gives 30 Copilot plus 20 Viva Insights as 50 qualifying service plans; the Dashboard article uses different wording, so the conflict must remain visible and tenant-validated",
+      "source_page": "environment-requirements",
+      "source_anchor": "manager-leader-and-advanced-analysis",
       "verify_text": [
-        "at least 50 Viva Insights licenses",
-        "at least 50 Copilot licenses"
+        "combination of licenses",
+        "30 assigned Microsoft 365 Copilot licenses",
+        "20 assigned Viva Insights licenses"
       ],
       "our_files": [
+        "1-strategy/executive-briefing.html",
         "2-setup/admin-setup.html",
+        "2-setup/multi-agency-setup.html",
+        "3-operate/billing-operations.html",
+        "3-operate/dashboard-guide.html",
         "4-reference/faq.html",
         "4-reference/troubleshooting.html",
-        "3-operate/dashboard-guide.html",
-        "docs/core/Copilot_Analytics_Implementation_Guide.html",
-        "docs/core/Copilot_Analytics_Setup_Companion_Guide.html",
+        "decide/architecture.html",
         "docs/playbooks/Copilot_Multi_Agency_Default_Priority_Architecture.html",
-        "docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html",
-        "artifacts/Copilot_Analytics_FAQ.html"
+        "docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html"
       ],
       "severity": "critical",
       "scenarios_affected": [
@@ -97,8 +99,10 @@
         "expanded access"
       ],
       "our_files": [
-        "docs/core/Copilot_Analytics_Implementation_Guide.html",
-        "docs/core/Copilot_Analytics_Setup_Companion_Guide.html"
+        "1-strategy/executive-briefing.html",
+        "2-setup/admin-setup.html",
+        "3-operate/dashboard-guide.html",
+        "4-reference/faq.html"
       ],
       "severity": "high",
       "scenarios_affected": [
@@ -119,7 +123,7 @@
       ],
       "our_files": [
         "3-operate/dashboard-guide.html",
-        "docs/core/Copilot_Analytics_Implementation_Guide.html"
+        "3-operate/dashboard-guide.html"
       ],
       "severity": "medium",
       "scenarios_affected": [
@@ -380,12 +384,15 @@
     },
     {
       "id": "org-data-upload-methods",
-      "claim": "6 upload methods: CSV (admin center), CSV (Viva Insights), Azure Blob, SAP SuccessFactors, Workday, API",
+      "claim": "Organizational Data in Microsoft 365 supports CSV, Azure Blob, SAP SuccessFactors, Workday, and API import options; legacy Viva upload availability is tenant-state dependent and officially inconsistent",
       "source_page": "org-data-m365",
       "source_anchor": "",
       "verify_text": [
-        "upload",
-        "organizational data"
+        "Import your organizational data with a .csv file",
+        "Azure Blob Storage Connector",
+        "SAP SuccessFactors",
+        "Workday",
+        "API-based import"
       ],
       "our_files": [
         "2-setup/data-onboarding.html",
@@ -398,16 +405,20 @@
       "category": "org-data"
     },
     {
-      "id": "org-data-replaces-entra",
-      "claim": "Uploading org data permanently replaces Entra ID as the data source for those attributes",
-      "source_page": "copilot-dashboard",
-      "source_anchor": "scope-organization-and-job-function",
+      "id": "org-data-parallel-source",
+      "claim": "Parallel ingestion can keep or restore Entra as the source for ManagerId and Organization while uploaded data supplies other attributes; Profile precedence is separate",
+      "source_page": "entra-plus-csv",
+      "source_anchor": "how-to-enable-parallel-data-uploads",
       "verify_text": [
-        "permanently changes the source"
+        "ManagerId and Organization",
+        "Entra will automatically become the default source",
+        "continue uploading other data fields"
       ],
       "our_files": [
+        "1-strategy/data-strategy.html",
         "2-setup/data-onboarding.html",
-        "artifacts/Org_Data_Validation_Prompt.html"
+        "artifacts/Org_Data_Validation_Prompt.html",
+        "tools/entra-hierarchy-validation/README.md"
       ],
       "severity": "critical",
       "scenarios_affected": [
@@ -431,6 +442,130 @@
         "billing-operations"
       ],
       "category": "licensing"
+    },
+    {
+      "id": "copilot-chat-admin-report",
+      "claim": "The Microsoft 365 Copilot Chat usage report covers unlicensed Copilot Chat users, supports 7, 28, 90, and 180 day periods, and can export user activity",
+      "source_page": "copilot-chat-report",
+      "source_anchor": "interpret-the-microsoft-365-copilot-chat-usage-report",
+      "verify_text": [
+        "only users without a Microsoft 365 Copilot license",
+        "7, 28, 90, or 180 days",
+        "To export the report data into an Excel .csv file, select Export"
+      ],
+      "our_files": [
+        "1-strategy/executive-briefing.html",
+        "2-setup/admin-setup.html",
+        "3-operate/billing-operations.html",
+        "3-operate/dashboard-guide.html",
+        "4-reference/faq.html",
+        "tools/index.html"
+      ],
+      "severity": "high",
+      "scenarios_affected": ["executive-reporting", "first-time-rollout"],
+      "category": "reporting"
+    },
+    {
+      "id": "copilot-dashboard-export-preview",
+      "claim": "Copilot Dashboard export is preview, requires 50 Copilot or Viva Insights licences and global dashboard access, and exports de-identified user-level week/day data without Assisted Hours",
+      "source_page": "copilot-metrics-export",
+      "source_anchor": "prerequisites",
+      "verify_text": [
+        "public preview",
+        "at least 50 Copilot or Viva Insights licenses",
+        "global access",
+        "user-level"
+      ],
+      "our_files": [
+        "3-operate/dashboard-guide.html",
+        "3-operate/analyst-playbook.html",
+        "tools/index.html"
+      ],
+      "severity": "high",
+      "scenarios_affected": ["executive-reporting", "analyst-workflow"],
+      "category": "reporting"
+    },
+    {
+      "id": "consumption-dashboard-access",
+      "claim": "Consumption Dashboard access is limited to global-partition Insights Analysts, enabled managers, and Microsoft 365 Global Administrators; delegation is not available",
+      "source_page": "consumption-dashboard",
+      "source_anchor": "who-can-access-the-dashboard",
+      "verify_text": [
+        "Insights Analysts with global partition access",
+        "Managers",
+        "Microsoft 365 Global Administrators",
+        "can't currently delegate"
+      ],
+      "our_files": [
+        "1-strategy/executive-briefing.html",
+        "3-operate/consumption-dashboard.html",
+        "tools/index.html"
+      ],
+      "severity": "high",
+      "scenarios_affected": ["billing-operations", "executive-reporting"],
+      "category": "reporting"
+    },
+    {
+      "id": "roles-non-cumulative",
+      "claim": "Insights Administrator and Insights Analyst roles are independent and non-cumulative",
+      "source_page": "user-roles",
+      "source_anchor": "role-descriptions-and-access-levels",
+      "verify_text": [
+        "Roles are assigned independently",
+        "non-cumulative",
+        "Insights Administrator",
+        "Insights Analyst"
+      ],
+      "our_files": [
+        "2-setup/admin-setup.html",
+        "3-operate/analyst-playbook.html",
+        "4-reference/troubleshooting.html",
+        "4-reference/scenarios/report-visible-to-one-user-not-another.html"
+      ],
+      "severity": "critical",
+      "scenarios_affected": ["first-time-rollout", "analyst-workflow", "troubleshooting"],
+      "category": "access"
+    },
+    {
+      "id": "supported-environments-copilot-analytics",
+      "claim": "GCC has feature-specific Copilot Analytics limits: no Agent Dashboard, Copilot metric export, or Copilot Power BI reports",
+      "source_page": "supported-environments",
+      "source_anchor": "microsoft-365-copilot-analytics-features-and-reports",
+      "verify_text": [
+        "Agent Dashboard",
+        "Export Copilot metrics",
+        "Copilot Power BI reports",
+        "No"
+      ],
+      "our_files": [
+        "1-strategy/executive-briefing.html",
+        "2-setup/admin-setup.html",
+        "2-setup/data-onboarding.html",
+        "2-setup/multi-agency-setup.html",
+        "3-operate/dashboard-guide.html",
+        "decide/architecture.html"
+      ],
+      "severity": "high",
+      "scenarios_affected": ["first-time-rollout", "multi-agency-setup"],
+      "category": "availability"
+    },
+    {
+      "id": "dlp-prompt-block-preview",
+      "claim": "DLP blocking of sensitive information types in typed Copilot prompts is preview and distinct from blocking external web search",
+      "source_page": "copilot-dlp",
+      "source_anchor": "block-sensitive-information-types-in-prompts-preview",
+      "verify_text": [
+        "preview",
+        "Processing prompts",
+        "Performing Web Searches"
+      ],
+      "our_files": [
+        "2-setup/privacy-configuration.html",
+        "4-reference/faq.html"
+      ],
+      "severity": "high",
+      "scenarios_affected": ["privacy-configuration"],
+      "category": "privacy"
     }
   ],
   "scenarios": {

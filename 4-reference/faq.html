@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: FAQ. Last validated 16 July 2026.">
+<link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/4-reference/faq.html">
 <title>FAQ — Copilot Analytics</title>
 <link rel="stylesheet" href="../assets/docs-style.css">
 <script defer src="../assets/shell.js"></script>
@@ -14,6 +16,14 @@
   .faq-a { font-size: 0.94em; color: var(--text-secondary); }
   .faq-a strong { color: var(--primary); }
   .category { color: var(--secondary); font-size: 1.12em; font-weight: 700; margin: 28px 0 12px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+</style>
+
+<style id="generated-inline-styles">
+.u-49807340de { position:fixed; bottom:32px; right:32px; background:var(--accent,#0078d4); color:#fff;
+  border:none; border-radius:50%; width:44px; height:44px; font-size:22px;
+  text-align:center; line-height:44px; text-decoration:none; cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,0.18); display:none; z-index:999; }
+.u-772845a273 { font-size:0.85em; color:var(--text-muted); margin-top:32px; }
 </style>
 </head>
 <body class="has-nav">
@@ -35,18 +45,18 @@
 </div>
 
 <table>
-  <tr><th>Document Property</th><th>Value</th></tr>
+  <tr><th scope="col">Document Property</th><th scope="col">Value</th></tr>
   <tr><td>Section</td><td>Reference</td></tr>
   <tr><td>Audience</td><td>All Roles</td></tr>
-  <tr><td>Version</td><td>4.0</td></tr>
-  <tr><td>Published</td><td>April 2026</td></tr>
+  <tr><td>Version</td><td>4.1</td></tr>
+  <tr><td>Published</td><td>April 2026; validated 16 July 2026</td></tr>
 </table>
 
 <div class="callout info">
   <div class="callout-title">How This Document Fits</div>
-  <p>This is a <strong>Reference</strong> guide. It consolidates frequently asked questions across all Copilot Analytics tiers. For setup, see the <a href="../2-setup/admin-setup.html">Admin Setup Guide</a>. For issue resolution, see the <a href="troubleshooting.html">Troubleshooting Guide</a>.</p>
+  <p>This is a <strong>Reference</strong> guide. It consolidates frequently asked questions across the current Copilot Analytics capability areas. For setup, see the <a href="../2-setup/admin-setup.html">Admin Setup Guide</a>. For issue resolution, see the <a href="troubleshooting.html">Troubleshooting Guide</a>.</p>
   <table>
-    <tr><th>Section</th><th>Purpose</th><th>Who Reads</th></tr>
+    <tr><th scope="col">Section</th><th scope="col">Purpose</th><th scope="col">Who Reads</th></tr>
     <tr><td><a href="../1-strategy/executive-briefing.html">Strategy</a></td><td>Decide what to implement</td><td>CIO, SA, Business Leaders</td></tr>
     <tr><td><a href="../2-setup/admin-setup.html">Setup</a></td><td>Configure and deploy</td><td>IT Admin, Insights Admin</td></tr>
     <tr><td><a href="../3-operate/dashboard-guide.html">Operate</a></td><td>Use dashboards and reports daily</td><td>Leaders, Analysts, Managers</td></tr>
@@ -64,17 +74,17 @@
 
 <div class="faq">
   <div class="faq-q" data-num="2">What happens if we drop below 50 licences?</div>
-  <div class="faq-a">The core dashboard (Readiness, Adoption, and Impact pages with group-level metrics) remains available with as few as 1 Copilot licence. To keep the <strong>advanced features</strong> &mdash; Agent Dashboard, benchmarks, intelligent summaries, sentiment survey metrics, week/month trendlines, manager group-level views with delegation, and the &ldquo;All&rdquo; licence type view &mdash; you need at least <strong>50 assigned Copilot licences</strong> <em>or</em> at least <strong>50 assigned Viva Insights licences</strong>. These are <strong>independent thresholds, not summed</strong>: a mix of 30 Copilot + 20 Viva Insights does <em>not</em> qualify; you must hit 50 on one of the two counts.</div>
+  <div class="faq-a">Core Dashboard capabilities remain available with 1+ Copilot licences. For 50-plan capabilities, <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/environment-requirements">Environment requirements for Viva Insights</a> (Last updated 12 May 2026) counts the Viva Insights service plan included with Copilot and explicitly says <strong>30 Copilot + 20 Viva Insights qualifies as 50 service plans</strong>. The Dashboard article (Last updated 1 July 2026) separately says 50 Copilot or 50 Viva Insights. Do not assume mixed licensing fails: verify assigned service plans and tenant feature presence. For Agent Dashboard preview, conservatively require 50 Copilot licences plus agent activity.</div>
 </div>
 
 <div class="faq">
   <div class="faq-q" data-num="3">Can we trial the Dashboard before licensing everyone?</div>
-  <div class="faq-a"><strong>Yes.</strong> The basic Copilot Dashboard is available to any M365/O365 tenant with Exchange Online &mdash; no paid Viva licence required. With even 1 assigned Copilot licence, you get the Readiness, Adoption, and Impact pages with group-level metrics. Advanced features (benchmarks, Agent Dashboard, sentiment, delegation) require 50+ Copilot or Viva Insights licences.</div>
+  <div class="faq-a"><strong>Yes.</strong> With 1 assigned Copilot licence, eligible tenants can begin using core Readiness, Adoption, and Impact capabilities. For 50-plan capabilities, count assigned Viva Insights service plans and validate the mixed-licence source conflict described above. Agent Dashboard is preview and should conservatively be treated as requiring 50 Copilot licences plus agent activity.</div>
 </div>
 
 <div class="faq">
-  <div class="faq-q" data-num="4">Does the Dashboard track Copilot Chat (web) usage?</div>
-  <div class="faq-a"><strong>For paid Copilot users: Yes.</strong> If Copilot Chat reporting is enabled in your tenant, there is a separate licence filter on the dashboard to switch between Microsoft 365 Copilot and Copilot Chat views &mdash; available with 1+ Copilot licences. <strong>For free Copilot Chat users (E3/E5 without Copilot add-on): Yes, with limits.</strong> The Copilot Dashboard includes a <strong>Copilot Chat</strong> licence filter that shows insights for active users of the free Copilot Chat app. Free users are <em>not</em> tracked by Viva Insights custom queries or Admin Center Copilot usage reports.</div>
+  <div class="faq-q" data-num="4">How is Copilot Chat usage reported?</div>
+  <div class="faq-a">The Dashboard uses the current merged <strong>Copilot Chat</strong> metric; retain <strong>Copilot Chat (web)</strong> only as a legacy transition series that is expected to trend toward zero. For users without a Microsoft 365 Copilot licence, the Microsoft 365 admin center provides a dedicated, exportable <a href="https://learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-copilot-usage?view=o365-worldwide">Microsoft 365 Copilot Chat usage report</a> (Last updated 10 July 2026). The Dashboard licence view, admin report, licensed-user-only Graph endpoint, and Purview audit are separate reporting surfaces.</div>
 </div>
 
 <div class="faq">
@@ -117,7 +127,7 @@
 
 <div class="faq">
   <div class="faq-q" data-num="12">We uploaded org data and now filters show different values &mdash; can we revert?</div>
-  <div class="faq-a"><strong>Yes.</strong> You can use <strong>parallel data ingestion</strong> to restore Entra ID as the source for <code>ManagerId</code> and <code>Organization</code> while keeping custom CSV attributes. To remove all uploaded data entirely, use the &ldquo;Replace All data&rdquo; option with a single dummy row, then re-enable Entra sync. See <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Microsoft Learn</a>. Always validate data in a test upload before applying to production.</div>
+  <div class="faq-a"><strong>Yes, by attribute and surface.</strong> Use <strong>parallel data ingestion</strong> to restore Entra as the source for <code>ManagerId</code> and <code>Organization</code> while retaining uploaded custom attributes. To remove uploaded values, first confirm Entra is configured for those two fields, then use the documented Organizational Data update/delete operations for optional fields. Do <strong>not</strong> seed dummy rows. Microsoft 365 Profile precedence is a separate setting. See <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Use Microsoft Entra plus .csv files for parallel data uploads</a> (updated 30 June 2025) and <a href="https://learn.microsoft.com/viva/import-orgdata#update-or-make-other-changes-to-your-data">Import and manage your organizational data with a .csv file &mdash; Update or delete data</a> (updated 2 April 2026). Test the change, record success/failure criteria, and escalate migration rollback failures through Microsoft Support.</div>
 </div>
 
 <div class="faq">
@@ -148,7 +158,7 @@
 
 <div class="faq">
   <div class="faq-q" data-num="17">Can we use the Agent Dashboard without the Copilot Dashboard?</div>
-  <div class="faq-a">Both are part of the Viva Insights web app. You cannot enable one without the other being available, but access to each can be controlled separately via Viva Feature Access Management (VFAM) policies.</div>
+  <div class="faq-a">Treat Agent Dashboard as a separate <strong>preview</strong> entitlement and access check within the Viva Insights web app. The feature-specific article requires 50 Microsoft 365 Copilot licences plus agent activity, while the broader Dashboard article also lists a 50-Viva-Insights path. Use the Copilot threshold conservatively and validate a Viva-only tenant. It requires company-wide access, is unavailable to managers and group-only delegates, and is unavailable in GCC and other national or regional clouds. Source: <a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">Connect to the Agent Dashboard (preview)</a> (Last updated 16 June 2026) and <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported Microsoft 365 environments for Viva Insights features</a> (Last updated 30 June 2026).</div>
 </div>
 
 <div class="faq">
@@ -158,12 +168,12 @@
 
 <div class="faq">
   <div class="faq-q" data-num="19">What are intent patterns, and how do they appear in the Dashboard?</div>
-  <div class="faq-a">Intent patterns (public preview, April 2026) categorise Copilot Chat (work) prompts into four groups: <strong>Ask and find</strong> (questions and info retrieval), <strong>Catch up</strong> (summaries and recaps), <strong>Draft and brainstorm</strong> (content creation), and <strong>Other</strong>. These appear on the Adoption page and help you understand <em>how</em> people use Copilot, not just how much. Intent metrics are also available in Viva Insights custom person queries for deeper analysis.</div>
+  <div class="faq-a">Intent patterns categorise supported Copilot Chat prompts into four groups: <strong>Ask and find</strong>, <strong>Catch up</strong>, <strong>Draft and brainstorm</strong>, and <strong>Other</strong>. These appear on the Adoption page and help explain how people use Copilot, not just how much. Validate preview status and tenant availability before depending on them.</div>
 </div>
 
 <div class="faq">
   <div class="faq-q" data-num="20">Can I export data from the Copilot Dashboard?</div>
-  <div class="faq-a"><strong>Yes.</strong> The Dashboard now offers a CSV export of de-identified, weekly metrics covering the past 6 months. Select the <strong>Export</strong> button on the dashboard. The exported data matches what you see on screen &mdash; aggregated and de-identified. For user-level or custom-segmented exports, use Advanced Analytics (person queries in the Viva Insights analyst workbench).</div>
+  <div class="faq-a"><strong>Yes, in preview, when eligible.</strong> The exporter needs the documented 50-licence threshold and global / &ldquo;Your company&rdquo; access; group-only access is insufficient, and the feature is unavailable in GCC. The fixed, non-customizable CSV contains <strong>anonymized user-level rows</strong>: weekly data for up to six months or daily data for 28 days. Dashboard filters do not customize it, and <strong>Copilot Assisted Hours is not included</strong>. Store it as sensitive analytics data because repeated rows or organizational-data joins can increase re-identification risk. Source: <a href="https://learn.microsoft.com/viva/insights/org-team-insights/export-copilot-metrics">Export Copilot metrics from the Microsoft Copilot Dashboard (preview)</a> (Last updated 15 July 2026).</div>
 </div>
 
 <div class="faq">
@@ -173,22 +183,27 @@
 
 <div class="faq">
   <div class="faq-q" data-num="22">Does Microsoft Purview DLP affect Copilot usage metrics?</div>
-  <div class="faq-a"><strong>Potentially.</strong> DLP policies can block prompts containing sensitive information types. Blocked prompts are <strong>not counted</strong> as Copilot actions in the Dashboard or Viva Insights. If a significant number of prompts are blocked by DLP, you may see lower-than-expected usage metrics. Coordinate with your Security team to understand what DLP policies are in place.</div>
+  <div class="faq-a"><strong>Potentially, but the counting behavior is not verifiable from current Microsoft Learn.</strong> DLP can block prompt processing or web grounding depending on the configured control, but the reviewed DLP and Copilot Analytics articles do not state whether a blocked attempt is counted as a Copilot action. Do not use DLP as the explanation for an adoption gap without a tenant test or Microsoft Support confirmation.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="23">Which Microsoft 365 environments support these capabilities?</div>
+  <div class="faq-a">Availability is feature-specific. Worldwide has the broadest coverage. GCC supports selected Copilot Analytics and advanced-analysis capabilities but not Agent Dashboard, Copilot metrics export, Copilot Power BI reports, or API/Azure organizational-data imports. GCC High, DoD, and other national or regional clouds must be checked feature by feature; plan availability does not imply parity. Use <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported Microsoft 365 environments for Viva Insights features</a> (Last updated 30 June 2026), then verify Message Center and the tenant UI.</div>
+</div>
+
+<div class="faq">
+  <div class="faq-q" data-num="24">Why might Assisted Hours or Value be lower than expected?</div>
+  <div class="faq-a">Optional diagnostic data affects Assisted Hours, emails sent using Copilot, Teams meetings and meeting hours summarized or recapped, and Teams chats summarized. Required diagnostic data provides only a subset. Confirm diagnostic coverage before comparing groups or periods. Assisted Hours and Value are modeled estimates, not realized savings or proof that Copilot caused a business outcome; use documented assumptions, a stable baseline, and independently governed outcome data. Source: <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (Last updated 1 July 2026).</div>
 </div>
 
 <!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
 <hr>
-<p style="font-size:0.85em; color:var(--text-muted); margin-top:32px;">
-  <strong>Disclaimer:</strong> This document is provided for informational purposes only and reflects Microsoft 365 capabilities as of April 2026. Microsoft may change features, interfaces, and availability without notice. Always verify current guidance on <a href="https://learn.microsoft.com">Microsoft Learn</a>. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
+<p class="u-772845a273">
+  <strong>Disclaimer:</strong> This document is provided for informational purposes only and was last validated on 16 July 2026. Microsoft may change features, interfaces, previews, and availability without notice. Verify volatile guidance in Microsoft Learn, Message Center, Service Health, and the tenant UI. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
 </p>
 
 <!-- Back to Top -->
-<a href="#" id="back-to-top" style="
-  position:fixed; bottom:32px; right:32px; background:var(--accent,#0078d4); color:#fff;
-  border:none; border-radius:50%; width:44px; height:44px; font-size:22px;
-  text-align:center; line-height:44px; text-decoration:none; cursor:pointer;
-  box-shadow:0 2px 8px rgba(0,0,0,0.18); display:none; z-index:999;
-" title="Back to top">&uarr;</a>
+<a href="#" id="back-to-top" class="u-49807340de" title="Back to top">&uarr;</a>
 <script>
 (function(){
   var btn = document.getElementById('back-to-top');

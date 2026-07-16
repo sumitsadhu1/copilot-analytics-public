@@ -3,9 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Analyst Playbook. Last validated 16 July 2026.">
+<link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/3-operate/analyst-playbook.html">
 <title>Analyst Playbook — Copilot Analytics</title>
 <link rel="stylesheet" href="../assets/docs-style.css">
 <script defer src="../assets/shell.js"></script>
+
+<style id="generated-inline-styles">
+.u-49807340de { position:fixed; bottom:32px; right:32px; background:var(--accent,#0078d4); color:#fff;
+  border:none; border-radius:50%; width:44px; height:44px; font-size:22px;
+  text-align:center; line-height:44px; text-decoration:none; cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,0.18); display:none; z-index:999; }
+.u-772845a273 { font-size:0.85em; color:var(--text-muted); margin-top:32px; }
+</style>
 </head>
 <body class="has-nav">
 <nav class="doc-nav">
@@ -29,18 +39,18 @@
 </div>
 
 <table>
-  <tr><th>Document Property</th><th>Value</th></tr>
+  <tr><th scope="col">Document Property</th><th scope="col">Value</th></tr>
   <tr><td>Section</td><td>Operate</td></tr>
   <tr><td>Audience</td><td>Insights Analyst</td></tr>
-  <tr><td>Version</td><td>4.0</td></tr>
-  <tr><td>Published</td><td>April 2026</td></tr>
+  <tr><td>Version</td><td>4.1</td></tr>
+  <tr><td>Last validated</td><td>16 July 2026</td></tr>
 </table>
 
 <div class="callout info">
   <div class="callout-title">How This Document Fits</div>
   <p>This is a <strong>Operate</strong> guide. It walks Insights Analysts through creating Copilot analytics queries, connecting Power BI templates, and publishing reports to leaders. It does <strong>not</strong> cover initial admin configuration &mdash; see the <a href="../2-setup/admin-setup.html">Admin Setup Guide</a> for that.</p>
   <table>
-    <tr><th>Section</th><th>Purpose</th><th>Who Reads</th></tr>
+    <tr><th scope="col">Section</th><th scope="col">Purpose</th><th scope="col">Who Reads</th></tr>
     <tr><td><a href="../1-strategy/executive-briefing.html">Strategy</a></td><td>Decide what to implement</td><td>CIO, SA, Business Leaders</td></tr>
     <tr><td><a href="../2-setup/admin-setup.html">Setup</a></td><td>Configure and deploy</td><td>IT Admin, Insights Admin</td></tr>
     <tr><td><strong>Operate</strong> (you are here)</td><td>Use dashboards and reports daily</td><td>Leaders, Analysts, Managers</td></tr>
@@ -55,10 +65,16 @@
   <li><a href="#templates">Available Copilot PBI Templates</a></li>
   <li><a href="#create-report">Step-by-Step: Create a Report</a></li>
   <li><a href="#connect-pbi">Connect Power BI</a></li>
+  <li><a href="#programmatic-reporting">Programmatic Reporting Options</a></li>
+  <li><a href="#business-impact">Business Impact and Value Interpretation</a>
+    <ul>
+      <li><a href="#agent-assisted-value">6.2 Agent Assisted Hours and Value</a></li>
+    </ul>
+  </li>
   <li><a href="#publish">Publish &amp; Share Reports</a>
     <ul>
-      <li><a href="#publish-viva">5.1 Publish via Viva Insights</a></li>
-      <li><a href="#share-stakeholders">5.2 Share via Power BI</a></li>
+      <li><a href="#publish-viva">7.1 Publish via Viva Insights</a></li>
+      <li><a href="#share-stakeholders">7.2 Share via Power BI</a></li>
     </ul>
   </li>
   <li><a href="#maintenance">Ongoing Maintenance</a></li>
@@ -72,7 +88,7 @@
 <p>Before you can create Copilot analytics queries and connect Power BI templates, the following must be in place:</p>
 
 <table>
-  <tr><th>Prerequisite</th><th>Details</th></tr>
+  <tr><th scope="col">Prerequisite</th><th scope="col">Details</th></tr>
   <tr><td><strong>Viva Insights licence</strong></td><td>Minimum 50 licences in the tenant for Advanced Analytics. Included with M365 Copilot licences &mdash; no separate purchase required. (The Copilot Dashboard itself is available with 1+ Copilot licences.)</td></tr>
   <tr><td><strong>Insights Analyst role</strong></td><td>Must be assigned to your account by an Insights Admin or Global Admin via the Microsoft 365 admin centre.</td></tr>
   <tr><td><strong>Partition access</strong></td><td>An Insights Admin must grant you access to the relevant partition(s). Without partition access, you cannot run queries.</td></tr>
@@ -90,7 +106,7 @@
 <p>Timing matters. Plan your data collection window <em>before</em> Copilot rolls out if you need before/after analysis:</p>
 
 <table>
-  <tr><th>Data Requirement</th><th>Minimum</th><th>Notes</th></tr>
+  <tr><th scope="col">Data Requirement</th><th scope="col">Minimum</th><th scope="col">Notes</th></tr>
   <tr><td><strong>Org data upload</strong></td><td>Required</td><td>Enables segmentation by department, agency, location, job function, and other attributes.</td></tr>
   <tr><td><strong>Pre-adoption baseline</strong></td><td>4 weeks</td><td>Needed for before/after comparison in the Copilot Impact template. Must be collected <em>before</em> Copilot licence assignment.</td></tr>
   <tr><td><strong>Post-adoption data</strong></td><td>4 weeks</td><td>Minimum period after Copilot rollout for meaningful usage patterns to emerge.</td></tr>
@@ -107,7 +123,7 @@
 <p>Microsoft provides several Power BI templates purpose-built for Copilot analytics. Each template creates a pre-built query with predefined metrics and a corresponding <code>.pbit</code> file for Power BI Desktop.</p>
 
 <table>
-  <tr><th>Template</th><th>Purpose</th><th>Key Metrics</th></tr>
+  <tr><th scope="col">Template</th><th scope="col">Purpose</th><th scope="col">Key Metrics</th></tr>
   <tr>
     <td><strong>M365 Copilot Impact</strong></td>
     <td>Primary ROI and productivity analysis</td>
@@ -232,13 +248,129 @@
   <li><strong>Research Insights</strong> &mdash; deeper statistical analysis and trend exploration</li>
 </ul>
 
-<!-- ═══════════════════════ 5. PUBLISH REPORTS ═══════════════════════ -->
-<h1 id="publish">5. Publish &amp; Share Reports</h1>
+<!-- ═══════════════════════ 5. PROGRAMMATIC REPORTING ═══════════════════════ -->
+<h1 id="programmatic-reporting">5. Programmatic Reporting Options</h1>
+
+<p>Choose the reporting path based on the question, population, privacy model, and automation requirement. These options are not interchangeable: a dashboard export is not an Advanced query, Microsoft Graph does not cover unlicensed Copilot Chat usage, and audit events are not equivalent to adoption metrics.</p>
+
+<table>
+  <tr><th scope="col">Option</th><th scope="col">Best for</th><th scope="col">Population and scope</th><th scope="col">Key limits</th></tr>
+  <tr><td><strong>Copilot Dashboard export (preview)</strong></td><td>Offline adoption analysis, custom communications, and short- or medium-term trend reporting</td><td>De-identified user-level rows for licensed Microsoft 365 Copilot and unlicensed Copilot Chat usage; available only to users with global Dashboard access</td><td>At least 50 Copilot or Viva Insights licences assigned; fixed, non-customisable dataset; no Copilot assisted hours; secure handling required</td></tr>
+  <tr><td><strong>Advanced Reporting query</strong></td><td>Custom metrics, filters, org attributes, cohort analysis, and Power BI templates</td><td>Measured employees and rows available to the Insights Analyst's assigned partition</td><td>Insights Analyst role and partition access required; query design, privacy thresholds, data quality, and refresh ownership remain operational responsibilities</td></tr>
+  <tr><td><strong>Microsoft Graph Copilot report API (v1.0)</strong></td><td>Scheduled licensed-user usage reporting and integration into governed data pipelines</td><td>Only users with a Microsoft 365 Copilot licence</td><td><code>Reports.Read.All</code>; no unlicensed Copilot Chat usage; no per-user prompt counts; Global service only</td></tr>
+  <tr><td><strong>Admin report and Purview audit sources</strong></td><td>Unlicensed Copilot Chat reporting, compliance investigation, and event-level automation</td><td>Microsoft 365 admin center Copilot Chat Usage report; Copilot/AI audit events subject to assigned audit permissions</td><td>Audit event semantics, retention, latency, privacy, and aggregation differ from adoption reports</td></tr>
+</table>
+
+<h2>Dashboard export: fixed user-level dataset</h2>
+<p>The Copilot Dashboard's <strong>Export data</strong> feature is public preview. Week-level export provides the last <strong>six months</strong>, refreshes weekly, and can be up to six days old. Day-level export provides the last <strong>28 days</strong>, refreshes daily, and can be up to three days old. Both remove personal identifiers and replace them with anonymized IDs; neither can be customized. The feature currently excludes Copilot assisted hours.</p>
+
+<div class="callout important">
+  <div class="callout-title">Global access carries a wider data-handling responsibility</div>
+  <p>Eligible exporters include senior leaders with global access, users manually assigned global access, delegates of globally scoped users, Insights Analysts with global access, and Microsoft 365 Global Administrators. Managers and their delegates with team-level views cannot export. Treat every download as a governed user-level dataset even though direct identifiers are removed.</p>
+</div>
+
+<h2>Advanced queries: customizable and partition-scoped</h2>
+<p>Use Advanced Reporting when you need selected metrics, employee filters, organizational attributes, a defined privacy threshold, or a reusable Power BI model. Microsoft documents more than 100 Copilot metrics. Unlike the fixed Dashboard export, the available query population is constrained by the analyst's assigned partition. For Copilot metrics, design within the documented <strong>13-month</strong> history and account for data freshness.</p>
+
+<h2>Microsoft Graph v1.0: licensed users only</h2>
+<p>The current Copilot report root exposes both a user-count summary and user detail in <code>v1.0</code>:</p>
+<pre><code>GET https://graph.microsoft.com/v1.0/copilot/reports/getMicrosoft365CopilotUserCountSummary(period='D30')
+GET https://graph.microsoft.com/v1.0/copilot/reports/getMicrosoft365CopilotUsageUserDetail(period='D30')?$format=application/json</code></pre>
+
+<table>
+  <tr><th scope="col">API property</th><th scope="col">Current requirement</th></tr>
+  <tr><td>Least-privileged delegated or application permission</td><td><code>Reports.Read.All</code></td></tr>
+  <tr><td>Report shapes</td><td><code>getMicrosoft365CopilotUserCountSummary</code> for aggregate user counts; <code>getMicrosoft365CopilotUsageUserDetail</code> for licensed-user activity detail</td></tr>
+  <tr><td>Supported period values</td><td><code>D7</code>, <code>D30</code>, <code>D90</code>, <code>D180</code>, <code>ALL</code></td></tr>
+  <tr><td><code>ALL</code> meaning</td><td>Returns report periods for 7, 30, 90, and 180 days; it is not an unlimited-retention promise</td></tr>
+  <tr><td>Population</td><td>Users with a Microsoft 365 Copilot licence only</td></tr>
+  <tr><td>Prompt detail</td><td>Per-user Copilot prompt counts across tenants are not supported</td></tr>
+  <tr><td>National clouds</td><td>Available in Global service; not available in US Government L4, US Government L5 (DoD), or China operated by 21Vianet</td></tr>
+  <tr><td>Production version</td><td>Use <code>v1.0</code>; Microsoft states that <code>/beta</code> APIs are subject to change and unsupported for production</td></tr>
+</table>
+
+<h2>Unlicensed Copilot Chat: admin report or audit</h2>
+<p>Unlicensed Copilot Chat usage is <strong>not returned</strong> by the Graph Copilot reports API. Use the Microsoft 365 admin center <strong>Copilot Chat Usage</strong> report for the current operational report. For programmatic event extraction, Microsoft documents <strong>Microsoft Purview Audit</strong>, <code>Search-UnifiedAuditLog</code> in PowerShell, and the <strong>Office 365 Management Activity API</strong>.</p>
+
+<div class="callout warning">
+  <div class="callout-title">Audit is an alternative source, not a metric-compatible substitute</div>
+  <p>Audit data supports compliance and event analysis. Do not present event counts as if they were the admin report's active-user or adoption measures. Define event types, deduplication, retention, permissions, latency, identity handling, and aggregation before publishing a trend.</p>
+</div>
+
+<h2>Architecture decision</h2>
+<ol>
+  <li>Use the <strong>Dashboard export</strong> for a governed, fixed adoption dataset that includes current unlicensed Chat and usage-intensity measures.</li>
+  <li>Use <strong>Advanced queries</strong> when partition scope, custom metrics, filters, organizational attributes, or Power BI templates are required.</li>
+  <li>Use <strong>Graph v1.0</strong> for scheduled licensed-user usage integrations with <code>Reports.Read.All</code>.</li>
+  <li>Use the <strong>admin report</strong> for current unlicensed Chat reporting; use <strong>Purview/Management Activity</strong> only when event-level programmatic extraction is the actual requirement.</li>
+  <li>Persist only the minimum required data, apply access and retention controls, record source/period/refresh time, and validate totals against the source experience.</li>
+</ol>
+
+<!-- ═══════════════════════ 6. BUSINESS IMPACT ═══════════════════════ -->
+<h1 id="business-impact">6. Business Impact and Value Interpretation</h1>
+
+<h2>6.1 Copilot Business Impact setup</h2>
+<p>The <strong>Copilot Business Impact</strong> report relates Copilot usage patterns to business outcomes supplied by your organization. It does not create the outcome data and does not establish that Copilot caused an observed difference.</p>
+
+<table>
+  <tr><th scope="col">Prerequisite</th><th scope="col">Current requirement</th></tr>
+  <tr><td>Roles and software</td><td>Insights Analyst role; Power BI Desktop June 2022 or newer</td></tr>
+  <tr><td>Measured population</td><td>Employees in scope have both Viva Insights and Microsoft 365 Copilot licences</td></tr>
+  <tr><td>Comparison size</td><td>Microsoft recommends at least 65 Copilot and 65 non-Copilot users</td></tr>
+  <tr><td>Outcome data</td><td>Upload through a manual CSV or Azure blob import; include one row per user for every month in the query period</td></tr>
+  <tr><td>Time alignment</td><td>Outcome months must align with the query; Copilot metrics have up to 13 months of history and can be up to six days behind</td></tr>
+  <tr><td>Query design</td><td>Select up to five business outcome metrics; fixed monthly grouping; retain the predefined <strong>Is Active</strong> filter; add up to 20 organizational attributes</td></tr>
+</table>
+
+<ol>
+  <li>Agree the outcome owner, unit, direction of favorable performance, population, baseline period, and expected lag before loading data.</li>
+  <li>Upload business outcome data through the Insights Administrator's approved CSV or Azure path and verify one user-month row for each queried month.</li>
+  <li>In <strong>Create analysis</strong>, select <strong>Copilot Business Impact report</strong> and <strong>Set up analysis</strong>.</li>
+  <li>Choose a time period that overlaps complete outcome data, then select up to five outcome metrics.</li>
+  <li>Keep <strong>Is Active</strong>, add only defensible filters and attributes, review data-quality warnings, and run the query.</li>
+  <li>In report settings, document the favorable-outcome threshold and any changes to low, medium, and high Copilot usage categories.</li>
+  <li>Review results with the outcome owner and a statistical or evaluation specialist before publishing a business claim.</li>
+</ol>
+
+<div class="callout important">
+  <div class="callout-title">Relationship is not causation</div>
+  <p>Microsoft states that group differences in this report have not been evaluated for statistical significance and that Copilot is unlikely to be the only variable involved. Role mix, prior performance, self-selection, rollout targeting, seasonality, business conditions, and the time needed for an outcome to change can all affect the result. Describe findings as <strong>associations</strong> or <strong>observed differences</strong>, publish sample sizes and definitions, and do not claim ROI or causal impact without an appropriate evaluation design.</p>
+</div>
+
+<h2 id="agent-assisted-value">6.2 Agent Assisted Hours and Value</h2>
+
+<p>Copilot assisted hours and Agent Assisted Hours are modeled estimates. They use different activity inputs and assumptions; neither is a timesheet, realized saving, budget reduction, or proof of business value.</p>
+
+<table>
+  <tr><th scope="col">Measure</th><th scope="col">Model and assumptions</th><th scope="col">How to use it</th></tr>
+  <tr><td><strong>Microsoft 365 Copilot assisted hours/value</strong></td><td>Actions are multiplied by research-derived time-savings factors. Value multiplies estimated hours by an average hourly rate, set to US$72 by default and adjustable in the calculator. Microsoft states the methodology will evolve.</td><td>Scenario estimate for adoption planning; disclose the rate, multipliers, period, diagnostics coverage, and sensitivity range.</td></tr>
+  <tr><td><strong>Maker-led Agent Assisted Impact</strong></td><td>Inputs are supplied from Copilot Studio and displayed in Viva Insights; maker-led values are not editable in Viva Insights.</td><td>Validate the maker's baseline, calculation, unit, and evidence outside the report before using the figure.</td></tr>
+  <tr><td><strong>Inferred conversational-agent AAH</strong></td><td><code>(knowledge-source references + weighted sessions without knowledge sources) × time-savings multiplier</code>. Resolved sessions receive full weight; escalated and abandoned sessions are weighted at 0.7. The default information-retrieval multiplier is six minutes and can be changed per agent.</td><td>Compare scenarios for a specific agent; report the session outcomes and selected multiplier with the result.</td></tr>
+  <tr><td><strong>Inferred autonomous-agent AAH</strong></td><td>Combines time estimated for knowledge retrieval, actions, and successful sessions without independent actions. Action-specific and generic multipliers are used where applicable.</td><td>Review action-level assumptions and avoid comparing unlike agent types without normalization.</td></tr>
+  <tr><td><strong>Agent Assisted Value</strong></td><td>Agent Assisted Hours multiplied by an average hourly rate, US$72 by default. The calculator can change the rate for a specific agent; it cannot modify maker-led inputs.</td><td>Present a low/base/high sensitivity range and keep cost, avoided cost, capacity released, and realized cash savings separate.</td></tr>
+</table>
+
+<p>Before publishing value, pair the estimate with observed outcomes: volume, resolution, escalation, abandonment, satisfaction, quality, cycle time, and an organization-owned business KPI. A higher modeled value alongside poor resolution or satisfaction is a prompt to inspect assumptions and agent design, not a success conclusion.</p>
+
+<h2>Dated Microsoft Learn sources</h2>
+<table>
+  <tr><th scope="col">Source</th><th scope="col">Last updated</th><th scope="col">Used for</th></tr>
+  <tr><td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/export-copilot-metrics">Export Copilot metrics from the Microsoft Copilot Dashboard</a></td><td>15 July 2026</td><td>Preview export prerequisites, data shape, windows, freshness, metrics, and exclusions</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/microsoft-365/copilot/microsoft-365-copilot-reports-for-admins">Microsoft 365 Copilot reports for IT admins</a></td><td>16 September 2025</td><td>Admin center, Viva Insights, Purview, and Power Platform reporting-source map</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/microsoft-365/copilot/extensibility/api/admin-settings/reports/copilotreportroot-getmicrosoft365copilotusageuserdetail">copilotReportRoot: getMicrosoft365CopilotUsageUserDetail</a></td><td>19 February 2026</td><td>v1.0 request, permissions, periods, licensed-user boundary, alternatives, and national clouds</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/microsoft-365/copilot/extensibility/api/admin-settings/reports/copilotreportroot-getmicrosoft365copilotusercountsummary">copilotReportRoot: getMicrosoft365CopilotUserCountSummary</a></td><td>19 February 2026</td><td>v1.0 aggregate user-count endpoint and permissions</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/copilot-business-impact">Copilot Business Impact report</a></td><td>17 February 2026</td><td>Outcome data, cohort recommendation, setup, interpretation, and causality limits</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/microsoft-365-copilot-impact">Microsoft 365 Copilot impact report</a></td><td>17 February 2026</td><td>13-month history, freshness, assisted-hours estimate, and default value rate</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/copilot-studio-agents">Copilot Studio agents report</a></td><td>23 June 2026</td><td>Maker-led and inferred Agent Assisted Hours/Value assumptions and calculators</td></tr>
+</table>
+
+<!-- ═══════════════════════ 7. PUBLISH REPORTS ═══════════════════════ -->
+<h1 id="publish">7. Publish &amp; Share Reports</h1>
 
 <p>Once your report is built (Sections 1&ndash;4), you have <strong>two delivery surfaces</strong> for getting it in front of leaders. They are not interchangeable &mdash; they differ in where recipients view the report, what access it grants them, and how well they respect agency boundaries. Pick the surface that matches your distribution model, then follow the matching sub-section below.</p>
 
 <table>
-  <tr><th>&nbsp;</th><th>5.1 Publish via Viva Insights</th><th>5.2 Share via Power BI</th></tr>
+  <tr><th scope="col">&nbsp;</th><th scope="col">7.1 Publish via Viva Insights</th><th scope="col">7.2 Share via Power BI</th></tr>
   <tr><td><strong>Where recipients view</strong></td><td>Viva Insights web app &rarr; Reports tab</td><td>Power BI service (<a href="https://app.powerbi.com">app.powerbi.com</a>) or a Power BI app</td></tr>
   <tr><td><strong>Best for</strong></td><td>Fast, native distribution to leaders who already have Copilot Dashboard access</td><td>Controlled, named-audience distribution &mdash; especially multi-agency</td></tr>
   <tr><td><strong>Viewer licence</strong></td><td>Viva Insights service plan (included with Copilot)</td><td>Power BI Pro / PPU, or Premium capacity</td></tr>
@@ -246,11 +378,11 @@
 </table>
 
 <div class="callout important">
-  <div class="callout-title">Implementing the Isolation model? Use 5.2, not 5.1</div>
-  <p>If you are delivering reports under the <a href="../docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Multi-Agency Isolation Architecture</a>, distribute to agency heads via <strong>Power BI (Section 5.2)</strong>. <strong>Do not</strong> use Viva Insights Publish (5.1) to reach agency leaders: enabling a manager so they can receive a published report grants them <strong>Copilot Dashboard access, including the &ldquo;Your company&rdquo; scope that shows aggregated data across <em>all</em> agencies</strong> &mdash; which breaks isolation. Reserve 5.1 for Central IT analysts who already have tenant-wide dashboard access. See the <a href="../docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Isolation playbook</a>, Phase 4b.</p>
+  <div class="callout-title">Implementing the Isolation model? Use 7.2, not 7.1</div>
+  <p>If you are delivering reports under the <a href="../docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Multi-Agency Isolation Architecture</a>, distribute to agency heads via <strong>Power BI (Section 7.2)</strong>. <strong>Do not</strong> use Viva Insights Publish (7.1) to reach agency leaders: enabling a manager so they can receive a published report grants them <strong>Copilot Dashboard access, including the &ldquo;Your company&rdquo; scope that shows aggregated data across <em>all</em> agencies</strong> &mdash; which breaks isolation. Reserve 7.1 for Central IT analysts who already have tenant-wide dashboard access. See the <a href="../docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Isolation playbook</a>, Phase 4b.</p>
 </div>
 
-<h2 id="publish-viva">5.1 Publish via Viva Insights</h2>
+<h2 id="publish-viva">7.1 Publish via Viva Insights</h2>
 
 <p>You can share query results with business leaders directly from Viva Insights using the <strong>Publish</strong> feature. This is the fastest route for leaders who already have Copilot Dashboard access.</p>
 
@@ -285,13 +417,13 @@
 
 <div class="callout warning">
   <div class="callout-title">Multi-Agency Tenants: Manager Hierarchy Risk</div>
-  <p>Enabling a manager so they can receive a published report also grants them <strong>Copilot Dashboard access</strong> &mdash; including the <strong>&ldquo;Your company&rdquo; scope, which shows aggregated data across <em>all</em> agencies</strong>, not just their own reporting line. In a multi-agency tenant this breaks agency isolation. For agency-head delivery, use <a href="#share-stakeholders">Power BI sharing (Section 5.2)</a> instead, and reserve Viva Insights Publish for Central IT who already have tenant-wide dashboard access. See the <a href="../2-setup/multi-agency-setup.html">Multi-Agency Setup Guide</a> and the <a href="../docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Isolation playbook</a> (Phase 4b).</p>
+  <p>Enabling a manager so they can receive a published report also grants them <strong>Copilot Dashboard access</strong> &mdash; including the <strong>&ldquo;Your company&rdquo; scope, which shows aggregated data across <em>all</em> agencies</strong>, not just their own reporting line. In a multi-agency tenant this breaks agency isolation. For agency-head delivery, use <a href="#share-stakeholders">Power BI sharing (Section 7.2)</a> instead, and reserve Viva Insights Publish for Central IT who already have tenant-wide dashboard access. See the <a href="../2-setup/multi-agency-setup.html">Multi-Agency Setup Guide</a> and the <a href="../docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Isolation playbook</a> (Phase 4b).</p>
 </div>
 
-<!-- ═══════════════════════ 5.2 SHARE VIA POWER BI ═══════════════════════ -->
-<h2 id="share-stakeholders">5.2 Share via Power BI</h2>
+<!-- ═══════════════════════ 7.2 SHARE VIA POWER BI ═══════════════════════ -->
+<h2 id="share-stakeholders">7.2 Share via Power BI</h2>
 
-<p>Unlike <a href="#publish-viva">Publish via Viva Insights (Section 5.1)</a>, which distributes results <em>natively</em> inside Viva Insights, this method uses <strong>Power BI&rsquo;s own sharing</strong>. It is the preferred method for multi-agency tenants because it delivers a report to named people <strong>without</strong> granting them any Copilot Dashboard access &mdash; whereas 5.1&rsquo;s &ldquo;Filter by manager hierarchy&rdquo; option can (see its warning).</p>
+<p>Unlike <a href="#publish-viva">Publish via Viva Insights (Section 7.1)</a>, which distributes results <em>natively</em> inside Viva Insights, this method uses <strong>Power BI&rsquo;s own sharing</strong>. It is the preferred method for multi-agency tenants because it delivers a report to named people <strong>without</strong> granting them any Copilot Dashboard access &mdash; whereas 7.1&rsquo;s &ldquo;Filter by manager hierarchy&rdquo; option can (see its warning).</p>
 
 <div class="callout info">
   <div class="callout-title">New to Power BI? Start Here</div>
@@ -313,7 +445,7 @@
 <h3>Step 3 &mdash; Assign Stakeholders via Workspace Roles</h3>
 <p>In <a href="https://app.powerbi.com">app.powerbi.com</a>, open the workspace &rarr; select <strong>Manage access</strong> &rarr; <strong>Add people or groups</strong>, then assign a <a href="https://learn.microsoft.com/power-bi/collaborate-share/service-roles-new-workspaces">workspace role</a> from the table below. Prefer adding an <strong>Entra security group</strong> over individuals, so access is managed centrally and consistently with your other governance controls.</p>
 <table>
-  <tr><th>Role</th><th>Can do</th><th>Assign to</th></tr>
+  <tr><th scope="col">Role</th><th scope="col">Can do</th><th scope="col">Assign to</th></tr>
   <tr><td><strong>Viewer</strong></td><td>View and interact with reports only</td><td>Most stakeholders (agency leaders)</td></tr>
   <tr><td><strong>Contributor</strong></td><td>Create/edit content; can&rsquo;t manage access</td><td>Co-analysts who build reports</td></tr>
   <tr><td><strong>Member</strong></td><td>Edit content and add others (below Admin)</td><td>Trusted leads who help run the workspace</td></tr>
@@ -336,8 +468,8 @@
   <p>Grant each agency workspace&rsquo;s <strong>Viewer</strong> role only to that agency&rsquo;s leaders &mdash; via an agency-scoped Entra group. If multiple agencies must share one workspace, add <a href="https://learn.microsoft.com/fabric/security/service-admin-row-level-security">Row-Level Security (RLS)</a> as a secondary control. The full agency-isolation delivery procedure (including the Publish Reports pitfall) is in the <a href="../docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Isolation Architecture playbook</a>, Phase 4b.</p>
 </div>
 
-<!-- ═══════════════════════ 7. ONGOING MAINTENANCE ═══════════════════════ -->
-<h1 id="maintenance">6. Ongoing Maintenance</h1>
+<!-- ═══════════════════════ 8. ONGOING MAINTENANCE ═══════════════════════ -->
+<h1 id="maintenance">8. Ongoing Maintenance</h1>
 
 <p>Keep your Copilot analytics current with these recurring tasks:</p>
 
@@ -345,16 +477,16 @@
   <li><strong>Refresh org data monthly</strong> &mdash; work with your Insights Admin to ensure organisational data (new hires, transfers, departures) stays up to date. Stale org data leads to inaccurate segmentation.</li>
   <li><strong>Re-run queries periodically</strong> &mdash; either enable auto-refresh during query setup or manually re-run queries on a monthly or quarterly cadence to capture current trends.</li>
   <li><strong>Update PBI reports</strong> &mdash; when Microsoft releases updated template versions, download the new <code>.pbit</code> and reconnect to benefit from new metrics and visualisations.</li>
-  <li><strong>Share via Publish Reports or Power BI workspaces</strong> &mdash; for ongoing distribution, either re-publish through Viva Insights or save <code>.pbix</code> files to a shared Power BI workspace (see <a href="#share-stakeholders">Section 5.2</a> for the step-by-step).</li>
+  <li><strong>Share via Publish Reports or Power BI workspaces</strong> &mdash; for ongoing distribution, either re-publish through Viva Insights or save <code>.pbix</code> files to a shared Power BI workspace (see <a href="#share-stakeholders">Section 7.2</a> for the step-by-step).</li>
 </ul>
 
-<!-- ═══════════════════════ 8. ANALYST DEPARTURE ═══════════════════════ -->
-<h1 id="analyst-departure">7. Analyst Departure &mdash; Transfer Guide</h1>
+<!-- ═══════════════════════ 9. ANALYST DEPARTURE ═══════════════════════ -->
+<h1 id="analyst-departure">9. Analyst Departure &mdash; Transfer Guide</h1>
 
 <p>When an Insights Analyst leaves the organisation or changes roles, follow this checklist to ensure continuity:</p>
 
 <table>
-  <tr><th>Item</th><th>What Happens</th><th>Action Required</th></tr>
+  <tr><th scope="col">Item</th><th scope="col">What Happens</th><th scope="col">Action Required</th></tr>
   <tr>
     <td><strong>Completed query results</strong></td>
     <td>Persist in Viva Insights &mdash; a new analyst with partition access can view them</td>
@@ -387,12 +519,14 @@
   <p>Always have <strong>at least two analysts</strong> with partition access. Store all <code>.pbix</code> files in a shared Power BI workspace rather than on individual machines. This prevents data loss and reporting gaps during transitions.</p>
 </div>
 
-<!-- ═══════════════════════ 9. WHAT TO READ NEXT ═══════════════════════ -->
-<h1 id="next">8. What to Read Next</h1>
+<!-- ═══════════════════════ 10. WHAT TO READ NEXT ═══════════════════════ -->
+<h1 id="next">10. What to Read Next</h1>
 
 <table>
-  <tr><th>Document</th><th>When to Read</th></tr>
+  <tr><th scope="col">Document</th><th scope="col">When to Read</th></tr>
   <tr><td><a href="dashboard-guide.html"><strong>Dashboard &amp; Reports Guide</strong></a></td><td>You want to understand the Copilot Dashboard metrics and pages that leaders see</td></tr>
+  <tr><td><a href="consumption-dashboard.html"><strong>Consumption Dashboard Operations</strong></a></td><td>You need to monitor Copilot Credits, usage intensity, and spending-policy limits</td></tr>
+  <tr><td><a href="../tools/index.html"><strong>Tools &amp; Reporting Options</strong></a></td><td>You need a reporting-path comparison or reusable validation utility</td></tr>
   <tr><td><a href="../2-setup/data-onboarding.html"><strong>Data Onboarding Guide</strong></a></td><td>You need to prepare or update the organisational data upload</td></tr>
   <tr><td><a href="../4-reference/attribute-reference.html"><strong>Attribute Reference</strong></a></td><td>You need the full list of org data attributes and their mapping rules</td></tr>
   <tr><td><a href="../4-reference/troubleshooting.html"><strong>Troubleshooting Guide</strong></a></td><td>Something isn&rsquo;t working &mdash; query failures, missing data, or access issues</td></tr>
@@ -400,17 +534,12 @@
 
 <!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
 <hr>
-<p style="font-size:0.85em; color:var(--text-muted); margin-top:32px;">
-  <strong>Disclaimer:</strong> This document is provided for informational purposes only and reflects Microsoft 365 capabilities as of April 2026. Microsoft may change features, interfaces, and availability without notice. Always verify current guidance on <a href="https://learn.microsoft.com">Microsoft Learn</a>. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
+<p class="u-772845a273">
+  <strong>Disclaimer:</strong> This document is provided for informational purposes only and was validated against the dated Microsoft Learn sources above on 16 July 2026. Microsoft may change features, interfaces, and availability without notice. Always verify current guidance on <a href="https://learn.microsoft.com">Microsoft Learn</a>. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
 </p>
 
 <!-- Back to Top -->
-<a href="#" id="back-to-top" style="
-  position:fixed; bottom:32px; right:32px; background:var(--accent,#0078d4); color:#fff;
-  border:none; border-radius:50%; width:44px; height:44px; font-size:22px;
-  text-align:center; line-height:44px; text-decoration:none; cursor:pointer;
-  box-shadow:0 2px 8px rgba(0,0,0,0.18); display:none; z-index:999;
-" title="Back to top">&uarr;</a>
+<a href="#" id="back-to-top" class="u-49807340de" title="Back to top">&uarr;</a>
 <script>
 (function(){
   var btn = document.getElementById('back-to-top');

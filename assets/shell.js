@@ -43,7 +43,7 @@
     { icon: 'sh-chart', label: 'Operate', href: 'browse.html#operate', on: function () { return path.indexOf('/3-operate/') > -1 || /Lifecycle_Billing|Advanced_Viva/i.test(path); } },
     { icon: 'sh-book', label: 'Reference', href: 'browse.html#reference', on: function () { return path.indexOf('/4-reference/') > -1 || /Copilot_Analytics_FAQ|QuickStart/i.test(path); } },
     { divider: true },
-    { icon: 'sh-tools', label: 'Tools', href: 'artifacts/Org_Data_Validation_Prompt.html', on: function () { return /Org_Data_Validation/i.test(path); } },
+    { icon: 'sh-tools', label: 'Tools', href: 'tools/index.html', on: function () { return path.indexOf('/tools/') > -1 || /Org_Data_Validation/i.test(path); } },
     { icon: 'sh-grid', label: 'Browse all', href: 'browse.html', on: function () { return path.indexOf('browse.html') > -1; } }
   ];
 
@@ -79,10 +79,24 @@
     content.appendChild(n);
   });
 
+  var trust = doc.createElement('aside');
+  trust.className = 'trust-strip';
+  trust.setAttribute('aria-label', 'Publication status');
+  trust.innerHTML = '<strong>Independent publication</strong><span>Last validated 16 July 2026</span>' +
+    '<span>Owner: Sumit Sadhu</span>' +
+    '<a href="' + prefix + '4-reference/change-history.html">Change history</a>' +
+    '<a href="https://github.com/sumitsadhu1/copilot-analytics-public/issues/new">Report a correction</a>';
+  content.insertBefore(trust, content.firstChild);
+
   // 5) Build the shell.
   var spriteHost = doc.createElement('div');
   spriteHost.style.display = 'none';
   spriteHost.innerHTML = SPRITE;
+
+  var skipLink = doc.createElement('a');
+  skipLink.className = 'skip-link';
+  skipLink.href = '#main-content';
+  skipLink.textContent = 'Skip to main content';
 
   var bar = doc.createElement('header');
   bar.className = 'app-bar';
@@ -123,13 +137,14 @@
 
   var scrim = doc.createElement('div'); scrim.className = 'nav-scrim'; scrim.id = 'shScrim';
   var appBody = doc.createElement('div'); appBody.className = 'app-body';
-  var main = doc.createElement('main'); main.className = 'app-main';
+  var main = doc.createElement('main'); main.className = 'app-main'; main.id = 'main-content'; main.tabIndex = -1;
   main.appendChild(content);
   appBody.appendChild(scrim);
   appBody.appendChild(rail);
   appBody.appendChild(main);
 
   body.appendChild(spriteHost);
+  body.appendChild(skipLink);
   body.appendChild(bar);
   body.appendChild(appBody);
 
@@ -200,6 +215,10 @@
     }
   });
   doc.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') { body.classList.remove('nav-open'); aria(); }
+    if (e.key === 'Escape' && body.classList.contains('nav-open')) {
+      body.classList.remove('nav-open');
+      aria();
+      toggle.focus();
+    }
   });
 })();

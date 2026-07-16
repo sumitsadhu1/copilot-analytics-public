@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Advanced Viva Insights — Collaboration Analysis Guide. Last validated 16 July 2026.">
+<link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/3-operate/collaboration-analysis.html">
+
     <title>Advanced Viva Insights — Collaboration Analysis Guide</title>
     <link rel="stylesheet" href="../assets/docs-style.css">
     <script defer src="../assets/shell.js"></script>
@@ -11,6 +14,12 @@
   h2 { border-left: 4px solid var(--primary); border-bottom: none; padding-left: 12px; }
   /* Callout default (info-style) for this page */
   .callout { background: rgba(66,42,251,0.06); border-color: var(--accent); }
+</style>
+
+<style id="generated-inline-styles">
+.u-1872868539 { opacity:0.3 }
+.u-fcab3f93be { opacity:0.6;font-size:0.9em }
+.u-72a68ac344 { text-align: center; }
 </style>
 </head>
 <body class="has-nav">
@@ -21,8 +30,8 @@
     <span class="breadcrumb">Operate</span>
     <span class="separator">/</span>
     <span class="breadcrumb">Collaboration Analysis</span>
-    <span class="separator" style="opacity:0.3">/</span>
-    <span class="breadcrumb current-section" id="currentSection" style="opacity:0.6;font-size:0.9em"></span>
+    <span class="separator u-1872868539">/</span>
+    <span class="breadcrumb current-section u-fcab3f93be" id="currentSection"></span>
   </div>
   <div class="doc-nav-right">
     <a href="../artifacts/pdfs/Advanced_Viva_Insights_Collaboration_Guide.pdf" class="pdf-btn" title="Download PDF">&#128196; PDF</a>
@@ -44,6 +53,7 @@
         <li><a href="#howto">How to Create a Collaboration Report</a></li>
         <li><a href="#scenarios">Common Use Cases</a></li>
         <li><a href="#retention">Data Retention</a></li>
+        <li><a href="#operations">Operational Validation</a></li>
         <li><a href="#references">References</a></li>
     </ol>
 </div>
@@ -52,7 +62,7 @@
 <h2 id="purpose">1. Purpose</h2>
 <p>
     This guide covers using Viva Insights Advanced Analysis to understand workplace collaboration
-    patterns <strong>beyond Copilot</strong>. The same analyst workbench, the same <a href="https://learn.microsoft.com/viva/insights/advanced/admin/org-data-overview">org data</a>, the
+    patterns <strong>beyond Copilot</strong>. The same analyst workbench, governed <a href="https://learn.microsoft.com/viva/organizational-data">organizational data</a>, the
     same privacy settings, and the same Power BI workflow — but with different metrics and templates
     focused on meetings, focus time, wellbeing, and manager effectiveness.
 </p>
@@ -72,9 +82,9 @@
 <table>
     <thead>
         <tr>
-            <th>Aspect</th>
-            <th>Copilot Analytics</th>
-            <th>Collaboration Analysis</th>
+            <th scope="col">Aspect</th>
+            <th scope="col">Copilot Analytics</th>
+            <th scope="col">Collaboration Analysis</th>
         </tr>
     </thead>
     <tbody>
@@ -85,8 +95,8 @@
         </tr>
         <tr>
             <td>Org data</td>
-            <td>Shared org data upload</td>
-            <td>Same org data — carries over automatically</td>
+            <td>Attributes shared with Copilot Dashboard and Viva Insights</td>
+            <td>Uses the Viva Insights organizational dataset and partition configuration; verify the selected apps, current source, and attribute access</td>
         </tr>
         <tr>
             <td>Privacy settings</td>
@@ -115,16 +125,19 @@
         </tr>
         <tr>
             <td>Can run simultaneously</td>
-            <td colspan="2" style="text-align: center;">Yes — no conflict. Both query types can be active concurrently.</td>
+            <td colspan="2" class="u-72a68ac344">Yes — no conflict. Both query types can be active concurrently.</td>
         </tr>
     </tbody>
 </table>
 
 <div class="callout">
-    <strong>Key Insight:</strong> If you have already configured org data, partitions, and privacy
-    settings for Copilot Analytics, you can start running collaboration queries immediately
-    with no additional setup.
+    <strong>Key Insight:</strong> Existing Viva Insights organizational data, partitions, and privacy
+    settings can be reused, but first verify that the tenant&rsquo;s current data source is healthy,
+    the analyst is assigned to the intended partition, and the requested report is supported in
+    the tenant cloud.
 </div>
+
+<p><strong>Sources:</strong> <a href="https://learn.microsoft.com/viva/organizational-data">Organizational Data in Microsoft 365</a> (Microsoft Learn, updated 2 December 2025); <a href="https://learn.microsoft.com/viva/insights/advanced/admin/partitions">Partitions in Viva Insights</a> (23 June 2025); and <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported Microsoft 365 environments for Viva Insights features</a> (30 June 2026).</p>
 
 <!-- Section 3 -->
 <h2 id="templates">3. Available Collaboration Templates</h2>
@@ -136,9 +149,10 @@
 <table>
     <thead>
         <tr>
-            <th>Template</th>
-            <th>Analysis Focus</th>
-            <th>Key Questions Answered</th>
+            <th scope="col">Template</th>
+            <th scope="col">Analysis Focus</th>
+            <th scope="col">Key Questions Answered</th>
+            <th scope="col">GCC Availability</th>
         </tr>
     </thead>
     <tbody>
@@ -150,6 +164,7 @@
                 effective? Do employees get sufficient focus time? Are managers coaching
                 their teams?
             </td>
+            <td>Supported</td>
         </tr>
         <tr>
             <td><strong>Meeting Effectiveness</strong></td>
@@ -158,6 +173,7 @@
                 Are meetings too long? Too frequent? Do employees multitask during meetings?
                 How much time is spent in recurring vs. ad-hoc meetings?
             </td>
+            <td>Supported</td>
         </tr>
         <tr>
             <td><strong>Wellbeing – Balance &amp; Flexibility</strong></td>
@@ -166,6 +182,7 @@
                 Are employees working after hours? Do they have enough focus time? Are
                 schedules flexible? Do employees take breaks and connect with colleagues?
             </td>
+            <td>Supported</td>
         </tr>
         <tr>
             <td><strong>Impact Explorer</strong></td>
@@ -174,6 +191,7 @@
                 Did meeting reduction initiatives save time? Did focus time protection
                 improve productivity? What is the estimated impact of behavioural nudges?
             </td>
+            <td>Supported</td>
         </tr>
         <tr>
             <td><strong>Manager Effectiveness</strong></td>
@@ -182,6 +200,7 @@
                 Are managers spending enough 1:1 time with direct reports? What is the
                 typical span of control? How do team collaboration patterns vary by manager?
             </td>
+            <td>Not listed as supported</td>
         </tr>
         <tr>
             <td><strong>External Collaboration</strong></td>
@@ -190,9 +209,21 @@
                 How much time is spent collaborating with external parties? Which teams
                 have the most external interaction? What channels are used?
             </td>
+            <td>Not listed as supported</td>
         </tr>
     </tbody>
 </table>
+
+<div class="callout-warning">
+    <strong>Environment gate:</strong> In GCC, Microsoft lists only Business resilience, Impact
+    explorer, Meeting effectiveness, Recurring meeting audit, Ways of working, and Wellbeing
+    &ndash; Balance and flexibility as supported behavioral Power BI reports and publishable
+    reports. Custom queries are supported. The reviewed matrix covers Worldwide and GCC; do not
+    infer GCC High or DoD parity. Validate the exact cloud and live tenant UI before committing
+    to a template. <strong>Source:</strong>
+    <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported Microsoft 365 environments for Viva Insights features</a>
+    (Microsoft Learn, updated 30 June 2026).
+</div>
 
 <h3>Template References</h3>
 <ul>
@@ -214,8 +245,8 @@
 <table>
     <thead>
         <tr>
-            <th>Category</th>
-            <th>Metrics</th>
+            <th scope="col">Category</th>
+            <th scope="col">Metrics</th>
         </tr>
     </thead>
     <tbody>
@@ -312,14 +343,14 @@
 <table>
     <thead>
         <tr>
-            <th>Requirement</th>
-            <th>Details</th>
+            <th scope="col">Requirement</th>
+            <th scope="col">Details</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td><strong>Role</strong></td>
-            <td><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/assign-user-roles">Insights Analyst role</a> assigned in the Microsoft 365 Admin Center</td>
+            <td><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/user-roles">Insights Analyst role</a> assigned independently in the Microsoft 365 admin center, plus access to the intended partition</td>
         </tr>
         <tr>
             <td><strong>Licences</strong></td>
@@ -331,7 +362,7 @@
         </tr>
         <tr>
             <td><strong>Org Data</strong></td>
-            <td>Uploaded via Viva Insights admin settings (CSV or Azure AD sync)</td>
+            <td>Confirm the current source and selected downstream apps in the tenant. For add/edit imports, Message Center and the live tenant UI control whether Organizational Data in Microsoft 365 or a tenant-enabled Viva path applies; do not infer the path from a date.</td>
         </tr>
         <tr>
             <td><strong>Behavioural Insights</strong></td>
@@ -342,6 +373,21 @@
         </tr>
     </tbody>
 </table>
+
+<p><strong>Current-state sources:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center">Upload and maintain data through the Microsoft 365 admin center</a> (Microsoft Learn, updated 5 December 2025) says migration timing is tenant-specific and communicated in Message Center; <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Use Microsoft Entra plus .csv files for parallel data uploads</a> (visible date 30 June 2025; content refreshed 7 July 2026) says add/edit uploads are no longer supported in the Viva web app; <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#upload-organizational-data-for-the-copilot-dashboard-and-agent-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, and Viva Insights web app</a> (20 March 2026) still recommends that path for Viva Insights customers. If Message Center and UI conflict, stop and escalate rather than choosing an article silently.</p>
+
+<div class="callout-warning">
+    <strong>Analyst data handling:</strong> Insights Analysts can access de-identified individual-level
+    organizational and Microsoft 365 metrics. Encrypted person identifiers reduce direct
+    identification, but title, location, organization, or custom attributes can enable inference.
+    Assign least-privilege partitions, require privacy/security training, document the approved
+    analysis purpose, govern downloaded CSV/PBI output as potentially personal data, and review
+    the audit log of analyst-authored queries. <strong>Sources:</strong>
+    <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/user-roles#levels-of-responsibility">Roles in Viva Insights &mdash; Levels of responsibility</a>
+    (Microsoft Learn, updated 7 July 2026) and
+    <a href="https://learn.microsoft.com/viva/insights/advanced/privacy/privacy#advanced-analysis">Advanced analysis privacy &mdash; Advanced analysis access</a>
+    (10 December 2025).
+</div>
 
 <div class="callout-warning">
     <strong>Note:</strong> If <code>TenantPolicyForBehavioralExperiences</code> is set to OFF,
@@ -380,7 +426,7 @@
     <li>Explore the report — navigate through the pre-built pages, apply filters, and customise
         visualisations as needed.</li>
     <li>To share with leadership, use the <strong><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/query-results">Publish Reports</a></strong> feature in Viva Insights
-        to push a read-only version to authorised viewers.</li>
+        to push a read-only version to authorised viewers, only when that report is supported in the tenant cloud.</li>
 </ol>
 
 <div class="callout-success">
@@ -412,7 +458,7 @@
     <p><strong>Goal:</strong> Capture focus time, after-hours work, and work-life balance metrics <strong>before</strong> Copilot deployment. Then compare after 3 months using the Copilot Impact template.</p>
     <p><strong>Approach:</strong></p>
     <ol>
-        <li>Run the Wellbeing template covering the 4 weeks immediately before Copilot licence assignment — this is the "4-week baseline window" referenced in the <a href="../docs/core/Copilot_Analytics_Implementation_Guide.html">Copilot Analytics Implementation Guide</a>.</li>
+        <li>Run the Wellbeing template covering the 4 weeks immediately before Copilot licence assignment. Record the baseline period and cohort before comparing post-deployment results; see the <a href="analyst-playbook.html#business-impact">Analyst Playbook: Business Impact setup and interpretation</a>.</li>
         <li>Record baseline metrics: average focus hours, after-hours collaboration hours, weekend work hours.</li>
         <li>After 3 months of Copilot usage, run the Copilot Impact template for the same population.</li>
         <li>Compare pre- and post-deployment metrics to quantify Copilot's impact on employee wellbeing.</li>
@@ -444,21 +490,21 @@
 <table>
     <thead>
         <tr>
-            <th>Data Type</th>
-            <th>Maximum Retention</th>
-            <th>Notes</th>
+            <th scope="col">Data Type</th>
+            <th scope="col">Maximum Retention</th>
+            <th scope="col">Notes</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td><strong>Collaboration metrics</strong> (meetings, email, chat, focus time)</td>
             <td>Up to 27 months</td>
-            <td>Starts at 13 months and grows weekly as new data accumulates. Full 27-month window available after ~14 months of active data collection.</td>
+            <td>Initially 13 months, then grows through weekly refreshes to a maximum of 27 months. No collaboration data older than 27 months is retained.</td>
         </tr>
         <tr>
             <td><strong>Copilot metrics</strong> (adoption, usage, impact, sentiment)</td>
             <td>Up to 13 months</td>
-            <td>Shorter retention window due to newer data collection. Does not extend beyond 13 months.</td>
+            <td>Viva Insights retains Microsoft 365 Copilot metrics for no more than 13 months.</td>
         </tr>
     </tbody>
 </table>
@@ -470,13 +516,32 @@
     seasonal trends, reorganisation impacts, and long-term cultural shifts.
 </div>
 
+<p><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/privacy/privacy#data-retention-for-active-tenants">Advanced analysis privacy &mdash; Data retention for active tenants</a> (Microsoft Learn, updated 10 December 2025).</p>
+
 <!-- Section 10 -->
-<h2 id="references">10. References</h2>
+<h2 id="operations">10. Operational Validation</h2>
+
+<table>
+    <thead>
+        <tr><th scope="col">Cadence</th><th scope="col">Check</th><th scope="col">Pass / escalation rule</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Before each new analysis</td><td>Confirm tenant cloud, template availability, analyst role/partition, current org-data source, privacy threshold, and approved purpose.</td><td>Proceed only when each dependency is evidenced. Stop if Message Center and UI disagree.</td></tr>
+        <tr><td>After an org-data or partition change</td><td>Rerun a known query; compare population, key attributes, suppression, and partition scope with the pre-change baseline.</td><td>Pass when counts and scope reconcile. Roll back/correct the data or partition and preserve logs if they do not.</td></tr>
+        <tr><td>Monthly</td><td>Review Message Center and Microsoft 365 Service Health for Viva Insights changes/incidents; check query failures, data freshness, and auto-refresh status.</td><td>Record notice/incident IDs and dates. Do not diagnose a tenant defect until current service and rollout notices are excluded.</td></tr>
+        <tr><td>Quarterly</td><td>Review analyst assignments, partitions, query audit logs, exported report locations, retention, and the supported-environments matrix.</td><td>Remove unnecessary access/copies. Escalate undocumented product behavior with query ID, partition ID, UTC time, cloud, expected/actual counts, and screenshots.</td></tr>
+    </tbody>
+</table>
+
+<p><strong>Sources:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/privacy/privacy#advanced-analysis">Advanced analysis privacy &mdash; Advanced analysis access and query logging</a> (Microsoft Learn, updated 10 December 2025); organizational-data migration notices are documented in <a href="https://learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center#migration-and-timeline">Upload and maintain data through the Microsoft 365 admin center</a> (5 December 2025).</p>
+
+<!-- Section 11 -->
+<h2 id="references">11. References</h2>
 <table>
     <thead>
         <tr>
-            <th>Topic</th>
-            <th>URL</th>
+            <th scope="col">Topic</th>
+            <th scope="col">URL</th>
         </tr>
     </thead>
     <tbody>

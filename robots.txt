@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sumitsadhu1.github.io/copilot-analytics-public/sitemap.xml

@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Copilot Analytics — Quick-Start Cheat Sheet. Last validated 16 July 2026.">
+<link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/artifacts/Copilot_Analytics_QuickStart_CheatSheet.html">
 <title>Copilot Analytics — Quick-Start Cheat Sheet</title>
 <link rel="stylesheet" href="../assets/docs-style.css">
 <script defer src="../assets/shell.js"></script>
@@ -24,6 +26,7 @@
   code { font-size: 7.5pt; padding: 0 3px; }
   .footer { text-align: center; font-size: 7pt; color: var(--text-muted); margin-top: 6px; border-top: 1px solid var(--border); padding-top: 4px; }
   .warn { background: #FFF6DA; border-left: 3px solid #FFB547; padding: 3px 6px; font-size: 7.5pt; margin: 4px 0; border-radius: 3px; }
+  .footnote { font-size: 0.8em; color: #666; }
   /* Mobile: let it breathe */
   @media (max-width: 768px) {
     body { max-width: 100%; font-size: 14px; }
@@ -47,53 +50,65 @@
 </nav>
 
 <h1>Microsoft 365 Copilot Analytics — Quick-Start Cheat Sheet</h1>
-<div class="subtitle">Implementation Checklist &bull; All 5 Tiers &bull; February 2026</div>
+<div class="subtitle">Implementation Checklist &bull; Six Copilot Analytics Areas &bull; Validated 16 July 2026</div>
 
 <div class="cols">
 <div class="col">
 
-<h2>Tier 1 — Admin Center (Day 1)</h2>
+<h2>Admin Center Reports (Day 1)</h2>
 <ul>
   <li>Verify Reports Reader role</li>
   <li>Reports → Usage → Microsoft 365 Copilot</li>
-  <li>Wait ~72 hours for data → export CSV</li>
+  <li>Review licensed Copilot and unlicensed Copilot Chat reports separately</li>
+  <li>Wait for report processing → export CSV if needed</li>
 </ul>
 
-<h2>Tier 2 — Copilot Dashboard (Day 1–7)</h2>
+<h2>Copilot Dashboard (Day 1–7)</h2>
 <ul>
-  <li>Verify 50+ assigned Copilot/Viva Insights licences</li>
+  <li>Core processing: 1+ Copilot or 50 assigned Viva Insights service plans</li>
+  <li>50-plan capabilities: count the Viva service plan included with Copilot; verify conflicting Learn wording in the tenant</li>
   <li>Verify Entra ID manager hierarchy populated</li>
   <li>AI Admin: add self + users to access</li>
   <li>Insights Admin: enable Manager Settings (toggle on "Grant managers scoped access")</li>
-  <li>Upload org data CSV (PersonId, ManagerId, Organization + custom)</li>
+  <li>Use Organizational Data in Microsoft 365 unless Message Center and tenant UI show another supported path</li>
   <li>Configure minimum group size (default 10, min 5)</li>
-  <li>Configure hourly rate for ROI (default $72/h)</li>
+  <li>Enable optional diagnostics for comprehensive Assisted Hours inputs</li>
+  <li>Document the $72/h estimate and reapply custom rate/currency each session</li>
   <li>Optional: exclusion list, sentiment surveys</li>
-  <li>Wait up to 7 days → verify all 4 pages</li>
+  <li>Wait up to 7 days → verify Readiness, Adoption, Impact, scope, and filters</li>
 </ul>
 
-<h2>Tier 3 — Analytics Reports (Auto)</h2>
+<h2>Copilot Analytics Reports</h2>
 <ul>
   <li>No action — auto-available to Dashboard users</li>
   <li>Verify: Viva Insights → Reports (left nav)</li>
 </ul>
 
-<h2>Tier 4 — Agent Dashboard (Day 7+)</h2>
+<h2>Agent Dashboard (Preview)</h2>
 <ul>
-  <li>On by default — verify in Viva Insights left nav</li>
+  <li>Conservative prerequisite: 50 Copilot licences + agent activity</li>
+  <li>Not available in GCC/national-regional clouds</li>
   <li>Delegates need "Your company" scope (not "Your group")</li>
-  <li>If agents deployed, verify activity data</li>
+  <li>Validate feature presence and preview data handling in the tenant</li>
 </ul>
 
-<h2>Tier 5 — Advanced Analytics (Week 2+)</h2>
+<h2>Advanced Reporting (Week 2+)</h2>
 <ul>
   <li>Assign Insights Analyst role → wait 1–2 hours</li>
   <li>Grant partition access</li>
-  <li>Org data uploaded &amp; processed (from Tier 2)</li>
-  <li>Install Power BI Desktop (June 2022+)</li>
+  <li>Insights Admin and Insights Analyst roles are independent</li>
+  <li>Install a current Power BI Desktop version</li>
   <li>Create Copilot Impact query</li>
   <li>Connect Power BI via OData feed → apply template</li>
-  <li>Configure scheduled refresh</li>
+  <li>Use Business Impact for outcome correlation; do not claim causation</li>
+</ul>
+
+<h2>Consumption Dashboard</h2>
+<ul>
+  <li>Global-partition analyst or Global Admin: company scope</li>
+  <li>Enabled manager: group scope; no delegation</li>
+  <li>Current M365 service data: Cowork and Work IQ API</li>
+  <li>Reconcile official charges in Microsoft 365 admin center/GitHub</li>
 </ul>
 
 </div>
@@ -110,7 +125,7 @@
 
 <h2>Key Wait Times</h2>
 <table>
-  <tr><th>Action</th><th>Wait</th></tr>
+  <tr><th scope="col">Action</th><th scope="col">Wait</th></tr>
   <tr><td>Admin Center data</td><td>~72 hours</td></tr>
   <tr><td>Dashboard initial data</td><td>Up to 7 days</td></tr>
   <tr><td>Manager settings change</td><td>1 hour</td></tr>
@@ -124,36 +139,36 @@
 <h2>Org Data — Sources &amp; Required Fields</h2>
 
 <div class="warn">
-  <strong>Migration Notice:</strong> By mid-2026 all tenants will use the <strong>M365 Admin Center</strong> for org data uploads (not Viva Insights web app). Use <code>Microsoft_*</code> column names. Do NOT include <code>EffectiveDate</code> as a column.
+  <strong>Tenant-state gate:</strong> Microsoft pages conflict on legacy Viva upload availability. Check Message Center and the live tenant UI. Use Organizational Data in Microsoft 365 for new/edited uploads unless the tenant explicitly shows another supported path.
 </div>
 
 <table>
-  <tr><th>Source</th><th>Status</th><th>Best For</th></tr>
+  <tr><th scope="col">Source</th><th scope="col">Status</th><th scope="col">Best For</th></tr>
   <tr><td>CSV Upload (M365 Admin Center)</td><td>GA — Primary</td><td>Any HRIS. Incremental merge.</td></tr>
   <tr><td>SAP SuccessFactors Connector</td><td>GA</td><td>SAP SF orgs. No CSV needed.</td></tr>
   <tr><td>Workday Connector</td><td>GA</td><td>Workday orgs (≤100K users).</td></tr>
-  <tr><td>Azure Blob Storage</td><td>GA</td><td>Automated CSV drop.</td></tr>
+  <tr><td>Azure Blob Storage</td><td>Preview / WW only</td><td>Automated CSV drop.</td></tr>
   <tr><td>API-Based Import</td><td>Preview</td><td>Custom HRIS. Incremental refresh.</td></tr>
-  <tr><td>CSV Upload (Viva Insights)</td><td>Deprecated</td><td>Legacy — retiring mid-2026.</td></tr>
+  <tr><td>CSV Upload (Viva Insights)</td><td>Tenant/source conflict</td><td>Follow Message Center and live UI.</td></tr>
 </table>
 
 <table>
-  <tr><th>Legacy Name</th><th>M365 Admin Center Name</th><th>Req?</th></tr>
+  <tr><th scope="col">Legacy Name</th><th scope="col">M365 Admin Center Name</th><th scope="col">Req?</th></tr>
   <tr><td>PersonId</td><td>Microsoft_PersonEmail</td><td>Yes</td></tr>
   <tr><td>ManagerId</td><td>Microsoft_ManagerEmail</td><td>Yes</td></tr>
   <tr><td>Organization</td><td>Microsoft_Organization</td><td>Yes</td></tr>
   <tr><td>EffectiveDate</td><td>N/A (date picker)</td><td>No*</td></tr>
   <tr><td>FunctionType</td><td>Microsoft_JobDiscipline</td><td>Opt.</td></tr>
 </table>
-<p style="font-size:0.8em;color:#666;">* EffectiveDate not needed in M365 Admin Center uploads — handled via UI date picker. Still required for legacy Viva Insights uploads.</p>
+<p class="footnote">* EffectiveDate not needed in Microsoft 365 admin center uploads — handled via UI date picker. It remains required only when the tenant UI and Message Center show that a legacy Viva Insights upload is still supported.</p>
 
 <h2>Roles Needed</h2>
 <table>
-  <tr><th>Role</th><th>What They Do</th></tr>
+  <tr><th scope="col">Role</th><th scope="col">What They Do</th></tr>
   <tr><td>Global Admin</td><td>Assign licences &amp; roles</td></tr>
   <tr><td>AI Admin</td><td>Dashboard access, Viva feature access management (VFAM), exclusion lists</td></tr>
-  <tr><td>Insights Admin</td><td>Org data (legacy), privacy, manager settings</td></tr>
-  <tr><td>Org Data Source Admin</td><td>Org data uploads via M365 Admin Center (post-migration)</td></tr>
+  <tr><td>Insights Admin</td><td>Privacy, partitions, manager settings; no analyst capability</td></tr>
+  <tr><td>Org Data Source Admin</td><td>Organizational Data in Microsoft 365 imports</td></tr>
   <tr><td>Insights Analyst</td><td>Queries, Power BI, advanced analysis</td></tr>
 </table>
 
@@ -161,9 +176,13 @@
   <strong>Common Gotcha:</strong> AI Admin does NOT get automatic dashboard access — must add self via access management settings.
 </div>
 
+<div class="warn">
+  <strong>Multi-agency:</strong> Partitions scope analyst queries. They are not tenant or cryptographic isolation. Test Dashboard, Agent, exports, delegates, managers, global roles, Power BI, and global partitions before go-live.
+</div>
+
 <h2>Suggested Review Cadence</h2>
 <table>
-  <tr><th>Cadence</th><th>Who</th><th>What</th></tr>
+  <tr><th scope="col">Cadence</th><th scope="col">Who</th><th scope="col">What</th></tr>
   <tr><td>Weekly</td><td>IT Admin</td><td>Licence utilisation, inactive users</td></tr>
   <tr><td>Fortnightly</td><td>Leaders</td><td>Assisted Hours, adoption trends</td></tr>
   <tr><td>Monthly</td><td>Leaders</td><td>Analytics Reports, agent data</td></tr>
@@ -174,7 +193,7 @@
 </div>
 
 <div class="footer">
-  Microsoft 365 Copilot Analytics Implementation Guide v3.0 &bull; Quick-Start Cheat Sheet &bull; February 2026 &bull; Print as PDF: File → Print → Save as PDF
+  Independent Microsoft 365 Copilot Analytics guidance &bull; Release 5.0 &bull; Validated 16 July 2026 &bull; HTML is canonical
 </div>
 
 </body>

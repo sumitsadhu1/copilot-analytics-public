@@ -36,6 +36,7 @@ SNAPSHOTS_DIR = SCRIPT_DIR / "snapshots"
 USER_AGENT = "CopilotAnalyticsHub-FactChecker/1.0 (github.com/sumitsadhu1/copilot-analytics-public)"
 FETCH_TIMEOUT = 30
 FETCH_DELAY = 1.5  # seconds between requests to be polite
+FETCH_RETRIES = 3
 
 
 class TextExtractor(HTMLParser):
@@ -80,17 +81,22 @@ class LinkExtractor(HTMLParser):
 
 def fetch_page(url):
     """Fetch a URL and return (status_code, text_content, raw_html)."""
-    req = Request(url, headers={"User-Agent": USER_AGENT})
-    try:
-        with urlopen(req, timeout=FETCH_TIMEOUT) as resp:
-            raw = resp.read().decode('utf-8', errors='replace')
-            extractor = TextExtractor()
-            extractor.feed(raw)
-            return resp.status, extractor.get_text(), raw
-    except HTTPError as e:
-        return e.code, "", ""
-    except (URLError, Exception) as e:
-        return 0, "", ""
+    last_status = 0
+    for _ in range(FETCH_RETRIES):
+        req = Request(url, headers={"User-Agent": USER_AGENT})
+        try:
+            with urlopen(req, timeout=FETCH_TIMEOUT) as resp:
+                raw = resp.read().decode('utf-8', errors='replace')
+                extractor = TextExtractor()
+                extractor.feed(raw)
+                return resp.status, extractor.get_text(), raw
+        except HTTPError as exc:
+            last_status = exc.code
+            if exc.code not in (408, 429, 500, 502, 503, 504):
+                break
+        except (URLError, OSError):
+            last_status = 0
+    return last_status, "", ""
 
 
 def hash_content(text):
@@ -125,6 +131,9 @@ def save_snapshot(page_id, content_hash, links=None, last_updated=None):
 
 def extract_last_updated(html):
     """Extract the 'Last updated on' date from an MS Learn page."""
+    match = re.search(r'<meta\s+name=["\']ms\.date["\']\s+content=["\']([^"\']+)', html, re.IGNORECASE)
+    if match:
+        return match.group(1)
     match = re.search(r'Last updated on (\d{2}/\d{2}/\d{4})', html)
     if match:
         return match.group(1)
@@ -143,10 +152,11 @@ def extract_links_from_html(html):
 
 def check_fact(fact, page_text):
     """Check if a fact's verify_text strings are present in the page text."""
-    text_lower = page_text.lower()
+    text_lower = re.sub(r'\s+', ' ', page_text).lower()
     missing = []
     for term in fact.get("verify_text", []):
-        if term.lower() not in text_lower:
+        normalised_term = re.sub(r'\s+', ' ', term).lower()
+        if normalised_term not in text_lower:
             missing.append(term)
     return missing
 
@@ -365,6 +375,7 @@ def main():
             print()
 
     if report["pages_failed"]:
+        has_issues = True
         print(f"❌ FETCH FAILURES: {len(report['pages_failed'])}")
         for pf in report["pages_failed"]:
             print(f"   {pf['id']}: HTTP {pf['status']} — {pf['url']}")
@@ -391,7 +402,9 @@ def main():
     print(f"Full report saved to: {output_path}")
 
     # Exit code
-    if report["fact_discrepancies"] or report["new_pages_detected"]:
+    if report["pages_failed"]:
+        sys.exit(2)
+    elif report["fact_discrepancies"] or report["new_pages_detected"]:
         # Discrepancies or new pages found — CI should warn (but not block)
         sys.exit(1)
     elif report["pages_changed"]:

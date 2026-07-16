@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Independent, role-based implementation guidance for Microsoft 365 Copilot Analytics, Viva Insights reporting, privacy, and operations.">
+<link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/index.html">
 <title>Copilot Analytics — Documentation Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -59,6 +61,23 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  .skip-link {
+    position: fixed; top: 8px; left: 12px; z-index: 2000;
+    padding: 8px 12px; border-radius: 6px; background: #fff;
+    color: var(--text); font-weight: 700; text-decoration: none;
+    box-shadow: var(--depth-16); transform: translateY(-160%);
+    transition: transform 120ms ease;
+  }
+  .skip-link:focus { transform: translateY(0); }
+  .trust-strip {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px;
+    margin-bottom: 20px; padding: 10px 14px; border: 1px solid var(--border-strong);
+    border-left: 4px solid var(--accent); border-radius: 8px; background: #fff;
+    color: var(--text-secondary); font-size: 0.82rem; box-shadow: var(--shadow-card);
+  }
+  .trust-strip strong { color: var(--text); }
+  .trust-strip a { color: var(--accent); font-weight: 700; }
 
   ::selection {
     background: rgba(66, 42, 251, 0.14);
@@ -296,11 +315,20 @@
     .role-btn { flex-shrink: 0; }
   }
 </style>
+
+<style id="generated-inline-styles">
+.u-18b80e6dff { color:var(--accent);font-weight:600; }
+.u-9438043378 { font-size:0.9rem;color:var(--text-secondary);margin-top:6px; }
+.u-88fa8d5d7b { font-size:1rem;font-weight:600;color:var(--text); }
+.u-4b40d8a315 { margin-top:10px;color:var(--muted); }
+.u-bb6a43fd28 { position:absolute }
+</style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
 
 <!-- Icon sprite -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<svg width="0" height="0" class="u-bb6a43fd28" aria-hidden="true" focusable="false"><defs>
   <symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></symbol>
   <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20.5 20.5 16.6 16.6"/></symbol>
   <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
@@ -343,12 +371,17 @@
     <a class="nav-item" href="browse.html#operate"><svg class="ic"><use href="#i-chart"/></svg><span class="nav-txt">Operate</span></a>
     <a class="nav-item" href="browse.html#reference"><svg class="ic"><use href="#i-book"/></svg><span class="nav-txt">Reference</span></a>
     <hr>
-    <a class="nav-item" href="artifacts/Org_Data_Validation_Prompt.html"><svg class="ic"><use href="#i-tools"/></svg><span class="nav-txt">Tools</span></a>
+    <a class="nav-item" href="tools/index.html"><svg class="ic"><use href="#i-tools"/></svg><span class="nav-txt">Tools</span></a>
     <a class="nav-item" href="browse.html"><svg class="ic"><use href="#i-grid"/></svg><span class="nav-txt">Browse all</span></a>
   </nav>
 
-  <main class="app-main">
+  <main class="app-main" id="main-content" tabindex="-1">
     <div class="main-inner">
+      <aside class="trust-strip" aria-label="Publication status">
+        <strong>Independent publication</strong><span>Last validated 16 July 2026</span><span>Owner: Sumit Sadhu</span>
+        <a href="4-reference/change-history.html">Change history</a>
+        <a href="https://github.com/sumitsadhu1/copilot-analytics-public/issues/new">Report a correction</a>
+      </aside>
       <div class="greeting">
         <div class="eyebrow">Microsoft 365 Copilot Analytics</div>
         <h1>Documentation hub</h1>
@@ -369,11 +402,11 @@
       <!-- Get started tasks -->
       <section id="p-tasks">
         <div class="dash-grid">
-          <article class="dash-card" data-search="setup admin roll out first time five tiers configuration" data-eyebrow="Setup" data-tile="t-setup" data-icon="i-gear" data-title="Roll out Copilot analytics for the first time" data-desc="Read the Admin Setup Guide for end-to-end configuration across all five analytics tiers." data-href="2-setup/admin-setup.html" data-roles="IT Admin,Global Admin" data-persona="admin">
+          <article class="dash-card" data-search="setup admin roll out first time current six areas capabilities configuration" data-eyebrow="Setup" data-tile="t-setup" data-icon="i-gear" data-title="Roll out Copilot analytics for the first time" data-desc="Read the Admin Setup Guide for end-to-end configuration across current Copilot Analytics capabilities." data-href="2-setup/admin-setup.html" data-roles="IT Admin,Global Admin" data-persona="admin">
             <div class="dash-card-top"><span class="tile t-setup"><svg class="ic"><use href="#i-gear"/></svg></span><button class="card-info" aria-label="View details"><svg class="ic"><use href="#i-info"/></svg></button></div>
             <span class="chip c-setup">Setup</span>
             <h3>Roll out Copilot analytics for the first time</h3>
-            <p>End-to-end configuration across all five analytics tiers.</p>
+            <p>End-to-end configuration across current Copilot Analytics capabilities.</p>
             <div class="dash-card-actions"><a class="btn btn-primary btn-sm" href="2-setup/admin-setup.html">Open guide <svg class="ic"><use href="#i-arrow"/></svg></a></div>
           </article>
 
@@ -433,6 +466,30 @@
             <div class="dash-card-actions"><a class="btn btn-primary btn-sm" href="3-operate/analyst-playbook.html">Open guide <svg class="ic"><use href="#i-arrow"/></svg></a></div>
           </article>
 
+          <article class="dash-card" data-search="consumption dashboard Copilot Credits GitHub AI Credits Cowork Work IQ spending policy usage intensity cost FinOps" data-eyebrow="Operate" data-tile="t-operate" data-icon="i-chart" data-title="Monitor Copilot Credit consumption" data-desc="Use the Consumption Dashboard Operations guide for role scope, current Cowork and Work IQ coverage, usage intensity, spending-policy limits, export, and billing reconciliation." data-href="3-operate/consumption-dashboard.html" data-roles="FinOps,Analyst,Manager,Global Admin" data-persona="admin leader analyst">
+            <div class="dash-card-top"><span class="tile t-operate"><svg class="ic"><use href="#i-chart"/></svg></span><button class="card-info" aria-label="View details"><svg class="ic"><use href="#i-info"/></svg></button></div>
+            <span class="chip c-operate">Operate</span>
+            <h3>Monitor Copilot Credit consumption</h3>
+            <p>Track covered services, usage concentration, policy limits, exports, and billing reconciliation.</p>
+            <div class="dash-card-actions"><a class="btn btn-primary btn-sm" href="3-operate/consumption-dashboard.html">Open guide <svg class="ic"><use href="#i-arrow"/></svg></a></div>
+          </article>
+
+          <article class="dash-card" data-search="Copilot Chat reporting unlicensed admin report licensed users export Microsoft Graph API Reports.Read.All Purview audit Management Activity D7 D30 D90 D180 ALL programmatic" data-eyebrow="Operate" data-tile="t-operate" data-icon="i-chart" data-title="Choose an export or reporting API" data-desc="Compare Dashboard export, Advanced queries, Microsoft Graph v1.0, the unlicensed Copilot Chat admin report, and Purview audit sources." data-href="3-operate/analyst-playbook.html#programmatic-reporting" data-roles="Analyst,Data Engineer,Compliance" data-persona="analyst governance admin">
+            <div class="dash-card-top"><span class="tile t-operate"><svg class="ic"><use href="#i-chart"/></svg></span><button class="card-info" aria-label="View details"><svg class="ic"><use href="#i-info"/></svg></button></div>
+            <span class="chip c-operate">Reporting</span>
+            <h3>Choose an export or reporting API</h3>
+            <p>Licensed and unlicensed Chat reporting, fixed exports, custom queries, Graph v1.0, and audit.</p>
+            <div class="dash-card-actions"><a class="btn btn-primary btn-sm" href="3-operate/analyst-playbook.html#programmatic-reporting">Compare options <svg class="ic"><use href="#i-arrow"/></svg></a></div>
+          </article>
+
+          <article class="dash-card" data-search="tools utilities org data validation prompt Entra hierarchy PowerShell download reporting options Consumption Chat export API" data-eyebrow="Tools" data-tile="t-tools" data-icon="i-tools" data-title="Open tools and reporting options" data-desc="Find the org-data validation prompt, Entra hierarchy PowerShell download and README, Consumption Dashboard, Chat reporting, exports, APIs, and audit options." data-href="tools/index.html" data-roles="IT Admin,Analyst,Data Engineer,FinOps" data-persona="admin analyst governance">
+            <div class="dash-card-top"><span class="tile t-tools"><svg class="ic"><use href="#i-tools"/></svg></span><button class="card-info" aria-label="View details"><svg class="ic"><use href="#i-info"/></svg></button></div>
+            <span class="chip c-tools">Tools</span>
+            <h3>Open tools and reporting options</h3>
+            <p>Reusable data utilities and a current reporting-path decision guide.</p>
+            <div class="dash-card-actions"><a class="btn btn-primary btn-sm" href="tools/index.html">Open tools <svg class="ic"><use href="#i-arrow"/></svg></a></div>
+          </article>
+
           <article class="dash-card" data-search="privacy exclusions retention GDPR thresholds configuration" data-eyebrow="Setup" data-tile="t-setup" data-icon="i-gear" data-title="Configure privacy, exclusions or retention" data-desc="Read the Privacy Configuration guide for thresholds, exclusion lists, and GDPR settings." data-href="2-setup/privacy-configuration.html" data-roles="IT Admin,Compliance" data-persona="admin governance">
             <div class="dash-card-top"><span class="tile t-setup"><svg class="ic"><use href="#i-gear"/></svg></span><button class="card-info" aria-label="View details"><svg class="ic"><use href="#i-info"/></svg></button></div>
             <span class="chip c-setup">Setup</span>
@@ -444,13 +501,13 @@
       </section>
 
       <div class="no-results" id="noResults">
-        <p style="font-size:1rem;font-weight:600;color:var(--text);">No matches found</p>
-        <p style="font-size:0.9rem;color:var(--text-secondary);margin-top:6px;">Try a different keyword, or <a href="browse.html" style="color:var(--accent);font-weight:600;">browse all guides</a>.</p>
+        <p class="u-88fa8d5d7b">No matches found</p>
+        <p class="u-9438043378">Try a different keyword, or <a href="browse.html" class="u-18b80e6dff">browse all guides</a>.</p>
       </div>
 
       <footer class="footer">
         <p><strong>Disclaimer:</strong> These guides are procedural references and may not reflect the latest product changes. Always refer to the official <a href="https://learn.microsoft.com/viva/insights/">Viva Insights</a> and <a href="https://learn.microsoft.com/copilot/microsoft-365/">Microsoft 365 Copilot</a> documentation on Microsoft Learn.</p>
-        <p style="margin-top:10px;color:var(--muted);">Copilot Analytics &middot; April 2026</p>
+        <p class="u-4b40d8a315">Independent Copilot Analytics guidance &middot; Last validated 16 July 2026 &middot; <a href="4-reference/accessibility.html">Accessibility</a></p>
       </footer>
     </div>
   </main>
@@ -589,7 +646,11 @@
   document.getElementById('flyoutClose').addEventListener('click', closeFlyout);
   scrim.addEventListener('click', closeFlyout);
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') { closeFlyout(); body.classList.remove('nav-open'); updateToggleAria(); return; }
+    if (e.key === 'Escape') {
+      if (flyout.classList.contains('open')) { closeFlyout(); }
+      if (body.classList.contains('nav-open')) { body.classList.remove('nav-open'); updateToggleAria(); navToggle.focus(); }
+      return;
+    }
     if (e.key === 'Tab' && flyout.classList.contains('open')) {
       var f = flyout.querySelectorAll('button, a[href]');
       if (!f.length) { return; }

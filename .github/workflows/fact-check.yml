@@ -11,6 +11,7 @@ on:
       - 'decide/**'
       - 'explain/**'
       - 'artifacts/*.html'
+      - 'tools/**'
       - 'scripts/fact-check/**'
   workflow_dispatch:  # manual trigger for weekly runs or ad-hoc checks
 
@@ -41,9 +42,10 @@ jobs:
       - name: Run fact checker
         id: check
         continue-on-error: true
+        shell: bash
         run: |
+          set -o pipefail
           python3 scripts/fact-check/check_facts.py --verbose --update-snapshots 2>&1 | tee fact-check-output.txt
-          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
 
       - name: Create issue on discrepancies
         if: steps.check.outcome == 'failure'
@@ -84,6 +86,14 @@ jobs:
               for (const p of report.pages_changed) {
                 body += `- **${p.id}**: [${p.title}](${p.url}) — last updated ${p.last_updated || 'unknown'}\n`;
                 body += `  - Review: ${p.our_files.join(', ')}\n`;
+              }
+              body += '\n';
+            }
+
+            if (report.pages_failed && report.pages_failed.length > 0) {
+              body += '### Microsoft Learn Fetch Failures\n\n';
+              for (const p of report.pages_failed) {
+                body += `- **${p.id}**: HTTP ${p.status} — ${p.url}\n`;
               }
               body += '\n';
             }
@@ -141,3 +151,7 @@ jobs:
           print(f\"- New pages: {len(r['new_pages_detected'])}\")
           " >> $GITHUB_STEP_SUMMARY
           fi
+
+      - name: Fail on discrepancies or fetch failures
+        if: steps.check.outcome == 'failure'
+        run: exit 1

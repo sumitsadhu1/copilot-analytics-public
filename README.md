@@ -1,15 +1,19 @@
-# Microsoft 365 Copilot Analytics — Implementation Guide
+# Microsoft 365 Copilot Analytics — Documentation Hub
 
-A comprehensive, step-by-step guide for implementing all 5 tiers of Microsoft 365 Copilot analytics — from basic licence tracking to advanced ROI analysis using Power BI.
+Independent, role- and task-based guidance for implementing and operating Microsoft 365 Copilot Analytics, Viva Insights reporting, privacy, data, and multi-agency reporting patterns.
 
-> **Last verified against Microsoft Learn:** March 2026
+> **Release 5.0 — Last validated against Microsoft Learn: 16 July 2026**<br>
+> **Content owner:** Sumit Sadhu<br>
+> **Canonical format:** HTML. This is not official Microsoft documentation.
 
 ## How to Use This Repository
 
 **Option A — Browse everything locally:**
 [**Download the complete repository as ZIP**](../../archive/refs/heads/main.zip) → extract → open `index.html` in any browser. All guides, navigation, and PDFs will work offline.
 
-**Option B — Download individual PDFs** from the table below.
+**Option B — Open the [GitHub Pages documentation hub](https://sumitsadhu1.github.io/copilot-analytics-public/).**
+
+**Option C — Download individual PDFs** from the table below. PDFs are generated snapshots; use HTML when the two differ.
 
 ---
 
@@ -17,32 +21,41 @@ A comprehensive, step-by-step guide for implementing all 5 tiers of Microsoft 36
 
 | Document | Best For | Download |
 |----------|----------|----------|
-| **Copilot Analytics Implementation Guide** | IT admins implementing all 5 analytics tiers end-to-end. The master reference — start here. | [Download PDF](artifacts/pdfs/Copilot_Analytics_Implementation_Guide.pdf) |
-| **Setup Companion Guide** | IT admins who need a streamlined setup checklist without the deep-dive explanations. | [Download PDF](artifacts/pdfs/Copilot_Analytics_Setup_Companion_Guide.pdf) |
-| **Multi-Agency Isolation Architecture** | Organisations with multiple agencies in a single M365 tenant that need per-agency data isolation. | [Download PDF](artifacts/pdfs/Copilot_Multi_Agency_Isolation_Architecture.pdf) |
-| **Multi-Agency Default Priority Architecture** | Common multi-agency deployment scenarios with a streamlined setup path. | [Download PDF](artifacts/pdfs/Copilot_Multi_Agency_Default_Priority_Architecture.pdf) |
-| **Lifecycle & Billing Playbook** | Finance and IT ops managing licence lifecycle, Copilot Credits, billing models, and chargeback. | [Download PDF](artifacts/pdfs/Copilot_Lifecycle_Billing_Playbook.pdf) |
-| **Advanced Collaboration Analysis** | Analysts measuring collaboration patterns (meeting time, focus time, wellbeing) beyond Copilot metrics. | [Download PDF](artifacts/pdfs/Advanced_Viva_Insights_Collaboration_Guide.pdf) |
+| **Admin Setup Guide** | IT admins configuring access, roles, dashboard settings, and reporting prerequisites. | [Download PDF](artifacts/pdfs/Admin_Setup_Guide.pdf) |
+| **Dashboard & Reports Guide** | Leaders and analysts interpreting Copilot, Agent, exports, impact, and delegation. | [Download PDF](artifacts/pdfs/Dashboard_Reports_Guide.pdf) |
+| **Multi-Agency Restricted Reporting Pattern** | Organisations using defense-in-depth controls for agency-scoped reporting within one tenant. This is not a Microsoft security boundary. | [Download PDF](artifacts/pdfs/Copilot_Multi_Agency_Isolation_Architecture.pdf) |
+| **Multi-Agency Default Priority Pattern** | Organisations where cross-agency aggregate visibility is acceptable. | [Download PDF](artifacts/pdfs/Copilot_Multi_Agency_Default_Priority_Architecture.pdf) |
+| **Billing Operations** | Finance and IT ops managing lifecycle, credits, consumption, and chargeback. | [Download PDF](artifacts/pdfs/Billing_Operations.pdf) |
+| **Collaboration Analysis** | Analysts measuring meetings, focus, wellbeing, and collaboration patterns. | [Download PDF](artifacts/pdfs/Collaboration_Analysis.pdf) |
 | **Quick-Start Cheat Sheet** | Anyone who wants a 1-page printable checklist of the key setup steps. | [Download PDF](artifacts/pdfs/Copilot_Analytics_QuickStart_CheatSheet.pdf) |
-| **FAQ** | Quick answers to the 14 most common Copilot Analytics questions. | [Download PDF](artifacts/pdfs/Copilot_Analytics_FAQ.pdf) |
+| **FAQ** | Quick answers across licensing, access, reporting, data, privacy, and agents. | [Download PDF](artifacts/pdfs/FAQ.pdf) |
 
 ---
 
-## What's Covered
+## Current Capability Map
 
-| Tier | Dashboard | What It Shows |
-|:----:|-----------|---------------|
-| 1 | Admin Center Reports | User-level licence utilisation, feature adoption |
-| 2 | Copilot Dashboard | ROI metrics (Assisted Hours/Value), adoption trends, sentiment |
-| 3 | Copilot Analytics Reports | Targeted drill-down reports for leaders and managers |
-| 4 | Agent Dashboard | Copilot agent adoption, shadow AI detection |
-| 5 | Advanced Analytics (Power BI) | Before/after comparison, custom cohort segmentation |
+Microsoft Learn documents six Copilot Analytics areas:
+
+1. Microsoft 365 admin center readiness and adoption reports
+2. Microsoft Copilot Dashboard
+3. Agent Dashboard (preview)
+4. Consumption Dashboard
+5. Copilot Analytics reports
+6. Advanced Reporting and Power BI templates
+
+The repository also covers organizational data, privacy, DLP boundaries, troubleshooting, programmatic reporting, accessibility, and two clearly labeled author-created multi-agency reporting patterns.
+
+## Publication Governance
+
+- [Change history, ownership, evidence policy, and review cadence](4-reference/change-history.html)
+- [Accessibility statement](4-reference/accessibility.html)
+- [Comprehensive 16 July 2026 audit](AUDIT-2026-07-16.md)
+- [Report a correction](https://github.com/sumitsadhu1/copilot-analytics-public/issues/new)
+- Monthly Microsoft Learn drift checks and quarterly independent procedure/security/accessibility reviews
 
 ## Disclaimer
 
-This guide is provided as a practical reference and may not reflect the latest product changes.
-Always refer to [Microsoft Learn](https://learn.microsoft.com/viva/insights/) for the most current information.
-This is not official Microsoft documentation.
+This independent guide may not reflect tenant rollout, previews, commercial terms, or product changes after its validation date. Always verify current Microsoft Learn, Message Center, Service Health, target-tenant behavior, Microsoft Support guidance, and customer legal/compliance requirements.
 
 ## Contributing
 
