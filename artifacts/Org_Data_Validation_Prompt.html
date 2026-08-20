@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Org Data Validation Prompt. Last validated 16 July 2026.">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Org Data Validation Prompt. Last validated 19 August 2026.">
 <link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/artifacts/Org_Data_Validation_Prompt.html">
 <title>Org Data Validation Prompt — Copilot Analytics</title>
 <link rel="stylesheet" href="../assets/docs-style.css">
@@ -72,7 +72,7 @@
   <tr><td>Type</td><td>Reusable Prompt Template</td></tr>
   <tr><td>Audience</td><td>Analysts, IT Admins, Solution Architects</td></tr>
   <tr><td>Version</td><td>3.3 (tenant-state gate, surface-specific source precedence, current import limits, and supported correction operations). 3.2 added Problem ID Mapping to Prompt 1, Prompt 3, and Full Prompt.</td></tr>
-  <tr><td>Last validated</td><td>16 July 2026</td></tr>
+  <tr><td>Last validated</td><td>19 August 2026</td></tr>
 </table>
 
 <div class="callout info">
@@ -94,7 +94,7 @@
 <div class="callout warning">
   <div class="callout-title">File Schema Does Not Prove the Tenant Upload Path</div>
   <p><code>Microsoft_*</code> versus <code>PersonId</code>/<code>ManagerId</code> headers identify a file schema, not whether the tenant currently supports add/edit uploads in a particular portal. Microsoft Learn sources conflict about Viva web-app upload. The tenant&rsquo;s latest Message Center notice and actual controls in both admin surfaces are the operational authority. The prompts below must report the path as <strong>unconfirmed</strong> when that evidence is not supplied.</p>
-  <p><strong>Sources:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#upload-organizational-data-for-the-copilot-dashboard-and-agent-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, and Viva Insights web app</a> (Microsoft Learn, updated 20 March 2026); <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Use Microsoft Entra plus .csv files for parallel data uploads</a> (visible date 30 June 2025; content refreshed 7 July 2026); and <a href="https://learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center#migration-and-timeline">Upload and maintain data through the Microsoft 365 admin center &mdash; Migration and timeline</a> (5 December 2025).</p>
+  <p><strong>Sources:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#upload-organizational-data-for-the-copilot-dashboard-and-agent-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, and Viva Insights web app</a> (Microsoft Learn, updated 13 August 2026); <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Use Microsoft Entra plus .csv files for parallel data uploads</a> (visible date 30 June 2025; content refreshed 7 July 2026); and <a href="https://learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center#migration-and-timeline">Upload and maintain data through the Microsoft 365 admin center &mdash; Migration and timeline</a> (13 August 2026).</p>
 </div>
 
 <!-- ═══════════════════════ 1. MODULAR FLOW ═══════════════════════ -->
@@ -780,19 +780,19 @@ Now analyse the attached file and produce the validation report.
 
 <table>
   <tr><th scope="col">Topic</th><th scope="col">Microsoft Learn source</th><th scope="col">Updated</th></tr>
-  <tr><td>Organizational Data in Microsoft 365, requirements, and Profile precedence</td><td><a href="https://learn.microsoft.com/viva/organizational-data">learn.microsoft.com/viva/organizational-data</a></td><td>2 Dec 2025</td></tr>
-  <tr><td>Tenant migration, current portal, and Support rollback</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center">learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center</a></td><td>5 Dec 2025</td></tr>
-  <tr><td>Parallel Entra plus uploaded data</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload</a></td><td>Visible 30 Jun 2025; content refreshed 7 Jul 2026</td></tr>
-  <tr><td>CSV limits, update/delete markers, and historical import</td><td><a href="https://learn.microsoft.com/viva/import-orgdata">learn.microsoft.com/viva/import-orgdata</a></td><td>2 Apr 2026</td></tr>
-  <tr><td>Workday 100,000-user boundary and RaaS alternatives</td><td><a href="https://learn.microsoft.com/viva/import-org-data-workday">learn.microsoft.com/viva/import-org-data-workday</a></td><td>6 Apr 2026</td></tr>
-  <tr><td>API-based import (public preview)</td><td><a href="https://learn.microsoft.com/viva/import-org-data-api">learn.microsoft.com/viva/import-org-data-api</a></td><td>6 Apr 2026</td></tr>
-  <tr><td>Worldwide/GCC feature availability</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments</a></td><td>30 Jun 2026</td></tr>
+  <tr><td>Organizational Data in Microsoft 365, requirements, and Profile precedence</td><td><a href="https://learn.microsoft.com/viva/organizational-data">learn.microsoft.com/viva/organizational-data</a></td><td>2 December 2025</td></tr>
+  <tr><td>Tenant migration, current portal, and Support rollback</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center">learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center</a></td><td>13 August 2026</td></tr>
+  <tr><td>Parallel Entra plus uploaded data</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload</a></td><td>Visible 30 June 2025; content refreshed 7 July 2026</td></tr>
+  <tr><td>CSV limits, update/delete markers, and historical import</td><td><a href="https://learn.microsoft.com/viva/import-orgdata">learn.microsoft.com/viva/import-orgdata</a></td><td>29 July 2026</td></tr>
+  <tr><td>Workday 100,000-user boundary and RaaS alternatives</td><td><a href="https://learn.microsoft.com/viva/import-org-data-workday">learn.microsoft.com/viva/import-org-data-workday</a></td><td>6 April 2026</td></tr>
+  <tr><td>API-based import (public preview)</td><td><a href="https://learn.microsoft.com/viva/import-org-data-api">learn.microsoft.com/viva/import-org-data-api</a></td><td>6 April 2026</td></tr>
+  <tr><td>Worldwide/GCC feature availability</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments</a></td><td>30 June 2026</td></tr>
 </table>
 
 <!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
 <hr>
 <p class="u-772845a273">
-  <strong>Disclaimer:</strong> This prompt is provided for informational purposes only and was last validated on 16 July 2026. Microsoft may change features, previews, validation rules, and attribute requirements without notice. Verify Microsoft Learn, Message Center, and the live tenant UI before upload. This document is not official Microsoft documentation.
+  <strong>Disclaimer:</strong> This prompt is provided for informational purposes only and was last validated on 19 August 2026. Microsoft may change features, previews, validation rules, and attribute requirements without notice. Verify Microsoft Learn, Message Center, and the live tenant UI before upload. This document is not official Microsoft documentation.
 </p>
 
 <!-- Back to Top -->

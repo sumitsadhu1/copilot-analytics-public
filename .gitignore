@@ -23,3 +23,6 @@ Copilot-Analytics-
 
 # Entra hierarchy extracts contain PII (UPNs, manager chain) — never commit
 tools/entra-hierarchy-validation/*.csv
+
+# Internal planning file — kept local, not published
+BACKLOG.md

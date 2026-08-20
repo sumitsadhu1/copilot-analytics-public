@@ -235,9 +235,9 @@ instantly.
   <https://learn.microsoft.com/en-us/viva/organizational-data>
 - Parallel Entra plus uploaded data — `ManagerId`/`Organization` source control and restoration (visible date 30 June 2025; content refreshed 7 July 2026):
   <https://learn.microsoft.com/en-us/viva/insights/advanced/admin/entra-plus-csv-upload>
-- Current CSV update/delete markers and Historical import (updated 2 April 2026):
+- Current CSV update/delete markers and Historical import (updated 29 July 2026):
   <https://learn.microsoft.com/en-us/viva/import-orgdata>
-- Tenant-wave migration, Message Center control, and Support rollback (updated 5 December 2025):
+- Tenant-wave migration, Message Center control, and Support rollback (updated 13 August 2026):
   <https://learn.microsoft.com/en-us/viva/insights/advanced/admin/upload-org-data-admin-center>
 - Prepare an organizational data file upload (required fields, hierarchy concepts, `Layer`, `SupervisorIndicator`):
   <https://learn.microsoft.com/en-us/viva/insights/advanced/admin/prepare-org-data>

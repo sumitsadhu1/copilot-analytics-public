@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Restricted Reporting Pattern: Copilot Analytics for Multi-Agency Single Tenant. Last validated 16 July 2026.">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Restricted Reporting Pattern: Copilot Analytics for Multi-Agency Single Tenant. Last validated 19 August 2026.">
 <link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">
 
     <title>Restricted Reporting Pattern: Copilot Analytics for Multi-Agency Single Tenant</title>
@@ -94,7 +94,7 @@
     <main>
         <header>
             <h1>Restricted Reporting for Copilot Analytics in a Multi-Agency Single Tenant</h1>
-            <p><strong>Version:</strong> 2.2 | <strong>Author:</strong> Sumit Sadhu | <strong>Last validated:</strong> 16 July 2026</p>
+            <p><strong>Version:</strong> 2.2 | <strong>Author:</strong> Sumit Sadhu | <strong>Last validated:</strong> 19 August 2026</p>
         </header>
 
         <section id="boundary-gates">
@@ -130,8 +130,8 @@
 
             <div class="highlight-box">
                 <strong>Supported-environment and licensing gate:</strong><br>
-                <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported Microsoft 365 environments for Viva Insights features</a> (last updated 30 June 2026) says GCC does not support Agent Dashboard, Copilot metrics export, or Copilot Power BI reports. <a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">Connect to the Agent Dashboard (preview)</a> (16 June 2026) says Agent Dashboard is unavailable in national and regional clouds. Plan-level support does not establish feature parity. Validate the exact cloud, tenant UI, Message Center, assigned service plans, agent activity, and each required surface before design. API-based organizational-data import is preview and current environment support must also be checked.<br><br>
-                Microsoft pages describe the advanced-access threshold differently. <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/environment-requirements">Environment requirements for Viva Insights</a> (12 May 2026) explicitly gives <strong>30 Microsoft 365 Copilot + 20 Viva Insights</strong> as 50 assigned Viva Insights service plans; <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (1 July 2026) describes 50 Copilot or 50 Viva Insights. Do not state that mixed assignments fail. Verify assigned service plans and feature presence. For Agent Dashboard, use the conservative feature-specific prerequisite of <strong>50 Microsoft 365 Copilot licences plus agent activity</strong>; a 50-Viva-Insights-only tenant must validate availability. Escalate a documented mismatch to Microsoft Support.
+                <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported Microsoft 365 environments for Viva Insights features</a> (last updated 30 June 2026) says GCC does not support Agent Dashboard, Copilot metrics export, or Copilot Power BI reports. <a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">Connect to the Agent Dashboard</a> (30 July 2026) says Agent Dashboard is unavailable in national and regional clouds. Plan-level support does not establish feature parity. Validate the exact cloud, tenant UI, Message Center, assigned service plans, agent activity, and each required surface before design. API-based organizational-data import is preview and current environment support must also be checked.<br><br>
+                Microsoft pages describe the advanced-access threshold differently. <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/environment-requirements">Environment requirements for Viva Insights</a> (12 May 2026) explicitly gives <strong>30 Microsoft 365 Copilot + 20 Viva Insights</strong> as 50 assigned Viva Insights service plans; <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (18 August 2026) describes 50 Copilot or 50 Viva Insights. Do not state that mixed assignments fail. Verify assigned service plans and feature presence. For Agent Dashboard, use the conservative feature-specific prerequisite of <strong>50 Microsoft Copilot licences plus agent activity</strong>; a 50-Viva-Insights-only tenant must validate availability. Escalate a documented mismatch to Microsoft Support.
             </div>
 
             <div class="highlight-box">
@@ -153,21 +153,21 @@
 
             <h3>Dated Microsoft Source Register</h3>
             <ul>
-                <li><a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> &mdash; last updated 1 July 2026.</li>
-                <li><a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">Connect to the Agent Dashboard (preview)</a> &mdash; 16 June 2026.</li>
+                <li><a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> &mdash; last updated 18 August 2026.</li>
+                <li><a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">Connect to the Agent Dashboard</a> &mdash; 30 July 2026.</li>
                 <li><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/environment-requirements">Environment requirements for Viva Insights</a> &mdash; 12 May 2026.</li>
                 <li><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported Microsoft 365 environments for Viva Insights features</a> &mdash; 30 June 2026.</li>
-                <li><a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, and Viva Insights web app</a> &mdash; 20 March 2026.</li>
+                <li><a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, and Viva Insights web app</a> &mdash; 13 August 2026.</li>
                 <li><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/user-roles">Roles in Viva Insights</a> &mdash; 7 July 2026.</li>
                 <li><a href="https://learn.microsoft.com/viva/insights/org-team-insights/delegate-access">Delegate access to the Copilot Dashboard, Agent Dashboard, and Copilot insights</a> &mdash; 9 February 2026.</li>
-                <li><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/manager-settings">Configure manager settings</a> &mdash; 25 June 2026.</li>
+                <li><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/manager-settings">Configure manager settings</a> &mdash; 23 July 2026.</li>
                 <li><a href="https://learn.microsoft.com/viva/insights/advanced/admin/partitions">Partitions in Viva Insights</a> &mdash; 23 June 2025.</li>
                 <li><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/privacy-settings">Customize Viva Insights privacy settings</a> &mdash; 20 November 2025.</li>
                 <li><a href="https://learn.microsoft.com/viva/insights/advanced/privacy/privacy">Technical privacy guide for organization insights and advanced analysis</a> &mdash; 10 December 2025.</li>
                 <li><a href="https://learn.microsoft.com/viva/organizational-data">Use your organizational data in Microsoft 365 and Microsoft Viva</a> &mdash; 2 December 2025.</li>
-                <li><a href="https://learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center">Upload and maintain data through the Microsoft 365 admin center</a> &mdash; 5 December 2025.</li>
+                <li><a href="https://learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center">Upload and maintain data through the Microsoft 365 admin center</a> &mdash; 13 August 2026.</li>
                 <li><a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Use Microsoft Entra plus .csv files for parallel data uploads</a> &mdash; 30 June 2025.</li>
-                <li><a href="https://learn.microsoft.com/viva/import-orgdata">Import and manage your organizational data with a .csv file</a> &mdash; 2 April 2026.</li>
+                <li><a href="https://learn.microsoft.com/viva/import-orgdata">Import and manage your organizational data with a .csv file</a> &mdash; 29 July 2026.</li>
                 <li><a href="https://learn.microsoft.com/viva/import-org-data-workday">Import organizational data from Workday</a> &mdash; 6 April 2026; 100,000-user limit.</li>
                 <li><a href="https://learn.microsoft.com/viva/import-org-data-api">Import organizational data using API-based import (preview)</a> &mdash; 6 April 2026.</li>
             </ul>
@@ -206,7 +206,7 @@
                 <thead><tr><th scope="col" class="u-dc39b8f5d6">Requirement</th><th scope="col">Details</th></tr></thead>
                 <tbody>
                 <tr><td>Assigned service plans and tenant feature presence verified using the conflict-safe threshold wording above</td><td>Do not reject a mixed 30 Copilot + 20 Viva Insights assignment without tenant validation. Agent Dashboard uses a separate conservative preview prerequisite.</td></tr>
-                <tr><td>Insights Admin + AI Admin roles assigned</td><td>Assign via M365 Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Add-on Plan (Insights roles), or Role assignments &rarr; search &ldquo;AI Administrator&rdquo;</td></tr>
+                <tr><td>Insights Admin + AI Admin roles assigned</td><td>Assign via M365 Microsoft 365 admin center &rarr; Settings &rarr; Microsoft Viva &rarr; Viva Insights &rarr; Add-on Plan (Insights roles), or Role assignments &rarr; search &ldquo;AI Administrator&rdquo;</td></tr>
                 <tr><td>Security, Compliance/Legal, Privacy/DPO, Viva Insights, and Power BI sign-off</td><td>Written approval of tested behavior and residual risks; not an assertion that partitions satisfy a regulation</td></tr>
                 <tr><td>Minimum group size agreed by all agencies</td><td>Tenant-wide setting (minimum 5) &mdash; cannot be set per-partition</td></tr>
                 <tr><td>Supported environment and previews validated</td><td>Record cloud, tenant UI, Message Center, Agent/export/Power BI availability, and Support case where observed behavior conflicts with documentation.</td></tr>
@@ -538,13 +538,13 @@
                     <ol class="u-12ac1fff01">
                         <li>Obtain written <strong>Security, Compliance/Legal, Privacy/DPO, Viva Insights, and Power BI owner</strong> approval of the control design, test plan, accepted global access, residual risks, rollback, and evidence requirements. Do not ask reviewers to attest that partitions alone satisfy a regulation.</li>
                         <li>Confirm <strong>all agency heads and compliance officers agree</strong> on the minimum group size threshold (see <a href="#runbook">Phase 3</a>). Document the agreed number.</li>
-                        <li>Confirm <strong>role assignments</strong> are in place: AI Admin and Insights Admin roles assigned to Central IT staff via M365 Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Add-on Plan, or via Role assignments &rarr; search role name. (<a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/assign-user-roles">Learn reference</a>)</li>
+                        <li>Confirm <strong>role assignments</strong> are in place: AI Admin and Insights Admin roles assigned to Central IT staff via M365 Microsoft 365 admin center &rarr; Settings &rarr; Microsoft Viva &rarr; Viva Insights &rarr; Add-on Plan, or via Role assignments &rarr; search role name. (<a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/assign-user-roles">Learn reference</a>)</li>
                     </ol>
                 </div>
                 <ul>
                     <li><strong>Audit VFAM policies (Admin UI):</strong> Navigate to <code>admin.microsoft.com</code> &rarr; Settings &rarr; Microsoft Viva &rarr; Viva Insights &rarr; Set up and management &rarr; <strong>Turn Advanced Insights on or off</strong>. Review the status of each feature: AutoCxoIdentification, CopilotDashboardDelegation, AgentDashboard, CopilotMetricsReport. Document the current state (On/Off, scope: Everyone or Specific users).</li>
                     <li><strong>Alternative (PowerShell):</strong> Run <code><a href="https://learn.microsoft.com/viva/feature-access-management">Get-VivaModuleFeaturePolicy</a> -ModuleId VivaInsights</code> for a scripted audit of all policies.</li>
-                    <li><strong>Audit dashboard access list:</strong> Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; <strong>Manage user access for Copilot Dashboard</strong>. Check who currently has access.</li>
+                    <li><strong>Audit dashboard access list:</strong> Microsoft 365 admin center &rarr; Settings &rarr; Microsoft Viva &rarr; Viva Insights &rarr; <strong>Manage access settings for Microsoft Copilot Dashboard</strong>. Check who currently has access.</li>
                     <li>Identify any agency CEOs or leaders who already have dashboard access (auto-enabled or manually added).</li>
                     <li>Verify the Entra ID ManagerID hierarchy &mdash; confirm each agency CEO reports to a different top-level node (not to each other).</li>
                 </ul>
@@ -561,36 +561,36 @@
                 </div>
 
                 <p><strong>1.1 &mdash; Disable Auto CxO Identification</strong></p>
-                <p>Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Turn Advanced Insights on or off &rarr; select <strong>Auto CxO Identification</strong> &rarr; Add policy &rarr; scope to <code>AgencyUsers-NoDashboard</code> &rarr; set to <strong>Off</strong> &rarr; Save.</p>
+                <p>Microsoft 365 admin center &rarr; Settings &rarr; Microsoft Viva &rarr; Viva Insights &rarr; Turn Advanced Insights on or off &rarr; select <strong>Auto CxO Identification</strong> &rarr; Add policy &rarr; scope to <code>AgencyUsers-NoDashboard</code> &rarr; set to <strong>Off</strong> &rarr; Save.</p>
 
                 <p><strong>1.2 &mdash; Remove existing auto-enabled agency leaders</strong></p>
-                <p>Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; <strong>Manage user access for Copilot Dashboard</strong> &rarr; remove any agency leaders who were auto-identified. Leave non-agency executives (CFO, CISO, etc.) in place if they need tenant-wide access.</p>
+                <p>Microsoft 365 admin center &rarr; Settings &rarr; Microsoft Viva &rarr; Viva Insights &rarr; <strong>Manage access settings for Microsoft Copilot Dashboard</strong> &rarr; remove any agency leaders who were auto-identified. Leave non-agency executives (CFO, CISO, etc.) in place if they need tenant-wide access.</p>
 
                 <p><strong>1.3 &mdash; Disable Dashboard Delegation for agency users</strong></p>
                 <p>Same &ldquo;Turn Advanced Insights on or off&rdquo; page &rarr; select <strong>Copilot Dashboard Delegation</strong> &rarr; Add policy &rarr; scope to <code>AgencyUsers-NoDashboard</code> &rarr; set to <strong>Off</strong> &rarr; Save.</p>
 
                 <p><strong>1.4 &mdash; Restrict dashboard access to Central IT</strong></p>
-                <p>Create Entra group <code>CentralIT-CopilotDashboard-Access</code>. In <strong>Manage user access for Copilot Dashboard</strong> &rarr; add this group &rarr; remove all individual agency users.</p>
+                <p>Create Entra group <code>CentralIT-CopilotDashboard-Access</code>. In <strong>Manage access settings for Microsoft Copilot Dashboard</strong> &rarr; add this group &rarr; remove all individual agency users.</p>
                 <div class="highlight-box u-1218d6a80f">
                     <strong>Supported group types for dashboard access:</strong> Entra security groups, Microsoft 365 groups, and mail-enabled security groups. Distribution-only groups are <strong>not supported</strong>. All group members must have a Viva Insights service plan (included with Copilot licence). Changes take up to <strong>24 hours</strong> to propagate. If group-based access does not work as expected, verify: (a) all members are licensed, (b) the group type is correct, (c) 24 hours have elapsed since assignment.
                 </div>
 
                 <p><strong>1.5 &mdash; Disable Agent Dashboard for agency users</strong></p>
-                <p>Agent Dashboard is preview, unavailable in national/regional clouds, and uses a conservative prerequisite of 50 Microsoft 365 Copilot licences plus agent activity. Where the surface exists, select <strong>Agent Dashboard</strong> &rarr; Add policy &rarr; scope to <code>AgencyUsers-NoDashboard</code> &rarr; set to <strong>Off</strong> &rarr; Save. Re-enable for a Central IT group only after privacy review and a separate tenant-wide access test.</p>
+                <p>Agent Dashboard is preview, unavailable in national/regional clouds, and uses a conservative prerequisite of 50 Microsoft Copilot licences plus agent activity. Where the surface exists, select <strong>Agent Dashboard</strong> &rarr; Add policy &rarr; scope to <code>AgencyUsers-NoDashboard</code> &rarr; set to <strong>Off</strong> &rarr; Save. Re-enable for a Central IT group only after privacy review and a separate tenant-wide access test.</p>
 
                 <p><strong>1.6 &mdash; Disable Copilot Metrics Export (PowerShell only)</strong></p>
                 <p>Copilot metrics export is preview, is not partition-scoped, and is unavailable in GCC. Disable it for the agency-user group and test weekly/daily export denial. This feature does not have an Admin UI toggle. Use PowerShell:<br>
                 <code>Add-VivaModuleFeaturePolicy -ModuleId VivaInsights -FeatureId CopilotMetricsReport -Name "DisableMetricsExport" -IsFeatureEnabled $false -GroupIds AgencyUsers-NoDashboard@tenant.com</code></p>
 
-                <p><strong>1.7 &mdash; Optional: Disable Viva Insights web app for non-permitted users (strongest lockdown)</strong></p>
-                <p>The <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#enable-or-disable-the-viva-insights-web-app">Viva Insights web app VFAM control</a> disables the <strong>entire</strong> web app (Copilot Dashboard, Analytics Reports, and admin/analyst tools) for targeted users. Scope the disable policy to <code>AgencyUsers-NoDashboard</code>. This keeps the web app On for Central IT and agency analysts while blocking everyone else.</p>
-                <p><em>Note:</em> If you previously disabled the old &ldquo;Copilot Dashboard&rdquo; VFAM control, those settings now apply to the entire web app.</p>
+                <p><strong>1.7 &mdash; Disable the Viva Insights web app for non-permitted users (now the primary access control)</strong></p>
+                <p>The <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#enable-or-disable-the-viva-insights-web-app">Viva Insights web app VFAM control</a> disables the <strong>entire</strong> web app (Copilot Dashboard, Copilot Analytics reports, and advanced analysis and admin tools) for targeted users. Scope the disable policy to <code>AgencyUsers-NoDashboard</code>. This keeps the web app On for Central IT and agency analysts while blocking everyone else.</p>
+                <p><em>Important:</em> the separate <strong>Copilot Dashboard</strong> VFAM control and its <code>-FeatureId CopilotDashboard</code> policy are <strong>no longer available</strong>. This web-app control is now the supported way to remove dashboard access, and there is no documented way to remove only the Copilot Dashboard while leaving the rest of the web app available. Policies previously created against the old control now apply to the entire web app, and the <strong>Agent Dashboard</strong> must be set separately (step&nbsp;1.5). Any negative test recorded against the old control is no longer evidence; re-run it.</p>
 
                 <div class="highlight-box">
                     <strong>After Phase 1 &mdash; Verification:</strong><br>
                     <ol class="u-12ac1fff01">
                         <li>Confirm no agency leaders appear in the dashboard access list.</li>
-                        <li>Verify VFAM policies (AutoCxo, Delegation, AgentDashboard, MetricsExport, and optionally web app) show as disabled for the <code>AgencyUsers-NoDashboard</code> group.</li>
+                        <li>Verify VFAM policies (AutoCxo, Delegation, AgentDashboard, MetricsExport, and the Viva Insights web app control) show as disabled for the <code>AgencyUsers-NoDashboard</code> group.</li>
                         <li>Have an agency CEO attempt to access <code>insights.cloud.microsoft</code> and confirm access is denied.</li>
                         <li>Have a non-agency executive (e.g., CFO) confirm they <strong>still</strong> have dashboard access.</li>
                     </ol>
@@ -648,7 +648,7 @@
                     <figcaption class="u-8178cd85bd">
                         <strong>Figure 1 &mdash; Where partition enabling fits.</strong> Phase&nbsp;3 has two actions that are easy to conflate: <strong>Enable Partitions</strong> (&#9315;) is a one-time tenant-wide switch, while <strong>New partition</strong> (&#9316;) is repeated per agency. Assigning each analyst to the intended partition only (&#9317;) is required for that analyst query workspace to remain scoped. It does not govern the other surfaces in this pattern. Each numbered step links to its Microsoft Learn reference:
                         <ol class="u-0404452222">
-                            <li>&#9312; VFAM lockdown of the Copilot Dashboard &mdash; <a href="https://learn.microsoft.com/en-us/viva/feature-access-management">Viva feature access management</a></li>
+                            <li>&#9312; VFAM lockdown &mdash; restrict the <strong>Viva Insights web app</strong> (one control, which removes the Copilot Dashboard, Copilot Analytics reports, and advanced analysis and admin tools together), then set the separate <strong>Agent Dashboard</strong> control explicitly &mdash; <a href="https://learn.microsoft.com/en-us/viva/feature-access-management">Viva feature access management</a></li>
                             <li>&#9313; What gets locked down (the tenant-wide view) &mdash; <a href="https://learn.microsoft.com/en-us/viva/insights/org-team-insights/copilot-dashboard">Connect to the Copilot Dashboard</a></li>
                             <li>&#9314; Upload org data carrying the Agency / Domain attribute &mdash; <a href="https://learn.microsoft.com/en-us/viva/organizational-data">Organizational data in Microsoft&nbsp;365</a></li>
                             <li>&#9315; <strong>Enable Partitions</strong> &mdash; the one-time tenant switch &mdash; <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/privacy-settings">Customize privacy settings &rarr; Partitions</a></li>
@@ -1030,7 +1030,7 @@
                     <tr>
                         <td>AutoCxo accidentally re-enabled</td>
                         <td>Central IT</td>
-                        <td>Verify in Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Turn Advanced Insights on or off &rarr; confirm <strong>Auto CxO Identification = Off</strong>. If re-enabled, set back to Off and remove any newly auto-enabled agency leaders from the dashboard access list immediately. <em>Alternative:</em> <code>Get-VivaModuleFeaturePolicy -ModuleId VivaInsights</code> for scripted verification.</td>
+                        <td>Verify in Microsoft 365 admin center &rarr; Settings &rarr; Microsoft Viva &rarr; Viva Insights &rarr; Turn Advanced Insights on or off &rarr; confirm <strong>Auto CxO Identification = Off</strong>. If re-enabled, set back to Off and remove any newly auto-enabled agency leaders from the dashboard access list immediately. <em>Alternative:</em> <code>Get-VivaModuleFeaturePolicy -ModuleId VivaInsights</code> for scripted verification.</td>
                     </tr>
                     <tr>
                         <td>New hire not appearing in any partition</td>

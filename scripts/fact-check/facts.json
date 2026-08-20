@@ -65,7 +65,7 @@
       "source_anchor": "manager-leader-and-advanced-analysis",
       "verify_text": [
         "combination of licenses",
-        "30 assigned Microsoft 365 Copilot licenses",
+        "30 assigned Microsoft Copilot licenses",
         "20 assigned Viva Insights licenses"
       ],
       "our_files": [
@@ -289,10 +289,11 @@
     {
       "id": "delegation-limit",
       "claim": "Maximum 75 delegates per person, delegates cannot cascade",
-      "source_page": "copilot-dashboard",
-      "source_anchor": "delegate-access-to-the-dashboard",
+      "source_page": "delegate-access",
+      "source_anchor": "",
       "verify_text": [
-        "delegate"
+        "maximum limit of 75",
+        "delegate access to others"
       ],
       "our_files": [
         "2-setup/admin-setup.html",
@@ -449,7 +450,7 @@
       "source_page": "copilot-chat-report",
       "source_anchor": "interpret-the-microsoft-365-copilot-chat-usage-report",
       "verify_text": [
-        "only users without a Microsoft 365 Copilot license",
+        "only users without a Microsoft Copilot license",
         "7, 28, 90, or 180 days",
         "To export the report data into an Excel .csv file, select Export"
       ],

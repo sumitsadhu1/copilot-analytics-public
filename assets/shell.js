@@ -79,15 +79,6 @@
     content.appendChild(n);
   });
 
-  var trust = doc.createElement('aside');
-  trust.className = 'trust-strip';
-  trust.setAttribute('aria-label', 'Publication status');
-  trust.innerHTML = '<strong>Independent publication</strong><span>Last validated 16 July 2026</span>' +
-    '<span>Owner: Sumit Sadhu</span>' +
-    '<a href="' + prefix + '4-reference/change-history.html">Change history</a>' +
-    '<a href="https://github.com/sumitsadhu1/copilot-analytics-public/issues/new">Report a correction</a>';
-  content.insertBefore(trust, content.firstChild);
-
   // 5) Build the shell.
   var spriteHost = doc.createElement('div');
   spriteHost.style.display = 'none';
@@ -97,6 +88,9 @@
   skipLink.className = 'skip-link';
   skipLink.href = '#main-content';
   skipLink.textContent = 'Skip to main content';
+
+  // Bump with each release. index.html and browse.html carry their own copy of this date.
+  var VALIDATED = '19 August 2026';
 
   var bar = doc.createElement('header');
   bar.className = 'app-bar';
@@ -110,6 +104,16 @@
     '<div class="app-bar-spacer"></div>' +
     '<div class="app-bar-right" id="shRight">' +
       '<button class="icon-btn search-launcher" id="shSearchOpen" type="button" aria-label="Search guides" aria-controls="shSearchPanel" aria-expanded="false">' + icon('sh-search') + '</button>' +
+      '<button type="button" class="provenance-btn" popovertarget="provenance-panel" aria-label="Publication status and provenance" title="Publication status">i</button>' +
+      '<div class="provenance-panel" id="provenance-panel" popover role="note" aria-label="Publication status">' +
+        '<p class="provenance-title">Independent publication</p>' +
+        '<p>Last validated ' + VALIDATED + '</p>' +
+        '<p>Owner: Sumit Sadhu</p>' +
+        '<p class="provenance-links">' +
+          '<a href="' + prefix + '4-reference/change-history.html">Change history</a>' +
+          '<a href="https://github.com/sumitsadhu1/copilot-analytics-public/issues/new">Report a correction</a>' +
+        '</p>' +
+      '</div>' +
     '</div>';
 
   var rail = doc.createElement('nav');

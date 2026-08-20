@@ -1,12 +1,19 @@
 %% Multi-Agency Isolation — where "Enable Partitions" vs "Create partition" fit
 %% Source diagram. Regenerate the SVG with:
+%%   printf '{"theme":"default"}' > /tmp/mmd-config.json
+%%   printf '{"executablePath":"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome","args":["--no-sandbox"]}' > /tmp/puppeteer-config.json
 %%   PUPPETEER_SKIP_DOWNLOAD=1 npx -y @mermaid-js/mermaid-cli \
 %%     -i assets/images/partition-isolation-flow.mmd \
 %%     -o assets/images/partition-isolation-flow.svg \
 %%     -c /tmp/mmd-config.json -p /tmp/puppeteer-config.json -b transparent
+%% Then regenerate PDFs: ./scripts/generate_all_pdfs.sh
+%% The two /tmp configs do not persist across reboots — recreate them as above.
 flowchart TD
     subgraph P1["Phase 1 · Lockdown — Global Admin"]
-        A1["VFAM-restrict the Copilot Dashboard ①<br/>so agencies can't browse tenant-wide data ②"]
+        direction TB
+        A1["VFAM-restrict the Viva Insights web app ①<br/>one control — removes Dashboard, Reports,<br/>Agent Dashboard and analyst tools together ②"]
+        A1b["Set the separate Agent Dashboard<br/>VFAM control explicitly ①"]
+        A1 --> A1b
     end
     subgraph P2["Phase 2 · Org Data — Admin"]
         A2["Upload org data carrying the<br/>Agency / Domain attribute ③"]
@@ -33,12 +40,13 @@ flowchart TD
         D1["Stakeholders = Viewer / app audience ⑧"]
         D2["Optional: RLS for a row-level split<br/>inside one shared report ⑨"]
     end
-    A1 --> A2 --> B1
+    A1b --> A2 --> B1
     B5 --> C1
     B6 --> C1
     C1 --> C2 --> C3 --> C4 --> D1 --> D2
 
     click A1 "https://learn.microsoft.com/en-us/viva/feature-access-management" "Viva feature access management (VFAM)"
+    click A1b "https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard" "Enable or disable the Agent Dashboard"
     click A2 "https://learn.microsoft.com/en-us/viva/organizational-data" "Upload organizational data"
     click B1 "https://learn.microsoft.com/viva/insights/advanced/setup-maint/privacy-settings" "Turn on partitions (Privacy settings)"
     click B2 "https://learn.microsoft.com/viva/insights/advanced/admin/partitions#how-to-create-a-partition-and-assign-analysts-access" "Create a partition and assign analysts"

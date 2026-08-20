@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Solution Architecture: Copilot Analytics with Agency-Default Views for Multi-Agency Single Tenant. Last validated 16 July 2026.">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Solution Architecture: Copilot Analytics with Agency-Default Views for Multi-Agency Single Tenant. Last validated 19 August 2026.">
 <link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/docs/playbooks/Copilot_Multi_Agency_Default_Priority_Architecture.html">
 
     <title>Solution Architecture: Copilot Analytics with Agency-Default Views for Multi-Agency Single Tenant</title>
@@ -85,7 +85,7 @@
     <main>
         <header>
             <h1>Copilot Analytics with Agency-Default Views for Multi-Agency Single Tenant</h1>
-            <p><strong>Version:</strong> 1.1 | <strong>Author:</strong> Sumit Sadhu | <strong>Last validated:</strong> 16 July 2026</p>
+            <p><strong>Version:</strong> 1.1 | <strong>Author:</strong> Sumit Sadhu | <strong>Last validated:</strong> 19 August 2026</p>
         </header>
 
         <section id="boundary-gates">
@@ -111,13 +111,13 @@
 
             <div class="highlight-box">
                 <strong>Supported-environment and licensing gate:</strong><br>
-                <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported Microsoft 365 environments for Viva Insights features</a> (30 June 2026) says GCC does not support Agent Dashboard, Copilot metrics export, or Copilot Power BI reports. <a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">Connect to the Agent Dashboard (preview)</a> (16 June 2026) says Agent Dashboard is unavailable in national and regional clouds. Plan-level support does not establish feature parity. Verify the exact cloud, tenant UI, Message Center, assigned service plans, agent activity, and every required surface before design.<br><br>
-                Microsoft pages describe the advanced-access threshold differently. <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/environment-requirements">Environment requirements for Viva Insights</a> (12 May 2026) explicitly gives <strong>30 Microsoft 365 Copilot + 20 Viva Insights</strong> as 50 assigned Viva Insights service plans; the <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Dashboard article</a> (1 July 2026) describes 50 Copilot or 50 Viva Insights. Do not state that mixed assignments fail. Verify assigned plans and tenant availability. For Agent Dashboard, use the conservative feature-specific prerequisite of <strong>50 Microsoft 365 Copilot licences plus agent activity</strong>; a 50-Viva-Insights-only tenant must validate availability. Escalate a documented mismatch to Microsoft Support.
+                <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported Microsoft 365 environments for Viva Insights features</a> (30 June 2026) says GCC does not support Agent Dashboard, Copilot metrics export, or Copilot Power BI reports. <a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">Connect to the Agent Dashboard</a> (30 July 2026) says Agent Dashboard is unavailable in national and regional clouds. Plan-level support does not establish feature parity. Verify the exact cloud, tenant UI, Message Center, assigned service plans, agent activity, and every required surface before design.<br><br>
+                Microsoft pages describe the advanced-access threshold differently. <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/environment-requirements">Environment requirements for Viva Insights</a> (12 May 2026) explicitly gives <strong>30 Microsoft 365 Copilot + 20 Viva Insights</strong> as 50 assigned Viva Insights service plans; the <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Dashboard article</a> (18 August 2026) describes 50 Copilot or 50 Viva Insights. Do not state that mixed assignments fail. Verify assigned plans and tenant availability. For Agent Dashboard, use the conservative feature-specific prerequisite of <strong>50 Microsoft Copilot licences plus agent activity</strong>; a 50-Viva-Insights-only tenant must validate availability. Escalate a documented mismatch to Microsoft Support.
             </div>
 
             <div class="highlight-box">
                 <strong>Organizational-data precedence gate:</strong><br>
-                An upload does not universally or permanently replace Entra. Uploaded values change the source for supplied dashboard attributes; parallel ingestion can keep or restore Entra for <code>ManagerId</code> and <code>Organization</code>; Microsoft 365 Profile precedence is separate. Before change, capture each required attribute, current source, owner, effective date, coverage, and target surface in Data Quality and Profile. Check <strong>Setup &rarr; Migration and imports</strong>, Message Center, and the actual tenant UI. Use Organizational Data in Microsoft 365 for new/edited uploads unless the tenant explicitly presents a supported legacy path. Use supported update/delete behavior, not dummy rows. Source basis: <a href="https://learn.microsoft.com/viva/organizational-data">Use your organizational data in Microsoft 365 and Microsoft Viva</a> (2 December 2025), <a href="https://learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center">Upload and maintain data through the Microsoft 365 admin center</a> (5 December 2025), <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Use Microsoft Entra plus .csv files for parallel data uploads</a> (30 June 2025), <a href="https://learn.microsoft.com/viva/import-orgdata">Import and manage your organizational data with a .csv file</a> (2 April 2026), <a href="https://learn.microsoft.com/viva/import-org-data-workday">Import organizational data from Workday</a> (6 April 2026; 100,000-user limit), and <a href="https://learn.microsoft.com/viva/import-org-data-api">Import organizational data using API-based import (preview)</a> (6 April 2026).
+                An upload does not universally or permanently replace Entra. Uploaded values change the source for supplied dashboard attributes; parallel ingestion can keep or restore Entra for <code>ManagerId</code> and <code>Organization</code>; Microsoft 365 Profile precedence is separate. Before change, capture each required attribute, current source, owner, effective date, coverage, and target surface in Data Quality and Profile. Check <strong>Setup &rarr; Migration and imports</strong>, Message Center, and the actual tenant UI. Use Organizational Data in Microsoft 365 for new/edited uploads unless the tenant explicitly presents a supported legacy path. Use supported update/delete behavior, not dummy rows. Source basis: <a href="https://learn.microsoft.com/viva/organizational-data">Use your organizational data in Microsoft 365 and Microsoft Viva</a> (2 December 2025), <a href="https://learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center">Upload and maintain data through the Microsoft 365 admin center</a> (13 August 2026), <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Use Microsoft Entra plus .csv files for parallel data uploads</a> (30 June 2025), <a href="https://learn.microsoft.com/viva/import-orgdata">Import and manage your organizational data with a .csv file</a> (29 July 2026), <a href="https://learn.microsoft.com/viva/import-org-data-workday">Import organizational data from Workday</a> (6 April 2026; 100,000-user limit), and <a href="https://learn.microsoft.com/viva/import-org-data-api">Import organizational data using API-based import (preview)</a> (6 April 2026).
             </div>
 
             <h3>Mandatory Negative Tests, Evidence, and Release Veto</h3>
@@ -177,7 +177,7 @@
                 <thead><tr><th scope="col" class="u-dc39b8f5d6">Requirement</th><th scope="col">Details</th></tr></thead>
                 <tbody>
                 <tr><td>Assigned service plans and tenant availability verified using the conflict-safe threshold wording above</td><td>Do not reject a mixed 30 Copilot + 20 Viva Insights assignment without tenant validation. Agent Dashboard uses the separate conservative preview prerequisite.</td></tr>
-                <tr><td>Insights Admin + AI Admin roles assigned</td><td>Assign via M365 Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Add-on Plan, or Role assignments &rarr; search role name</td></tr>
+                <tr><td>Insights Admin + AI Admin roles assigned</td><td>Assign via M365 Microsoft 365 admin center &rarr; Settings &rarr; Microsoft Viva &rarr; Viva Insights &rarr; Add-on Plan, or Role assignments &rarr; search role name</td></tr>
                 <tr><td>Clean manager hierarchy per agency</td><td>Each agency CEO must be the top-level manager for their agency employees in Entra ID</td></tr>
                 <tr><td>Supported environment and required surfaces validated</td><td>Record cloud, preview status, tenant UI, Message Center, and Support case where documentation and observed behavior conflict.</td></tr>
                 </tbody>
@@ -462,8 +462,8 @@ Two independent trees =            └────┬───┘
                     <li><strong>Confirm assigned service plans:</strong> Apply the conflict-safe licensing gate in <a href="#boundary-gates">Pattern Boundary &amp; Release Gates</a>. Verify feature presence after processing; do not infer failure from a mixed licence assignment.</li>
                     <li><strong>Confirm supported environment:</strong> Record the exact cloud and verify Dashboard, Agent, export, Power BI templates, and organizational-data path in the tenant UI and Message Center.</li>
                     <li><strong>Identify agency leaders:</strong> List each agency&rsquo;s CEO and their direct reports (VPs). These will be the primary dashboard consumers and delegation targets.</li>
-                    <li><strong>Review current VFAM state:</strong> Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Turn Advanced Insights on or off. Document which features are currently enabled or disabled.</li>
-                    <li><strong>Check existing dashboard access:</strong> Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Manage user access for Copilot Dashboard. Note who currently has access.</li>
+                    <li><strong>Review current VFAM state:</strong> Microsoft 365 admin center &rarr; Settings &rarr; Microsoft Viva &rarr; Viva Insights &rarr; Turn Advanced Insights on or off. Document which features are currently enabled or disabled.</li>
+                    <li><strong>Check existing dashboard access:</strong> Microsoft 365 admin center &rarr; Settings &rarr; Microsoft Viva &rarr; Viva Insights &rarr; Manage access settings for Microsoft Copilot Dashboard. Note who currently has access.</li>
                     <li><strong>Capture rollback baseline:</strong> Export policies, access, delegations, role/partition assignments, org-data source/quality, query assets, and Power BI permissions before change.</li>
                 </ul>
             </div>
@@ -473,7 +473,7 @@ Two independent trees =            └────┬───┘
                 <p>Enable only the eligible Dashboard features approved for this accepted-visibility posture. Agent Dashboard and metrics export require separate preview, cloud, privacy, and access decisions.</p>
 
                 <p><strong>1.1 &mdash; Enable Auto CxO Identification</strong></p>
-                <p>Admin Center &rarr; Settings &rarr; Viva &rarr; Viva Insights &rarr; Turn Advanced Insights on or off &rarr; <strong>Auto CxO Identification</strong> &rarr; ensure set to <strong>On</strong> for <strong>Everyone</strong> (or verify no disable policy exists).</p>
+                <p>Microsoft 365 admin center &rarr; Settings &rarr; Microsoft Viva &rarr; Viva Insights &rarr; Turn Advanced Insights on or off &rarr; <strong>Auto CxO Identification</strong> &rarr; ensure set to <strong>On</strong> for <strong>Everyone</strong> (or verify no disable policy exists).</p>
                 <p><em>This automatically identifies agency CEOs (and other senior leaders) based on the Entra ID hierarchy and grants them Copilot Dashboard access with the &ldquo;Your group&rdquo; scope.</em></p>
 
                 <p><strong>1.2 &mdash; Enable Dashboard Delegation</strong></p>
@@ -481,7 +481,7 @@ Two independent trees =            └────┬───┘
                 <p><em>This allows agency CEOs to delegate their dashboard view to their direct reports (VPs, directors). Delegates see the same scope as their delegator &mdash; the agency&rsquo;s data.</em></p>
 
                 <p><strong>1.3 &mdash; Enable Agent Dashboard</strong></p>
-                <p><strong>Only if the environment and tenant pass the gate:</strong> Agent Dashboard is preview. Treat 50 Microsoft 365 Copilot licences plus agent activity as the conservative prerequisite, validate availability in Worldwide, and do not expect it in national or regional clouds. Scope access to the approved population; do not default to Everyone without a documented cross-agency agent-data decision.</p>
+                <p><strong>Only if the environment and tenant pass the gate:</strong> Agent Dashboard is preview. Treat 50 Microsoft Copilot licences plus agent activity as the conservative prerequisite, validate availability in Worldwide, and do not expect it in national or regional clouds. Scope access to the approved population; do not default to Everyone without a documented cross-agency agent-data decision.</p>
 
                 <p><strong>1.4 &mdash; Metrics Export (optional)</strong></p>
                 <p>Copilot metrics export is preview and is not partition-scoped. It requires separate eligibility/global-access validation and is unavailable in GCC. Enable only for an approved group after privacy review and negative testing of weekly/daily exports; otherwise disable <code>CopilotMetricsReport</code> and use governed reports.</p>
@@ -490,7 +490,7 @@ Two independent trees =            └────┬───┘
                     <strong>After Phase 1 &mdash; Verification:</strong>
                     <ol class="u-12ac1fff01">
                         <li>Wait 1&ndash;2 hours for AutoCxO to process.</li>
-                        <li>Check <strong>Manage user access for Copilot Dashboard</strong> &mdash; agency CEOs should appear in the list as auto-identified.</li>
+                        <li>Check <strong>Manage access settings for Microsoft Copilot Dashboard</strong> &mdash; agency CEOs should appear in the list as auto-identified.</li>
                         <li>Have an agency CEO navigate to <code>insights.cloud.microsoft</code> and confirm they see the Copilot Dashboard with &ldquo;Your group&rdquo; as the default scope.</li>
                         <li>Confirm the &ldquo;Your group&rdquo; employee count is in the expected range &mdash; note it reflects <strong>Copilot-licensed</strong> employees only, and groups below the minimum group size (default 10) show &ldquo;--&rdquo;, so it tracks licensed headcount, not raw agency headcount.</li>
                     </ol>
@@ -1031,7 +1031,7 @@ Get-MgUser -All -Property DisplayName,UserPrincipalName,Manager `
         </section>
 
         <div class="highlight-box u-3343fd6464">
-            <strong>Dated Microsoft source basis:</strong> Validated 16 July 2026 against Dashboard (1 July 2026), Agent Dashboard preview (16 June 2026), environment requirements (12 May 2026), supported environments (30 June 2026), dashboard settings (20 March 2026), roles (7 July 2026), delegation (9 February 2026), manager settings (25 June 2026), partitions (23 June 2025), privacy settings (20 November 2025), technical privacy (10 December 2025), and organizational-data sources dated 30 June 2025 through 6 April 2026. Verify current Learn, Message Center, Service Health, tenant UI, and Microsoft Support guidance before implementation.
+            <strong>Dated Microsoft source basis:</strong> Validated 19 August 2026 against Dashboard (18 August 2026), Agent Dashboard preview (30 July 2026), environment requirements (12 May 2026), supported environments (30 June 2026), dashboard settings (13 August 2026), roles (7 July 2026), delegation (9 February 2026), manager settings (23 July 2026), partitions (23 June 2025), privacy settings (20 November 2025), technical privacy (10 December 2025), and organizational-data sources dated 30 June 2025 through 13 August 2026. Verify current Learn, Message Center, Service Health, tenant UI, and Microsoft Support guidance before implementation.
         </div>
 
     </main>

@@ -471,6 +471,16 @@ def probe(url):
     return 0
 
 
+def check_dates(f):
+    """The hub release date is one entry; every copy of it must agree."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import sync_dates
+
+    _release, _count, drift, _writes = sync_dates.analyse()
+    for item in drift:
+        f.add(ERROR, "dates", f"{item} — run scripts/maintenance/sync_dates.py")
+
+
 def check_external(f, pages):
     cache = {}
     if CACHE_FILE.exists():
@@ -528,6 +538,7 @@ def main():
         ("pdfs", lambda: check_pdfs(f, pages, git_time=args.ci)),
         ("index", lambda: check_search_index(f, pages)),
         ("structure", lambda: check_structure(f, pages)),
+        ("dates", lambda: check_dates(f)),
         ("secrets", lambda: check_secrets(f, files)),
     ]
     if args.external:

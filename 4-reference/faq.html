@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: FAQ. Last validated 16 July 2026.">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: FAQ. Last validated 19 August 2026.">
 <link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/4-reference/faq.html">
 <title>FAQ — Copilot Analytics</title>
 <link rel="stylesheet" href="../assets/docs-style.css">
@@ -49,7 +49,8 @@
   <tr><td>Section</td><td>Reference</td></tr>
   <tr><td>Audience</td><td>All Roles</td></tr>
   <tr><td>Version</td><td>4.1</td></tr>
-  <tr><td>Published</td><td>April 2026; validated 16 July 2026</td></tr>
+  <tr><td>Published</td><td>April 2026</td></tr>
+  <tr><td>Last validated</td><td>19 August 2026</td></tr>
 </table>
 
 <div class="callout info">
@@ -74,7 +75,7 @@
 
 <div class="faq">
   <div class="faq-q" data-num="2">What happens if we drop below 50 licences?</div>
-  <div class="faq-a">Core Dashboard capabilities remain available with 1+ Copilot licences. For 50-plan capabilities, <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/environment-requirements">Environment requirements for Viva Insights</a> (Last updated 12 May 2026) counts the Viva Insights service plan included with Copilot and explicitly says <strong>30 Copilot + 20 Viva Insights qualifies as 50 service plans</strong>. The Dashboard article (Last updated 1 July 2026) separately says 50 Copilot or 50 Viva Insights. Do not assume mixed licensing fails: verify assigned service plans and tenant feature presence. For Agent Dashboard preview, conservatively require 50 Copilot licences plus agent activity.</div>
+  <div class="faq-a">Core Dashboard capabilities remain available with 1+ Copilot licences. For 50-plan capabilities, <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/environment-requirements">Environment requirements for Viva Insights</a> (Last updated 12 May 2026) counts the Viva Insights service plan included with Copilot and explicitly says <strong>30 Copilot + 20 Viva Insights qualifies as 50 service plans</strong>. The Dashboard article (Last updated 18 August 2026) separately says 50 Copilot or 50 Viva Insights. Do not assume mixed licensing fails: verify assigned service plans and tenant feature presence. For Agent Dashboard preview, conservatively require 50 Copilot licences plus agent activity.</div>
 </div>
 
 <div class="faq">
@@ -127,7 +128,7 @@
 
 <div class="faq">
   <div class="faq-q" data-num="12">We uploaded org data and now filters show different values &mdash; can we revert?</div>
-  <div class="faq-a"><strong>Yes, by attribute and surface.</strong> Use <strong>parallel data ingestion</strong> to restore Entra as the source for <code>ManagerId</code> and <code>Organization</code> while retaining uploaded custom attributes. To remove uploaded values, first confirm Entra is configured for those two fields, then use the documented Organizational Data update/delete operations for optional fields. Do <strong>not</strong> seed dummy rows. Microsoft 365 Profile precedence is a separate setting. See <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Use Microsoft Entra plus .csv files for parallel data uploads</a> (updated 30 June 2025) and <a href="https://learn.microsoft.com/viva/import-orgdata#update-or-make-other-changes-to-your-data">Import and manage your organizational data with a .csv file &mdash; Update or delete data</a> (updated 2 April 2026). Test the change, record success/failure criteria, and escalate migration rollback failures through Microsoft Support.</div>
+  <div class="faq-a"><strong>Yes, by attribute and surface.</strong> Use <strong>parallel data ingestion</strong> to restore Entra as the source for <code>ManagerId</code> and <code>Organization</code> while retaining uploaded custom attributes. To remove uploaded values, first confirm Entra is configured for those two fields, then use the documented Organizational Data update/delete operations for optional fields. Do <strong>not</strong> seed dummy rows. Microsoft 365 Profile precedence is a separate setting. See <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Use Microsoft Entra plus .csv files for parallel data uploads</a> (updated 30 June 2025) and <a href="https://learn.microsoft.com/viva/import-orgdata#update-or-make-other-changes-to-your-data">Import and manage your organizational data with a .csv file &mdash; Update or delete data</a> (updated 29 July 2026). Test the change, record success/failure criteria, and escalate migration rollback failures through Microsoft Support.</div>
 </div>
 
 <div class="faq">
@@ -158,7 +159,7 @@
 
 <div class="faq">
   <div class="faq-q" data-num="17">Can we use the Agent Dashboard without the Copilot Dashboard?</div>
-  <div class="faq-a">Treat Agent Dashboard as a separate <strong>preview</strong> entitlement and access check within the Viva Insights web app. The feature-specific article requires 50 Microsoft 365 Copilot licences plus agent activity, while the broader Dashboard article also lists a 50-Viva-Insights path. Use the Copilot threshold conservatively and validate a Viva-only tenant. It requires company-wide access, is unavailable to managers and group-only delegates, and is unavailable in GCC and other national or regional clouds. Source: <a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">Connect to the Agent Dashboard (preview)</a> (Last updated 16 June 2026) and <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported Microsoft 365 environments for Viva Insights features</a> (Last updated 30 June 2026).</div>
+  <div class="faq-a">Treat Agent Dashboard as a separate <strong>preview</strong> entitlement and access check within the Viva Insights web app. The feature-specific article requires 50 Microsoft Copilot licences plus agent activity, while the broader Dashboard article also lists a 50-Viva-Insights path. Use the Copilot threshold conservatively and validate a Viva-only tenant. It requires company-wide access, is unavailable to managers and group-only delegates, and is unavailable in GCC and other national or regional clouds. Source: <a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">Connect to the Agent Dashboard</a> (Last updated 30 July 2026) and <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported Microsoft 365 environments for Viva Insights features</a> (Last updated 30 June 2026).</div>
 </div>
 
 <div class="faq">
@@ -173,7 +174,7 @@
 
 <div class="faq">
   <div class="faq-q" data-num="20">Can I export data from the Copilot Dashboard?</div>
-  <div class="faq-a"><strong>Yes, in preview, when eligible.</strong> The exporter needs the documented 50-licence threshold and global / &ldquo;Your company&rdquo; access; group-only access is insufficient, and the feature is unavailable in GCC. The fixed, non-customizable CSV contains <strong>anonymized user-level rows</strong>: weekly data for up to six months or daily data for 28 days. Dashboard filters do not customize it, and <strong>Copilot Assisted Hours is not included</strong>. Store it as sensitive analytics data because repeated rows or organizational-data joins can increase re-identification risk. Source: <a href="https://learn.microsoft.com/viva/insights/org-team-insights/export-copilot-metrics">Export Copilot metrics from the Microsoft Copilot Dashboard (preview)</a> (Last updated 15 July 2026).</div>
+  <div class="faq-a"><strong>Yes, in preview, when eligible.</strong> The exporter needs the documented 50-licence threshold and global / &ldquo;Your company&rdquo; access; group-only access is insufficient, and the feature is unavailable in GCC. The fixed, non-customizable CSV contains <strong>anonymized user-level rows</strong>: weekly data for up to six months or daily data for 28 days. Dashboard filters do not customize it, and <strong>Copilot Assisted Hours is not included</strong>. Store it as sensitive analytics data because repeated rows or organizational-data joins can increase re-identification risk. Source: <a href="https://learn.microsoft.com/viva/insights/org-team-insights/export-copilot-metrics">Export Copilot metrics from the Microsoft Copilot Dashboard</a> (Last updated 15 July 2026).</div>
 </div>
 
 <div class="faq">
@@ -193,13 +194,13 @@
 
 <div class="faq">
   <div class="faq-q" data-num="24">Why might Assisted Hours or Value be lower than expected?</div>
-  <div class="faq-a">Optional diagnostic data affects Assisted Hours, emails sent using Copilot, Teams meetings and meeting hours summarized or recapped, and Teams chats summarized. Required diagnostic data provides only a subset. Confirm diagnostic coverage before comparing groups or periods. Assisted Hours and Value are modeled estimates, not realized savings or proof that Copilot caused a business outcome; use documented assumptions, a stable baseline, and independently governed outcome data. Source: <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (Last updated 1 July 2026).</div>
+  <div class="faq-a">Optional diagnostic data affects Assisted Hours, emails sent using Copilot, Teams meetings and meeting hours summarized or recapped, and Teams chats summarized. Required diagnostic data provides only a subset. Confirm diagnostic coverage before comparing groups or periods. Assisted Hours and Value are modeled estimates, not realized savings or proof that Copilot caused a business outcome; use documented assumptions, a stable baseline, and independently governed outcome data. Source: <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (Last updated 18 August 2026).</div>
 </div>
 
 <!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
 <hr>
 <p class="u-772845a273">
-  <strong>Disclaimer:</strong> This document is provided for informational purposes only and was last validated on 16 July 2026. Microsoft may change features, interfaces, previews, and availability without notice. Verify volatile guidance in Microsoft Learn, Message Center, Service Health, and the tenant UI. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
+  <strong>Disclaimer:</strong> This document is provided for informational purposes only and was last validated on 19 August 2026. Microsoft may change features, interfaces, previews, and availability without notice. Verify volatile guidance in Microsoft Learn, Message Center, Service Health, and the tenant UI. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
 </p>
 
 <!-- Back to Top -->

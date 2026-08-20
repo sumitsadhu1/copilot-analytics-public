@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Scenario 02 — Who can see the Copilot Dashboard &amp; reports (and why two colleagues differ). Last validated 16 July 2026.">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Scenario 02 — Who can see the Copilot Dashboard &amp; reports (and why two colleagues differ). Last validated 19 August 2026.">
 <link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/4-reference/scenarios/report-visible-to-one-user-not-another.html">
 <title>Scenario 02 — Who can see the Copilot Dashboard &amp; reports (and why two colleagues differ) — Copilot Analytics</title>
 <link rel="stylesheet" href="../../assets/docs-style.css">
@@ -61,7 +61,7 @@
   <div><strong>Typically reported by</strong>A user whose colleague (same team, similar licence) sees nothing or a permission-denied page &mdash; or an admin asking &ldquo;who is <em>supposed</em> to see this, and how do I grant or restrict it?&rdquo;</div>
   <div><strong>Surfaces involved</strong><code>analysis.insights.cloud.microsoft</code>, M365 Admin Center (VFAM), Entra ID</div>
   <div><strong>Roles touched</strong>Global Admin, Insights Admin, AI Admin, Insights Analyst, qualified senior leaders, explicitly assigned users, delegates, people-managers</div>
-  <div><strong>Version</strong>1.1 &bull; Published June 2026 &bull; Validated 16 July 2026</div>
+  <div><strong>Version</strong>1.1 &bull; Published June 2026 &bull; Validated 19 August 2026</div>
 </div>
 
 <!-- ─────────── Quick answer ─────────── -->
@@ -82,7 +82,7 @@
   <tr class="vfam-row">
     <td><strong>Gate: VFAM</strong></td>
     <td>Any user or group</td>
-    <td>Viva Feature Access Management &mdash; group-scoped policy on the Viva Insights web app / Copilot Dashboard feature</td>
+    <td>Viva Feature Access Management &mdash; group-scoped policy on the <strong>Viva Insights web app</strong> control (pre-rollout tenants: <strong>Copilot Dashboard</strong>)</td>
     <td>Can override a qualifying source to <em>no access</em>.</td>
   </tr>
   <tr>
@@ -94,7 +94,7 @@
 </table>
 
 <p>The diagnosis reduces to three questions: <strong>Which exact access source grants my scope? Do I have the required entitlement? Is VFAM or current service/rollout state blocking me?</strong></p>
-<p><strong>Sources:</strong> <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (Last updated 1 July 2026), <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/user-roles">Roles in Viva Insights</a> (Last updated 7 July 2026), <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, and Viva Insights web app</a> (Last updated 20 March 2026), <a href="https://learn.microsoft.com/viva/insights/org-team-insights/delegate-access">Delegate access to the Copilot Dashboard, Agent Dashboard, and Copilot insights</a> (Last updated 9 February 2026), and <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/manager-settings">Configure manager settings</a> (Last updated 25 June 2026).</p>
+<p><strong>Sources:</strong> <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (Last updated 18 August 2026), <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/user-roles">Roles in Viva Insights</a> (Last updated 7 July 2026), <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, and Viva Insights web app</a> (13 August 2026), <a href="https://learn.microsoft.com/viva/insights/org-team-insights/delegate-access">Delegate access to the Copilot Dashboard, Agent Dashboard, and Copilot insights</a> (Last updated 9 February 2026), and <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/manager-settings">Configure manager settings</a> (Last updated 23 July 2026).</p>
 
 <div class="callout info">
   <div class="callout-title">The most likely answer is &ldquo;working as designed&rdquo;</div>
@@ -191,10 +191,10 @@
   <tr>
     <td>7</td>
     <td><strong>A VFAM gate blocks the colleague&rsquo;s web-app or Copilot Dashboard access.</strong></td>
-    <td>Viva Feature Access Management can disable the Viva Insights web app or Copilot Dashboard feature for specific groups regardless of their access source. If the colleague is in a group covered by a restrictive policy, the surface does not load. This may be deliberate; see &ldquo;Deliberately restricting access&rdquo; below.</td>
+    <td>Viva Feature Access Management can disable the <strong>Viva Insights web app</strong> control (pre-rollout tenants: <strong>Copilot Dashboard</strong>) for specific groups regardless of their access source. If the colleague is in a group covered by a restrictive policy, the surface does not load. This may be deliberate; see &ldquo;Deliberately restricting access&rdquo; below.</td>
     <td>
       <ul>
-        <li><code>admin.microsoft.com</code> &rarr; Viva &rarr; <strong>Feature Access Management</strong> &rarr; Viva Insights &rarr; verify the <strong>Viva Insights web app</strong> and <strong>Copilot Dashboard</strong> features are ON for the colleague&rsquo;s group.</li>
+        <li><code>admin.microsoft.com</code> &rarr; Viva &rarr; <strong>Feature Access Management</strong> &rarr; Viva Insights &rarr; verify the <strong>Viva Insights web app</strong> control (pre-rollout tenants: <strong>Copilot Dashboard</strong>) is ON for the colleague&rsquo;s group, and that the separate <strong>Agent Dashboard</strong> control is ON if they need it.</li>
         <li>Remember VFAM policies are group-scoped &mdash; confirm which policy applies, and whether the block is intentional before lifting it.</li>
         <li><strong>Verify:</strong> after the policy change, the colleague can load <code>analysis.insights.cloud.microsoft</code>.</li>
       </ul>
@@ -300,8 +300,8 @@
   <tr><th scope="col">Goal</th><th scope="col">How</th><th scope="col">Watch out for</th></tr>
   <tr>
     <td>Block a specific set of users from the dashboard</td>
-    <td>Create a <strong>group-scoped</strong> VFAM policy that turns the <strong>Copilot Dashboard</strong> (and/or Viva Insights web app) feature <strong>OFF</strong> for an Entra group (e.g. <code>AgencyUsers-NoDashboard</code>).</td>
-    <td>Scope the policy to the <em>group</em>, never to &ldquo;Everyone&rdquo; &mdash; an Everyone-level block also strips access from non-agency executives who legitimately need it.</td>
+    <td>Create a <strong>group-scoped</strong> VFAM policy that turns the <strong>Viva Insights web app</strong> feature <strong>OFF</strong> for an Entra group (e.g. <code>AgencyUsers-NoDashboard</code>), then set the separate <strong>Agent Dashboard</strong> control explicitly. The former <strong>Copilot Dashboard</strong> control and its <code>-FeatureId CopilotDashboard</code> policy are <strong>no longer available</strong> &mdash; see <a href="../../2-setup/multi-agency-setup.html">Multi-Agency Setup, Phase&nbsp;1</a>.</td>
+    <td>Disabling the web-app control removes the <strong>Copilot Dashboard, Copilot Analytics reports, and advanced analysis and admin tools together</strong> &mdash; there is no documented way to remove only the dashboard. Scope the policy to the <em>group</em>, never to &ldquo;Everyone&rdquo; &mdash; an Everyone-level block also strips access from non-agency executives who legitimately need it. Any negative test recorded against the old control is <strong>no longer evidence</strong>; re-run it against the current control.</td>
   </tr>
   <tr>
     <td>Let agency managers see <em>only</em> their own agency</td>
@@ -345,7 +345,7 @@
 <!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
 <hr>
 <p class="u-772845a273">
-  <strong>Disclaimer:</strong> This scenario is provided for informational purposes only and was last validated on 16 July 2026. Microsoft may change features, interfaces, and availability without notice. Verify current guidance in Microsoft Learn, Message Center, Service Health, and the tenant UI. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
+  <strong>Disclaimer:</strong> This scenario is provided for informational purposes only and was last validated on 19 August 2026. Microsoft may change features, interfaces, and availability without notice. Verify current guidance in Microsoft Learn, Message Center, Service Health, and the tenant UI. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
 </p>
 
 <!-- Back to Top -->

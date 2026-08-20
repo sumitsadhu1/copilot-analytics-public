@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Analyst Playbook. Last validated 16 July 2026.">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Analyst Playbook. Last validated 19 August 2026.">
 <link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/3-operate/analyst-playbook.html">
 <title>Analyst Playbook — Copilot Analytics</title>
 <link rel="stylesheet" href="../assets/docs-style.css">
@@ -43,7 +43,7 @@
   <tr><td>Section</td><td>Operate</td></tr>
   <tr><td>Audience</td><td>Insights Analyst</td></tr>
   <tr><td>Version</td><td>4.1</td></tr>
-  <tr><td>Last validated</td><td>16 July 2026</td></tr>
+  <tr><td>Last validated</td><td>19 August 2026</td></tr>
 </table>
 
 <div class="callout info">
@@ -264,6 +264,13 @@
 <h2>Dashboard export: fixed user-level dataset</h2>
 <p>The Copilot Dashboard's <strong>Export data</strong> feature is public preview. Week-level export provides the last <strong>six months</strong>, refreshes weekly, and can be up to six days old. Day-level export provides the last <strong>28 days</strong>, refreshes daily, and can be up to three days old. Both remove personal identifiers and replace them with anonymized IDs; neither can be customized. The feature currently excludes Copilot assisted hours.</p>
 
+<div class="callout warning">
+  <div class="callout-title">Day-level exports lag licence changes by two days</div>
+  <p>Copilot Analytics takes up to <strong>seven days</strong> to process a licence assignment. Day-level export is the exception and surfaces changes sooner &mdash; but a day-level export run <strong>within two days</strong> of a Copilot licence assignment or removal will <strong>not</strong> reflect that change. Day-level exports run after the two-day window reflect it accurately. Already-generated files are <strong>not updated automatically</strong> &mdash; a corrected figure requires a fresh export.</p>
+  <p>Do not use an export taken immediately after a licence movement to validate that movement. Reconcile licence counts against the Microsoft 365 admin center, or re-run the export after the two-day window and record which export generation the figures came from.</p>
+  <p><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/insights/org-team-insights/export-copilot-metrics">Export Copilot metrics from the Microsoft Copilot Dashboard</a> (Last updated 15 July 2026), Prerequisites section, and <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (Last updated 18 August 2026), Feature availability section.</p>
+</div>
+
 <div class="callout important">
   <div class="callout-title">Global access carries a wider data-handling responsibility</div>
   <p>Eligible exporters include senior leaders with global access, users manually assigned global access, delegates of globally scoped users, Insights Analysts with global access, and Microsoft 365 Global Administrators. Managers and their delegates with team-level views cannot export. Treat every download as a governed user-level dataset even though direct identifiers are removed.</p>
@@ -357,10 +364,10 @@ GET https://graph.microsoft.com/v1.0/copilot/reports/getMicrosoft365CopilotUsage
   <tr><th scope="col">Source</th><th scope="col">Last updated</th><th scope="col">Used for</th></tr>
   <tr><td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/export-copilot-metrics">Export Copilot metrics from the Microsoft Copilot Dashboard</a></td><td>15 July 2026</td><td>Preview export prerequisites, data shape, windows, freshness, metrics, and exclusions</td></tr>
   <tr><td><a href="https://learn.microsoft.com/microsoft-365/copilot/microsoft-365-copilot-reports-for-admins">Microsoft 365 Copilot reports for IT admins</a></td><td>16 September 2025</td><td>Admin center, Viva Insights, Purview, and Power Platform reporting-source map</td></tr>
-  <tr><td><a href="https://learn.microsoft.com/microsoft-365/copilot/extensibility/api/admin-settings/reports/copilotreportroot-getmicrosoft365copilotusageuserdetail">copilotReportRoot: getMicrosoft365CopilotUsageUserDetail</a></td><td>19 February 2026</td><td>v1.0 request, permissions, periods, licensed-user boundary, alternatives, and national clouds</td></tr>
-  <tr><td><a href="https://learn.microsoft.com/microsoft-365/copilot/extensibility/api/admin-settings/reports/copilotreportroot-getmicrosoft365copilotusercountsummary">copilotReportRoot: getMicrosoft365CopilotUserCountSummary</a></td><td>19 February 2026</td><td>v1.0 aggregate user-count endpoint and permissions</td></tr>
-  <tr><td><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/copilot-business-impact">Copilot Business Impact report</a></td><td>17 February 2026</td><td>Outcome data, cohort recommendation, setup, interpretation, and causality limits</td></tr>
-  <tr><td><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/microsoft-365-copilot-impact">Microsoft 365 Copilot impact report</a></td><td>17 February 2026</td><td>13-month history, freshness, assisted-hours estimate, and default value rate</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/microsoft-365/copilot/extensibility/api/admin-settings/reports/copilotreportroot-getmicrosoft365copilotusageuserdetail">copilotReportRoot: getMicrosoft365CopilotUsageUserDetail</a></td><td>30 July 2026</td><td>v1.0 request, permissions, periods, licensed-user boundary, alternatives, and national clouds</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/microsoft-365/copilot/extensibility/api/admin-settings/reports/copilotreportroot-getmicrosoft365copilotusercountsummary">copilotReportRoot: getMicrosoft365CopilotUserCountSummary</a></td><td>15 July 2026</td><td>v1.0 aggregate user-count endpoint and permissions</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/copilot-business-impact">Copilot Business Impact report</a></td><td>5 August 2026</td><td>Outcome data, cohort recommendation, setup, interpretation, and causality limits</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/microsoft-365-copilot-impact">Microsoft 365 Copilot impact report</a></td><td>5 August 2026</td><td>13-month history, freshness, assisted-hours estimate, and default value rate</td></tr>
   <tr><td><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/copilot-studio-agents">Copilot Studio agents report</a></td><td>23 June 2026</td><td>Maker-led and inferred Agent Assisted Hours/Value assumptions and calculators</td></tr>
 </table>
 
@@ -535,7 +542,7 @@ GET https://graph.microsoft.com/v1.0/copilot/reports/getMicrosoft365CopilotUsage
 <!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
 <hr>
 <p class="u-772845a273">
-  <strong>Disclaimer:</strong> This document is provided for informational purposes only and was validated against the dated Microsoft Learn sources above on 16 July 2026. Microsoft may change features, interfaces, and availability without notice. Always verify current guidance on <a href="https://learn.microsoft.com">Microsoft Learn</a>. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
+  <strong>Disclaimer:</strong> This document is provided for informational purposes only and was validated against the dated Microsoft Learn sources above on 19 August 2026. Microsoft may change features, interfaces, and availability without notice. Always verify current guidance on <a href="https://learn.microsoft.com">Microsoft Learn</a>. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
 </p>
 
 <!-- Back to Top -->

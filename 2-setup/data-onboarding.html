@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Data Onboarding. Last validated 16 July 2026.">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Data Onboarding. Last validated 19 August 2026.">
 <link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/2-setup/data-onboarding.html">
 <title>Data Onboarding — Copilot Analytics</title>
 <link rel="stylesheet" href="../assets/docs-style.css">
@@ -39,7 +39,7 @@
   <tr><td>Section</td><td>Setup</td></tr>
   <tr><td>Audience</td><td>IT Admin, Insights Admin, Data Engineer</td></tr>
   <tr><td>Version</td><td>4.1</td></tr>
-  <tr><td>Last validated</td><td>16 July 2026</td></tr>
+  <tr><td>Last validated</td><td>19 August 2026</td></tr>
 </table>
 
 <div class="callout info">
@@ -86,7 +86,7 @@
 
 <div class="callout warning">
   <div class="callout-title">Official Microsoft Sources Conflict</div>
-  <p><a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#upload-organizational-data-for-the-copilot-dashboard-and-agent-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, and Viva Insights web app</a> (Microsoft Learn, updated 20 March 2026) still recommends Viva web-app upload for Viva Insights customers. <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Use Microsoft Entra plus .csv files for parallel data uploads</a> (visible date 30 June 2025; content refreshed 7 July 2026) says add/edit uploads are no longer supported there. <a href="https://learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center">Upload and maintain data through the Microsoft 365 admin center</a> (5 December 2025) says tenant timing is communicated in Message Center. Follow the actual tenant state; do not silently choose one article over another.</p>
+  <p><a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#upload-organizational-data-for-the-copilot-dashboard-and-agent-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, and Viva Insights web app</a> (Microsoft Learn, updated 13 August 2026) still recommends Viva web-app upload for Viva Insights customers. <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Use Microsoft Entra plus .csv files for parallel data uploads</a> (visible date 30 June 2025; content refreshed 7 July 2026) says add/edit uploads are no longer supported there. <a href="https://learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center">Upload and maintain data through the Microsoft 365 admin center</a> (13 August 2026) says tenant timing is communicated in Message Center. Follow the actual tenant state; do not silently choose one article over another.</p>
 </div>
 
 <!-- ═══════════════════════ 2. UPLOAD METHODS OVERVIEW ═══════════════════════ -->
@@ -185,7 +185,7 @@
   <tr><td><strong>Multiple upload sources</strong></td><td>Microsoft documents merged dashboard data with the more recent upload taking priority.</td><td>Avoid unowned overlapping sources; record connection, upload time, attribute, and downstream app.</td></tr>
 </table>
 
-<p><strong>Sources:</strong> <a href="https://learn.microsoft.com/viva/organizational-data#organizational-data-in-microsoft-365-requirements">Organizational Data in Microsoft 365 &mdash; requirements and data precedence</a> (Microsoft Learn, updated 2 December 2025); <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#upload-organizational-data-for-the-copilot-dashboard-and-agent-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, and Viva Insights web app</a> (20 March 2026); and <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Use Microsoft Entra plus .csv files for parallel data uploads</a> (visible date 30 June 2025; refreshed 7 July 2026).</p>
+<p><strong>Sources:</strong> <a href="https://learn.microsoft.com/viva/organizational-data#organizational-data-in-microsoft-365-requirements">Organizational Data in Microsoft 365 &mdash; requirements and data precedence</a> (Microsoft Learn, updated 2 December 2025); <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#upload-organizational-data-for-the-copilot-dashboard-and-agent-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, and Viva Insights web app</a> (13 August 2026); and <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Use Microsoft Entra plus .csv files for parallel data uploads</a> (visible date 30 June 2025; refreshed 7 July 2026).</p>
 
 <div class="callout tip">
   <div class="callout-title">TIP: Bypass On-Premises AD</div>
@@ -213,7 +213,7 @@
   <li><strong>No spaces in header names:</strong> Use underscores (e.g., <code>Cost_Center</code> not <code>Cost Center</code>)</li>
   <li><strong>One row per employee:</strong> Include every employee you want reflected in analytics</li>
 </ul>
-<p><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/import-orgdata#step-3---import-your-organizational-data-for-the-first-time">Import and manage your organizational data with a .csv file &mdash; Step 3</a> (Microsoft Learn, updated 2 April 2026).</p>
+<p><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/import-orgdata#step-3---import-your-organizational-data-for-the-first-time">Import and manage your organizational data with a .csv file &mdash; Step 3</a> (Microsoft Learn, updated 29 July 2026).</p>
 
 <h2>Step 3: Navigate to Data Connections</h2>
 <p><code>admin.microsoft.com</code> &rarr; <strong>Setup</strong> &rarr; <strong>Migration and imports</strong> &rarr; <strong>Organizational Data in Microsoft 365</strong> &rarr; <strong>Data Connections</strong></p>
@@ -479,7 +479,7 @@
   <tr><td>Delete a date value</td><td>Use <code>01-01-0001</code>.</td></tr>
   <tr><td>Correct historical Viva Insights data</td><td>Start a CSV <strong>Historical import</strong>, select the <strong>File valid as of</strong> date, and upload only the impacted employees with corrected values. Historical update is documented for Viva Insights only.</td></tr>
 </table>
-<p><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/import-orgdata#update-or-make-other-changes-to-your-data">Import and manage your organizational data with a .csv file &mdash; Update or make other changes</a> and <a href="https://learn.microsoft.com/viva/import-orgdata#make-retroactive-updates-to-existing-data">Make retroactive updates</a> (Microsoft Learn, updated 2 April 2026).</p>
+<p><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/import-orgdata#update-or-make-other-changes-to-your-data">Import and manage your organizational data with a .csv file &mdash; Update or make other changes</a> and <a href="https://learn.microsoft.com/viva/import-orgdata#make-retroactive-updates-to-existing-data">Make retroactive updates</a> (Microsoft Learn, updated 29 July 2026).</p>
 
 <h2>Recommended Cadence</h2>
 <ul>
@@ -504,7 +504,7 @@
   <tr><td><strong>6. Correct or roll back</strong></td><td>Upload corrected values for affected users; use type-specific deletion markers for values that must be removed; use Historical import for past Viva data; or restore Entra as the source for <code>ManagerId</code>/<code>Organization</code> under <strong>Configure Entra connection</strong> and then remove unneeded optional uploads.</td></tr>
   <tr><td><strong>7. Escalate</strong></td><td>Open Microsoft Support when Message Center and UI conflict, processing exceeds the documented window, a migration causes critical issues, a required delete/restore operation is unavailable, or tenant behaviour differs from Learn. Include tenant/cloud, import and correlation IDs, UTC timestamps, screenshots, logs, source/mapping files, expected versus actual counts, and affected apps.</td></tr>
 </table>
-<p><strong>Sources:</strong> <a href="https://learn.microsoft.com/viva/import-orgdata">Import and manage your organizational data with a .csv file</a> (Microsoft Learn, updated 2 April 2026); <a href="https://learn.microsoft.com/viva/insights/advanced/admin/partitions#about-partition-related-errors">Partitions in Viva Insights &mdash; partition-related errors</a> (23 June 2025); and <a href="https://learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center#support-and-rollback">Upload and maintain data through the Microsoft 365 admin center &mdash; Support and rollback</a> (5 December 2025).</p>
+<p><strong>Sources:</strong> <a href="https://learn.microsoft.com/viva/import-orgdata">Import and manage your organizational data with a .csv file</a> (Microsoft Learn, updated 29 July 2026); <a href="https://learn.microsoft.com/viva/insights/advanced/admin/partitions#about-partition-related-errors">Partitions in Viva Insights &mdash; partition-related errors</a> (23 June 2025); and <a href="https://learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center#support-and-rollback">Upload and maintain data through the Microsoft 365 admin center &mdash; Support and rollback</a> (13 August 2026).</p>
 
 <!-- ═══════════════════════ 8. DATA FRESHNESS MONITORING ═══════════════════════ -->
 <h1 id="freshness">8. Data Freshness Monitoring</h1>
@@ -551,7 +551,7 @@
   <tr><td><strong>Monthly</strong> (if using CSV)</td><td>Confirm upload completion, review Message Center and Service Health, check whether connection status or preview availability changed, and rerun Profile/Dashboard/Viva regression spot-checks.</td></tr>
   <tr><td><strong>Quarterly</strong></td><td>Full audit: compare uploaded population against the HR system of record, review attribute coverage and manager-tree health, verify source ownership/precedence, and test one supported correction and rollback path in a controlled manner.</td></tr>
 </table>
-<p><strong>Sources:</strong> Tenant-specific migration communication is documented in <a href="https://learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center#migration-and-timeline">Upload and maintain data through the Microsoft 365 admin center &mdash; Migration and timeline</a> (Microsoft Learn, updated 5 December 2025). For current service incidents, use Microsoft 365 admin center <strong>Health &gt; Service health</strong> before treating a regression as local misconfiguration.</p>
+<p><strong>Sources:</strong> Tenant-specific migration communication is documented in <a href="https://learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center#migration-and-timeline">Upload and maintain data through the Microsoft 365 admin center &mdash; Migration and timeline</a> (Microsoft Learn, updated 13 August 2026). For current service incidents, use Microsoft 365 admin center <strong>Health &gt; Service health</strong> before treating a regression as local misconfiguration.</p>
 
 <!-- ═══════════════════════ 9. KEY RULES ═══════════════════════ -->
 <h1 id="key-rules">9. Key Rules</h1>

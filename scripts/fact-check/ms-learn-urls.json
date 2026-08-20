@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "MS Learn pages our documentation depends on. Checked on every push.",
-    "last_verified": "2026-07-16",
+    "last_verified": "2026-08-19",
     "categories": {
       "copilot-dashboard": "Copilot Dashboard features, licensing, access",
       "admin-settings": "Admin configuration, VFAM, manager settings",
@@ -259,6 +259,216 @@
         "4-reference/attribute-reference.html",
         "artifacts/Org_Data_Validation_Prompt.html",
         "tools/entra-hierarchy-validation/README.md"
+      ]
+    },
+    {
+      "id": "delegate-access",
+      "url": "https://learn.microsoft.com/viva/insights/org-team-insights/delegate-access",
+      "title": "Delegate access to the Copilot Dashboard, Agent Dashboard, and Copilot insights",
+      "category": "admin-settings",
+      "our_files": [
+        "2-setup/admin-setup.html",
+        "3-operate/dashboard-guide.html"
+      ]
+    },
+    {
+      "id": "import-orgdata",
+      "url": "https://learn.microsoft.com/viva/import-orgdata",
+      "title": "Import Orgdata",
+      "category": "org-data",
+      "our_files": [
+        "1-strategy/data-strategy.html",
+        "2-setup/data-onboarding.html",
+        "2-setup/multi-agency-setup.html",
+        "4-reference/attribute-reference.html",
+        "4-reference/faq.html",
+        "4-reference/scenarios/upload-org-data-missing.html",
+        "artifacts/Org_Data_Validation_Prompt.html",
+        "docs/playbooks/Copilot_Multi_Agency_Default_Priority_Architecture.html",
+        "docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html"
+      ]
+    },
+    {
+      "id": "upload-org-data-admin-center",
+      "url": "https://learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center",
+      "title": "Upload Org Data Admin Center",
+      "category": "org-data",
+      "our_files": [
+        "1-strategy/data-strategy.html",
+        "2-setup/data-onboarding.html",
+        "2-setup/multi-agency-setup.html",
+        "3-operate/collaboration-analysis.html",
+        "4-reference/scenarios/upload-org-data-missing.html",
+        "artifacts/Org_Data_Validation_Prompt.html",
+        "docs/playbooks/Copilot_Multi_Agency_Default_Priority_Architecture.html",
+        "docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html"
+      ]
+    },
+    {
+      "id": "manager-settings",
+      "url": "https://learn.microsoft.com/viva/insights/advanced/setup-maint/manager-settings",
+      "title": "Manager Settings",
+      "category": "copilot-dashboard",
+      "our_files": [
+        "2-setup/admin-setup.html",
+        "2-setup/multi-agency-setup.html",
+        "3-operate/dashboard-guide.html",
+        "4-reference/glossary.html",
+        "4-reference/scenarios/report-visible-to-one-user-not-another.html",
+        "docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html",
+        "explain/why-multi-agency-is-hard.html"
+      ]
+    },
+    {
+      "id": "import-org-data-workday",
+      "url": "https://learn.microsoft.com/viva/import-org-data-workday",
+      "title": "Import Org Data Workday",
+      "category": "org-data",
+      "our_files": [
+        "1-strategy/data-strategy.html",
+        "2-setup/data-onboarding.html",
+        "2-setup/multi-agency-setup.html",
+        "artifacts/Org_Data_Validation_Prompt.html",
+        "docs/playbooks/Copilot_Multi_Agency_Default_Priority_Architecture.html",
+        "docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html"
+      ]
+    },
+    {
+      "id": "import-org-data-api",
+      "url": "https://learn.microsoft.com/viva/import-org-data-api",
+      "title": "Import Org Data Api",
+      "category": "org-data",
+      "our_files": [
+        "1-strategy/data-strategy.html",
+        "2-setup/data-onboarding.html",
+        "2-setup/multi-agency-setup.html",
+        "artifacts/Org_Data_Validation_Prompt.html",
+        "docs/playbooks/Copilot_Multi_Agency_Default_Priority_Architecture.html",
+        "docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html"
+      ]
+    },
+    {
+      "id": "copilot-analytics-introduction",
+      "url": "https://learn.microsoft.com/viva/insights/copilot-analytics-introduction",
+      "title": "Copilot Analytics Introduction",
+      "category": "copilot-dashboard",
+      "our_files": [
+        "1-strategy/executive-briefing.html",
+        "2-setup/admin-setup.html",
+        "3-operate/billing-operations.html",
+        "3-operate/consumption-dashboard.html",
+        "3-operate/dashboard-guide.html",
+        "tools/index.html"
+      ]
+    },
+    {
+      "id": "microsoft-copilot-usage",
+      "url": "https://learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-copilot-usage",
+      "title": "Microsoft Copilot Usage",
+      "category": "copilot-dashboard",
+      "our_files": [
+        "1-strategy/executive-briefing.html",
+        "3-operate/billing-operations.html",
+        "3-operate/dashboard-guide.html",
+        "4-reference/faq.html"
+      ]
+    },
+    {
+      "id": "microsoft-365-copilot-reports-for-admins",
+      "url": "https://learn.microsoft.com/microsoft-365/copilot/microsoft-365-copilot-reports-for-admins",
+      "title": "Microsoft 365 Copilot Reports For Admins",
+      "category": "copilot-dashboard",
+      "our_files": [
+        "1-strategy/executive-briefing.html",
+        "3-operate/analyst-playbook.html",
+        "3-operate/billing-operations.html",
+        "3-operate/dashboard-guide.html"
+      ]
+    },
+    {
+      "id": "privacy",
+      "url": "https://learn.microsoft.com/viva/insights/advanced/privacy/privacy",
+      "title": "Privacy",
+      "category": "copilot-dashboard",
+      "our_files": [
+        "2-setup/privacy-configuration.html",
+        "3-operate/collaboration-analysis.html",
+        "docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html"
+      ]
+    },
+    {
+      "id": "privacy-settings-2",
+      "url": "https://learn.microsoft.com/viva/insights/advanced/setup-maint/privacy-settings",
+      "title": "Privacy Settings",
+      "category": "copilot-dashboard",
+      "our_files": [
+        "2-setup/privacy-configuration.html",
+        "docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html"
+      ]
+    },
+    {
+      "id": "copilotreportroot-getmicrosoft365copilotusag",
+      "url": "https://learn.microsoft.com/microsoft-365/copilot/extensibility/api/admin-settings/reports/copilotreportroot-getmicrosoft365copilotusageuserdetail",
+      "title": "Copilotreportroot Getmicrosoft365Copilotusag",
+      "category": "copilot-dashboard",
+      "our_files": [
+        "3-operate/analyst-playbook.html",
+        "tools/index.html"
+      ]
+    },
+    {
+      "id": "microsoft-365-copilot-impact",
+      "url": "https://learn.microsoft.com/viva/insights/advanced/analyst/templates/microsoft-365-copilot-impact",
+      "title": "Microsoft 365 Copilot Impact",
+      "category": "copilot-dashboard",
+      "our_files": [
+        "3-operate/analyst-playbook.html",
+        "4-reference/troubleshooting.html"
+      ]
+    },
+    {
+      "id": "data-residency",
+      "url": "https://learn.microsoft.com/viva/insights/advanced/setup-maint/data-residency",
+      "title": "Data Residency",
+      "category": "copilot-dashboard",
+      "our_files": [
+        "2-setup/privacy-configuration.html"
+      ]
+    },
+    {
+      "id": "copilotreportroot-getmicrosoft365copilotuser",
+      "url": "https://learn.microsoft.com/microsoft-365/copilot/extensibility/api/admin-settings/reports/copilotreportroot-getmicrosoft365copilotusercountsummary",
+      "title": "Copilotreportroot Getmicrosoft365Copilotuser",
+      "category": "copilot-dashboard",
+      "our_files": [
+        "3-operate/analyst-playbook.html"
+      ]
+    },
+    {
+      "id": "copilot-business-impact",
+      "url": "https://learn.microsoft.com/viva/insights/advanced/analyst/templates/copilot-business-impact",
+      "title": "Copilot Business Impact",
+      "category": "copilot-dashboard",
+      "our_files": [
+        "3-operate/analyst-playbook.html"
+      ]
+    },
+    {
+      "id": "copilot-studio-agents",
+      "url": "https://learn.microsoft.com/viva/insights/advanced/analyst/templates/copilot-studio-agents",
+      "title": "Copilot Studio Agents",
+      "category": "copilot-dashboard",
+      "our_files": [
+        "3-operate/analyst-playbook.html"
+      ]
+    },
+    {
+      "id": "export-ai-cost-metrics",
+      "url": "https://learn.microsoft.com/viva/insights/org-team-insights/export-ai-cost-metrics",
+      "title": "Export Ai Cost Metrics",
+      "category": "org-data",
+      "our_files": [
+        "3-operate/consumption-dashboard.html"
       ]
     }
   ],

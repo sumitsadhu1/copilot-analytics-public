@@ -31,9 +31,9 @@
   <tr><td>Publication</td><td>Independent implementation guidance; not official Microsoft documentation</td></tr>
   <tr><td>Content owner</td><td>Sumit Sadhu</td></tr>
   <tr><td>Repository</td><td><a href="https://github.com/sumitsadhu1/copilot-analytics-public">github.com/sumitsadhu1/copilot-analytics-public</a></td></tr>
-  <tr><td>Current release</td><td>5.0 — 16 July 2026</td></tr>
-  <tr><td>Last technical validation</td><td>16 July 2026</td></tr>
+  <tr><td>Current release</td><td>5.1 — 19 August 2026</td></tr>
   <tr><td>Next scheduled full review</td><td>16 October 2026; monthly source-drift checks continue between full reviews</td></tr>
+  <tr><td>Per-guide validation</td><td>Each guide carries its own <strong>Last validated</strong> date in its document-property table. See the <a href="#guide-ledger">Guide Update Ledger</a> below.</td></tr>
   <tr><td>Canonical format</td><td>HTML. PDFs are generated snapshots and must carry the same release date.</td></tr>
 </table>
 
@@ -50,6 +50,25 @@
 <h1 id="release-history">Release History</h1>
 <table>
   <tr><th scope="col">Release</th><th scope="col">Date</th><th scope="col">Material changes</th><th scope="col">Evidence and validation</th></tr>
+  <tr>
+    <td><strong>5.1</strong></td>
+    <td>19 August 2026</td>
+    <td>Monthly source-drift review.
+      <ul>
+        <li><strong>Citation dates:</strong> corrected 105 stale Microsoft Learn dates &mdash; 67 across four articles (Copilot Dashboard, Consumption Dashboard, Agent Dashboard, Copilot Studio licensing) and a further 38 across 18 files found by a full audit. Worst case: the Microsoft&nbsp;365 admin center org-data upload page, eight months stale in 14 places. Also corrected two bare-text source-basis paragraphs and a tool README that the URL-anchored sweep could not see, normalised five abbreviated-month citations, and repaired one Learn anchor.</li>
+        <li><strong>Agent Dashboard:</strong> added the two reporting views (Copilot Agent Dashboard and Agent 365 Dashboard) with the <strong>All agents</strong> control that switches between them, attributed the metric table to a view, added an Agent 365 Dashboard glossary entry, and recorded the Copilot Cowork data transition. The preview-scope disagreement between the two governing Microsoft articles is now surfaced as an unresolved conflict rather than settled in favour of one.</li>
+        <li><strong>Access control:</strong> the Copilot Dashboard control and its PowerShell policy are removed; the Agent Dashboard has a separate control. Propagated that correction to the troubleshooting scenario and the isolation playbook, where guidance still pointed at the withdrawn control. Replaced two multi-agency lockdown steps that described web-app toggles which do not exist with the PowerShell policies that do, including the tenant-level-only constraint on Auto CxO identification. Partition-isolation diagram and its figure legend corrected to show the two controls as distinct steps.</li>
+        <li><strong>Exports:</strong> documented the two-day day-level export lag as the exception to the seven-day licence-processing rule.</li>
+        <li><strong>Consistency:</strong> corrected the admin-center access-list label and click path, aligned link text with actual Learn page titles, dropped the stale &ldquo;365&rdquo; from the 50-licence prerequisite, fixed a stale section cross-reference, and added the two undefined callout styles so the most consequential callouts no longer render flatter than lesser ones.</li>
+      </ul></td>
+    <td>
+      <ul>
+        <li><strong>Source monitoring gap closed:</strong> the automated fact check watched only 24 Microsoft Learn pages while the hub cited 72 distinct pages, so drift on unwatched pages was invisible &mdash; the direct cause of one citation ageing six months undetected. The watch list now covers all 42 pages whose publication date the hub cites, and all are baselined; the remaining cited pages are referenced without a date and need no date watch.</li>
+        <li><strong>Automated checks:</strong> fact check re-run &mdash; 42 pages checked, 0 fetch failures, 27 facts verified, 0 discrepancies. One earlier discrepancy traced to upstream product-name wording and corrected in the fact catalogue. Repository documentation checker: 0 errors across links, search index, structure, and secrets. Every claim was re-verified against the live page before its citation date was advanced.</li>
+        <li><strong>Independent review:</strong> before publication this release was reviewed from three perspectives &mdash; QA correctness, end-user task completion (Viva Insights analyst and multi-agency IT administrator), and technical writing. The reviews found one fail-open access-control defect, one self-contradicting set of lockdown steps, and a number of count, label, and citation errors. All were fixed and re-verified.</li>
+        <li><strong>Artefacts:</strong> all 29 PDFs regenerated from the corrected HTML; structural preflight passed.</li>
+      </ul></td>
+  </tr>
   <tr>
     <td><strong>5.0</strong></td>
     <td>16 July 2026</td>
@@ -69,6 +88,32 @@
     <td>Legacy URLs now redirect to canonical role- and task-based pages.</td>
   </tr>
 </table>
+
+<h1 id="guide-ledger">Guide Update Ledger</h1>
+<p>Each guide is validated on its own cycle and records its own <strong>Last validated</strong> date in its document-property table. That date on the guide is the authoritative one; this table is generated from those guides by <code>scripts/maintenance/sync_dates.py</code> and must not be edited by hand.</p>
+
+<!-- LEDGER:START -->
+<table>
+  <tr><th scope="col">Guide</th><th scope="col">Section</th><th scope="col">Last validated</th></tr>
+  <tr><td><a href="../1-strategy/data-strategy.html">Data Strategy</a></td><td>Strategy</td><td>19 August 2026</td></tr>
+  <tr><td><a href="../1-strategy/executive-briefing.html">Executive Briefing</a></td><td>Strategy</td><td>19 August 2026</td></tr>
+  <tr><td><a href="../2-setup/admin-setup.html">Admin Setup</a></td><td>Setup</td><td>19 August 2026</td></tr>
+  <tr><td><a href="../2-setup/data-onboarding.html">Data Onboarding</a></td><td>Setup</td><td>19 August 2026</td></tr>
+  <tr><td><a href="../2-setup/multi-agency-setup.html">Multi-Agency Setup</a></td><td>Setup</td><td>19 August 2026</td></tr>
+  <tr><td><a href="../2-setup/privacy-configuration.html">Privacy Configuration</a></td><td>Setup</td><td>19 August 2026</td></tr>
+  <tr><td><a href="../3-operate/analyst-playbook.html">Analyst Playbook</a></td><td>Operate</td><td>19 August 2026</td></tr>
+  <tr><td><a href="../3-operate/consumption-dashboard.html">Consumption Dashboard Operations</a></td><td>Operate</td><td>19 August 2026</td></tr>
+  <tr><td><a href="../3-operate/dashboard-guide.html">Dashboard &amp; Reports Guide</a></td><td>Operate</td><td>19 August 2026</td></tr>
+  <tr><td><a href="attribute-reference.html">Attribute Reference</a></td><td>Reference</td><td>19 August 2026</td></tr>
+  <tr><td><a href="faq.html">FAQ</a></td><td>Reference</td><td>19 August 2026</td></tr>
+  <tr><td><a href="glossary.html">Glossary &amp; Resources</a></td><td>Reference</td><td>19 August 2026</td></tr>
+  <tr><td><a href="scenarios/index.html">Troubleshooting Scenarios</a></td><td>Reference</td><td>19 August 2026</td></tr>
+  <tr><td><a href="troubleshooting.html">Troubleshooting</a></td><td>Reference</td><td>19 August 2026</td></tr>
+  <tr><td><a href="../artifacts/Org_Data_Validation_Prompt.html">Org Data Validation Prompt</a></td><td>Artifacts</td><td>19 August 2026</td></tr>
+  <tr><td><a href="../explain/why-multi-agency-is-hard.html">Why Multi-Agency Analytics Is Hard</a></td><td>Explain</td><td>19 August 2026</td></tr>
+  <tr><td><a href="../tools/index.html">Tools &amp; Reporting Options</a></td><td>Tools</td><td>19 August 2026</td></tr>
+</table>
+<!-- LEDGER:END -->
 
 <h1 id="evidence">Evidence Policy</h1>
 <ol>
