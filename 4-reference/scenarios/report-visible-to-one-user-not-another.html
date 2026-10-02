@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Scenario 02 — Who can see the Copilot Dashboard &amp; reports (and why two colleagues differ). Last validated 19 August 2026.">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Scenario 02 — Who can see the Copilot Dashboard &amp; reports (and why two colleagues differ).">
 <link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/4-reference/scenarios/report-visible-to-one-user-not-another.html">
 <title>Scenario 02 — Who can see the Copilot Dashboard &amp; reports (and why two colleagues differ) — Copilot Analytics</title>
 <link rel="stylesheet" href="../../assets/docs-style.css">
@@ -61,7 +61,7 @@
   <div><strong>Typically reported by</strong>A user whose colleague (same team, similar licence) sees nothing or a permission-denied page &mdash; or an admin asking &ldquo;who is <em>supposed</em> to see this, and how do I grant or restrict it?&rdquo;</div>
   <div><strong>Surfaces involved</strong><code>analysis.insights.cloud.microsoft</code>, M365 Admin Center (VFAM), Entra ID</div>
   <div><strong>Roles touched</strong>Global Admin, Insights Admin, AI Admin, Insights Analyst, qualified senior leaders, explicitly assigned users, delegates, people-managers</div>
-  <div><strong>Version</strong>1.1 &bull; Published June 2026 &bull; Validated 19 August 2026</div>
+  <div><strong>Version</strong>1.2 &bull; Published June 2026 &bull; Validated 2 October 2026</div>
 </div>
 
 <!-- ─────────── Quick answer ─────────── -->
@@ -72,17 +72,17 @@
 <h2 id="access-model">The access model &mdash; exact access sources plus gates</h2>
 <table>
   <tr><th scope="col">Access source</th><th scope="col">How it is obtained</th><th scope="col">Scope</th><th scope="col">Important boundary</th></tr>
-  <tr><td><strong>Global Administrator</strong></td><td>Role-derived automatic access</td><td>Your company</td><td>The only administrator role in this scenario that grants company access by role.</td></tr>
-  <tr><td><strong>Qualified senior leader</strong></td><td>Automatic identification from supported hierarchy and tenant criteria</td><td>Eligible hierarchy / company experience</td><td>Eligibility and auto-enablement must be active.</td></tr>
+  <tr><td><strong>Global Administrator</strong></td><td>Role-derived automatic access</td><td>Your company</td><td>The only administrator role in this scenario that grants company access by role. In a PIM-enabled tenant a Global Administrator might not have Dashboard access and must be added explicitly.</td></tr>
+  <tr><td><strong>Qualified senior leader</strong></td><td>Automatic identification from supported hierarchy and tenant criteria</td><td>Eligible hierarchy / company experience</td><td>Eligibility and auto-enablement must be active. Microsoft&rsquo;s criteria include a tenant with at least 2,500 users with an Entra ID and most users in a single reporting line; otherwise assign access explicitly.</td></tr>
   <tr><td><strong>Explicitly assigned user</strong></td><td>Added through Dashboard access management</td><td>Assigned company access</td><td>Use this for an AI Administrator or Insights Administrator who also needs to view.</td></tr>
   <tr><td><strong>Insights Analyst on Global partition</strong></td><td>Insights Analyst role plus Global partition assignment</td><td>Your company</td><td>A non-Global partition does not grant company Dashboard access.</td></tr>
-  <tr><td><strong>Manager</strong></td><td>Manager Settings enabled; valid hierarchy, entitlement, and minimum team size</td><td>Your group</td><td>Manager access does not include Agent Dashboard.</td></tr>
-  <tr><td><strong>Eligible delegate</strong></td><td>An eligible Dashboard user delegates access</td><td>The granted group or company scope</td><td>No cascading; Agent Dashboard requires company scope and separate preview prerequisites.</td></tr>
+  <tr><td><strong>Manager</strong></td><td>Manager Settings enabled; valid hierarchy, entitlement, and minimum team size</td><td>Your group</td><td>Microsoft&rsquo;s sources disagree on manager access to the Agent Dashboard: the Agent Dashboard article says enabled managers see agent insights scoped to their teams, while the Roles in Viva Insights matrix lists no Manager access. Verify in the tenant.</td></tr>
+  <tr><td><strong>Eligible delegate</strong></td><td>An eligible Dashboard user delegates access</td><td>The granted scope: Your group, Your company, or Combined access (company plus group, includes the Consumption Dashboard)</td><td>No cascading; maximum 75 delegates. Agent Dashboard needs &ldquo;Your company&rdquo; or &ldquo;Combined access&rdquo; and its separate prerequisites; &ldquo;Your company&rdquo; does not include the Consumption Dashboard.</td></tr>
   <tr><td><strong>AI Administrator / Insights Administrator only</strong></td><td>Administrative role assignment</td><td><strong>No view by role</strong></td><td>AI Administrator needs explicit access; Insights Administrator also needs Insights Analyst separately to run queries.</td></tr>
   <tr class="vfam-row">
     <td><strong>Gate: VFAM</strong></td>
     <td>Any user or group</td>
-    <td>Viva Feature Access Management &mdash; group-scoped policy on the <strong>Viva Insights web app</strong> control (pre-rollout tenants: <strong>Copilot Dashboard</strong>)</td>
+    <td>Viva Feature Access Management &mdash; group-scoped policy on the <strong>Viva Insights web app</strong> control (turning it off disables the entire web app, including the Copilot Dashboard)</td>
     <td>Can override a qualifying source to <em>no access</em>.</td>
   </tr>
   <tr>
@@ -94,7 +94,7 @@
 </table>
 
 <p>The diagnosis reduces to three questions: <strong>Which exact access source grants my scope? Do I have the required entitlement? Is VFAM or current service/rollout state blocking me?</strong></p>
-<p><strong>Sources:</strong> <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (Last updated 18 August 2026), <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/user-roles">Roles in Viva Insights</a> (Last updated 7 July 2026), <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, and Viva Insights web app</a> (13 August 2026), <a href="https://learn.microsoft.com/viva/insights/org-team-insights/delegate-access">Delegate access to the Copilot Dashboard, Agent Dashboard, and Copilot insights</a> (Last updated 9 February 2026), and <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/manager-settings">Configure manager settings</a> (Last updated 23 July 2026).</p>
+<p><strong>Sources:</strong> <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (Last updated 29 September 2026), <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/user-roles">Roles in Viva Insights</a> (Last updated 7 July 2026), <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, Consumption Dashboard, and Viva Insights web app</a> (13 August 2026), <a href="https://learn.microsoft.com/viva/insights/org-team-insights/delegate-access">Delegate access to the Copilot Dashboard, Agent Dashboard, and Copilot insights</a> (Last updated 16 September 2026), and <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/manager-settings">Configure manager settings</a> (Last updated 23 July 2026).</p>
 
 <div class="callout info">
   <div class="callout-title">The most likely answer is &ldquo;working as designed&rdquo;</div>
@@ -107,7 +107,7 @@
 <ol>
   <li><strong>Should the colleague see it at all?</strong> Check every access source in the matrix. If none applies, <strong>stop: this is working as designed.</strong></li>
   <li><strong>Which source grants <em>your</em> access?</strong> Confirm role, explicit assignment, Global partition, senior-leader eligibility, Manager Settings, or delegation. Do not infer viewing from AI Administrator or Insights Administrator.</li>
-  <li><strong>Colleague is a manager but sees nothing?</strong> Confirm Manager Settings is ON (<code>analysis.insights.cloud.microsoft</code> &rarr; <strong>Admin</strong> &rarr; <strong>Manager settings</strong> &rarr; &ldquo;Grant managers scoped access&rdquo;), their team meets the minimum team size (default 10, floor 5, manager counts), and their <code>Manager</code> attribute is populated.</li>
+  <li><strong>Colleague is a manager but sees nothing?</strong> Confirm Manager Settings is ON (<code>analysis.insights.cloud.microsoft</code> &rarr; <strong>Settings</strong> &rarr; <strong>Manager settings</strong> &rarr; &ldquo;Grant managers scoped access to Copilot insights&rdquo;), their team meets the minimum team size (lowest allowed setting 5; the manager counts), and their <code>Manager</code> attribute is populated.</li>
   <li><strong>Should qualify but still can&rsquo;t load the surface?</strong> Check for a <strong>VFAM gate</strong> blocking their group, then confirm their Viva Insights / Copilot licence.</li>
 </ol>
 
@@ -145,7 +145,7 @@
     <td>If Manager Settings has never enabled <em>&ldquo;Grant managers scoped access,&rdquo;</em>, no qualifying manager sees team-level data. A Global Administrator, explicitly assigned user, qualified senior leader, Global-partition analyst, or delegate may still see reports through a different source.</td>
     <td>
       <ul>
-        <li><code>analysis.insights.cloud.microsoft</code> &rarr; <strong>Admin</strong> &rarr; <strong>Manager settings</strong> &rarr; toggle <em>&ldquo;Grant managers scoped access&rdquo;</em> ON.</li>
+        <li><code>analysis.insights.cloud.microsoft</code> &rarr; <strong>Settings</strong> &rarr; <strong>Manager settings</strong> &rarr; toggle <em>&ldquo;Grant managers scoped access to Copilot insights&rdquo;</em> ON (and, optionally, <em>&ldquo;Grant managers scoped access to Consumption insights&rdquo;</em>).</li>
         <li>Allow <strong>~1 hour</strong> for the change to propagate.</li>
         <li><strong>Verify:</strong> after propagation, a qualifying manager sees a <em>&ldquo;Your group&rdquo;</em> scope on the dashboard.</li>
         <li>See <a href="../../2-setup/admin-setup.html">Admin Setup Guide</a> &mdash; Manager Settings step.</li>
@@ -155,7 +155,7 @@
   <tr>
     <td>4</td>
     <td><strong>The colleague&rsquo;s team is below the minimum team size.</strong></td>
-    <td>To protect individual privacy, manager-scoped views are suppressed unless the team meets the minimum team size (default 10, configurable down to a floor of 5; the manager counts toward the total). A manager of a small team sees an empty view even when everything else is configured correctly.</td>
+    <td>To protect individual privacy, manager-scoped views are suppressed unless the team meets the minimum team size (the lowest allowed setting is 5; the manager counts toward the total). A manager of a small team sees an empty view even when everything else is configured correctly.</td>
     <td>
       <ul>
         <li>Count the colleague&rsquo;s direct + indirect reports (including themselves).</li>
@@ -191,10 +191,10 @@
   <tr>
     <td>7</td>
     <td><strong>A VFAM gate blocks the colleague&rsquo;s web-app or Copilot Dashboard access.</strong></td>
-    <td>Viva Feature Access Management can disable the <strong>Viva Insights web app</strong> control (pre-rollout tenants: <strong>Copilot Dashboard</strong>) for specific groups regardless of their access source. If the colleague is in a group covered by a restrictive policy, the surface does not load. This may be deliberate; see &ldquo;Deliberately restricting access&rdquo; below.</td>
+    <td>Viva Feature Access Management can turn off the <strong>Viva Insights web app</strong> control (which disables the entire web app, including the Copilot Dashboard) for specific groups regardless of their access source. If the colleague is in a group covered by a restrictive policy, the surface does not load. This may be deliberate; see &ldquo;Deliberately restricting access&rdquo; below.</td>
     <td>
       <ul>
-        <li><code>admin.microsoft.com</code> &rarr; Viva &rarr; <strong>Feature Access Management</strong> &rarr; Viva Insights &rarr; verify the <strong>Viva Insights web app</strong> control (pre-rollout tenants: <strong>Copilot Dashboard</strong>) is ON for the colleague&rsquo;s group, and that the separate <strong>Agent Dashboard</strong> control is ON if they need it.</li>
+        <li><code>admin.microsoft.com</code> &rarr; Viva &rarr; <strong>Feature Access Management</strong> &rarr; Viva Insights &rarr; verify the <strong>Viva Insights web app</strong> control is ON for the colleague&rsquo;s group (earlier Copilot Dashboard VFAM or PowerShell configurations now apply to the entire web app), and that the separate <strong>Agent Dashboard</strong> control is ON if they need it.</li>
         <li>Remember VFAM policies are group-scoped &mdash; confirm which policy applies, and whether the block is intentional before lifting it.</li>
         <li><strong>Verify:</strong> after the policy change, the colleague can load <code>analysis.insights.cloud.microsoft</code>.</li>
       </ul>
@@ -219,7 +219,7 @@
       <ul>
         <li>Have the colleague sign out of all M365 surfaces and back in (incognito is fastest).</li>
         <li>Wait the full propagation window before escalating.</li>
-        <li><strong>Verify:</strong> re-check <code>myaccount.microsoft.com</code> &rarr; <em>My roles</em> and the dashboard scope chip.</li>
+        <li><strong>Verify:</strong> re-check the Microsoft Entra admin center &rarr; <em>Roles and administrators</em> &rarr; <em>Your Role</em> and the dashboard scope chip.</li>
       </ul>
     </td>
   </tr>
@@ -247,12 +247,12 @@
 
 <div class="callout info">
   <div class="callout-title">The situation</div>
-  <p><strong>James</strong> is the executive sponsor of the organisation&rsquo;s Copilot rollout. He needs the org-wide <strong>adoption report</strong> to track the programme. He is <em>not</em> a people-manager &mdash; he has no direct reports &mdash; and he holds no admin role. The instinctive move is &ldquo;he&rsquo;s an exec, just give him <em>manager</em> access.&rdquo; That doesn&rsquo;t work, and it&rsquo;s worth understanding why.</p>
+  <p>The <strong>executive sponsor</strong> of the organisation&rsquo;s Copilot rollout needs the org-wide <strong>adoption report</strong> to track the programme. The sponsor is <em>not</em> a people-manager &mdash; with no direct reports &mdash; and holds no admin role. The instinctive move is &ldquo;they&rsquo;re an exec, just give them <em>manager</em> access.&rdquo; That doesn&rsquo;t work, and it&rsquo;s worth understanding why.</p>
 </div>
 
-<p><strong>Why &ldquo;manager&rdquo; is the wrong lever.</strong> In Viva Insights, <em>&ldquo;manager&rdquo;</em> is not a statement about seniority or importance &mdash; it is a literal test of whether the person has <strong>direct or indirect reports</strong>, established by the <code>PersonId</code> / <code>ManagerId</code> hierarchy. You cannot enable someone as a manager who has nobody reporting to them, no matter how senior they are. And even if James <em>did</em> have a small team, manager access would only show <strong>that team&rsquo;s</strong> adoption &mdash; not the <strong>company-wide</strong> view an executive sponsor actually needs.</p>
+<p><strong>Why &ldquo;manager&rdquo; is the wrong lever.</strong> In Viva Insights, <em>&ldquo;manager&rdquo;</em> is not a statement about seniority or importance &mdash; it is a literal test of whether the person has <strong>direct or indirect reports</strong>, established by the <code>PersonId</code> / <code>ManagerId</code> hierarchy. You cannot enable someone as a manager who has nobody reporting to them, no matter how senior they are. And even if the sponsor <em>did</em> have a small team, manager access would only show <strong>that team&rsquo;s</strong> adoption &mdash; not the <strong>company-wide</strong> view an executive sponsor actually needs.</p>
 
-<p><strong>The correct lever here is delegation.</strong> James could receive company access through explicit assignment, qualifying senior-leader identification, Global-partition analyst assignment, Global Administrator, or an eligible company-scoped delegation. For a read-only sponsor who does not otherwise qualify, delegation is the least-privilege choice; do not assign an administrative or analyst role merely to create a view.</p>
+<p><strong>The correct lever here is delegation.</strong> The sponsor could receive company access through explicit assignment, qualifying senior-leader identification, Global-partition analyst assignment, Global Administrator, or an eligible company-scoped delegation. For a read-only sponsor who does not otherwise qualify, delegation is the least-privilege choice; do not assign an administrative or analyst role merely to create a view.</p>
 
 <table>
   <tr><th scope="col">Step</th><th scope="col">Action</th></tr>
@@ -262,19 +262,19 @@
   </tr>
   <tr>
     <td>2</td>
-    <td>That leader opens the Copilot Dashboard &rarr; <strong>Settings</strong> &rarr; <strong>Delegation</strong> &rarr; <strong>Add delegates</strong>, adds James, and assigns the scope <strong>&ldquo;Your company.&rdquo;</strong></td>
+    <td>That leader opens the Viva Insights web app &rarr; <strong>Settings</strong> &rarr; <strong>Delegation</strong> &rarr; <strong>Add delegates</strong>, adds the sponsor, and assigns the scope <strong>&ldquo;Your company.&rdquo;</strong> (Combined access also includes the Consumption Dashboard; see the delegation caveats below.)</td>
   </tr>
   <tr>
     <td>3</td>
-    <td>Confirm James holds the required <strong>Viva Insights / Copilot entitlement</strong>, which is necessary but not sufficient.</td>
+    <td>Confirm the sponsor holds the required <strong>Viva Insights / Copilot entitlement</strong>, which is necessary but not sufficient.</td>
   </tr>
   <tr>
     <td>4</td>
-    <td>Check no <strong>VFAM gate</strong> blocks James&rsquo;s group from the Viva Insights web app / Copilot Dashboard.</td>
+    <td>Check no <strong>VFAM gate</strong> blocks the sponsor&rsquo;s group from the Viva Insights web app / Copilot Dashboard.</td>
   </tr>
   <tr>
     <td>5</td>
-    <td>James opens the Viva Insights web app &rarr; <strong>Reports</strong> and sees the org-wide adoption report under the delegating leader&rsquo;s view.</td>
+    <td>The sponsor opens the Viva Insights web app &rarr; <strong>Reports</strong> and sees the org-wide adoption report under the delegating leader&rsquo;s view.</td>
   </tr>
 </table>
 
@@ -282,8 +282,10 @@
   <div class="callout-title">Delegation caveats to set expectations</div>
   <ul>
     <li>A delegate sees the surface <em>as the delegating leader</em> &mdash; a banner shows whose insights they&rsquo;re viewing.</li>
-    <li>Delegation is capped at <strong>75 delegates</strong> per leader and <strong>cannot cascade</strong> (James can&rsquo;t re-delegate).</li>
-    <li>If the delegating leader loses their own access (e.g. leaves the org), <strong>James&rsquo;s access is revoked too</strong> &mdash; so prefer a stable senior leader or a Global Admin as the delegator.</li>
+    <li>Delegation is capped at <strong>75 delegates</strong> per leader and <strong>cannot cascade</strong> (the sponsor can&rsquo;t re-delegate).</li>
+    <li>If the delegating leader loses their own access (e.g. leaves the org), <strong>the sponsor&rsquo;s access is revoked too</strong> &mdash; so prefer a stable senior leader or a Global Admin as the delegator.</li>
+    <li>If the delegator has both company-level and group access, existing &ldquo;Your company&rdquo; delegates automatically become <strong>Combined access</strong> and might see the Consumption Dashboard. Review delegate scopes after this change.</li>
+    <li>Microsoft&rsquo;s articles disagree on Consumption Dashboard delegation. <a href="https://learn.microsoft.com/viva/insights/org-team-insights/ai-cost-dashboard">How to use the Consumption Dashboard</a> says access can&rsquo;t currently be delegated, while <a href="https://learn.microsoft.com/viva/insights/org-team-insights/delegate-access">Delegate access</a> describes a Combined access delegate scope that includes it. Test in the tenant before relying on either, and review existing delegates&rsquo; scopes.</li>
   </ul>
 </div>
 
@@ -305,8 +307,8 @@
   </tr>
   <tr>
     <td>Let agency managers see <em>only</em> their own agency</td>
-    <td>Combine the VFAM block above with partition-based isolation so that, where access <em>is</em> granted, the data is already scoped to the agency.</td>
-    <td>VFAM controls the <em>surface</em>; partitions control the <em>data</em>. You usually need both for true isolation.</td>
+    <td>Combine the VFAM block above with partition-scoped analyst queries (the Restricted Reporting pattern) so that, where analyst access <em>is</em> granted, queries are scoped to the agency.</td>
+    <td>VFAM controls the <em>surface</em>; partitions scope <em>analyst queries</em>. You usually need both for agency-scoped reporting.</td>
   </tr>
   <tr>
     <td>Confirm a block actually took effect</td>
@@ -315,9 +317,11 @@
   </tr>
 </table>
 
+<p>Microsoft&rsquo;s <a href="https://learn.microsoft.com/viva/feature-access-management">feature access management</a> article states that its access controls aren&rsquo;t available in GCC High or DoD. For GCC, check the documentation for the specific app. Delegation can be turned off separately with the <strong>Viva Insights Web App Delegation</strong> control, and delegates must also be permitted to use the dashboard.</p>
+
 <div class="callout warning">
   <div class="callout-title">Use group-scoped policies, never &ldquo;Everyone&rdquo;</div>
-  <p>The most common multi-agency mistake is blocking the Copilot Dashboard at the &ldquo;Everyone&rdquo; level to lock down agency users &mdash; which also blocks senior executives and central admins who are supposed to see tenant-wide adoption. Always target a dedicated Entra group (e.g. <code>AgencyUsers-NoDashboard</code>). See the <a href="../../docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Multi-Agency Isolation Architecture</a> for the full group-scoped lockdown pattern.</p>
+  <p>The most common multi-agency mistake is blocking the Copilot Dashboard at the &ldquo;Everyone&rdquo; level to lock down agency users &mdash; which also blocks senior executives and central admins who are supposed to see tenant-wide adoption. Always target a dedicated Entra group (e.g. <code>AgencyUsers-NoDashboard</code>). See the <a href="../../docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Restricted Reporting Pattern</a> for the full group-scoped lockdown pattern.</p>
 </div>
 
 <!-- ─────────── What done looks like ─────────── -->
@@ -338,14 +342,14 @@
   <li><a href="../../3-operate/dashboard-guide.html">Dashboard Guide</a> &mdash; access scopes, delegation, and the Reports surface.</li>
   <li><a href="../../2-setup/admin-setup.html">Admin Setup Guide</a> &mdash; role assignment and Manager Settings step.</li>
   <li><a href="../../2-setup/privacy-configuration.html">Privacy Configuration Guide</a> &mdash; minimum team size vs. minimum group size.</li>
-  <li><a href="../../docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Multi-Agency Isolation Architecture</a> &mdash; group-scoped VFAM lockdown and partition-based data isolation.</li>
+  <li><a href="../../docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Restricted Reporting Pattern</a> &mdash; group-scoped VFAM lockdown and partition-scoped analyst queries.</li>
   <li><a href="../faq.html">FAQ</a> &mdash; common access questions.</li>
 </ul>
 
 <!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
 <hr>
 <p class="u-772845a273">
-  <strong>Disclaimer:</strong> This scenario is provided for informational purposes only and was last validated on 19 August 2026. Microsoft may change features, interfaces, and availability without notice. Verify current guidance in Microsoft Learn, Message Center, Service Health, and the tenant UI. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
+  <strong>Disclaimer:</strong> This scenario is provided for informational purposes only and was last validated on 2 October 2026. Microsoft may change features, interfaces, and availability without notice. Verify current guidance in Microsoft Learn, Message Center, Service Health, and the tenant UI. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
 </p>
 
 <!-- Back to Top -->

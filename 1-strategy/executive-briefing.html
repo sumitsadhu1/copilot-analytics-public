@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Executive Briefing. Last validated 19 August 2026.">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Executive Briefing.">
 <link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/1-strategy/executive-briefing.html">
 <title>Executive Briefing — Copilot Analytics Strategy</title>
 <link rel="stylesheet" href="../assets/docs-style.css">
@@ -40,9 +40,9 @@
   <tr><th scope="col">Document Property</th><th scope="col">Value</th></tr>
   <tr><td>Section</td><td>Strategy</td></tr>
   <tr><td>Audience</td><td>CIO, Solution Architect, Business Leaders</td></tr>
-  <tr><td>Version</td><td>4.1</td></tr>
+  <tr><td>Version</td><td>4.2</td></tr>
   <tr><td>Published</td><td>April 2026</td></tr>
-  <tr><td>Last validated</td><td>19 August 2026</td></tr>
+  <tr><td>Last validated</td><td>2 October 2026</td></tr>
 </table>
 
 <div class="callout info">
@@ -67,11 +67,11 @@
   <tr><td>Microsoft 365 admin center reports</td><td>Who is licensed and using Copilot or Copilot Chat?</td><td>IT administrators</td></tr>
   <tr><td>Microsoft Copilot Dashboard</td><td>How are adoption, impact, and sentiment changing?</td><td>Leaders and managers</td></tr>
   <tr><td>Agent Dashboard (preview)</td><td>Which agents are being adopted and how are they used?</td><td>Leaders and AI administrators</td></tr>
-  <tr><td>Consumption Dashboard</td><td>Where are Copilot Credits being consumed?</td><td>FinOps, leaders, and managers</td></tr>
+  <tr><td>Consumption Dashboard</td><td>Where are Copilot Credits and GitHub AI Credits being consumed?</td><td>FinOps, leaders, and managers</td></tr>
   <tr><td>Copilot Analytics reports</td><td>What do ready-to-use adoption and impact reports show?</td><td>Leaders and analysts</td></tr>
   <tr><td>Advanced Reporting</td><td>What custom cohorts, comparisons, and business outcomes need deeper analysis?</td><td>Insights Analysts</td></tr>
 </table>
-<p><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/insights/copilot-analytics-introduction">Copilot Analytics introduction</a> (Last updated 9 February 2026) and <a href="https://learn.microsoft.com/viva/insights/org-team-insights/ai-cost-dashboard">How to use the Consumption Dashboard in Insights</a> (Last updated 20 July 2026).</p>
+<p><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/insights/copilot-analytics-introduction">Copilot Analytics introduction</a> (Last updated 1 July 2026) and <a href="https://learn.microsoft.com/viva/insights/org-team-insights/ai-cost-dashboard">How to use the Consumption Dashboard in Insights</a> (Last updated 8 September 2026).</p>
 
 <div class="callout info">
   <div class="callout-title">This guide&rsquo;s implementation framework</div>
@@ -148,10 +148,10 @@
 <table>
   <tr><th scope="col">#</th><th scope="col">Question</th><th scope="col">Why It Matters</th></tr>
   <tr><td>1</td><td>How many qualifying Viva Insights service plans are <strong>assigned</strong> (not merely purchased), and how many are Microsoft 365 Copilot?</td><td>Microsoft&rsquo;s Environment Requirements article explicitly counts 30 Copilot plus 20 Viva Insights as 50 Viva service plans, while the Dashboard article says 50 Copilot or 50 Viva Insights. Verify assigned service plans and tenant availability; use 50 Copilot plus agent activity as the conservative Agent Dashboard prerequisite.</td></tr>
-  <tr><td>2</td><td>Is the Entra ID manager hierarchy populated for most users?</td><td>Determines automatic vs. manual dashboard access. If &gt;20% of users lack a Manager attribute, auto-identification and Manager Settings will be unreliable.</td></tr>
+  <tr><td>2</td><td>Is the Entra ID manager hierarchy populated for most users?</td><td>Determines automatic vs. manual dashboard access. As a rule of thumb in this guide (not a Microsoft threshold), if &gt;20% of users lack a Manager attribute, auto-identification and Manager Settings are likely to be unreliable.</td></tr>
   <tr><td>3</td><td>Do you have an HR data export available (department, function, location)?</td><td>Required for group-level filtering and BU-level rollups. See <a href="data-strategy.html">Data Strategy</a>.</td></tr>
   <tr><td>4</td><td>Has anyone been assigned the AI Administrator role?</td><td>Required to manage dashboard access and privacy settings</td></tr>
-  <tr><td>5</td><td>Do you have compliance/legal requirements to exclude specific users?</td><td>Drives exclusion list configuration (5-day processing)</td></tr>
+  <tr><td>5</td><td>Do you have compliance/legal requirements to exclude specific users?</td><td>Drives exclusion list configuration. Changes take up to 3 days (Microsoft); verify in tenant</td></tr>
   <tr><td>6</td><td>Has Copilot already been rolled out, or is it pre-deployment?</td><td>Before/after analysis needs 4 weeks of pre-adoption baseline</td></tr>
   <tr><td>7</td><td>Do you use Viva Glint or Viva Pulse for employee surveys?</td><td>Enables sentiment page with filters &amp; heat maps</td></tr>
   <tr><td>8</td><td>What is the primary reporting need: Copilot-only or broader productivity?</td><td>Determines whether standalone Viva Insights license is needed</td></tr>
@@ -182,15 +182,15 @@
   <tr><td>Primary Audience</td><td>IT Admins</td><td>Leaders, Managers</td><td>Leaders, Analysts</td><td>Leaders, Analysts</td><td>Analysts</td></tr>
   <tr><td>Minimum Licenses</td><td>Report-specific</td><td>1+ Copilot for core; advanced access uses a disputed 50-plan threshold that requires tenant validation</td><td>Same access foundation as Dashboard</td><td>Preview: conservatively require 50 Copilot plus agent activity</td><td>50 assigned Viva Insights service plans</td></tr>
   <tr><td>Setup Complexity</td><td>None</td><td>Low–Medium</td><td>None (auto)</td><td>Low</td><td>High</td></tr>
-  <tr><td>Data Latency</td><td>~72 hours</td><td>Up to 6 days</td><td>Up to 6 days</td><td>Up to 6 days</td><td>Query-dependent</td></tr>
+  <tr><td>Data Latency</td><td>Up to ~72 hours</td><td>Up to 6 days</td><td>Up to 6 days</td><td>Up to 6 days</td><td>Query-dependent</td></tr>
   <tr><td>User-Level Tracking</td><td>Yes</td><td>No (group-level)</td><td>No (group-level)</td><td>No (group-level)</td><td>Custom segments</td></tr>
   <tr><td>ROI Metrics</td><td>No</td><td>Assisted Hours/Value</td><td>Yes (targeted)</td><td>No</td><td>Enhanced</td></tr>
   <tr><td>Sentiment Data</td><td>No</td><td>Yes</td><td>Yes</td><td>No</td><td>Yes</td></tr>
-  <tr><td>Agent Tracking</td><td>No</td><td>Preview</td><td>No</td><td>Yes</td><td>Yes (custom)</td></tr>
+  <tr><td>Agent Tracking</td><td>Yes (Agents usage report)</td><td>Preview</td><td>No</td><td>Yes</td><td>Yes (custom)</td></tr>
   <tr><td>Before/After Analysis</td><td>No</td><td>No</td><td>No</td><td>No</td><td>Yes</td></tr>
-  <tr><td>Export Capabilities</td><td>CSV</td><td>Preview CSV: anonymized user-level rows; 6 months weekly or 28 days daily; fixed schema</td><td>Limited</td><td>Limited / preview-dependent</td><td>Power BI and query results</td></tr>
+  <tr><td>Export Capabilities</td><td>CSV</td><td>Preview CSV: user-level rows, anonymised by default (an admin can enable identifiable export through Identification); 6 months weekly or 28 days daily; fixed schema</td><td>Limited</td><td>Limited / preview-dependent</td><td>Power BI and query results</td></tr>
 </table>
-<p><strong>Licensing and preview sources:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/environment-requirements">Environment requirements for Viva Insights</a> (Last updated 12 May 2026), <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (Last updated 18 August 2026), and <a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">Connect to the Agent Dashboard</a> (Last updated 30 July 2026). These Microsoft pages conflict on the mixed threshold and Agent Dashboard prerequisite; validate in the tenant and escalate through Microsoft Support if documented service-plan eligibility does not unlock the capability after processing.</p>
+<p><strong>Licensing and preview sources:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/environment-requirements">Environment requirements for Viva Insights</a> (Last updated 12 May 2026), <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (Last updated 29 September 2026), and <a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">Connect to the Agent Dashboard</a> (Last updated 2 September 2026). These Microsoft pages conflict on the mixed threshold and Agent Dashboard prerequisite; validate in the tenant and escalate through Microsoft Support if documented service-plan eligibility does not unlock the capability after processing.</p>
 
 <!-- ═══════════════════════ 4. RACI ═══════════════════════ -->
 <h1 id="raci">4. Who Does What (RACI)</h1>
@@ -201,7 +201,7 @@
   </tr>
   <tr><td>Assign Copilot/Viva licences</td><td class="raci-y">R/A</td><td class="raci-n">–</td><td class="raci-n">–</td><td class="raci-n">–</td><td class="raci-n">C</td></tr>
   <tr><td>Assign Insights Admin/Analyst roles</td><td class="raci-y">R/A</td><td class="raci-n">–</td><td class="raci-n">–</td><td class="raci-n">–</td><td class="raci-n">–</td></tr>
-  <tr><td>Enable/disable Viva feature access management (VFAM) policies</td><td class="raci-n">–</td><td class="raci-y">R/A</td><td class="raci-n">–</td><td class="raci-n">–</td><td class="raci-n">–</td></tr>
+  <tr><td>Enable/disable Viva feature access management (VFAM) policies</td><td class="raci-n">R</td><td class="raci-y">R/A</td><td class="raci-n">–</td><td class="raci-n">–</td><td class="raci-n">–</td></tr>
   <tr><td>Configure Manager Settings</td><td class="raci-n">–</td><td class="raci-n">C</td><td class="raci-y">R/A</td><td class="raci-n">–</td><td class="raci-n">I</td></tr>
   <tr><td>Upload organizational data</td><td class="raci-n">C</td><td class="raci-n">–</td><td class="raci-y">R/A</td><td class="raci-n">–</td><td class="raci-n">I</td></tr>
   <tr><td>Configure privacy / group size</td><td class="raci-n">–</td><td class="raci-y">C</td><td class="raci-y">R/A</td><td class="raci-n">–</td><td class="raci-n">I</td></tr>
@@ -211,6 +211,7 @@
   <tr><td>View &amp; act on insights</td><td class="raci-n">I</td><td class="raci-n">–</td><td class="raci-n">–</td><td class="raci-y">C</td><td class="raci-y">R/A</td></tr>
 </table>
 <p class="u-8381d33809">R = Responsible, A = Accountable, C = Consulted, I = Informed</p>
+<p class="u-8381d33809">Organizational data uploads through the Microsoft 365 admin center are performed by the Organizational Data Source Administrator (a Global Administrator can also upload); the Insights Administrator column applies only where the tenant still uses the Viva Insights upload path.</p>
 
 <!-- ═══════════════════════ 5. KEY CONCEPTS ═══════════════════════ -->
 <h1 id="concepts">5. Key Concepts for Leaders</h1>
@@ -229,25 +230,24 @@
   <p>Optional diagnostic data affects Copilot assisted hours, emails sent using Copilot, Teams meetings and meeting hours summarized or recapped, and Teams chats summarized. Required diagnostic data still supplies a subset, so disabled optional diagnostics can undercount these measures. Confirm the tenant&rsquo;s diagnostic-data policy and metric coverage before comparing groups or periods.</p>
   <p>Assisted Hours and Assisted Value are modeled estimates based on Microsoft&rsquo;s assumptions and a session-only hourly rate. They do not prove realized savings or that Copilot caused a business outcome. Use a documented baseline, stable diagnostic coverage, and business outcome data before making ROI or causal claims.</p>
 </div>
-<p><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (Last updated 18 August 2026), Impact section.</p>
+<p><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (Last updated 29 September 2026), Impact section.</p>
 
 <h2>5.2 Licensing — What You Get with Copilot</h2>
 <p>Every M365 Copilot licence <strong>automatically includes</strong> the Viva Insights service plan at no additional cost. That bundled plan contributes to Viva Insights eligibility, but each capability still has its own assigned-plan threshold, role, access, data, cloud, and preview requirements. A separate Viva Insights purchase is needed when the measured population includes employees who do not receive the bundled plan through Copilot.</p>
 
 <h2>5.3 Privacy by Design</h2>
 <ul>
-  <li><strong>No individual tracking:</strong> All dashboard data is aggregated at group level</li>
+  <li><strong>Group-level by default:</strong> Copilot Dashboard views are aggregated at group level. Identification is a separate capability, controlled by its own Viva feature access management (VFAM) policy, that can surface named employees in the Consumption Dashboard and in data exports</li>
   <li><strong>Minimum group size:</strong> Default 10 (configurable down to 5)</li>
-  <li><strong>Differential privacy:</strong> Automatically applied to protect individuals</li>
-  <li><strong>Exclusion lists:</strong> Remove specific users from all analytics</li>
+  <li><strong>Differential privacy:</strong> Microsoft documents it for Viva Insights organization insights (manager and leader views); the Copilot Dashboard article does not state that it applies to dashboard metrics</li>
+  <li><strong>Exclusion lists:</strong> Hide specific users from the aggregated insights in the Copilot Dashboard, Agent Dashboard, Consumption Dashboard and Viva Insights collaboration reports. This is a reporting control, not a statement that their data is never processed</li>
 </ul>
 
 <h2>5.4 Known Metric Underreporting</h2>
-<p>Microsoft has acknowledged two data collection issues. No action needed — data auto-corrects after the affected windows.</p>
+<p>Microsoft currently documents one data collection issue. The fix applies from 18 February 2026 onwards; Microsoft states the historical data will be restored. Check Service health in the Microsoft 365 admin center for updates.</p>
 <table>
   <tr><th scope="col">Affected Metrics</th><th scope="col">Affected Period</th></tr>
   <tr><td>Email features (drafts, summaries)</td><td>June 1, 2025 – February 18, 2026</td></tr>
-  <tr><td>Meeting features (summaries, recap)</td><td>September 6 – November 3, 2025</td></tr>
 </table>
 
 <!-- ═══════════════════════ 6. SCOPE ═══════════════════════ -->
@@ -262,7 +262,7 @@
 
 <h3>Out of Scope</h3>
 <ul>
-  <li>Other Copilot products: Copilot for Sales, Copilot for Service, GitHub Copilot, Security Copilot</li>
+  <li>Other Copilot products: Copilot for Sales, Copilot for Service, Security Copilot. GitHub Copilot is out of scope except for the Consumption Dashboard&rsquo;s GitHub page (public preview), which reports GitHub Copilot credit consumption and usage</li>
   <li><strong>Copilot Chat users without a Microsoft 365 Copilot licence:</strong> covered by the current Microsoft 365 admin center <strong>Microsoft 365 Copilot Chat usage report</strong> and, when enabled and available, the Copilot Dashboard&rsquo;s Copilot Chat view. Microsoft Graph&rsquo;s licensed Copilot usage endpoint remains licensed-user only; use the admin report or appropriate Purview audit source for unlicensed scenarios.</li>
   <li>Broader Viva Insights productivity metrics (meeting time, focus time) — see <a href="../3-operate/collaboration-analysis.html">Collaboration Analysis Guide</a></li>
 </ul>
@@ -270,7 +270,7 @@
 <div class="callout info">
   <div class="callout-title">Current Copilot Chat reporting</div>
   <p>The Microsoft 365 admin center provides a dedicated usage report for Copilot Chat users without a Microsoft 365 Copilot licence, including exportable user activity. The Copilot Dashboard also provides a Copilot Chat licence view when reporting is enabled and available. These are different from licensed-user Microsoft Graph usage reporting and from Purview audit evidence.</p>
-  <p><strong>Source:</strong> <a href="https://learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-copilot-usage?view=o365-worldwide">Microsoft 365 Copilot Chat usage report</a> (Last updated 10 July 2026) and <a href="https://learn.microsoft.com/microsoft-365/copilot/microsoft-365-copilot-reports-for-admins">Microsoft 365 Copilot reporting options for admins</a> (Last updated 16 September 2025).</p>
+  <p><strong>Source:</strong> <a href="https://learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-copilot-usage?view=o365-worldwide">Microsoft Copilot Chat usage report</a> (Last updated 18 August 2026) and <a href="https://learn.microsoft.com/microsoft-365/copilot/microsoft-365-copilot-reports-for-admins">Microsoft Copilot reporting options for admins</a> (Last updated 17 September 2025).</p>
 </div>
 
 <!-- ═══════════════════════ 7. FURTHER READING ═══════════════════════ -->
@@ -279,7 +279,7 @@
 <table>
   <tr><th scope="col">If you need to...</th><th scope="col">Read this</th></tr>
   <tr><td>Decide your HR data / org data approach</td><td><a href="data-strategy.html">Data Strategy</a> (Strategy layer)</td></tr>
-  <tr><td>Understand multi-agency architecture options</td><td><a href="../decide/architecture.html">Multi-Agency Decision Guide</a> (Strategy layer)</td></tr>
+  <tr><td>Understand multi-agency architecture options</td><td><a href="../decide/architecture.html">Multi-Agency Decision Guide</a> (Decide)</td></tr>
   <tr><td>Hand off to IT for implementation</td><td><a href="../2-setup/admin-setup.html">Admin Setup Guide</a> (Setup layer)</td></tr>
   <tr><td>Understand how to connect HR data</td><td><a href="../2-setup/data-onboarding.html">Data Onboarding Guide</a> (Setup layer)</td></tr>
   <tr><td>Learn to read the dashboards</td><td><a href="../3-operate/dashboard-guide.html">Dashboard &amp; Reports Guide</a> (Operate layer)</td></tr>
@@ -288,7 +288,7 @@
 
 <div class="callout info u-9f7cb1fbb6">
   <div class="callout-title">Disclaimer</div>
-  <p>This guide is provided as a procedural reference and may not reflect the latest product changes. Always refer to the official <a href="https://learn.microsoft.com/viva/insights/">Viva Insights</a> and <a href="https://learn.microsoft.com/copilot/microsoft-365/">Microsoft 365 Copilot</a> documentation on Microsoft Learn for the most up-to-date information.</p>
+  <p>This guide is provided as a procedural reference and may not reflect the latest product changes. Always refer to the official <a href="https://learn.microsoft.com/viva/insights/introduction">Viva Insights</a> and <a href="https://learn.microsoft.com/microsoft-365/copilot/">Microsoft 365 Copilot</a> documentation on Microsoft Learn for the most up-to-date information.</p>
 </div>
 
 <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>

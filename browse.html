@@ -166,8 +166,8 @@
   }
 
   @media (max-width: 860px) {
-    .nav-rail { position: fixed; top: var(--app-bar-h); bottom: 0; left: 0; width: var(--nav-w); transform: translateX(-100%); box-shadow: var(--depth-16); transition: transform .24s ease; }
-    body.nav-open .nav-rail { transform: translateX(0); }
+    .nav-rail { position: fixed; top: var(--app-bar-h); bottom: 0; left: 0; width: var(--nav-w); transform: translateX(-100%); visibility: hidden; box-shadow: var(--depth-16); transition: transform .24s ease, visibility 0s linear .24s; }
+    body.nav-open .nav-rail { transform: translateX(0); visibility: visible; transition: transform .24s ease, visibility 0s; }
     body.nav-collapsed .nav-rail { width: var(--nav-w); padding: 10px 12px 24px; }
     body.nav-collapsed .nav-item { justify-content: flex-start; gap: 12px; }
     body.nav-collapsed .nav-item .nav-txt { display: inline; }
@@ -450,7 +450,7 @@
             aria-label="Publication status and provenance" title="Publication status">i</button>
     <div class="provenance-panel" id="provenance-panel" popover role="note" aria-label="Publication status">
       <p class="provenance-title">Independent publication</p>
-      <p>Last validated 19 August 2026</p>
+      <p>Last validated 2 October 2026</p>
       <p>Owner: Sumit Sadhu</p>
       <p class="provenance-links">
         <a href="4-reference/change-history.html">Change history</a>
@@ -512,7 +512,7 @@
     <button class="topic-pill" data-topic="billing">Billing</button>
     <button class="topic-pill" data-topic="consumption">Consumption</button>
     <button class="topic-pill" data-topic="Copilot Chat reporting">Chat Reporting</button>
-    <button class="topic-pill" data-topic="Graph API export">Export &amp; API</button>
+    <button class="topic-pill" data-topic="export">Export &amp; API</button>
     <button class="topic-pill" data-topic="ROI">ROI</button>
     <button class="topic-pill" data-topic="multi-agency">Multi-Agency</button>
     <button class="topic-pill" data-topic="privacy">Privacy</button>
@@ -564,6 +564,40 @@
     </div>
     <a href="decide/architecture.html">Open Guide</a>
   </div>
+
+  <div class="card" data-roles="admin governance leader" data-keywords="why multi-agency analytics is hard shared tenant agencies partition surfaces dashboard agent dashboard export delegation manager access Power BI scope">
+    <span class="card-badge badge-architecture">STRATEGY</span>
+    <h3>Why Multi-Agency Analytics Is Hard</h3>
+    <p>Why no single partition or product setting scopes Copilot analytics across agencies in a shared tenant, and when this applies to you.</p>
+    <div class="card-roles">
+      <span class="card-role">Solution Architect</span>
+      <span class="card-role">IT Admin</span>
+      <span class="card-role">CIO</span>
+    </div>
+    <a href="explain/why-multi-agency-is-hard.html">Open Guide</a>
+  </div>
+
+  <div class="card" data-roles="admin governance" data-keywords="restricted reporting pattern multi-agency partition analyst query workspace VFAM group-scoped lockdown negative tests boundary matrix single tenant agencies">
+    <span class="card-badge badge-architecture">STRATEGY</span>
+    <h3>Restricted Reporting Pattern</h3>
+    <p>Author-created, defense-in-depth reporting pattern for multiple agencies in one tenant: partition-scoped analyst queries and group-scoped VFAM restrictions. It reduces cross-agency reporting paths; it is not an end-to-end security boundary.</p>
+    <div class="card-roles">
+      <span class="card-role">Solution Architect</span>
+      <span class="card-role">IT Admin</span>
+    </div>
+    <a href="docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Open Guide</a>
+  </div>
+
+  <div class="card" data-roles="admin governance leader" data-keywords="default priority pattern multi-agency agency default views manager hierarchy AutoCxO delegation broader visibility single tenant agencies">
+    <span class="card-badge badge-architecture">STRATEGY</span>
+    <h3>Default Priority Pattern</h3>
+    <p>Author-created reporting pattern where each agency sees its own Copilot adoption and impact data by default and broader authorised cross-agency or tenant-wide visibility is explicitly accepted.</p>
+    <div class="card-roles">
+      <span class="card-role">Solution Architect</span>
+      <span class="card-role">IT Admin</span>
+    </div>
+    <a href="docs/playbooks/Copilot_Multi_Agency_Default_Priority_Architecture.html">Open Guide</a>
+  </div>
 </div>
 
 <!-- ═══ SETUP ═══ -->
@@ -608,7 +642,7 @@
   <div class="card" data-roles="admin governance" data-keywords="multi-agency setup partition isolation VFAM lockdown PowerShell default priority delegation AutoCxO CSV agency domain">
     <span class="card-badge badge-architecture">SETUP</span>
     <h3>Multi-Agency Setup</h3>
-    <p>Step-by-step implementation for both multi-agency architectures: Default Priority (scoped views) and Isolation (partition-based data boundaries with VFAM lockdown).</p>
+    <p>Step-by-step implementation for both multi-agency patterns: Default Priority (scoped views) and Restricted Reporting (partition-scoped analyst queries with VFAM lockdown).</p>
     <div class="card-roles">
       <span class="card-role">IT Admin</span>
       <span class="card-role">Solution Architect</span>
@@ -646,7 +680,7 @@
   <div class="card" data-roles="admin finance leader" data-keywords="licence license billing credits chargeback lifecycle renewal expiry model subscription PAYG commit consumption cost finance pricing Copilot Chat Studio credit pool">
     <span class="card-badge badge-playbook">OPERATE</span>
     <h3>Billing Operations</h3>
-    <p>Licence lifecycle events, 5 licensing models, 6 lifecycle scenarios, Copilot Credits consumption, chargeback, and operational checklists.</p>
+    <p>Licence lifecycle events, licensing models, Copilot Credits consumption, chargeback, and operational checklists.</p>
     <div class="card-roles">
       <span class="card-role">IT Admin</span>
       <span class="card-role">Finance</span>
@@ -657,7 +691,7 @@
   <div class="card" data-roles="admin analyst leader finance" data-keywords="consumption dashboard Copilot Credits GitHub AI Credits Cowork Work IQ API active users sessions usage intensity top 1 percent spending policy limit export billing reconciliation">
     <span class="card-badge badge-playbook">OPERATE</span>
     <h3>Consumption Dashboard Operations</h3>
-    <p>Role and scope matrix, current Cowork and Work IQ coverage, filters, usage intensity, spending-policy limits, export, billing caveat, validation, and escalation.</p>
+    <p>Role and scope matrix, current Cowork and Work IQ coverage, the Cowork deep-dive page, the GitHub page (public preview), Identification, filters, usage intensity, spending-policy limits, export, billing caveat, validation, and escalation.</p>
     <div class="card-roles">
       <span class="card-role">FinOps</span>
       <span class="card-role">Insights Analyst</span>
@@ -665,6 +699,20 @@
       <span class="card-role">Global Admin</span>
     </div>
     <a href="3-operate/consumption-dashboard.html">Open Guide</a>
+  </div>
+
+  <div class="card" data-roles="admin analyst leader finance" data-keywords="cowork dashboard Copilot Cowork admin center Cowork usage Overview Usage Value Settings Frontier assisted hours Consumption Dashboard Cowork page spending policy grace period credits tasks sessions task categories export reconciliation">
+    <span class="card-badge badge-playbook">OPERATE</span>
+    <h3>Cowork Dashboard Operations</h3>
+    <p>Admin center and Consumption Dashboard roles, prerequisites, the Frontier Value tab, assisted-hours caveats, export, reconciliation, validation, and escalation.</p>
+    <div class="card-roles">
+      <span class="card-role">IT Admin</span>
+      <span class="card-role">FinOps</span>
+      <span class="card-role">Insights Analyst</span>
+      <span class="card-role">Manager</span>
+      <span class="card-role">Global Admin</span>
+    </div>
+    <a href="3-operate/cowork-dashboard.html">Open Guide</a>
   </div>
 
   <div class="card" data-roles="admin analyst governance" data-keywords="Copilot Chat reporting unlicensed admin report licensed Graph API v1.0 Reports.Read.All D7 D30 D90 D180 ALL dashboard export Advanced queries Purview audit Search-UnifiedAuditLog Office 365 Management Activity national cloud">
@@ -706,6 +754,18 @@
     <a href="4-reference/troubleshooting.html">Open Guide</a>
   </div>
 
+  <div class="card" data-roles="admin analyst" data-keywords="troubleshooting scenarios symptom walkthrough ranked causes upload org data option not visible who can see dashboard report visible one user not another access source VFAM manager delegate">
+    <span class="card-badge badge-artifact">REFERENCE</span>
+    <h3>Troubleshooting Scenarios</h3>
+    <p>Symptom-first walkthroughs for real issues: a missing org-data upload option, and why one colleague sees the Dashboard while another does not. Each has a 30-second diagnosis and ranked causes.</p>
+    <div class="card-roles">
+      <span class="card-role">IT Admin</span>
+      <span class="card-role">Analyst</span>
+      <span class="card-role">Support</span>
+    </div>
+    <a href="4-reference/scenarios/index.html">Open Guide</a>
+  </div>
+
   <div class="card" data-roles="admin analyst" data-keywords="attribute mapping reference PersonEmail ManagerEmail Organization FunctionType LevelDesignation Location HireDate HourlyRate custom public confidential classification">
     <span class="card-badge badge-artifact">REFERENCE</span>
     <h3>Attribute Reference</h3>
@@ -720,7 +780,7 @@
   <div class="card" data-roles="leader admin analyst" data-keywords="questions answers licensing privacy data refresh agents billing scope common FAQ misconceptions group size survey Glint Pulse partition dashboard access org data upload Entra">
     <span class="card-badge badge-artifact">REFERENCE</span>
     <h3>FAQ</h3>
-    <p>18 common questions across licensing, org data, privacy, and general topics with direct answers.</p>
+    <p>Common questions across licensing, org data, privacy, and general topics with direct answers.</p>
     <div class="card-roles">
       <span class="card-role">All roles</span>
     </div>
@@ -736,6 +796,17 @@
     </div>
     <a href="4-reference/glossary.html">Open Guide</a>
   </div>
+
+  <div class="card" data-roles="admin analyst leader" data-keywords="quick start cheat sheet checklist implementation day 1 key URLs wait times org data sources roles needed review cadence printable PDF">
+    <span class="card-badge badge-artifact">REFERENCE</span>
+    <h3>Quick-Start Cheat Sheet</h3>
+    <p>A short printable checklist of the key setup steps across the six Copilot Analytics areas, with key URLs, wait times, org-data sources, and roles.</p>
+    <div class="card-roles">
+      <span class="card-role">IT Admin</span>
+      <span class="card-role">Insights Admin</span>
+    </div>
+    <a href="artifacts/Copilot_Analytics_QuickStart_CheatSheet.html">Open Cheat Sheet</a>
+  </div>
 </div>
 
 <!-- ═══ TOOLS ═══ -->
@@ -748,7 +819,7 @@
   <div class="card" data-roles="admin analyst governance finance" data-keywords="tools index reporting options consumption Copilot Chat export API Microsoft Graph Purview org data validation prompt Entra hierarchy PowerShell download README">
     <span class="card-badge badge-architecture">TOOLS</span>
     <h3>Tools &amp; Reporting Options</h3>
-    <p>Start here for reusable data utilities and a decision guide covering Consumption, Chat reporting, Dashboard export, Advanced queries, Graph APIs, and audit.</p>
+    <p>Start here for reusable data utilities and a decision guide covering Consumption, Chat reporting, Dashboard export, Advanced queries, Graph APIs, and audit, plus pointers to Microsoft&rsquo;s open-source Power BI templates (outside this project&rsquo;s evidence process).</p>
     <div class="card-roles">
       <span class="card-role">All technical roles</span>
     </div>
@@ -771,9 +842,9 @@
 
 <div class="footer">
   <p><strong>Disclaimer:</strong> These guides are provided as procedural references and may not reflect the latest product changes. Always refer to the official
-  <a href="https://learn.microsoft.com/viva/insights/">Viva Insights</a> and
-  <a href="https://learn.microsoft.com/copilot/microsoft-365/">Microsoft 365 Copilot</a> documentation on Microsoft Learn for the most up-to-date information.</p>
-  <p class="u-9374e84210">Independent Copilot Analytics guidance &bull; Last validated 19 August 2026 &bull; <a href="4-reference/accessibility.html">Accessibility</a></p>
+  <a href="https://learn.microsoft.com/viva/insights/introduction">Viva Insights</a> and
+  <a href="https://learn.microsoft.com/microsoft-365/copilot/">Microsoft 365 Copilot</a> documentation on Microsoft Learn for the most up-to-date information.</p>
+  <p class="u-9374e84210">Independent Copilot Analytics guidance &bull; Last validated 2 October 2026 &bull; <a href="4-reference/accessibility.html">Accessibility</a></p>
 </div>
 </main>
   <aside class="search-panel" id="browseSearchPanel" aria-label="Search guides" hidden>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Advanced Viva Insights — Collaboration Analysis Guide. Last validated 19 August 2026.">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Advanced Viva Insights — Collaboration Analysis Guide.">
 <link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/3-operate/collaboration-analysis.html">
 
     <title>Advanced Viva Insights — Collaboration Analysis Guide</title>
@@ -62,7 +62,7 @@
 <h2 id="purpose">1. Purpose</h2>
 <p>
     This guide covers using Viva Insights Advanced Analysis to understand workplace collaboration
-    patterns <strong>beyond Copilot</strong>. The same analyst workbench, governed <a href="https://learn.microsoft.com/viva/organizational-data">organizational data</a>, the
+    patterns <strong>beyond Copilot</strong>. The same analyst workbench, governed <a href="https://learn.microsoft.com/microsoft-365-apps/org-data-service/organizational-data">organizational data</a>, the
     same privacy settings, and the same Power BI workflow — but with different metrics and templates
     focused on meetings, focus time, wellbeing, and manager effectiveness.
 </p>
@@ -137,7 +137,7 @@
     the tenant cloud.
 </div>
 
-<p><strong>Sources:</strong> <a href="https://learn.microsoft.com/viva/organizational-data">Organizational Data in Microsoft 365</a> (Microsoft Learn, updated 2 December 2025); <a href="https://learn.microsoft.com/viva/insights/advanced/admin/partitions">Partitions in Viva Insights</a> (23 June 2025); and <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported Microsoft 365 environments for Viva Insights features</a> (30 June 2026).</p>
+<p><strong>Sources:</strong> <a href="https://learn.microsoft.com/microsoft-365-apps/org-data-service/organizational-data">Use your organizational data in Microsoft 365 and Microsoft Viva</a> (Microsoft Learn, updated 1 September 2026); <a href="https://learn.microsoft.com/viva/insights/advanced/admin/partitions">Partitions in Viva Insights</a> (14 September 2026); and <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported Microsoft 365 environments for Viva Insights features</a> (30 September 2026).</p>
 
 <!-- Section 3 -->
 <h2 id="templates">3. Available Collaboration Templates</h2>
@@ -200,7 +200,7 @@
                 Are managers spending enough 1:1 time with direct reports? What is the
                 typical span of control? How do team collaboration patterns vary by manager?
             </td>
-            <td>Not listed as supported</td>
+            <td>Supported in GCC Moderate; partial in GCC High</td>
         </tr>
         <tr>
             <td><strong>External Collaboration</strong></td>
@@ -215,14 +215,22 @@
 </table>
 
 <div class="callout-warning">
-    <strong>Environment gate:</strong> In GCC, Microsoft lists only Business resilience, Impact
-    explorer, Meeting effectiveness, Recurring meeting audit, Ways of working, and Wellbeing
-    &ndash; Balance and flexibility as supported behavioral Power BI reports and publishable
-    reports. Custom queries are supported. The reviewed matrix covers Worldwide and GCC; do not
-    infer GCC High or DoD parity. Validate the exact cloud and live tenant UI before committing
+    <strong>Environment gate:</strong> Microsoft&rsquo;s Supported environments matrix lists availability feature by feature for
+    GCC Moderate (GCC-M) and GCC High (GCC-H). The Agent Dashboard, Copilot Dashboard metric export, the Consumption Dashboard
+    and the Copilot Dashboard Readiness page are not available in either. Delegate access to dashboards is not available in
+    GCC-M and is partial in GCC-H. Of the Copilot Power BI templates, only the Copilot business impact report is supported
+    (GCC-M: yes; GCC-H: partial). For the behavioural templates in this guide, GCC-M lists Business resilience, Change management,
+    Growth, inclusion and engagement, Hybrid workforce experience, Impact explorer, Learning culture, Manager effectiveness,
+    Meeting effectiveness, Onboarding and development, Recurring meeting audit, Ways of working, and Wellbeing &ndash;
+    Balance and flexibility as supported. GCC-H lists Business resilience, Impact explorer, Meeting effectiveness, Recurring
+    meeting audit, Ways of working and Wellbeing &ndash; Balance and flexibility as supported; Growth, inclusion and engagement,
+    Hybrid workforce experience, Manager effectiveness and Onboarding and development as partial; and Change management and
+    Learning culture as not supported. Publish reports is partial in GCC-H. Custom person, meeting and cross-collaboration
+    queries are supported in both. The matrix has no DoD column, so do not infer DoD availability. Check the matrix for each
+    feature before planning a government-cloud rollout, and validate the exact cloud and live tenant UI before committing
     to a template. <strong>Source:</strong>
     <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported Microsoft 365 environments for Viva Insights features</a>
-    (Microsoft Learn, updated 30 June 2026).
+    (Microsoft Learn, updated 30 September 2026).
 </div>
 
 <h3>Template References</h3>
@@ -254,14 +262,14 @@
             <td><strong>Meeting Hours</strong></td>
             <td>
                 Meeting hours, recurring meeting hours, conflicting meeting hours,
-                multitasking meeting hours, long meeting hours, large meeting hours
+                multitasking hours, 60 minutes or longer meeting hours, large and long meeting hours
             </td>
         </tr>
         <tr>
             <td><strong>Focus Time</strong></td>
             <td>
-                Focus hours, uninterrupted focus hours, booked focus hours
-                (via Viva Insights focus plan)
+                Available-to-focus hours, uninterrupted hours, booked focus hours
+                (and booked focus hours kept with plan)
             </td>
         </tr>
         <tr>
@@ -273,21 +281,21 @@
         </tr>
         <tr>
             <td><strong>Email</strong></td>
-            <td>Email hours, emails sent, emails read</td>
+            <td>Email hours, emails sent</td>
         </tr>
         <tr>
             <td><strong>Chat &amp; Calls</strong></td>
-            <td>Chat hours, chats sent, call hours, calls made</td>
+            <td>Chat hours, chats sent, call hours, calls</td>
         </tr>
         <tr>
             <td><strong>Manager Interaction</strong></td>
-            <td>Manager 1:1 meeting hours, manager co-attendance hours</td>
+            <td>Meeting and call hours with manager 1:1, meeting and call hours with manager</td>
         </tr>
         <tr>
             <td><strong>Collaboration Scope</strong></td>
             <td>
-                Internal collaboration hours, external collaboration hours,
-                cross-group collaboration hours, network size
+                Collaboration hours, external collaboration hours,
+                internal network size, external network size
             </td>
         </tr>
     </tbody>
@@ -362,19 +370,20 @@
         </tr>
         <tr>
             <td><strong>Org Data</strong></td>
-            <td>Confirm the current source and selected downstream apps in the tenant. For add/edit imports, Message Center and the live tenant UI control whether Organizational Data in Microsoft 365 or a tenant-enabled Viva path applies; do not infer the path from a date.</td>
+            <td>Confirm the current source and selected downstream apps in the tenant. For add/edit imports, Message Center and the live tenant UI control whether Microsoft 365 Organizational Data Service (formerly Organizational Data in Microsoft 365) or a tenant-enabled Viva path applies; do not infer the path from a date.</td>
         </tr>
         <tr>
             <td><strong>Behavioural Insights</strong></td>
             <td>
-                Enabled via Viva feature access management (VFAM): <code><a href="https://learn.microsoft.com/viva/feature-access-management">TenantPolicyForBehavioralExperiences</a> = ON</code>.
-                This is a tenant-level setting that must be enabled by a Global Administrator.
+                Enabled through the &ldquo;Behavioral insights&rdquo; control in Viva feature access management (VFAM) in the Microsoft 365 admin center (when turning it on, also select Advanced Analysis), or with PowerShell (FeatureId <code><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/enable-disable-behavioral-insights">BehavioralInsights</a></code>).
+                This is a tenant-level setting that an AI Administrator or Viva Insights Administrator can enable. It is off by default for new customers after 15 November 2025 (for earlier customers it is off if no analyst has been assigned since May 2025 or no analyst has created or published reports or queries in advanced analysis), and it takes about five days to process after it is enabled.
+                Microsoft&rsquo;s <a href="https://learn.microsoft.com/viva/feature-access-management">feature access management</a> article states that its access controls aren&rsquo;t available in GCC High or DoD; for GCC, check the documentation for the specific app.
             </td>
         </tr>
     </tbody>
 </table>
 
-<p><strong>Current-state sources:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center">Upload and maintain data through the Microsoft 365 admin center</a> (Microsoft Learn, updated 13 August 2026) says migration timing is tenant-specific and communicated in Message Center; <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Use Microsoft Entra plus .csv files for parallel data uploads</a> (visible date 30 June 2025; content refreshed 7 July 2026) says add/edit uploads are no longer supported in the Viva web app; <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#upload-organizational-data-for-the-copilot-dashboard-and-agent-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, and Viva Insights web app</a> (13 August 2026) still recommends that path for Viva Insights customers. If Message Center and UI conflict, stop and escalate rather than choosing an article silently.</p>
+<p><strong>Current-state sources:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/admin/upload-org-data-admin-center">Upload and maintain data through the Microsoft 365 admin center</a> (Microsoft Learn, updated 13 August 2026) says migration timing is tenant-specific and communicated in Message Center; <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Use Microsoft Entra plus .csv files for parallel data uploads</a> (Last updated 7 July 2026) says add/edit uploads are no longer supported in the Viva web app; <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#upload-organizational-data-for-the-copilot-dashboard-and-agent-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, Consumption Dashboard, and Viva Insights web app</a> (13 August 2026) still recommends that path for Viva Insights customers. If Message Center and UI conflict, stop and escalate rather than choosing an article silently.</p>
 
 <div class="callout-warning">
     <strong>Analyst data handling:</strong> Insights Analysts can access de-identified individual-level
@@ -390,9 +399,9 @@
 </div>
 
 <div class="callout-warning">
-    <strong>Note:</strong> If <code>TenantPolicyForBehavioralExperiences</code> is set to OFF,
-    no behavioural metrics (meeting hours, focus time, etc.) will be available — for either
-    Copilot or collaboration queries. This is the single most common blocker for new deployments.
+    <strong>Note:</strong> With behavioural insights switched off, Copilot metrics remain available, but behavioural metrics
+    (meeting hours, focus time, etc.) and the meeting, cross-collaboration and external collaboration queries do not. Behavioural
+    insights are off by default for new customers, so check this setting first; processing takes about five days after you enable them.
 </div>
 
 <!-- Section 7 -->
@@ -404,7 +413,7 @@
 </p>
 
 <ol class="step-list">
-    <li>Sign in to <a href="https://analysis.insights.viva.office.com">analysis.insights.viva.office.com</a> with your Insights Analyst account.</li>
+    <li>Sign in to <a href="https://analysis.insights.cloud.microsoft">analysis.insights.cloud.microsoft</a> with your Insights Analyst account.</li>
     <li>Select <strong>Create analysis</strong> from the left navigation, then choose <strong>Templates</strong>.</li>
     <li>Select a collaboration template — for example, <strong>Ways of Working</strong>.</li>
     <li>Configure the query:
@@ -419,13 +428,13 @@
     <li>Set employee filters to scope the analysis (e.g., specific departments, locations, or levels).
         Select which org attributes to include in the output for grouping.</li>
     <li>Select <strong>Run</strong> to execute the query. Processing time depends on population size
-        and time period — typically 30 minutes to several hours.</li>
+        and time period — Microsoft says a template query might take a few minutes to run; larger populations and longer periods can take longer.</li>
     <li>Once complete, download the <strong>.pbit</strong> file (Power BI template) from the query results page.</li>
     <li>Open the .pbit file in Power BI Desktop. When prompted, paste the <strong>Partition ID</strong>
         and <strong>Query ID</strong> from the Viva Insights results page. Select <strong>Load</strong>.</li>
     <li>Explore the report — navigate through the pre-built pages, apply filters, and customise
         visualisations as needed.</li>
-    <li>To share with leadership, use the <strong><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/query-results">Publish Reports</a></strong> feature in Viva Insights
+    <li>To share with leadership, use the <strong><a href="https://learn.microsoft.com/viva/insights/advanced/analyst/publish-reports">Publish Reports</a></strong> feature in Viva Insights
         to push a read-only version to authorised viewers, only when that report is supported in the tenant cloud.</li>
 </ol>
 

@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
-"""Generate sitemap.xml from canonical, non-redirect public HTML pages."""
+"""Generate canonical, non-redirect URLs with the shared hub release date."""
 
+from datetime import datetime
 from pathlib import Path
 import re
+
+from maintenance.sync_dates import current_release_date
 
 
 REPO = Path(__file__).resolve().parent.parent
@@ -22,6 +25,7 @@ def pages():
 
 
 def main():
+    lastmod = datetime.strptime(current_release_date(), "%d %B %Y").date().isoformat()
     urls = []
     for path in pages():
         text = path.read_text(encoding="utf-8")
@@ -36,7 +40,7 @@ def main():
         lines.extend((
             "  <url>",
             f"    <loc>{url}</loc>",
-            "    <lastmod>2026-07-16</lastmod>",
+            f"    <lastmod>{lastmod}</lastmod>",
             "  </url>",
         ))
     lines.append("</urlset>")

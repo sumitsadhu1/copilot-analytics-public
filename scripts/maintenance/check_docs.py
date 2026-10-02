@@ -23,7 +23,10 @@ Six checks (each independently reported, with severity + file + line):
                   URL, AWS key, Slack token). The repo bans embedded PATs.
   6. external     (--external) Outbound http(s) links still resolve. Definitive
                   404/410/451 = broken; bot-blocks/timeouts = unknown (non-fatal).
-                  Results cached to avoid hammering hosts on every run.
+                  Resource hints are skipped; moved Learn articles and missing
+                  Learn anchors warn. Canonical metadata is checked structurally,
+                  not against the pre-release live site. Responses/final URLs
+                  cached for 14 days.
 
 Usage:
     python3 scripts/maintenance/check_docs.py [--external] [--strict] [--verbose]
@@ -40,11 +43,15 @@ import os
 import re
 import subprocess
 import sys
-import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from urllib.request import Request, urlopen
-from urllib.error import HTTPError, URLError
+from html.parser import HTMLParser
+from urllib.parse import unquote, urldefrag
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from learn_sources import (  # noqa: E402
+    BROKEN_CODES, CACHE_TTL, PageCache, article_path, extract_ids, is_learn_url,
+)
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO = SCRIPT_DIR.parent.parent
@@ -72,7 +79,7 @@ class Findings:
     def __init__(self):
         self.items = []
 
-    def add(self, severity, check, message, file=None, line=None):
+    def add(self, severity, check, message, file=None, line=None, **details):
         rel = None
         if file is not None:
             try:
@@ -82,6 +89,7 @@ class Findings:
         self.items.append({
             "severity": severity, "check": check, "message": message,
             "file": rel, "line": line,
+            **details,
         })
 
     def by_severity(self, severity):
@@ -437,38 +445,37 @@ def check_secrets(f, files):
 
 # ── check 6: external link reachability (opt-in) ──────────────────────────────
 
-_HREF_RE = re.compile(r'href\s*=\s*"(https?://[^"]+)"', re.IGNORECASE)
-CACHE_TTL = 14 * 86400  # re-verify a previously-OK URL at most every 14 days
-BROKEN_CODES = {400, 404, 410, 451}
-USER_AGENT = ("CopilotAnalyticsHub-DocHealth/1.0 "
-              "(github.com/sumitsadhu1/copilot-analytics-public)")
+RESOURCE_HINTS = {"preconnect", "dns-prefetch", "preload"}
+
+
+class ExternalLinks(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.links = []
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        rel = set((attrs.get("rel") or "").lower().split())
+        if tag == "link" and "canonical" in rel:
+            return
+        if tag == "link" and rel & RESOURCE_HINTS and "stylesheet" not in rel:
+            return
+        url = (attrs.get("href") or "").strip()
+        if url.lower().startswith(("http://", "https://")):
+            self.links.append((url, self.getpos()[0]))
 
 
 def collect_external(pages):
     urls = {}
     for page in pages:
         html = read_text(page)
-        for m in _HREF_RE.finditer(html):
-            url = m.group(1).split("#")[0]
-            urls.setdefault(url, []).append((page, line_at(html, m.start())))
+        if is_redirect(html):
+            continue
+        parser = ExternalLinks()
+        parser.feed(html)
+        for url, line in parser.links:
+            urls.setdefault(url, []).append((page, line))
     return urls
-
-
-def probe(url):
-    """Return an HTTP-ish status code, or 0 for network/unknown failures."""
-    for method in ("HEAD", "GET"):
-        try:
-            req = Request(url, method=method, headers={"User-Agent": USER_AGENT})
-            with urlopen(req, timeout=20) as resp:
-                return resp.status
-        except HTTPError as e:
-            if e.code in (403, 405, 429) and method == "HEAD":
-                continue  # some hosts refuse HEAD — retry with GET
-            return e.code
-        except (URLError, OSError, ValueError):
-            if method == "GET":
-                return 0
-    return 0
 
 
 def check_dates(f):
@@ -481,33 +488,43 @@ def check_dates(f):
         f.add(ERROR, "dates", f"{item} — run scripts/maintenance/sync_dates.py")
 
 
-def check_external(f, pages):
-    cache = {}
-    if CACHE_FILE.exists():
-        try:
-            cache = json.loads(read_text(CACHE_FILE))
-        except json.JSONDecodeError:
-            cache = {}
-    now = time.time()
+def check_external(f, pages, refresh=False):
+    cache = PageCache(CACHE_FILE)
+    ids = {}
     occurrences = collect_external(pages)
     for url in sorted(occurrences):
-        cached = cache.get(url)
-        if cached and cached.get("code", 0) not in BROKEN_CODES \
-                and now - cached.get("checked", 0) < CACHE_TTL:
-            code = cached["code"]
-        else:
-            code = probe(url)
-            time.sleep(0.4)
-            cache[url] = {"code": code, "checked": now}
+        learn = is_learn_url(url)
+        response = cache.get(url, refresh=refresh, include_html=learn)
+        code = response["code"]
+        final_url = response["final_url"]
+        fragment = unquote(urldefrag(url)[1])
+        if learn and response.get("html") and final_url not in ids:
+            ids[final_url] = extract_ids(response["html"])
         for page, line in occurrences[url]:
+            details = {"url": url, "final_url": final_url}
             if code in BROKEN_CODES:
-                f.add(ERROR, "external", f"broken link (HTTP {code}): {url}", page, line)
-            elif code == 0:
-                f.add(INFO, "external", f"unverified (network/bot-block): {url}", page, line)
-    try:
-        CACHE_FILE.write_text(json.dumps(cache, indent=2))
-    except OSError:
-        pass
+                f.add(ERROR, "external", f"broken link (HTTP {code}): {url}",
+                      page, line, **details)
+            elif not 200 <= code < 300:
+                f.add(INFO, "external",
+                      f"unverified (network/bot-block, HTTP {code}): {url}",
+                      page, line, **details)
+            else:
+                if learn and article_path(url) != article_path(final_url):
+                    f.add(WARN, "external",
+                          f"Learn article redirected: {url} → {final_url}",
+                          page, line, issue="redirect", **details)
+                if learn and fragment:
+                    if response.get("html"):
+                        if fragment not in ids[final_url]:
+                            f.add(WARN, "external",
+                                  f'Learn anchor "#{fragment}" missing: {url}',
+                                  page, line, issue="anchor", **details)
+                    else:
+                        f.add(INFO, "external",
+                              f"Learn anchor unverified (no page HTML): {url}",
+                              page, line, **details)
+    cache.save()
 
 
 # ── orchestration ─────────────────────────────────────────────────────────────
@@ -516,6 +533,8 @@ def main():
     ap = argparse.ArgumentParser(description="Copilot Analytics Hub doc-health check")
     ap.add_argument("--external", action="store_true",
                     help="also probe outbound http(s) links (network, slower)")
+    ap.add_argument("--refresh-external", action="store_true",
+                    help="with --external, bypass the 14-day response cache")
     ap.add_argument("--ci", action="store_true",
                     help="CI mode: use git commit times for PDF staleness "
                          "(file mtimes are unreliable after a fresh checkout)")
@@ -542,7 +561,8 @@ def main():
         ("secrets", lambda: check_secrets(f, files)),
     ]
     if args.external:
-        checks.append(("external", lambda: check_external(f, pages)))
+        checks.append(("external", lambda: check_external(
+            f, pages, refresh=args.refresh_external)))
 
     for name, fn in checks:
         before = len(f.items)

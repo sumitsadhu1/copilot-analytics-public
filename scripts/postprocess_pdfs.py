@@ -3,18 +3,26 @@
 
 from pathlib import Path
 
-import pikepdf
+from maintenance.sync_dates import current_release_date
 
 
 REPO = Path(__file__).resolve().parent.parent
 PDF_ROOT = REPO / "artifacts" / "pdfs"
 
 
+def pdf_subject():
+    """Single-source the validation stamp from the hub's Current release row."""
+    return ("Independent Microsoft 365 Copilot Analytics implementation guidance; "
+            f"validated {current_release_date()}")
+
+
 def process(path):
+    import pikepdf
+
     temporary = path.with_suffix(".tmp.pdf")
     with pikepdf.Pdf.open(path) as pdf:
         pdf.docinfo["/Author"] = "Sumit Sadhu"
-        pdf.docinfo["/Subject"] = "Independent Microsoft 365 Copilot Analytics implementation guidance; validated 16 July 2026"
+        pdf.docinfo["/Subject"] = pdf_subject()
         pdf.docinfo["/Keywords"] = "Microsoft 365 Copilot, Copilot Analytics, Viva Insights, implementation guidance"
         pdf.Root.Lang = "en-AU"
         pdf.save(temporary)

@@ -2,7 +2,7 @@
 
 Independent, role- and task-based guidance for implementing and operating Microsoft 365 Copilot Analytics, Viva Insights reporting, privacy, data, and multi-agency reporting patterns.
 
-> **Release 5.0 — Last validated against Microsoft Learn: 16 July 2026**<br>
+> **Release 5.2 — Last validated against Microsoft Learn: 2 October 2026**<br>
 > **Content owner:** Sumit Sadhu<br>
 > **Canonical format:** HTML. This is not official Microsoft documentation.
 
@@ -26,8 +26,10 @@ Independent, role- and task-based guidance for implementing and operating Micros
 | **Multi-Agency Restricted Reporting Pattern** | Organisations using defense-in-depth controls for agency-scoped reporting within one tenant. This is not a Microsoft security boundary. | [Download PDF](artifacts/pdfs/Copilot_Multi_Agency_Isolation_Architecture.pdf) |
 | **Multi-Agency Default Priority Pattern** | Organisations where cross-agency aggregate visibility is acceptable. | [Download PDF](artifacts/pdfs/Copilot_Multi_Agency_Default_Priority_Architecture.pdf) |
 | **Billing Operations** | Finance and IT ops managing lifecycle, credits, consumption, and chargeback. | [Download PDF](artifacts/pdfs/Billing_Operations.pdf) |
+| **Consumption Dashboard Operations** | Analysts and FinOps monitoring Copilot Credit consumption, spending-policy limits, and billing reconciliation. | [Download PDF](artifacts/pdfs/Consumption_Dashboard_Operations.pdf) |
+| **Cowork Dashboard Operations** | Admins, analysts, and FinOps operating Copilot Cowork usage reporting. | [Download PDF](artifacts/pdfs/Cowork_Dashboard_Operations.pdf) |
 | **Collaboration Analysis** | Analysts measuring meetings, focus, wellbeing, and collaboration patterns. | [Download PDF](artifacts/pdfs/Collaboration_Analysis.pdf) |
-| **Quick-Start Cheat Sheet** | Anyone who wants a 1-page printable checklist of the key setup steps. | [Download PDF](artifacts/pdfs/Copilot_Analytics_QuickStart_CheatSheet.pdf) |
+| **Quick-Start Cheat Sheet** | Anyone who wants a short printable checklist of the key setup steps. | [Download PDF](artifacts/pdfs/Copilot_Analytics_QuickStart_CheatSheet.pdf) |
 | **FAQ** | Quick answers across licensing, access, reporting, data, privacy, and agents. | [Download PDF](artifacts/pdfs/FAQ.pdf) |
 
 ---
@@ -38,7 +40,7 @@ Microsoft Learn documents six Copilot Analytics areas:
 
 1. Microsoft 365 admin center readiness and adoption reports
 2. Microsoft Copilot Dashboard
-3. Agent Dashboard (preview)
+3. Agent Dashboard (the Copilot Agent view is in public preview)
 4. Consumption Dashboard
 5. Copilot Analytics reports
 6. Advanced Reporting and Power BI templates

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Copilot Lifecycle &amp; Billing Playbook. Last validated 19 August 2026.">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Copilot Lifecycle &amp; Billing Playbook.">
 <link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/3-operate/billing-operations.html">
 
     <title>Copilot Lifecycle &amp; Billing Playbook</title>
@@ -49,7 +49,7 @@
         <li>Every <strong>M365 Copilot licence includes Viva Insights</strong> &mdash; no separate purchase needed (<a href="#licensing">Section 2</a>)</li>
         <li>Core dashboard capabilities are available with <strong>1+ Copilot licences</strong>; for 50-plan capabilities, count assigned Viva Insights service plans and validate the documented mixed-licence conflict in the tenant (<a href="#lifecycle">Section 3</a>)</li>
         <li>Copilot Credits <strong>do not roll over</strong> &mdash; monitor weekly and set alerts (<a href="#credits">Section 4</a>)</li>
-        <li>When credits are exhausted, <strong>agents are blocked immediately</strong> &mdash; see emergency procedure (<a href="#credits">Section 4</a>)</li>
+        <li>Copilot Studio enforces prepaid capacity monthly: some overage is tolerated, <strong>custom agents are disabled once a tenant reaches 125% of prepaid capacity</strong>, and new agent flow runs are blocked when prepaid capacity is fully used; pay-as-you-go billing handles overage instead &mdash; see emergency procedure (<a href="#credits">Section 4</a>)</li>
         <li>Licence changes take <strong>up to 7 days</strong> to appear in dashboards (<a href="#lifecycle">Section 3</a>)</li>
     </ul>
 </div>
@@ -106,13 +106,13 @@
             <td><strong>Microsoft 365 <a href="https://learn.microsoft.com/copilot/overview">Copilot Chat</a></strong></td>
             <td>Included in M365 subscription</td>
             <td>
-                Web-based only (copilot.microsoft.com); metered charges for shared tenant data
+                Available in the Microsoft Copilot app (m365.cloud.microsoft/chat), Outlook, Teams and Edge, depending on subscription; metered charges for shared tenant data
                 (SharePoint, Graph) access via Copilot Credits
             </td>
         </tr>
         <tr>
             <td colspan="3" class="u-df47f196dd">
-                <strong>&#x2139;&#xFE0F; Analytics note:</strong> The Microsoft 365 admin center now provides a dedicated <strong>Microsoft 365 Copilot Chat usage report</strong> for users without a Microsoft 365 Copilot licence, including exportable user activity. The Copilot Dashboard also provides a Copilot Chat licence view when enabled and available. These are distinct from Viva Insights custom queries, Microsoft Graph&rsquo;s licensed-user-only Copilot usage endpoint, and Purview audit evidence. Source: <a href="https://learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-copilot-usage?view=o365-worldwide">Microsoft 365 Copilot Chat usage report</a> (Last updated 10 July 2026) and <a href="https://learn.microsoft.com/microsoft-365/copilot/microsoft-365-copilot-reports-for-admins">Microsoft 365 Copilot reporting options for admins</a> (Last updated 16 September 2025).
+                <strong>&#x2139;&#xFE0F; Analytics note:</strong> The Microsoft 365 admin center now provides a dedicated <strong>Microsoft Copilot Chat usage report</strong> for users without a Microsoft 365 Copilot licence, including exportable user activity. The Copilot Dashboard also provides a Copilot Chat licence view when enabled and available. These are distinct from Viva Insights custom queries, Microsoft Graph&rsquo;s licensed-user-only Copilot usage endpoint, and Purview audit evidence. Source: <a href="https://learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-copilot-usage?view=o365-worldwide">Microsoft Copilot Chat usage report</a> (Last updated 18 August 2026) and <a href="https://learn.microsoft.com/microsoft-365/copilot/microsoft-365-copilot-reports-for-admins">Microsoft Copilot reporting options for admins</a> (Last updated 17 September 2025).
             </td>
         </tr>
         <tr>
@@ -135,14 +135,14 @@
             <td><strong>Copilot Credits Pre-Purchase Plan</strong></td>
             <td>One-year prepaid</td>
             <td>
-                Bulk credit purchase at a discount; usable across eligible products
-                (Copilot Studio, M365 Copilot Chat tenant data, etc.)
+                One-year prepaid pool of Copilot Credit Commit Units usable across eligible Microsoft products
+                (Copilot Studio, M365 Copilot Chat tenant data, etc.); purchased in the Azure portal
             </td>
         </tr>
     </tbody>
 </table>
 
-<p><strong>Reference:</strong> <a href="https://learn.microsoft.com/microsoft-copilot-studio/billing-licensing">Copilot Studio Billing and Licensing</a></p>
+<p><strong>Reference:</strong> <a href="https://learn.microsoft.com/microsoft-copilot-studio/billing-licensing">Licensing for agents powered by the standard harness (Copilot Studio)</a>. Microsoft points to the Microsoft Copilot Studio Licensing Guide for the most complete licensing and billing information.</p>
 
 <!-- Section 3 -->
 <h2 id="lifecycle">3. Lifecycle Events — Impact on Analytics Data</h2>
@@ -183,7 +183,7 @@
         <tr>
             <td><strong>Agency/BU merge</strong></td>
             <td>Dashboard reflects updated <a href="https://learn.microsoft.com/viva/insights/advanced/admin/org-data-overview">org data</a> after the CSV is re-uploaded with new organisational structure.</td>
-            <td>Update org data CSV to reflect the new org structure. Partition boundaries may need restructuring (see <a href="../docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Multi-Agency Isolation Architecture</a>).</td>
+            <td>Update org data CSV to reflect the new org structure. Partition boundaries may need restructuring (see the <a href="../docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Restricted Reporting playbook</a>).</td>
         </tr>
         <tr>
             <td><strong>Scale-up (adding 50+ more licences)</strong></td>
@@ -193,7 +193,7 @@
         <tr>
             <td><strong>Scale-down below 50 licences</strong></td>
             <td>Core dashboard capabilities remain available with 1+ Copilot licences. For capabilities gated at 50, Microsoft&rsquo;s Environment Requirements article counts assigned Viva Insights service plans and explicitly treats 30 Copilot + 20 Viva Insights as 50; the Dashboard article instead says 50 Copilot or 50 Viva Insights. Verify assigned service plans and tenant feature presence before forecasting a loss of access. Agent Dashboard preview should conservatively be treated as requiring 50 Copilot licences plus agent activity.</td>
-            <td>Advanced Analytics workbench remains accessible if existing Viva Insights licences total &ge;50. If total drops below 50, the analyst experience shows <em>&ldquo;Viva Insights is below the minimum assigned licence requirement&rdquo;</em>. Existing query results and Power BI reports remain intact but new queries cannot be created.</td>
+            <td>Advanced Analytics workbench remains accessible if existing Viva Insights licences total &ge;50. Microsoft states that at least 50 assigned Viva Insights licences are required to access advanced analysis and the Microsoft Copilot Dashboard; validate in the tenant what happens to existing query results and Power BI reports if the total drops below 50.</td>
         </tr>
     </tbody>
 </table>
@@ -204,7 +204,7 @@
     assignments automatically. For dashboard enablement steps, see the <a href="../2-setup/admin-setup.html#tier2">Admin Setup Guide: Copilot Dashboard Enablement</a>.
 </div>
 
-<p><strong>References:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/environment-requirements">Environment requirements for Viva Insights</a> (Last updated 12 May 2026), <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (Last updated 18 August 2026), and <a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">Connect to the Agent Dashboard</a> (Last updated 30 July 2026). The first two sources conflict on mixed-plan threshold wording; the Agent article conflicts with the broader Dashboard article on the preview prerequisite. Validate in the tenant and raise Microsoft Support if the documented service plans do not produce the expected entitlement after processing.</p>
+<p><strong>References:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/environment-requirements">Environment requirements for Viva Insights</a> (Last updated 12 May 2026), <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (Last updated 29 September 2026), and <a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">Connect to the Agent Dashboard</a> (Last updated 2 September 2026). The first two sources conflict on mixed-plan threshold wording; the Agent article conflicts with the broader Dashboard article on the preview prerequisite. Validate in the tenant and raise Microsoft Support if the documented service plans do not produce the expected entitlement after processing.</p>
 
 <!-- Section 4 -->
 <h2 id="credits">4. Copilot Credits — Understanding Consumption</h2>
@@ -217,14 +217,15 @@
 <h3>What Costs Credits</h3>
 <ul>
     <li>Agent responses using Copilot Studio capabilities beyond zero-rated usage</li>
-    <li>Tenant data grounding (SharePoint, Graph) in M365 Copilot Chat (web-based)</li>
+    <li>Tenant data grounding (SharePoint, Graph) in M365 Copilot Chat</li>
     <li>Custom agent actions, plugins, and connector invocations</li>
     <li>Generative answers using non-M365 knowledge sources</li>
+    <li>Classic answers (1 credit), generative answers (2) and agent actions (5) when the user does not hold a Microsoft 365 Copilot licence</li>
 </ul>
 
 <h3>Zero-Rated (No Credits Required)</h3>
 <ul>
-    <li>Classic (deterministic) answers in Copilot Studio agents</li>
+    <li>Classic and generative answers in Copilot Studio agents when used by Microsoft 365 Copilot licensed users in employee-facing scenarios (conditions apply; see the footnotes in <a href="https://learn.microsoft.com/microsoft-copilot-studio/requirements-messages-management">Billing rates and management</a>)</li>
     <li>Generative answers using Microsoft Graph tenant grounding <strong>when used by M365 Copilot licensed users in M365 apps</strong> (Word, Excel, Teams, etc.)</li>
     <li>Standard Copilot-in-app interactions for licensed M365 Copilot users</li>
 </ul>
@@ -232,7 +233,7 @@
 <h3>Credit Mechanics</h3>
 <ul>
     <li>Credits reset monthly — there is <strong>no rollover</strong> of unused credits to the next month.</li>
-    <li>Overage behaviour: when credits are exhausted, model runs are blocked until more credits are purchased or allocated.</li>
+    <li>Overage behaviour: Microsoft allows some overage; custom agents are disabled when a tenant reaches 125% of prepaid capacity (ongoing conversations are not interrupted), and new agent flow runs are blocked when prepaid capacity is exhausted. Environments configured to bill overage to pay-as-you-go are handled through the Azure subscription.</li>
     <li>Credits are pooled at the tenant level for prepaid plans, or billed per-environment for <a href="https://learn.microsoft.com/power-platform/admin/pay-as-you-go-overview">pay-as-you-go</a>.</li>
 </ul>
 
@@ -241,35 +242,35 @@
 <ul>
     <li>Use it for operational trend and scope analysis, not as the invoice, entitlement ledger, or official billing system of record.</li>
     <li>Reconcile its output with Power Platform Admin Center, Microsoft 365 admin center credit reports, and Azure billing records before chargeback or accrual decisions.</li>
-    <li>Access depends on the documented role and scope model; delegation is not a substitute for Consumption Dashboard eligibility.</li>
+    <li>Access depends on the documented role and scope model. Microsoft&rsquo;s articles disagree on delegation: <a href="https://learn.microsoft.com/viva/insights/org-team-insights/ai-cost-dashboard">How to use the Consumption Dashboard</a> says access can&rsquo;t currently be delegated, while <a href="https://learn.microsoft.com/viva/insights/org-team-insights/delegate-access">Delegate access</a> describes a <strong>Combined access</strong> delegate scope that includes the Consumption Dashboard. Test in the tenant before relying on either, and review existing delegates&rsquo; scopes.</li>
 </ul>
-<p><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/insights/org-team-insights/ai-cost-dashboard">How to use the Consumption Dashboard in Insights</a> (Last updated 20 July 2026) and <a href="https://learn.microsoft.com/viva/insights/copilot-analytics-introduction">Copilot Analytics introduction</a> (Last updated 9 February 2026).</p>
+<p><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/insights/org-team-insights/ai-cost-dashboard">How to use the Consumption Dashboard in Insights</a> (Last updated 8 September 2026) and <a href="https://learn.microsoft.com/viva/insights/copilot-analytics-introduction">Copilot Analytics introduction</a> (Last updated 1 July 2026).</p>
 
 <div class="callout-warning">
     <strong>Warning:</strong> Credits do not roll over. Monitor consumption weekly to avoid
     unexpected service interruptions at month-end.
 </div>
 
-<h3>Emergency: Credits Exhausted &mdash; Agents Blocked</h3>
+<h3>Emergency: Prepaid Capacity Enforcement &mdash; Agents Disabled or Flows Blocked</h3>
 <p>If agents stop responding and users see errors, follow this resolution path:</p>
 <ol>
-    <li><strong>Confirm the cause:</strong> Navigate to <a href="https://admin.powerplatform.microsoft.com">Power Platform Admin Center</a> &rarr; Billing &rarr; Licenses. Check if the credit balance shows 0 or &ldquo;Exhausted&rdquo;.</li>
+    <li><strong>Confirm the cause:</strong> Navigate to <a href="https://admin.powerplatform.microsoft.com">Power Platform Admin Center</a> &rarr; Licensing &rarr; Products &rarr; Copilot Studio &rarr; Summary. Check the Prepaid capacity card and whether the environment is within capacity or in overage.</li>
     <li><strong>Immediate fix &mdash; Add credits:</strong>
         <ul>
             <li><strong>Pay-as-you-go:</strong> Verify the Azure subscription linked to the billing policy is active and has available budget. If the subscription spending limit was hit, increase it in <a href="https://portal.azure.com/#blade/Microsoft_Azure_CostManagement">Azure Portal &rarr; Cost Management</a>.</li>
-            <li><strong>Prepaid:</strong> Purchase additional Copilot Credits via your Microsoft account team or the M365 Admin Center &rarr; Billing &rarr; Purchase Services. Credits are applied within 1&ndash;2 hours.</li>
+            <li><strong>Prepaid:</strong> Purchase additional Copilot Credit capacity through your Microsoft account team or the Microsoft 365 admin center. Microsoft documents Prepaid Capacity packs under <strong>Marketplace</strong> (search for &ldquo;Microsoft Copilot Studio&rdquo;; Global Administrator or Billing Administrator required) in <a href="https://learn.microsoft.com/microsoft-365/copilot/pay-as-you-go/copilot-capacity-packs#step-1-buy-a-microsoft-copilot-studio-capacity-pack-in-the-microsoft-365-admin-center">Buy a Microsoft Copilot Studio capacity pack</a>, and the Pre-purchase Plan (P3) under <strong>Cost Management &gt; Configuration &gt; Buy Pre-purchase Credits</strong> in <a href="https://learn.microsoft.com/microsoft-365/copilot/usage-based-billing-manage-copilot-credits#buy-pre-purchase-credits-pre-purchase-plan-p3">Managing AI experiences enabled by usage-based billing</a>. Microsoft does not document a fixed timing for when purchased credits become available.</li>
         </ul>
     </li>
     <li><strong>Prevent recurrence &mdash; Set up alerts:</strong>
         <ul>
-            <li>In <strong>PPAC</strong>: Billing &rarr; select the billing policy &rarr; configure usage notifications at 50%, 75%, and 90% thresholds.</li>
+            <li>In <strong>PPAC</strong>: if the capacity panel for your environment shows an <strong>Overage notification</strong> setting (Microsoft documents it for the <a href="https://learn.microsoft.com/microsoft-365/copilot/pay-as-you-go/copilot-capacity-packs#step-3-allocate-capacity-to-the-copilot-chat-environment-in-the-power-platform-admin-center">Copilot Chat environment</a>), select <strong>Send notification when nearing capacity usage</strong> and choose a percentage from the list. Confirm that the same setting applies to your Copilot Studio environments.</li>
             <li>In <strong>Azure</strong> (for pay-as-you-go): Cost Management &rarr; Budgets &rarr; create a budget with action group email alerts.</li>
         </ul>
     </li>
-    <li><strong>Review consumption:</strong> Use the <a href="https://learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-365-copilot-credits">Copilot Credits Activity Report</a> in Admin Center to identify which agents consumed the most credits and whether any can be optimised.</li>
+    <li><strong>Review consumption:</strong> Use the <a href="https://learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-365-copilot-credits">Microsoft Copilot Credits report</a> in Admin Center to identify which agents consumed the most credits and whether any can be optimised.</li>
 </ol>
 
-<p><strong>Reference:</strong> <a href="https://learn.microsoft.com/microsoft-copilot-studio/requirements-messages-management">Copilot Studio Message and Credit Management</a></p>
+<p><strong>Reference:</strong> <a href="https://learn.microsoft.com/microsoft-copilot-studio/requirements-messages-management">Billing rates and management</a></p>
 
 <!-- Section 5 -->
 <h2 id="ppac-billing">5. PPAC Billing Configuration</h2>
@@ -288,9 +289,10 @@
     <li>View <strong>Capacity consumption by product</strong> to see breakdown across Copilot Studio, M365 Copilot Chat, and other eligible products.</li>
     <li>To allocate prepaid credits to specific environments:
         <ul>
-            <li>Select <strong>Allocate capacity</strong></li>
+            <li>Select <strong>Manage Capacity</strong> on the Prepaid capacity card</li>
             <li>Choose the target environment</li>
             <li>Enter the number of credits to allocate</li>
+            <li>Under <strong>Capacity overages</strong>, choose <strong>Draw from the available capacity in my tenant</strong> or <strong>Bill to my pay-as-you-go billing plan</strong></li>
             <li>Confirm the allocation</li>
         </ul>
     </li>
@@ -307,19 +309,19 @@
     </li>
 </ol>
 
-<p><strong>Reference:</strong> <a href="https://learn.microsoft.com/power-platform/admin/manage-copilot-studio-messages-capacity">Manage Copilot Studio Messages Capacity</a></p>
+<p><strong>Reference:</strong> <a href="https://learn.microsoft.com/power-platform/admin/manage-copilot-studio-copilot-credits-capacity">Manage Copilot Credits and capacity for Copilot Studio</a></p>
 
 <!-- Section 6 -->
 <h2 id="admin-reports">6. Admin Center Billing Reports</h2>
 <p>
-    The Microsoft 365 Admin Center provides a Copilot Credits report that gives detailed
-    visibility into credit consumption across your organisation.
+    The Microsoft 365 admin center provides a Microsoft Copilot Credits report for pay-as-you-go consumption by users <em>without</em> a Microsoft Copilot licence who use metered agents in Copilot Chat.
+    It shows the last 7 or 30 days (during preview, a maximum of 30 days and nothing before 3 May 2025), and user names are hidden unless the admin setting to show user details in usage reports is on.
 </p>
 
 <h3>Accessing the Report</h3>
 <ol class="step-list">
     <li>Sign in to <a href="https://admin.microsoft.com">admin.microsoft.com</a>.</li>
-    <li>Navigate to <strong>Reports → Usage → Copilot Credits</strong>.</li>
+    <li>Navigate to <strong>Reports → Usage → Microsoft Copilot → Credits</strong>.</li>
     <li>Review the report components:
         <ul>
             <li><strong>Total credits used:</strong> Aggregate consumption for the billing period</li>
@@ -333,10 +335,26 @@
 
 <div class="callout">
     <strong>Tip:</strong> Export the per-user breakdown to CSV and join it with your org data
-    file to produce agency-level or cost-centre-level chargeback reports.
+    file to produce agency-level or cost-centre-level chargeback reports. The report covers only unlicensed Copilot Chat users on pay-as-you-go and at most 30 days, so use the Power Platform admin center (daily environment-level consumption data for up to three months, and monthly data for the past 12 months) for quarterly reconciliation.
 </div>
 
-<p><strong>Reference:</strong> <a href="https://learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-365-copilot-credits">Copilot Credits Activity Report</a></p>
+<p><strong>Reference:</strong> <a href="https://learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-365-copilot-credits">Microsoft Copilot Credits report</a></p>
+
+<h3>Usage-Based Billing and Copilot &gt; Cost Management</h3>
+<p>
+    Microsoft also documents a usage-based billing model for additional Copilot services, administered in
+    <strong>Copilot &gt; Cost management</strong> in the Microsoft 365 admin center. Services it lists include
+    Copilot Cowork, the Work IQ API and Copilot Managed Runtime. Power Platform and Copilot Studio usage details
+    remain in the Power Platform admin center.
+</p>
+<ul>
+    <li>Administrators use the Cost management dashboard to configure spending policies, apply organisation-level and user-level limits, manage billing methods, and review consumption by spending policy, user, group, agent, service and funding source.</li>
+    <li>Billing methods include the Copilot Credit Pre-purchase Plan (P3), pay-as-you-go and existing prepaid capacity packs, depending on the service.</li>
+    <li>Microsoft lists AI Reader and Global Reader as read-only consumption viewers. Its <a href="https://learn.microsoft.com/microsoft-365/copilot/usage-based-billing-manage-copilot-credits">Managing usage-based billing</a> article is inconsistent about License Administrator: one passage lets that role edit spending policies, while another lists it among read-only reader roles. Test License Administrator permissions with a pilot account in the tenant before relying on either statement.</li>
+    <li>The Overview tab refreshes every 4 hours and the Consumption tab every 2 hours. Use the monthly billing record for reconciliation, not the usage dashboards.</li>
+</ul>
+<p>For Copilot Cowork reporting, see <a href="cowork-dashboard.html">Cowork Dashboard Operations</a>.</p>
+<p><strong>Reference:</strong> <a href="https://learn.microsoft.com/microsoft-365/copilot/usage-based-billing-overview-copilot-credits">Understand usage-based billing and cost management for Copilot Credits</a>, <a href="https://learn.microsoft.com/microsoft-365/copilot/usage-based-billing-manage-copilot-credits">Managing AI experiences enabled by usage-based billing</a> and <a href="https://learn.microsoft.com/microsoft-365/copilot/usage-based-billing-compare-dashboard-views">Usage-based billing: What you see in the Microsoft 365 admin center vs. your Azure bill</a></p>
 
 <!-- Section 7 -->
 <h2 id="chargeback">7. Multi-Agency Chargeback Model</h2>
@@ -347,7 +365,7 @@
 
 <h3>Option A: Org Data–Based Attribution</h3>
 <ol>
-    <li>Upload org data with an <code>Agency</code> (or <code>CostCentre</code>) attribute via Viva Insights or PPAC.</li>
+    <li>Upload org data with an <code>Agency</code> (or <code>CostCentre</code>) attribute through the Microsoft 365 admin center or the Viva Insights web app, as applicable to your tenant (check Message Center).</li>
     <li>Export the Copilot Credits report filtered by user from the M365 Admin Center.</li>
     <li>Join user-level consumption data with org data to map each user's credit usage to their agency.</li>
     <li>Aggregate by agency to produce the chargeback summary.</li>
@@ -363,7 +381,7 @@
 
 <h3>Quarterly Reconciliation Process</h3>
 <ul>
-    <li>At the end of each quarter, export consumption data from both PPAC and M365 Admin Center.</li>
+    <li>At the end of each quarter, export consumption data from both PPAC and M365 Admin Center. The admin center credits report covers only unlicensed Copilot Chat users on pay-as-you-go and at most 30 days, so rely on PPAC for the full quarter.</li>
     <li>Reconcile prepaid credit consumption against allocations per agency.</li>
     <li>Reconcile pay-as-you-go charges against Azure invoices.</li>
     <li>Review and adjust allocations based on actual usage trends.</li>
@@ -377,10 +395,8 @@
 </div>
 
 <div class="callout u-118b947d4e">
-    <strong>Agent Billing Governance:</strong> For detailed credit mechanics, safe scaling patterns,
-    irreversible billing decisions, and the billing boundary design framework, see the
-    <strong>Copilot &amp; Agent Governance project</strong> &mdash; specifically the
-    <em>Agent Billing &amp; Credit Governance</em> guide.
+    <strong>Agent billing and capacity:</strong> For Copilot Credit billing rates, enforcement and capacity management, see Microsoft&rsquo;s
+    <a href="https://learn.microsoft.com/microsoft-copilot-studio/requirements-messages-management">Billing rates and management</a> article and the Microsoft Copilot Studio Licensing Guide it links to.
 </div>
 
 <!-- Section 8 -->
@@ -391,7 +407,7 @@
     <li>Review <a href="https://learn.microsoft.com/microsoft-365/admin/manage/assign-licenses-to-users">licence utilisation</a> in the M365 Admin Center — identify unused licences</li>
     <li>Review credit consumption in PPAC — check against budget thresholds</li>
     <li>Reallocate unused licences to requesting users or business units</li>
-    <li>Check for blocked agent runs due to credit exhaustion</li>
+    <li>Check for disabled agents or blocked agent flow runs due to prepaid capacity enforcement</li>
     <li>Review new licence assignments and confirm dashboard data appearance</li>
     <li>Check Microsoft 365 admin center <strong>Service Health</strong> and <strong>Message Center</strong> before attributing report gaps, metric changes, or missing preview features to configuration</li>
 </ul>
@@ -400,7 +416,7 @@
 <ul class="checklist">
     <li>Audit <a href="https://learn.microsoft.com/viva/insights/advanced/privacy/privacy">exclusion list</a>s in Viva Insights — remove departed employees, add new exclusions</li>
     <li>Review billing policies — ensure environments are assigned to correct policies</li>
-    <li>Reconcile chargeback — produce agency-level cost reports (see <a href="../docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Multi-Agency Isolation Architecture</a> for partition-based chargeback setup)</li>
+    <li>Reconcile chargeback — produce agency-level cost reports (see the <a href="../docs/playbooks/Copilot_Multi_Agency_Isolation_Architecture.html">Restricted Reporting playbook</a> for partition-based chargeback setup)</li>
     <li>Assess scale needs — forecast licence and credit requirements for next quarter</li>
     <li>Review lifecycle events — confirm org data CSV reflects current organisational structure</li>
     <li>Document any licence model changes (e.g., shift from prepaid to pay-as-you-go)</li>
@@ -430,23 +446,23 @@
             <td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard#faqs">learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard#faqs</a></td>
         </tr>
         <tr>
-            <td>Copilot Studio Message and Credit Management</td>
+            <td>Billing rates and management</td>
             <td><a href="https://learn.microsoft.com/microsoft-copilot-studio/requirements-messages-management">learn.microsoft.com/microsoft-copilot-studio/requirements-messages-management</a></td>
         </tr>
         <tr>
-            <td>Manage Copilot Studio Messages Capacity</td>
-            <td><a href="https://learn.microsoft.com/power-platform/admin/manage-copilot-studio-messages-capacity">learn.microsoft.com/power-platform/admin/manage-copilot-studio-messages-capacity</a></td>
+            <td>Manage Copilot Credits and capacity for Copilot Studio</td>
+            <td><a href="https://learn.microsoft.com/power-platform/admin/manage-copilot-studio-copilot-credits-capacity">learn.microsoft.com/power-platform/admin/manage-copilot-studio-copilot-credits-capacity</a></td>
         </tr>
         <tr>
-            <td>Copilot Credits Activity Report</td>
+            <td>Microsoft Copilot Credits report</td>
             <td><a href="https://learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-365-copilot-credits">learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-365-copilot-credits</a></td>
         </tr>
         <tr>
-            <td>Microsoft 365 Copilot Chat usage report (Last updated 10 July 2026)</td>
+            <td>Microsoft Copilot Chat usage report (Last updated 18 August 2026)</td>
             <td><a href="https://learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-copilot-usage?view=o365-worldwide">learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-copilot-usage</a></td>
         </tr>
         <tr>
-            <td>How to use the Consumption Dashboard in Insights (Last updated 20 July 2026)</td>
+            <td>How to use the Consumption Dashboard in Insights (Last updated 8 September 2026)</td>
             <td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/ai-cost-dashboard">learn.microsoft.com/viva/insights/org-team-insights/ai-cost-dashboard</a></td>
         </tr>
         <tr>

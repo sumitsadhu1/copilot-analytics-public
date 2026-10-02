@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Choose Copilot Analytics reporting paths and open organizational-data and Entra hierarchy utilities.">
+<meta name="description" content="Map the Microsoft Copilot reporting estate, choose a reporting path, open organizational-data and Entra hierarchy utilities, and find related open-source Power BI tooling.">
 <link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/tools/index.html">
 <title>Tools &amp; Reporting Options — Copilot Analytics</title>
 <link rel="stylesheet" href="../assets/docs-style.css">
@@ -28,8 +28,8 @@
   <tr><th scope="col">Document Property</th><th scope="col">Value</th></tr>
   <tr><td>Section</td><td>Tools</td></tr>
   <tr><td>Audience</td><td>IT Admin, Insights Administrator, Insights Analyst, Data Engineer, FinOps</td></tr>
-  <tr><td>Version</td><td>1.0</td></tr>
-  <tr><td>Last validated</td><td>19 August 2026</td></tr>
+  <tr><td>Version</td><td>1.1</td></tr>
+  <tr><td>Last validated</td><td>2 October 2026</td></tr>
 </table>
 
 <div class="callout info">
@@ -37,7 +37,77 @@
   <p>Use this page to distinguish consumption monitoring, adoption exports, customizable queries, Microsoft Graph reports, and audit sources. Each has a different population, permission model, data shape, and authority.</p>
 </div>
 
-<h1 id="utilities">1. Data and Implementation Utilities</h1>
+<h1 id="estate">1. Where This Page Fits &mdash; The Reporting Estate</h1>
+
+<p>Microsoft documents <strong>four main sources</strong> for Copilot usage reports. They are not substitutes for one another: each covers a different population, permission model, data shape, latency, and authority. Establish which source a figure came from before it reaches a report.</p>
+
+<table>
+  <tr><th scope="col">Source</th><th scope="col">What Microsoft documents it for</th><th scope="col">Documented access</th></tr>
+  <tr>
+    <td><strong>Microsoft 365 admin center</strong></td>
+    <td>Readiness and usage reports focused on licence eligibility, adoption, and basic usage metrics.</td>
+    <td><strong>AI Administrator</strong> accesses the Copilot reports.</td>
+  </tr>
+  <tr>
+    <td><strong>Copilot Analytics, powered by Viva Insights</strong></td>
+    <td>The Copilot Dashboard and the Advanced Insights Analyst workbench, for detailed metrics and custom reporting.</td>
+    <td><strong>AI Administrator</strong> enables the Dashboard and delegates access; <strong>Global Administrator</strong> assigns the <strong>Insights Analyst</strong> and <strong>Insights Administrator</strong> roles. Microsoft notes some admins may receive Dashboard access automatically.</td>
+  </tr>
+  <tr>
+    <td><strong>Microsoft Purview audit logs</strong></td>
+    <td>Detailed audit logs of Copilot activities, for compliance tracking and security auditing.</td>
+    <td><strong>Audit Reader</strong> searches the audit logs; other roles can also search.</td>
+  </tr>
+  <tr>
+    <td><strong>Power Platform and Copilot Studio Analytics</strong></td>
+    <td>Consumption metrics for agents through the Power Platform admin center, and per-agent performance analytics in Copilot Studio.</td>
+    <td><strong>Copilot Studio authors</strong> see analytics for the agents they create; <strong>Power Platform Administrators</strong> can view analytics for all agents in the tenant.</td>
+  </tr>
+</table>
+<p><strong>Sources:</strong> <a href="https://learn.microsoft.com/microsoft-365/copilot/microsoft-365-copilot-reports-for-admins">Microsoft Copilot reporting options for admins</a> (Last updated 17 September 2025) and <a href="https://learn.microsoft.com/microsoft-copilot-studio/analytics-overview">Monitor overview (Copilot Studio)</a> (Last updated 25 August 2026).</p>
+
+<h3>Sequence this project recommends</h3>
+
+<div class="callout warning">
+  <div class="callout-title">This ordering is editorial, not a Microsoft maturity model</div>
+  <p>Microsoft documents the four sources above as <strong>parallel reporting options</strong>, not as stages. The order below is this project&rsquo;s recommendation for a first rollout, based on the prerequisites each surface carries. Do not present it to a customer as Microsoft guidance.</p>
+</div>
+
+<table>
+  <tr><th scope="col">Order</th><th scope="col">Surface</th><th scope="col">Why here</th><th scope="col">Guide in this hub</th></tr>
+  <tr>
+    <td><strong>1</strong></td>
+    <td>Microsoft 365 admin center readiness and usage reports</td>
+    <td>Requires no organizational-data upload and no Viva Insights configuration. The cheapest signal available on day one.</td>
+    <td><a href="../2-setup/admin-setup.html">Admin Setup</a></td>
+  </tr>
+  <tr>
+    <td><strong>2</strong></td>
+    <td>Copilot Dashboard</td>
+    <td>Depends on organizational-data quality, scope configuration, and minimum group size. Fix those first, or the Dashboard will report a confidently wrong shape.</td>
+    <td><a href="../2-setup/data-onboarding.html">Data Onboarding</a>, then <a href="../3-operate/dashboard-guide.html">Dashboard &amp; Reports</a></td>
+  </tr>
+  <tr>
+    <td><strong>3</strong></td>
+    <td>Consumption Dashboard and Power Platform admin center</td>
+    <td>Only relevant once agents or consumption-based billing are live. Official charges remain in the billing portal, not in an analytics view.</td>
+    <td><a href="../3-operate/consumption-dashboard.html">Consumption Dashboard Operations</a>, <a href="../3-operate/billing-operations.html">Billing Operations</a></td>
+  </tr>
+  <tr>
+    <td><strong>4</strong></td>
+    <td>Advanced Reporting queries and Power BI templates</td>
+    <td>Settle metric definitions, partitions, and privacy settings first. Building custom reports before that industrialises a disagreement about what the numbers mean.</td>
+    <td><a href="../3-operate/analyst-playbook.html">Analyst Playbook</a></td>
+  </tr>
+  <tr>
+    <td><strong>5</strong></td>
+    <td>Microsoft Purview audit</td>
+    <td>Event semantics, retention, latency, and privacy treatment all differ from adoption reporting. Use it for compliance and investigation, not for adoption trend lines.</td>
+    <td><a href="../3-operate/analyst-playbook.html#programmatic-reporting">Analyst Playbook &sect; Programmatic reporting</a></td>
+  </tr>
+</table>
+
+<h1 id="utilities">2. Data and Implementation Utilities</h1>
 
 <table>
   <tr><th scope="col">Tool</th><th scope="col">Use it for</th><th scope="col">Open</th></tr>
@@ -58,20 +128,22 @@
   <p>The PowerShell file is provided through this project's public GitHub repository. Review its permissions, output handling, and current Microsoft Graph requirements in the linked README. Run it under an approved account and store generated hierarchy data according to your organization's privacy and retention controls.</p>
 </div>
 
-<h1 id="reporting-options">2. Reporting Options</h1>
+<h1 id="reporting-options">3. Reporting Options</h1>
 
 <table>
   <tr><th scope="col">Need</th><th scope="col">Recommended path</th><th scope="col">Why</th></tr>
-  <tr><td>Monitor Copilot Credits, covered services, usage concentration, and spending limits</td><td><a href="../3-operate/consumption-dashboard.html"><strong>Consumption Dashboard Operations</strong></a></td><td>Operational reference view for current consumption; official billing remains in the Microsoft 365 admin center or GitHub.com.</td></tr>
-  <tr><td>Export a fixed adoption dataset for offline analysis</td><td><a href="../3-operate/analyst-playbook.html#programmatic-reporting"><strong>Copilot Dashboard export comparison</strong></a></td><td>Public-preview, de-identified user-level week/day exports with fixed fields and global-access requirements.</td></tr>
+  <tr><td>Monitor Copilot Credits, covered services, usage concentration, and spending limits</td><td><a href="../3-operate/consumption-dashboard.html"><strong>Consumption Dashboard Operations</strong></a></td><td>Operational reference view for current consumption, with a Cowork deep-dive page, a GitHub page (public preview) and, where enabled, Identification; official billing remains in the Microsoft 365 admin center or GitHub.com.</td></tr>
+  <tr><td>Monitor Copilot Cowork adoption, tasks, and grace-period status</td><td><a href="../3-operate/cowork-dashboard.html"><strong>Cowork Dashboard Operations</strong></a></td><td>Microsoft 365 admin center Copilot &gt; Cowork dashboard (Overview, Usage, Value in Frontier preview, Settings) and the Consumption Dashboard Cowork page; Cowork assisted hours are a directional estimate, not time saved.</td></tr>
+  <tr><td>Govern and monitor Copilot Credit spending</td><td><a href="../3-operate/billing-operations.html"><strong>Billing Operations</strong></a></td><td>The Microsoft 365 admin center Cost management dashboard and the Insights Consumption Dashboard are operational usage views, not invoices; reconcile against the monthly billing record in the applicable billing portal.</td></tr>
+  <tr><td>Export a fixed adoption dataset for offline analysis</td><td><a href="../3-operate/analyst-playbook.html#programmatic-reporting"><strong>Copilot Dashboard export comparison</strong></a></td><td>Public-preview user-level week/day exports with fixed fields and global-access requirements; de-identified by default, with identifiable fields only where an administrator has enabled identifiable export.</td></tr>
   <tr><td>Build custom metrics, filters, cohorts, or Power BI reports</td><td><a href="../3-operate/analyst-playbook.html#create-report"><strong>Advanced Reporting queries</strong></a></td><td>Partition-scoped customizable queries and Microsoft Power BI templates for Insights Analysts.</td></tr>
-  <tr><td>Automate licensed-user Microsoft 365 Copilot usage reporting</td><td><a href="../3-operate/analyst-playbook.html#programmatic-reporting"><strong>Microsoft Graph v1.0 reporting</strong></a></td><td><code>Reports.Read.All</code> and supported D7/D30/D90/D180/ALL periods; licensed users only.</td></tr>
+  <tr><td>Automate licensed-user Microsoft 365 Copilot usage reporting</td><td><a href="../3-operate/analyst-playbook.html#programmatic-reporting"><strong>Microsoft Graph v1.0 reporting</strong></a></td><td><code>Reports.Read.All</code>; periods depend on report version (version 1: D7, D30, D90, D180, ALL; version 2, the default: D7, D28, D90, D180, ALL); licensed users only.</td></tr>
   <tr><td>Report current unlicensed Copilot Chat usage</td><td><a href="https://learn.microsoft.com/microsoft-365/admin/activity-reports/microsoft-copilot-usage?view=o365-worldwide"><strong>Microsoft 365 admin center Copilot Chat Usage report</strong></a></td><td>The Graph Copilot reports API does not return unlicensed Copilot Chat usage.</td></tr>
   <tr><td>Extract Copilot events for compliance or investigation</td><td><a href="../3-operate/analyst-playbook.html#programmatic-reporting"><strong>Purview Audit / Management Activity path</strong></a></td><td>Event-level source with different permissions, retention, latency, and semantics from adoption reports.</td></tr>
   <tr><td>Relate Copilot usage to organization-owned outcomes</td><td><a href="../3-operate/analyst-playbook.html#business-impact"><strong>Business Impact setup and interpretation</strong></a></td><td>Monthly user-level outcome data, comparison cohorts, and explicit causality limits.</td></tr>
 </table>
 
-<h1 id="quick-decision">3. Quick Decision Checklist</h1>
+<h1 id="quick-decision">4. Quick Decision Checklist</h1>
 <ol>
   <li>Define whether the question is about <strong>billing, consumption, adoption, impact, value, or audit</strong>.</li>
   <li>Define the required population: licensed Copilot users, unlicensed Copilot Chat users, a partition, a manager group, or all covered events.</li>
@@ -81,26 +153,80 @@
   <li>Do not combine sources until metric definitions, time boundaries, and identity handling are explicitly mapped.</li>
 </ol>
 
-<h1 id="sources">4. Current Microsoft Sources</h1>
+<h1 id="sources">5. Current Microsoft Sources</h1>
 <table>
   <tr><th scope="col">Source</th><th scope="col">Last updated</th><th scope="col">Purpose</th></tr>
-  <tr><td><a href="https://learn.microsoft.com/viva/insights/copilot-analytics-introduction">Copilot Analytics introduction</a></td><td>9 February 2026</td><td>Current six-area capability map</td></tr>
-  <tr><td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/ai-cost-dashboard">How to use the Consumption Dashboard in Insights</a></td><td>20 July 2026</td><td>Consumption roles, scope, services, and limits</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/viva/insights/copilot-analytics-introduction">Copilot Analytics introduction</a></td><td>1 July 2026</td><td>Current six-area capability map</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/microsoft-365/copilot/microsoft-365-copilot-reports-for-admins">Microsoft Copilot reporting options for admins</a></td><td>17 September 2025</td><td>The four documented reporting sources and their access requirements</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/microsoft-copilot-studio/analytics-overview">Monitor overview (Copilot Studio)</a></td><td>25 August 2026</td><td>Per-agent analytics scope in Copilot Studio</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/ai-cost-dashboard">How to use the Consumption Dashboard in Insights</a></td><td>8 September 2026</td><td>Consumption roles, scope, services, and limits</td></tr>
   <tr><td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/export-copilot-metrics">Export Copilot metrics from the Microsoft Copilot Dashboard</a></td><td>15 July 2026</td><td>Adoption export prerequisites and data shape</td></tr>
   <tr><td><a href="https://learn.microsoft.com/microsoft-365/copilot/extensibility/api/admin-settings/reports/copilotreportroot-getmicrosoft365copilotusageuserdetail">getMicrosoft365CopilotUsageUserDetail</a></td><td>30 July 2026</td><td>Graph v1.0 permission, periods, scope, alternatives, and cloud limits</td></tr>
 </table>
 
-<h1 id="next">5. Related Guides</h1>
+<h1 id="community-tooling">6. Related Open-Source Tooling</h1>
+
+<p>This project publishes guidance only &mdash; it ships no reports. Once a surface is configured and you need something to run against it, Microsoft publishes an open-source catalogue of Power BI templates, exporters, and browser apps at <a href="https://microsoft.github.io/Analytics-Hub/">Analytics Hub</a> (<a href="https://github.com/microsoft/Analytics-Hub">microsoft/Analytics-Hub</a>).</p>
+
+<div class="callout warning">
+  <div class="callout-title">Outside this project&rsquo;s evidence process &mdash; evaluate before you run anything</div>
+  <ul>
+    <li>These are <strong>open-source projects</strong> published in Microsoft&rsquo;s GitHub organisation. Several of their READMEs state they are not supported through Microsoft support channels, and some are labelled experimental. Confirm each project&rsquo;s licence, ownership, and support terms yourself.</li>
+    <li>They are <strong>not covered</strong> by this project&rsquo;s Microsoft Learn drift checks. The summaries below are the publishers&rsquo; own descriptions, not this project&rsquo;s assessment. Links were checked on 2 October 2026.</li>
+    <li>Several read <strong>Microsoft Purview audit data</strong>, which can include prompt content. Treat that as a materially higher privacy classification than Dashboard adoption metrics and clear it through the same review you would apply to any user-level export. See <a href="../2-setup/privacy-configuration.html">Privacy Configuration</a>.</li>
+    <li>Consumption Central&rsquo;s README tells admins to turn on Viva <strong>Identification</strong> (a Viva feature access management policy created by a Global Administrator or AI Administrator) for per-person or department views. Identification surfaces named employees; treat the output as personal data and apply your own review.</li>
+    <li>Review the source, the permissions requested, and where outputs are written before running anything against a production tenant.</li>
+  </ul>
+</div>
+
+<table>
+  <tr><th scope="col">Project</th><th scope="col">Publisher&rsquo;s summary</th><th scope="col">Read first in this hub</th></tr>
+  <tr>
+    <td><a href="https://github.com/microsoft/ValueLens-for-Microsoft-Copilot">ValueLens for Microsoft Copilot</a></td>
+    <td>Power BI template that unifies Copilot and agent adoption signals into hours saved, assisted value, and adoption/readiness.</td>
+    <td><a href="../3-operate/dashboard-guide.html#impact">Dashboard &amp; Reports &sect; Impact</a> &mdash; for the limits of modeled assisted value</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/microsoft/ConsumptionCentral-for-Microsoft-Copilot">Consumption Central for Microsoft Copilot</a></td>
+    <td>Power BI template for Copilot credit consumption and cost across Cowork/Work IQ, Copilot Studio, GitHub Copilot, and Azure AI Foundry.</td>
+    <td><a href="../3-operate/consumption-dashboard.html">Consumption Dashboard Operations</a>, <a href="../3-operate/billing-operations.html">Billing Operations</a></td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/microsoft/AgentEvaluator-for-Copilot-Studio">Agent Evaluator for Copilot Studio</a></td>
+    <td>Power BI template for Copilot Studio agent evaluation &mdash; sessions, turns, errors, sub-agent calls, quality and performance, topics.</td>
+    <td><a href="../3-operate/dashboard-guide.html#agent-dashboard">Dashboard &amp; Reports &sect; Agent Dashboard</a> &mdash; for the Viva Insights agent adoption view; this template reads Copilot Studio transcripts from Dataverse, a different source</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/microsoft/AI-in-One-Dashboard">AI-in-One Dashboard</a></td>
+    <td>Unified Power BI report covering Microsoft 365 Copilot, Copilot Chat (licensed and unlicensed), agents, and third-party AI signals.</td>
+    <td><a href="../2-setup/privacy-configuration.html">Privacy Configuration</a> &mdash; reads Purview and Entra data</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/microsoft/CopilotChatAnalytics">Copilot Chat &amp; Agent Intelligence</a></td>
+    <td>Two Power BI templates on Purview audit logs and Entra: one for Copilot Chat (licensed and unlicensed), one for agents.</td>
+    <td><a href="../2-setup/privacy-configuration.html">Privacy Configuration</a> &mdash; reads Purview and Entra data</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/microsoft/M365UsageAnalytics">M365 Copilot Readiness Report</a></td>
+    <td>Ranks users by Microsoft 365 fluency across Outlook, Word, Excel, PowerPoint, and Teams to stage enablement waves.</td>
+    <td><a href="../2-setup/admin-setup.html">Admin Setup</a></td>
+  </tr>
+</table>
+
+<p>The full catalogue, including exporters and browser-based calculators, is at <a href="https://microsoft.github.io/Analytics-Hub/choose-report/">Analytics Hub &rarr; Reports</a>.</p>
+
+<h1 id="next">7. Related Guides</h1>
 <table>
   <tr><th scope="col">Guide</th><th scope="col">Use it for</th></tr>
   <tr><td><a href="../2-setup/data-onboarding.html"><strong>Data Onboarding</strong></a></td><td>Prepare, upload, and verify organizational data</td></tr>
   <tr><td><a href="../3-operate/analyst-playbook.html"><strong>Analyst Playbook</strong></a></td><td>Advanced queries, Power BI, programmatic reporting, and impact interpretation</td></tr>
   <tr><td><a href="../3-operate/consumption-dashboard.html"><strong>Consumption Dashboard Operations</strong></a></td><td>Run a repeatable consumption-monitoring process</td></tr>
+  <tr><td><a href="../3-operate/cowork-dashboard.html"><strong>Cowork Dashboard Operations</strong></a></td><td>Read Cowork usage, assisted hours, and credits across the admin center and Viva Insights</td></tr>
   <tr><td><a href="../4-reference/troubleshooting.html"><strong>Troubleshooting</strong></a></td><td>Diagnose wider access, data, query, and reporting issues</td></tr>
 </table>
 
 <hr>
-<p><strong>Disclaimer:</strong> This independent directory was validated on 19 August 2026. Review the linked files and dated Microsoft Learn sources before use; product capabilities, APIs, roles, and licensing can change.</p>
+<p><strong>Disclaimer:</strong> This independent directory was validated on 2 October 2026. Review the linked files and dated Microsoft Learn sources before use; product capabilities, APIs, roles, and licensing can change. Third-party and open-source projects linked from section 6 are outside this project&rsquo;s validation process and are not endorsed by it.</p>
 
 </body>
 </html>

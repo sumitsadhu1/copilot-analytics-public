@@ -243,7 +243,7 @@ tr:hover td { background: rgba(66,42,251,0.05); }
 .callout.new     { border-color: #7551FF;        background: rgba(117,81,255,0.08); }
 .callout.new .callout-title { color: #7551FF; }
 .callout.important { border-color: #7551FF; background: rgba(117,81,255,0.08); }
-.callout.important .callout-title { color: #7551FF; }
+.callout.important .callout-title { color: var(--accent); }
 .callout.note    { border-color: var(--info); background: rgba(57,101,255,0.06); }
 
 /* Alternate callout class names (used by playbooks) */
@@ -329,7 +329,7 @@ tr:hover td { background: rgba(66,42,251,0.05); }
   margin: 8px 0 4px;
 }
 .cover .sub2 {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: 1em;
 }
 
@@ -884,12 +884,12 @@ body.has-shell {
 .search-result mark { background: #FFF2A8; color: inherit; padding: 0; }
 
 .nav-rail { flex: 0 0 auto; width: var(--nav-w); background: #fff; border-right: 1px solid var(--border); padding: 10px 12px 24px; overflow-y: auto; overflow-x: hidden; transition: width .2s ease; z-index: 40; }
-.nav-rail .nav-label { padding: 14px 12px 6px; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); font-weight: 700; white-space: nowrap; }
+.nav-rail .nav-label { padding: 14px 12px 6px; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-secondary); font-weight: 700; white-space: nowrap; }
 .nav-item { display: flex; align-items: center; gap: 12px; padding: 9px 12px; border-radius: 8px; color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; font-weight: 500; position: relative; white-space: nowrap; transition: background .15s, color .15s; margin-bottom: 1px; }
 .nav-item:hover { background: var(--nav-hover); color: var(--text); }
 .nav-item.active { background: var(--accent-bg); color: var(--accent); font-weight: 700; }
 .nav-item.active::before { content: ''; position: absolute; left: -12px; top: 9px; bottom: 9px; width: 3px; border-radius: 0 3px 3px 0; background: var(--accent); }
-.nav-item.nav-sub { padding: 7px 12px 7px 20px; font-size: 0.82rem; font-weight: 500; color: var(--text-muted); }
+.nav-item.nav-sub { padding: 7px 12px 7px 20px; font-size: 0.82rem; font-weight: 500; color: var(--text-secondary); white-space: normal; }
 .nav-item.nav-sub:hover { color: var(--text); }
 .nav-rail hr { border: none; border-top: 1px solid var(--border); margin: 10px 4px; }
 
@@ -907,8 +907,8 @@ body.nav-collapsed .nav-item.active::before { left: -8px; }
 
 @media (max-width: 860px) {
   .app-crumb { display: none; }
-  .nav-rail { position: fixed; top: var(--app-bar-h); bottom: 0; left: 0; width: var(--nav-w); transform: translateX(-100%); box-shadow: var(--depth-16); transition: transform .24s ease; }
-  body.nav-open .nav-rail { transform: translateX(0); }
+  .nav-rail { position: fixed; top: var(--app-bar-h); bottom: 0; left: 0; width: var(--nav-w); transform: translateX(-100%); visibility: hidden; box-shadow: var(--depth-16); transition: transform .24s ease, visibility 0s linear .24s; }
+  body.nav-open .nav-rail { transform: translateX(0); visibility: visible; transition: transform .24s ease, visibility 0s; }
   body.nav-collapsed .nav-rail { width: var(--nav-w); padding: 10px 12px 24px; }
   body.nav-collapsed .nav-item { justify-content: flex-start; gap: 12px; }
   body.nav-collapsed .nav-item .nav-txt { display: inline; }
@@ -934,8 +934,12 @@ body.nav-collapsed .nav-item.active::before { left: -8px; }
   body { max-width: 100%; padding: 0; background: #fff; font-size: 11pt; }
   body.has-sidebar { display: block; }
   h1 { page-break-before: always; }
-  .callout, table, .step, .step-card { break-inside: avoid; }
-  nav, .doc-nav, .back-to-top, .sidebar-toggle, .sidebar-overlay, .lightbox-overlay, .zoom-hint, .skip-link { display: none !important; }
+  .callout, .step, .step-card { break-inside: avoid; }
+  /* Print has no horizontal scrolling; override the mobile table rules. */
+  table { display: table; table-layout: fixed; overflow: visible; break-inside: auto; }
+  th, td { white-space: normal; overflow-wrap: anywhere; }
+  tr { break-inside: avoid; }
+  .doc-nav, .back-to-top, .sidebar-toggle, .sidebar-overlay, .lightbox-overlay, .zoom-hint, .skip-link { display: none !important; }
   .sidebar-nav { display: none !important; }
   body.has-nav, body.has-sidebar.has-nav { padding-top: 0; }
   body.has-sidebar main { margin-left: 0; padding: 0; max-width: 100%; box-shadow: none; }

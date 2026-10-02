@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Operate Copilot Cowork reporting in the Microsoft 365 admin center and Viva Insights: roles, prerequisites, assisted hours, export, and reconciliation.">
+<link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/3-operate/cowork-dashboard.html">
+<title>Cowork Dashboard Operations — Copilot Analytics</title>
+<link rel="stylesheet" href="../assets/docs-style.css">
+<script defer src="../assets/shell.js"></script>
+</head>
+<body class="has-nav">
+<nav class="doc-nav">
+  <div class="doc-nav-left">
+    <a href="../index.html" class="hub-link">&#8592; Documentation Hub</a>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Operate</span>
+    <span class="separator">/</span>
+    <span class="breadcrumb">Cowork Dashboard</span>
+  </div>
+  <div class="doc-nav-right">
+    <a href="../artifacts/pdfs/Cowork_Dashboard_Operations.pdf" class="pdf-btn" title="Download PDF">&#128196; PDF</a>
+  </div>
+</nav>
+
+<div class="cover">
+  <h1>Microsoft 365 Copilot Analytics</h1>
+  <div class="subtitle">Cowork Dashboard Operations</div>
+  <div class="sub2">Monitor Cowork adoption, task mix, assisted hours, and credit use across the admin center and Viva Insights</div>
+</div>
+
+<table>
+  <tr><th scope="col">Document Property</th><th scope="col">Value</th></tr>
+  <tr><td>Section</td><td>Operate</td></tr>
+  <tr><td>Audience</td><td>Microsoft 365 administrators, FinOps, Insights Analysts, Managers, Microsoft 365 Global Administrators</td></tr>
+  <tr><td>Version</td><td>1.0</td></tr>
+  <tr><td>Last validated</td><td>2 October 2026</td></tr>
+  <tr><td>Source snapshot</td><td>Microsoft Learn pages last updated between 23 July 2026 and 30 September 2026, plus Microsoft's Cowork methodology PDF</td></tr>
+</table>
+
+<div class="callout important">
+  <div class="callout-title">Reference views, not the billing record; assisted hours are directional</div>
+  <p>The Cowork reports are operational views, not invoices. Microsoft says: “Use the monthly billing record for reconciliation, not the usage dashboards.” Cowork assisted hours are “a directional estimate of employee hours that benefited from Cowork”, and Microsoft states that they “aren't a direct measurement of time saved, productivity gains, business outcomes, or realized value”.</p>
+</div>
+
+<h1 id="toc">Table of Contents</h1>
+<ol>
+  <li><a href="#purpose">Purpose and Current Coverage</a></li>
+  <li><a href="#access">Access and Scope</a></li>
+  <li><a href="#prerequisites">Prerequisites and Availability Checks</a></li>
+  <li><a href="#operate">Operating the Cowork Dashboards</a></li>
+  <li><a href="#assisted-hours">Reading Assisted Hours Safely</a></li>
+  <li><a href="#export">Export and Reconciliation</a></li>
+  <li><a href="#success">Success Criteria</a></li>
+  <li><a href="#troubleshooting">Troubleshooting and Escalation</a></li>
+  <li><a href="#sources">Dated Microsoft Learn Sources</a></li>
+  <li><a href="#next">What to Read Next</a></li>
+</ol>
+
+<h1 id="purpose">1. Purpose and Current Coverage</h1>
+
+<p>Copilot Cowork (Cowork) reporting is split across the Microsoft 365 admin center and Viva Insights. Each surface has its own roles and definitions, so pick the surface by the question you need answered.</p>
+
+<table>
+  <tr><th scope="col">Surface</th><th scope="col">Use it to answer</th><th scope="col">Status as documented</th></tr>
+  <tr><td><strong>Admin center: Copilot &gt; Cowork</strong> (Overview, Usage, Value, Settings)</td><td>Adoption, retention, tasks by type, per-user tasks, and assisted hours by task category</td><td>The Value tab: “This feature is part of Frontier preview program.” No other tab is labelled.</td></tr>
+  <tr><td><strong>Consumption Dashboard &gt; Microsoft 365 services &gt; Cowork</strong> (<strong>Deep dive</strong>)</td><td>Credits, tasks per user, task mix, and usage intensity</td><td>The Learn article does not label the Cowork page as preview. Coverage is narrow: “Consumption data is currently available only for Copilot Cowork and the Work IQ API.”</td></tr>
+  <tr><td><strong>Advanced analysis</strong></td><td>Queries with consumption metrics (excluding GitHub data)</td><td>The metrics page flags every Cowork metric for the Consumption Dashboard only. Tasks, task categories, and assisted hours are not documented as queryable as of 2 October 2026.</td></tr>
+  <tr><td><strong>Agent Dashboard</strong></td><td>Use the surfaces above instead</td><td>“Copilot Cowork usage data is transitioning out of the Agent Dashboard, into other Viva Insights reports. In the meantime, reporting on this is available in the Microsoft 365 admin center.” The note does not say the move is complete.</td></tr>
+</table>
+
+<h1 id="access">2. Access and Scope</h1>
+
+<div class="callout warning">
+  <div class="callout-title">Cowork access comes from a spending policy, not a reporting role</div>
+  <p>Microsoft states: “Access is granted only through a spending policy that selects Cowork.” The Cowork entry under <strong>Agents &gt; All Agents</strong> does not control it. Microsoft's billing article says the default set-up “targets your entire organization and all users”, so first-time set-up may open Cowork to everyone in that scope. That reading is the hub's inference, not Microsoft's; confirm intent before you activate a policy.</p>
+</div>
+
+<h2>Microsoft 365 admin center: Copilot &gt; Cowork</h2>
+
+<p>The Cowork page says: “To view the reporting data in this dashboard, you need the appropriate permissions.” It points to the usage-report permissions, which list Global Administrator, Exchange Administrator, SharePoint Administrator, Reports Reader, Teams Administrator, Teams Communications Administrator, and AI Administrator, plus Usage Summary Reports Reader and User Experience Success Manager, each marked “(with no user details)”.</p>
+
+<p>The Cowork article points reporting readers to the usage-report roles above. It does not set separate role requirements for the <strong>Value</strong> or <strong>Settings</strong> tabs. The two summary-only roles are listed “(with no user details)”, so verify their Cowork view in the tenant. Global Reader is not in the usage-report role list, so do not assume it grants access.</p>
+
+<p>Other roles that Microsoft names: Global administrator and Billing administrator for billing methods; AI administrator for editing, but not creating, spending policies; a tenant administrator or the Copilot administrator role for <strong>Manage plugins for Cowork</strong> &gt; <strong>Go to Tools</strong> (whether that is the AI Administrator role is not documented); and AI Admin, Security Admin, or Office Apps Admin for Frontier enrolment. License administrator permissions are unresolved: the <a href="https://learn.microsoft.com/microsoft-365/copilot/usage-based-billing-manage-copilot-credits">Managing usage-based billing</a> article lists that role both among those who “can edit spending policies” and among reader roles that “don't allow administrators to create or change spending policies”. Test it in the tenant before relying on either statement.</p>
+
+<h2>Viva Insights: Consumption Dashboard</h2>
+
+<p>The Cowork page follows the dashboard's roles:</p>
+
+<table>
+  <tr><th scope="col">Role</th><th scope="col">Access and scope</th></tr>
+  <tr><td><strong>Insights Analyst with global partition access</strong></td><td>Entire organisation; can also run queries with consumption metrics (excluding GitHub data)</td></tr>
+  <tr><td><strong>Manager</strong></td><td>Their group only</td></tr>
+  <tr><td><strong>Microsoft 365 Global Administrator</strong></td><td>Entire organisation</td></tr>
+</table>
+
+<ul>
+  <li>Analysts in other partitions cannot run consumption queries, and “If you remove an analyst from the global partition, they lose access to all experiences in the global partition.”</li>
+  <li>Managers need Manager settings to allow it, a minimum team size of five or more, and Copilot insights access. The consumption article says “By default, consumption insights are enabled for all managers.” The Manager settings article says “Optionally, select Grant managers scoped access to Consumption insights.” Microsoft's articles differ, so check the setting in the tenant.</li>
+</ul>
+
+<div class="callout warning">
+  <div class="callout-title">Delegation: Microsoft's articles disagree</div>
+  <p>Microsoft's articles disagree. <a href="https://learn.microsoft.com/viva/insights/org-team-insights/ai-cost-dashboard">How to use the Consumption Dashboard</a> says access <strong>can't currently be delegated</strong>. <a href="https://learn.microsoft.com/viva/insights/org-team-insights/delegate-access">Delegate access</a> describes a <strong>Combined access</strong> delegate scope that includes the Consumption Dashboard. Test in the tenant before relying on either, and review existing delegates' scopes. The Delegate access article adds: “If you have both company-level and group access, any existing delegates previously set to "Your company" automatically have "Combined access" and might see the Consumption Dashboard.”</p>
+</div>
+
+<h2>Named users and privacy</h2>
+
+<p>Copilot Analytics outputs are de-identified <strong>by default</strong>. <strong>Identification</strong> lets authorised users see named employees (“identified outputs”). Microsoft lists it for Consumption Dashboard insights and data export, and lists Copilot Dashboard and Agent Dashboard data exports as private preview. For the Agent Dashboard, Microsoft's articles disagree: <a href="https://learn.microsoft.com/viva/insights/identification-copilot-analytics">Identification</a> says private preview, while <a href="https://learn.microsoft.com/viva/insights/org-team-insights/export-agent-data">Export data from the Agent Dashboard</a> says identifiable export “is for public preview customers only”. Validate availability in the tenant before relying on either. Access is governed by a dedicated Viva feature access management (VFAM) policy, which only a Microsoft 365 Global Administrator or an AI Administrator can create. When identifiable export is enabled for a user, their export includes identifiable fields. Otherwise, personal identifiers are replaced with anonymised IDs.</p>
+
+<p>The admin center works differently. Its <strong>Cowork usage details</strong> table defines <strong>User ID</strong> as “The user's email address.”, but the <a href="https://learn.microsoft.com/microsoft-365/admin/activity-reports/activity-reports#show-user-group-or-site-details-in-usage-reports">usage reports overview</a> states: “By default, all reports hide user information such as usernames, display names, groups, and sites to help companies support local privacy laws.” Check the tenant's <strong>Conceal user, group, and site names in all reports</strong> setting, and verify the Cowork table and export with the intended reporting role. Microsoft does not document the Viva Insights Identification policy as applying to this admin center report.</p>
+
+<h1 id="prerequisites">3. Prerequisites and Availability Checks</h1>
+
+<p>Confirm these checks before you interpret any figure.</p>
+
+<table>
+  <tr><th scope="col">Check</th><th scope="col">Expected state</th><th scope="col">Owner</th></tr>
+  <tr><td>Cowork users and release</td><td>The people who use Cowork need “An active Microsoft 365 Copilot license assigned to your account.” This is an end-user prerequisite, not a documented requirement for report viewers; reporting access follows the roles in Section 2. Cowork is listed under “June 2026 (general availability)”; the day is not documented.</td><td>Microsoft 365 administrator</td></tr>
+  <tr><td>Usage-based billing</td><td>“To allow users to access Cowork, admins must enable usage-based billing.” Set up at <strong>Copilot</strong> &gt; <strong>Cost Management</strong>, then <strong>Get Started</strong>.</td><td>Global administrator or Billing administrator</td></tr>
+  <tr><td>Spending policies</td><td>Each intended user, and no other, is in the scope of a policy that selects Cowork. List the policies at <strong>Copilot &gt; Cost management &gt; Configuration</strong>.</td><td>Global administrator or Billing administrator</td></tr>
+  <tr><td>Grace period (if shown)</td><td>“The number of days remaining in your usage-based billing grace period before action is required to prevent loss of Cowork access.” The length and terms are not documented as of 2 October 2026.</td><td>Billing administrator</td></tr>
+</table>
+
+<div class="callout warning">
+  <div class="callout-title">Value tab: Frontier preview</div>
+  <p>Microsoft labels the Value tab: “This feature is part of Frontier preview program.” Microsoft documents enrolment under <strong>Copilot</strong> &gt; <strong>Settings</strong> (select <strong>Copilot Frontier</strong>), and “It might take three hours for Frontier features and agents to be available to users.” Whether the Value tab needs tenant or viewer enrolment is not documented, so test with a pilot account before you plan a rollout.</p>
+</div>
+
+<div class="callout note">
+  <div class="callout-title">Government and national clouds</div>
+  <p>Cowork's own product pages do not state national-cloud availability as of 2 October 2026. Two Microsoft matrices do address it:</p>
+  <ul>
+    <li>The admin center usage-reports matrix lists <strong>Cowork usage</strong> as <strong>Yes</strong> under Public and <strong>N/A2</strong> under GCC, GCC-High, DoD, and Microsoft 365 operated by 21Vianet. Its footnote: “N/A2: The service isn't available in the environment; hence, there's no plan to release the report.” The report is therefore not available outside the commercial cloud.</li>
+    <li>The Viva Insights supported-environments matrix lists the Consumption Dashboard (<strong>All pages and features</strong>) as <strong>Yes</strong> for WW and <strong>No</strong> for GCC-M and GCC-H. Microsoft cautions that “recently released capabilities might not be immediately reflected in these tables”.</li>
+  </ul>
+  <p>Validate in the tenant, Message Center, and <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported environments</a> before you promise availability.</p>
+</div>
+
+<h1 id="operate">4. Operating the Cowork Dashboards</h1>
+
+<p>Complete Section 3 first. Tasks 1 to 3 use the admin center; task 4 uses Viva Insights.</p>
+
+<h2>Task 1 &mdash; Open the Cowork dashboard in the admin center</h2>
+<ol class="step-list">
+  <li>Sign in to the Microsoft 365 admin center with a role from Section 2.</li>
+  <li>In the left navigation, select <strong>Copilot</strong>.</li>
+  <li>Under the <strong>Copilot</strong> section, select <strong>Cowork</strong>.</li>
+  <li>Check the <strong>Last updated</strong> timestamp in the upper-right corner before you read any figure.</li>
+</ol>
+<p><strong>Verify:</strong> the dashboard opens and shows a <strong>Last updated</strong> timestamp. Microsoft does not document this dashboard's refresh latency, so rely on the timestamp.</p>
+
+<h2>Task 2 &mdash; Read the Overview and Usage tabs</h2>
+<ol class="step-list">
+  <li>On <strong>Overview</strong>, read the headline cards, <strong>Active Cowork users</strong> and <strong>Total Cowork tasks</strong>. If a banner shows, read the <strong>Grace period</strong> card.</li>
+  <li>Under <strong>Top actions for you</strong>, review <strong>Pending requests for Cowork</strong>.</li>
+  <li>Select the <strong>Usage</strong> tab and set the <strong>Date range selector</strong>; the default is the past 28 days.</li>
+  <li>Read the four cards and the <strong>Daily active users</strong> and <strong>Tasks by type</strong> charts.</li>
+  <li>Review the <strong>Cowork usage details</strong> table, which lists individual users.</li>
+</ol>
+<p><strong>Verify:</strong> change the date range and confirm that the cards, charts, and table all change. Microsoft states: “All summary metrics, charts, and the usage details table update to reflect the selected time period.”</p>
+<p>Microsoft defines a task as “a single conversation thread within Cowork, including both user-initiated conversations and scheduled task executions”. How “event-driven tasks that run when a matching email arrives or when a Teams message is posted, including when you're @mentioned” are counted is not documented.</p>
+
+<h2 id="value-tab">Task 3 &mdash; Review the Value tab (Frontier preview)</h2>
+<p>Complete the Frontier check in Section 3 first, and read Section 5 before you quote any figure.</p>
+<ol class="step-list">
+  <li>Go to <strong>Copilot</strong> &gt; <strong>Cowork</strong>, then select the <strong>Value</strong> tab.</li>
+  <li>Choose the <strong>Date range</strong>: <strong>Last 28 days</strong> or <strong>Month to date</strong>.</li>
+  <li>Read the <strong>Cowork assisted hours</strong> card and the <strong>Assisted hours by task category</strong> table.</li>
+</ol>
+<p><strong>Verify:</strong> you see the card and the table for the range you chose, with data “through the latest available data refresh”. If the tab is missing, check Frontier enrolment (Section 3); Microsoft does not document when the tab appears.</p>
+
+<h2>Task 4 &mdash; Read the Cowork page in the Consumption Dashboard</h2>
+<p>You need a role from Section 2 and usage-based billing set up. The release note says the dashboard “is enabled by default and requires usage-based billing setup via Cost Management in the Microsoft 365 admin center”.</p>
+<ol class="step-list">
+  <li>Open the <strong>Consumption Dashboard</strong> in Viva Insights.</li>
+  <li>On the <strong>Microsoft 365 services</strong> tab, set <strong>Scope</strong>, <strong>Organization</strong>, and <strong>Job function</strong> (the <strong>Time period</strong> is month to date), then select <strong>Deep dive</strong> next to <strong>Cowork</strong>.</li>
+  <li>Read the three cards: <strong>Cowork active users</strong>, <strong>Cowork Credit usage</strong>, and <strong>Average tasks per user</strong>.</li>
+  <li>Use <strong>Cowork usage trends</strong> and <strong>Cowork usage breakdown by task</strong>, where <strong>Metric</strong> toggles total credits used or total task count.</li>
+  <li>Review <strong>Usage intensity</strong>, which Microsoft describes as “similar to the insights shown on the previous page”.</li>
+</ol>
+<p><strong>Verify:</strong> the cards show month-to-date values and change when you change <strong>Scope</strong>, <strong>Organization</strong>, or <strong>Job function</strong>. Microsoft defines the metrics in the <a href="https://learn.microsoft.com/viva/insights/advanced/reference/metrics#copilot-cowork-metrics">Copilot Cowork metrics</a> section of the Advanced analysis metrics page, so this guide does not repeat them.</p>
+
+<h1 id="assisted-hours">5. Reading Assisted Hours Safely</h1>
+
+<p>Cowork assisted hours appears on the admin center <strong>Value</strong> tab; the Consumption Dashboard Cowork page refers to “assisted value”. Microsoft's caveats are in the box at the top of this guide, and Microsoft adds: “Actual impact may vary based on the work performed and how Cowork is used.”</p>
+
+<ul>
+  <li><strong>Method.</strong> “Each task is matched to a task type and assigned a typical time impact based on independent published research.” The Value tab links to the <a href="https://microsoft.github.io/CopilotAnalyticsLabs/Cowork_Methodology.pdf">Cowork Time-Savings Methodology (PDF)</a>, which states “Each task category gets a minutes-saved range, traceable to a published study.”</li>
+  <li><strong>Categories.</strong> The deck groups tasks into eight categories. The metrics page labels one “Document &amp; comment task”, while the Value tab and the deck say document and content creation. The labels differ, and this guide does not resolve them.</li>
+  <li><strong>Deck consistency.</strong> The deck's cover reads “COWORK TIME-SAVINGS METHODOLOGY v4” while its footers read “Cowork Effort-Band Methodology · v3 (additive)”, so this guide quotes none of its minute values. The aggregation formula and the handling of unclassified tasks are not documented.</li>
+  <li><strong>Not the Copilot Dashboard metric.</strong> Copilot Dashboard Assisted Hours multiplies Copilot actions by an assistance factor, and Assisted Value applies an hourly rate (“By default, this hourly rate is set to $72”). No Cowork rate or currency is documented as of 2 October 2026. Do not add, compare, or trend the two metrics. The <a href="dashboard-guide.html#impact">Dashboard Guide</a> covers the Copilot Dashboard metrics.</li>
+</ul>
+
+<ol>
+  <li>Quote it as a directional estimate of work supported, in Microsoft's wording, never as time saved, a productivity gain, or realised value.</li>
+  <li>Read it by task category, next to <strong>Credits spent</strong>: “The number of Copilot credits used for tasks assigned to the category during the selected time period.”</li>
+  <li>Record the surface, date range, Frontier status, and methodology link with every figure, and do not convert it to money.</li>
+</ol>
+
+<h1 id="export">6. Export and Reconciliation</h1>
+
+<h2>Admin center export (usage details)</h2>
+<p>The usage details table lists users with activity “dating back to April 1, 2026”. Microsoft states: “Select Export above the usage details to download the full dataset as a CSV file. The exported file includes all users listed in the table.” The CSV headers, encoding, and row limits are not documented, and <strong>User ID</strong> is an email address, so treat the file as personal data.</p>
+
+<h2>Consumption Dashboard export (public preview)</h2>
+
+<table>
+  <tr><th scope="col">Item</th><th scope="col">What Microsoft states</th></tr>
+  <tr><td>Status and roles</td><td>“This feature is for public preview customers only.” “This preview feature allows personal data processing.” Export is available to analysts with global partition access and Microsoft 365 Global Administrators. Manager export is unresolved (see below).</td></tr>
+  <tr><td>Windows</td><td>By week: the previous five months plus month to date, usually 2 to 8 days behind. By day: the start of the previous month through the export date, usually up to two days behind. “Only complete days or weeks are included.”</td></tr>
+  <tr><td>Files</td><td>“Each .zip file contains two .csv files, which join on PeopleHistoricalId:” <code>PersonServiceCreditsMetrics.csv</code> is “One row per person, service, and date.” Identifiers are hashed “unless your administrator has enabled identifiable export for you”.</td></tr>
+  <tr><td>Not included</td><td>“You can't export GitHub metrics from the Consumption Dashboard.” The documented columns carry sessions and credits (for example <code>SessionCount</code> and <code>TotalCreditsUsed</code>), not Cowork tasks, task categories, or assisted hours.</td></tr>
+</table>
+
+<ol class="step-list">
+  <li>At the top right of the Consumption Dashboard, select the <strong>download</strong> button, then <strong>Export by week</strong> or <strong>Export by day</strong>.</li>
+  <li>Keep both CSV files together and join them only on <code>PeopleHistoricalId</code>.</li>
+  <li>Filter <code>ServiceName</code> to the service you intend. The dashboard article limits coverage to Cowork and the Work IQ API, but the export article's examples are “such as Copilot Cowork, WorkIQ, Researcher, BizChat, Deepwork, Outlook, or WXP”.</li>
+</ol>
+<p><strong>Verify:</strong> the download is a ZIP with two CSV files that join on <code>PeopleHistoricalId</code> and stop at the last complete day or week. Store the files under access controls that suit personal data.</p>
+
+<h2>Where Microsoft's articles disagree</h2>
+<p>These disagreements are unresolved, and this guide does not call either article newer or more correct. Validate each one in the tenant, for example with a pilot manager for export, and compare your exported counts with both definitions. Delegation and the manager default are in Section 2.</p>
+
+<table>
+  <tr><th scope="col">Topic</th><th scope="col">One article says</th><th scope="col">Another article says</th></tr>
+  <tr><td>Manager export</td><td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/export-ai-cost-metrics">Export AI cost metrics</a>: “Data export for Managers will be available by the end of July.”</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/manager-settings">Configure manager settings</a>: the checkbox allows “team-scoped data in the Consumption Dashboard and export data”.</td></tr>
+  <tr><td>Tasks and billed sessions</td><td><a href="https://learn.microsoft.com/viva/insights/advanced/reference/metrics">Advanced analysis metrics</a>: “A Cowork credit session is defined as a task or a conversation occurring within Copilot Cowork, which includes scheduled tasks.”</td><td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/ai-cost-dashboard">How to use the Consumption Dashboard</a>: “Multiple Cowork tasks, particularly scheduled tasks, can map to one billed session”.</td></tr>
+</table>
+
+<h2>Reconcile the figures</h2>
+<p>Tasks, credit sessions, and credits are different counts: “Copilot Cowork tasks and Cowork sessions measure different types of activity.” The two surfaces can also differ because of:</p>
+<ul>
+  <li><strong>Scope.</strong> Viva Insights follows <strong>Scope</strong>, <strong>Organization</strong>, and <strong>Job function</strong>, while the admin center table “lists individual users”, subject to the report privacy setting in Section 2. Microsoft's minimum-group-size setting is documented for the Copilot Dashboard and Agent Dashboard, so verify any small-group suppression in the Consumption Dashboard in the tenant.</li>
+  <li><strong>Active-user wording.</strong> The admin center counts users who “submitted at least one prompt in a Cowork task (conversational request), or had at least one scheduled task executed by Cowork on their behalf”. The Consumption Dashboard counts “unique users who took at least one action in Copilot Cowork or the Work IQ API”.</li>
+  <li><strong>Time window.</strong> The Usage tab defaults to the past 28 days, and the Consumption Dashboard shows month to date.</li>
+</ul>
+
+<p>For money, use the billing record: “In the Microsoft 365 admin center, you can use Billing &gt; Bills &amp; payments to view invoices and a high-level snapshot of charges associated with your billing account.”</p>
+
+<ol class="step-list">
+  <li>Record the surface, tab, date range, scope, and filters for each figure.</li>
+  <li>Compare like with like: admin center tasks with admin center tasks, and Consumption Dashboard credits with <strong>Copilot &gt; Cost management</strong> credits for the same policy and period, never task counts with session counts.</li>
+  <li>Document any unexplained difference instead of forcing totals to match.</li>
+</ol>
+<p><strong>Verify:</strong> every difference is explained by a cause above or logged as unexplained.</p>
+
+<h1 id="success">7. Success Criteria</h1>
+
+<p>Before you rely on a recurring Cowork review, verify all of the following:</p>
+<ul>
+  <li>Each reviewer's role opens only the surfaces and scopes that Section 2 documents, and a manager cannot switch to Company scope.</li>
+  <li>The spending policies that select Cowork match the intended population of Cowork users.</li>
+  <li>The admin center tabs show a <strong>Last updated</strong> timestamp, and changing the date range changes every card, chart, and table.</li>
+  <li>The Value tab is either visible after the Frontier check or recorded as not available, and every assisted-hours figure carries its date range, surface, and caveat.</li>
+  <li>The Consumption Dashboard Cowork page responds to the <strong>Scope</strong>, <strong>Organization</strong>, and <strong>Job function</strong> filters, exports are stored under access controls that suit personal data, and money is reconciled in the billing record.</li>
+  <li>No availability promise has been made for GCC or any other national cloud.</li>
+</ul>
+
+<h1 id="troubleshooting">8. Troubleshooting and Escalation</h1>
+
+<table>
+  <tr><th scope="col">Symptom</th><th scope="col">What Microsoft documents</th><th scope="col">Action</th></tr>
+  <tr><td>A user can use Cowork and you did not intend it</td><td>“Access is decided per service by whether any applicable policy selects that service.” “A more restrictive policy doesn't override a more permissive one.”</td><td>List the spending policies that select Cowork, then remove the user from their scope.</td></tr>
+  <tr><td>A low limit does not keep a user out, or a user continues after the limit</td><td>“A policy with a limit of one credit still grants access.” “Credit limits are a spending safeguard, not a real-time access gate.”</td><td>Control access through policy scope, not limits, and expect short overruns.</td></tr>
+  <tr><td>How do I disable Cowork for specific users?</td><td>The FAQ: “Disable for specific users: Add users to a security group configured to exclude them from the Copilot experience.” The access article: “To keep a user out of Cowork, don't include them in any spending policy that selects Cowork.”</td><td>The routes differ, and this guide does not choose between them. Test in a pilot group.</td></tr>
+  <tr><td>Users cannot find Cowork or see a request prompt</td><td>If an admin makes Cowork discoverable without enabling usage-based billing, “end users can request to access Cowork directly in the app”.</td><td>Review <strong>Pending requests for Cowork</strong> on the Overview tab.</td></tr>
+  <tr><td>The Consumption Dashboard is blank or zero</td><td>“Consumption data is currently available only for Copilot Cowork and the Work IQ API.”</td><td>Confirm usage-based billing set-up and month-to-date Cowork activity, and clear filters.</td></tr>
+</table>
+
+<h2>Escalation evidence</h2>
+<p>Before escalating, capture the tenant cloud environment, the viewer's role, the surface and tab, the date range, scope, and filters, the <strong>Last updated</strong> timestamp, the spending policies that select Cowork (with scope and limits), the exact error text, and any relevant Message Center or Service Health advisory. Route role and policy issues to the Microsoft 365 administrator who owns Copilot settings, access and Manager-settings issues to the <strong>Insights Administrator</strong>, billing differences to the <strong>billing administrator</strong>, and unresolved availability or data questions to <strong>Microsoft Support</strong>.</p>
+
+<h1 id="sources">9. Dated Microsoft Learn Sources</h1>
+
+<p>Dates are the “Last updated on” date shown on each page.</p>
+
+<table>
+  <tr><th scope="col">Source</th><th scope="col">Last updated</th><th scope="col">Used for</th></tr>
+  <tr><td><a href="https://learn.microsoft.com/microsoft-365/admin/activity-reports/cowork-usage-report">Copilot Cowork usage</a></td><td>23 September 2026</td><td>Tabs, definitions, Frontier label, export</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/microsoft-365/admin/activity-reports/activity-reports">Usage reports overview</a></td><td>28 August 2026</td><td>Permissions, availability by cloud</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/microsoft-365/copilot/cowork/whats-new">What's new in Cowork</a></td><td>25 September 2026</td><td>General availability month</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/microsoft-365/copilot/cowork/cowork-admin-governance">Manage Copilot Cowork</a></td><td>14 September 2026</td><td>Spending-policy access, discoverability</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/microsoft-365/copilot/cowork/cowork-access">Cowork access controls</a></td><td>8 September 2026</td><td>Access decisions, limit enforcement</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/microsoft-365/copilot/cowork/cowork-manage-plugins">Cowork plugins</a></td><td>1 September 2026</td><td>Plugin roles</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/microsoft-365/copilot/cowork/cowork-faq">Cowork common questions</a></td><td>29 September 2026</td><td>Disabling Cowork for users</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/microsoft-365/copilot/cowork/get-started">Get started with Cowork</a></td><td>14 September 2026</td><td>Licence prerequisite</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/microsoft-365/copilot/usage-based-billing-manage-copilot-credits">Managing usage-based billing</a></td><td>30 September 2026</td><td>Billing roles, set-up, Cost management</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/microsoft-365/copilot/usage-based-billing-compare-dashboard-views">Admin center vs. your Azure bill</a></td><td>25 September 2026</td><td>Admin center versus billing record</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/microsoft-365/admin/manage/get-started-frontier">Get started with the Frontier Program</a></td><td>28 September 2026</td><td>Frontier enrolment</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/microsoft-365/copilot/release-notes">Microsoft 365 Copilot release notes</a></td><td>24 September 2026</td><td>Consumption release note</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/ai-cost-dashboard">Consumption Dashboard</a></td><td>8 September 2026</td><td>Roles, Cowork page, tasks versus sessions</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/export-ai-cost-metrics">Export AI cost metrics</a></td><td>8 September 2026</td><td>Export roles, windows, columns</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/viva/insights/advanced/reference/metrics">Advanced analysis metrics</a></td><td>8 September 2026</td><td>Cowork metric definitions</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/viva/insights/identification-copilot-analytics">Identification</a></td><td>24 September 2026</td><td>Identification and VFAM</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/export-agent-data">Export data from the Agent Dashboard</a></td><td>29 July 2026</td><td>Agent Dashboard identifiable-export preview status</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/delegate-access">Delegate access</a></td><td>16 September 2026</td><td>Delegation scopes</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/manager-settings">Configure manager settings</a></td><td>23 July 2026</td><td>Manager access</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported environments</a></td><td>30 September 2026</td><td>Availability by cloud</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Copilot Dashboard</a></td><td>29 September 2026</td><td>Copilot Dashboard Assisted Hours</td></tr>
+  <tr><td><a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">Agent Dashboard (preview)</a></td><td>2 September 2026</td><td>Cowork leaving the Agent Dashboard</td></tr>
+  <tr><td><a href="https://microsoft.github.io/CopilotAnalyticsLabs/Cowork_Methodology.pdf">Cowork methodology (PDF)</a></td><td>No date shown</td><td>Task categories and premise</td></tr>
+</table>
+
+<p>Microsoft may change coverage, licensing, roles, interfaces, and cloud availability. Revalidate the dated sources and the tenant before each material process or decision.</p>
+
+<h1 id="next">10. What to Read Next</h1>
+<table>
+  <tr><th scope="col">Document</th><th scope="col">Use it for</th></tr>
+  <tr><td><a href="consumption-dashboard.html"><strong>Consumption Dashboard Operations</strong></a></td><td>Roles, usage intensity, spending-policy limits, and export</td></tr>
+  <tr><td><a href="billing-operations.html"><strong>Billing Operations</strong></a></td><td>Licensing models, lifecycle events, capacity, and chargeback controls</td></tr>
+  <tr><td><a href="dashboard-guide.html#agent-dashboard"><strong>Dashboard Guide</strong></a></td><td>The Copilot Dashboard Impact page, delegation, and the Agent Dashboard</td></tr>
+  <tr><td><a href="analyst-playbook.html#programmatic-reporting"><strong>Programmatic Reporting Options</strong></a></td><td>Dashboard export, Advanced queries, Graph APIs, or audit data</td></tr>
+  <tr><td><a href="../4-reference/troubleshooting.html"><strong>Troubleshooting Guide</strong></a></td><td>Wider Copilot Analytics access and data issues</td></tr>
+</table>
+
+<hr>
+<p>
+  <strong>Disclaimer:</strong> This guide is an independent procedural reference validated on 2 October 2026. It is not official Microsoft documentation, an invoice, or licensing advice. Verify current product behaviour and commercial terms in Microsoft Learn and the applicable billing portal.
+</p>
+
+</body>
+</html>

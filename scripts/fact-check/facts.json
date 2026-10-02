@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Factual claims in our documentation sourced from Microsoft Learn. Each claim is checked against its MS Learn source on every push.",
-    "last_verified": "2026-07-16",
+    "last_verified": "2026-10-02",
     "severity_levels": {
       "critical": "Incorrect claim could cause deployment failure or data loss",
       "high": "Incorrect claim changes user decisions or procedures",
@@ -12,7 +12,7 @@
   "facts": [
     {
       "id": "licence-threshold-core",
-      "claim": "Tenants with 1+ Copilot licences get Readiness, Adoption, and Impact pages with tenant-level and group-level metrics",
+      "claim": "Tenants with 1+ assigned Copilot licences get core Readiness, Adoption, and Impact capabilities; the group-level manager view and delegation have separate advanced-feature eligibility",
       "source_page": "copilot-dashboard",
       "source_anchor": "feature-availability-based-on-licenses",
       "verify_text": [
@@ -34,11 +34,11 @@
     },
     {
       "id": "licence-threshold-advanced",
-      "claim": "50+ Copilot or Viva Insights licences required for Agent Dashboard, benchmarks, intelligent summaries, sentiment, trendlines, manager delegation, All licence type view",
+      "claim": "The Dashboard article lists at least 50 Copilot or at least 50 Viva Insights licences for agent-related insights, benchmarks, intelligent summaries, survey sentiment, trendlines, manager group views, delegation and the All licence-type view; Agent Dashboard eligibility is a separate unresolved conflict with its feature-specific article",
       "source_page": "copilot-dashboard",
       "source_anchor": "feature-availability-based-on-licenses",
       "verify_text": [
-        "50",
+        "at least 50 Copilot licenses or at least 50 Viva Insights licenses",
         "Agent-related insights",
         "Benchmarks",
         "Intelligent summaries",
@@ -113,16 +113,15 @@
     },
     {
       "id": "adoption-agent-insight-cards",
-      "claim": "The Adoption page surfaces two preview agent insight cards: (1) Agent adoption by Copilot users (requires at least one active agent user) and (2) Credit usage overview (requires Pay-As-You-Go enabled)",
+      "claim": "The Adoption page surfaces Agent adoption by Copilot users (public preview, requires at least one active agent user) and Credit usage overview (requires Pay-As-You-Go enabled; Microsoft does not label this card as preview)",
       "source_page": "copilot-dashboard",
-      "source_anchor": "adoption-page",
+      "source_anchor": "adoption",
       "verify_text": [
         "Agent adoption by Copilot users",
         "Credit usage overview",
         "Pay-As-You-Go"
       ],
       "our_files": [
-        "3-operate/dashboard-guide.html",
         "3-operate/dashboard-guide.html"
       ],
       "severity": "medium",
@@ -271,9 +270,11 @@
       "id": "min-group-size",
       "claim": "Default minimum group size is 10, minimum configurable is 5",
       "source_page": "manage-settings",
-      "source_anchor": "",
+      "source_anchor": "set-minimum-group-size-for-the-copilot-dashboard-and-agent-dashboard",
       "verify_text": [
-        "minimum group size"
+        "minimum group size",
+        "by default is 10 employees",
+        "must be at least five"
       ],
       "our_files": [
         "2-setup/privacy-configuration.html",
@@ -367,7 +368,7 @@
     },
     {
       "id": "meeting-underreporting",
-      "claim": "Earlier meeting-metric underreporting (September 6 - November 3 2025) is resolved and is no longer separately listed on MS Learn; only the email window (Jun 1 2025-Feb 18 2026) remains documented",
+      "claim": "The current Dashboard article documents the email underreporting window (June 1 2025-February 18 2026); the previously documented meeting issue is no longer listed there, which does not establish that the earlier issue is resolved",
       "source_page": "copilot-dashboard",
       "source_anchor": "adoption",
       "verify_text": [
@@ -385,7 +386,7 @@
     },
     {
       "id": "org-data-upload-methods",
-      "claim": "Organizational Data in Microsoft 365 supports CSV, Azure Blob, SAP SuccessFactors, Workday, and API import options; legacy Viva upload availability is tenant-state dependent and officially inconsistent",
+      "claim": "Microsoft 365 Organizational Data Service supports CSV, Azure Blob, SAP SuccessFactors, Workday, and API import options; legacy Viva upload availability is tenant-state dependent and officially inconsistent",
       "source_page": "org-data-m365",
       "source_anchor": "",
       "verify_text": [
@@ -429,11 +430,12 @@
     },
     {
       "id": "credits-no-rollover",
-      "claim": "Copilot Credits do not roll over",
-      "source_page": "copilot-studio-billing",
-      "source_anchor": "",
+      "claim": "Monthly capacity-based Copilot Credits do not roll over to the next month",
+      "source_page": "ai-builder-licensing",
+      "source_anchor": "entitlement-allocation-and-consumption-of-copilot-credits-and-ai-builder-credits",
       "verify_text": [
-        "credit"
+        "Consumption is reset the first of each month",
+        "Unused Copilot Credits or AI Builder credits don't roll over to the next month"
       ],
       "our_files": [
         "3-operate/billing-operations.html"
@@ -448,7 +450,7 @@
       "id": "copilot-chat-admin-report",
       "claim": "The Microsoft 365 Copilot Chat usage report covers unlicensed Copilot Chat users, supports 7, 28, 90, and 180 day periods, and can export user activity",
       "source_page": "copilot-chat-report",
-      "source_anchor": "interpret-the-microsoft-365-copilot-chat-usage-report",
+      "source_anchor": "interpret-the-microsoft-copilot-chat-usage-report",
       "verify_text": [
         "only users without a Microsoft Copilot license",
         "7, 28, 90, or 180 days",
@@ -468,14 +470,16 @@
     },
     {
       "id": "copilot-dashboard-export-preview",
-      "claim": "Copilot Dashboard export is preview, requires 50 Copilot or Viva Insights licences and global dashboard access, and exports de-identified user-level week/day data without Assisted Hours",
+      "claim": "Copilot Dashboard export is preview, requires 50 Copilot or Viva Insights licences and global dashboard access, and exports user-level week/day data without Assisted Hours; personal identifiers are anonymised by default, but identifiable fields appear when an administrator enables identifiable export for the user",
       "source_page": "copilot-metrics-export",
       "source_anchor": "prerequisites",
       "verify_text": [
         "public preview",
         "at least 50 Copilot or Viva Insights licenses",
         "global access",
-        "user-level"
+        "user-level",
+        "unless your administrator has enabled identifiable export for you",
+        "the export also includes identifiable fields"
       ],
       "our_files": [
         "3-operate/dashboard-guide.html",
@@ -488,7 +492,7 @@
     },
     {
       "id": "consumption-dashboard-access",
-      "claim": "Consumption Dashboard access is limited to global-partition Insights Analysts, enabled managers, and Microsoft 365 Global Administrators; delegation is not available",
+      "claim": "The Consumption Dashboard article lists global-partition Insights Analysts, enabled managers and Microsoft 365 Global Administrators and says access cannot currently be delegated; the Delegate access article describes Combined access including the Consumption Dashboard, so delegation remains an unresolved Microsoft-vs-Microsoft contradiction requiring tenant validation",
       "source_page": "consumption-dashboard",
       "source_anchor": "who-can-access-the-dashboard",
       "verify_text": [
@@ -529,14 +533,14 @@
     },
     {
       "id": "supported-environments-copilot-analytics",
-      "claim": "GCC has feature-specific Copilot Analytics limits: no Agent Dashboard, Copilot metric export, or Copilot Power BI reports",
+      "claim": "GCC-M and GCC-H do not support Agent Dashboard views or export of Copilot Dashboard metrics. Copilot Power BI template availability is feature-specific: the Copilot business impact report is supported in GCC-M and partially supported in GCC-H.",
       "source_page": "supported-environments",
-      "source_anchor": "microsoft-365-copilot-analytics-features-and-reports",
+      "source_anchor": "microsoft-copilot-analytics-dashboards",
       "verify_text": [
-        "Agent Dashboard",
-        "Export Copilot metrics",
-        "Copilot Power BI reports",
-        "No"
+        "Export Copilot metrics from the Copilot Dashboard Public Preview No No",
+        "Copilot Agent view and features Public Preview No No",
+        "Agent 365 view and features Yes No No",
+        "Copilot business impact report Yes Yes Partial"
       ],
       "our_files": [
         "1-strategy/executive-briefing.html",
@@ -554,7 +558,7 @@
       "id": "dlp-prompt-block-preview",
       "claim": "DLP blocking of sensitive information types in typed Copilot prompts is preview and distinct from blocking external web search",
       "source_page": "copilot-dlp",
-      "source_anchor": "block-sensitive-information-types-in-prompts-preview",
+      "source_anchor": "block-sensitive-information-types-in-prompts",
       "verify_text": [
         "preview",
         "Processing prompts",
@@ -567,6 +571,123 @@
       "severity": "high",
       "scenarios_affected": ["privacy-configuration"],
       "category": "privacy"
+    },
+    {
+      "id": "cowork-spending-policy-access",
+      "claim": "Cowork access is granted only through a spending policy that selects Cowork; the Cowork agent entry has no effect on who can use Cowork",
+      "source_page": "cowork-admin-governance",
+      "source_anchor": "allow-access-to-cowork",
+      "verify_text": [
+        "Access is granted only through a spending policy that selects Cowork",
+        "A spending policy is an access control, not only a budget",
+        "has no effect on who can use Cowork"
+      ],
+      "our_files": [
+        "3-operate/cowork-dashboard.html"
+      ],
+      "severity": "high",
+      "scenarios_affected": [
+        "billing-operations"
+      ],
+      "category": "access"
+    },
+    {
+      "id": "cowork-assisted-hours-directional",
+      "claim": "Cowork assisted hours are a directional estimate, not a measurement of time saved, productivity gains, business outcomes, or realised value; the Value tab is part of the Frontier preview program",
+      "source_page": "cowork-usage-report",
+      "source_anchor": "cowork-assisted-hours",
+      "verify_text": [
+        "directional estimate of employee hours that benefited from Cowork",
+        "They aren't a direct measurement of time saved, productivity gains, business outcomes, or realized value",
+        "This feature is part of Frontier preview program"
+      ],
+      "our_files": [
+        "3-operate/cowork-dashboard.html"
+      ],
+      "severity": "high",
+      "scenarios_affected": [
+        "executive-reporting"
+      ],
+      "category": "metrics"
+    },
+    {
+      "id": "cowork-usage-report-roles-and-clouds",
+      "claim": "Cowork usage report permissions are the usage-report roles (two listed with no user details), and the Cowork usage report is not available in GCC, GCC-High, DoD, or Microsoft 365 operated by 21Vianet",
+      "source_page": "activity-reports",
+      "source_anchor": "before-you-begin",
+      "verify_text": [
+        "To view usage reports, you must have one of the following permissions",
+        "Usage Summary Reports Reader",
+        "User Experience Success Manager",
+        "Cowork usage",
+        "The service isn't available in the environment; hence, there's no plan to release the report"
+      ],
+      "our_files": [
+        "3-operate/cowork-dashboard.html"
+      ],
+      "severity": "high",
+      "scenarios_affected": [
+        "first-time-rollout",
+        "billing-operations"
+      ],
+      "category": "availability"
+    },
+    {
+      "id": "cowork-consumption-delegation-statement",
+      "claim": "The Consumption Dashboard article says access can't currently be delegated (unresolved against the Delegate access article, which describes Combined access)",
+      "source_page": "consumption-dashboard",
+      "source_anchor": "delegate-access",
+      "verify_text": [
+        "you can't currently delegate access to other people in your company"
+      ],
+      "our_files": [
+        "3-operate/cowork-dashboard.html"
+      ],
+      "severity": "high",
+      "scenarios_affected": [
+        "billing-operations",
+        "executive-reporting"
+      ],
+      "category": "access"
+    },
+    {
+      "id": "cowork-delegate-combined-access",
+      "claim": "The Delegate access article describes a Combined access scope that includes the Consumption Dashboard (unresolved against the Consumption Dashboard article)",
+      "source_page": "delegate-access",
+      "source_anchor": "assign-and-edit-scope-of-insights-for-delegates",
+      "verify_text": [
+        "Combined access",
+        "including the Consumption Dashboard",
+        "might see the Consumption Dashboard"
+      ],
+      "our_files": [
+        "3-operate/cowork-dashboard.html"
+      ],
+      "severity": "high",
+      "scenarios_affected": [
+        "billing-operations",
+        "executive-reporting"
+      ],
+      "category": "access"
+    },
+    {
+      "id": "cowork-billing-record-guidance",
+      "claim": "Microsoft says to use the monthly billing record for reconciliation, not the usage dashboards; admin center usage views are not an invoice view",
+      "source_page": "usage-based-billing-compare-dashboard-views",
+      "source_anchor": "why-doesnt-my-azure-bill-match-the-credits-shown-in-the-microsoft-365-admin-center",
+      "verify_text": [
+        "Use the monthly billing record for reconciliation, not the usage dashboards",
+        "It's not the same as an invoice view"
+      ],
+      "our_files": [
+        "3-operate/cowork-dashboard.html"
+      ],
+      "severity": "high",
+      "scenarios_affected": [
+        "billing-operations",
+        "executive-reporting"
+      ],
+      "category": "reporting"
     }
   ],
   "scenarios": {

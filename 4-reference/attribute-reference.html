@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Attribute Reference. Last validated 19 August 2026.">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Attribute Reference.">
 <link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/4-reference/attribute-reference.html">
 <title>Attribute Reference — Copilot Analytics</title>
 <link rel="stylesheet" href="../assets/docs-style.css">
@@ -39,8 +39,8 @@
   <tr><th scope="col">Document Property</th><th scope="col">Value</th></tr>
   <tr><td>Section</td><td>Reference</td></tr>
   <tr><td>Audience</td><td>IT Admin, Insights Admin</td></tr>
-  <tr><td>Version</td><td>4.1</td></tr>
-  <tr><td>Last validated</td><td>19 August 2026</td></tr>
+  <tr><td>Version</td><td>4.2</td></tr>
+  <tr><td>Last validated</td><td>2 October 2026</td></tr>
 </table>
 
 <div class="callout info">
@@ -70,7 +70,7 @@
 <!-- ═══════════════════════ 1. ATTRIBUTE MAPPING ═══════════════════════ -->
 <h1 id="attribute-mapping">1. Attribute Mapping Table</h1>
 
-<p>This table maps Viva Insights organizational-data names to the <strong>Organizational Data in Microsoft 365</strong> reserved names used in the Microsoft 365 admin center. Use the names required by the active tenant path and target app; do not infer the path from a date alone.</p>
+<p>This table maps Viva Insights organizational-data names to the <strong>Microsoft 365 Organizational Data Service</strong> reserved names used in the Microsoft 365 admin center. Use the names required by the active tenant path and target app; do not infer the path from a date alone.</p>
 
 <table>
   <tr><th scope="col">Legacy Name (Viva Insights)</th><th scope="col">M365 Admin Center Name</th><th scope="col">Required?</th><th scope="col">Description / Notes</th></tr>
@@ -78,7 +78,7 @@
     <td><code>PersonId</code></td>
     <td><code>Microsoft_PersonEmail</code></td>
     <td><strong>Platform required</strong></td>
-    <td>Employee&rsquo;s work email used to associate data with a person. This is the single platform-wide required Organizational Data in Microsoft 365 attribute.</td>
+    <td>Employee&rsquo;s work email used to associate data with a person. This is the single platform-wide required Microsoft 365 Organizational Data Service attribute.</td>
   </tr>
   <tr>
     <td><code>ManagerId</code></td>
@@ -132,13 +132,13 @@
     <td><code>Layer</code></td>
     <td><code>Microsoft_Layer</code></td>
     <td>Optional</td>
-    <td>Hierarchy depth from the top. Auto-derived from manager hierarchy if not explicitly uploaded.</td>
+    <td>Hierarchy depth from the top.</td>
   </tr>
   <tr>
     <td><code>SupervisorIndicator</code></td>
     <td><code>Microsoft_SupervisorIndicator</code></td>
     <td>Optional</td>
-    <td>Indicates whether the employee is a manager (has direct reports). Auto-derived if not uploaded.</td>
+    <td>Indicates whether the employee is a manager (has direct reports).</td>
   </tr>
   <tr>
     <td>Custom (e.g., <code>BusinessUnit</code>)</td>
@@ -148,21 +148,21 @@
   </tr>
 </table>
 
-<p><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/organizational-data#organizational-data-in-microsoft-365-requirements">Organizational Data in Microsoft 365 &mdash; requirements</a> (Microsoft Learn, updated 2 December 2025) defines <code>Microsoft_PersonEmail</code> as the platform requirement and the app matrix; <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#upload-organizational-data-for-the-copilot-dashboard-and-agent-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, and Viva Insights web app</a> (13 August 2026) defines the three Dashboard/Viva attributes.</p>
+<p><strong>Source:</strong> <a href="https://learn.microsoft.com/microsoft-365-apps/org-data-service/organizational-data#microsoft-365-organizational-data-service-requirements">Microsoft 365 Organizational Data Service &mdash; requirements</a> (Microsoft Learn, updated 1 September 2026) defines <code>Microsoft_PersonEmail</code> as the platform requirement and the app matrix; <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#upload-organizational-data-for-the-copilot-dashboard-and-agent-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, Consumption Dashboard, and Viva Insights web app</a> (13 August 2026) defines the three Dashboard/Viva attributes.</p>
 
 <!-- ═══════════════════════ 2. REQUIREMENTS AND PRECEDENCE ═══════════════════════ -->
 <h1 id="scope-precedence">2. Requirements and Source Precedence</h1>
 
 <table>
   <tr><th scope="col">Surface / attribute</th><th scope="col">Requirement or precedence</th><th scope="col">Validation</th></tr>
-  <tr><td><strong>Organizational Data in Microsoft 365</strong></td><td><code>Microsoft_PersonEmail</code> is required. Additional attributes depend on the selected apps.</td><td>Review the target-app selections and mapping before validation.</td></tr>
+  <tr><td><strong>Microsoft 365 Organizational Data Service</strong></td><td><code>Microsoft_PersonEmail</code> is required. Additional attributes depend on the selected apps.</td><td>Review the target-app selections and mapping before validation.</td></tr>
   <tr><td><strong>Copilot Dashboard and Viva Insights</strong></td><td><code>Microsoft_PersonEmail</code>, <code>Microsoft_ManagerEmail</code>, and <code>Microsoft_Organization</code> are required. <code>Microsoft_JobDiscipline</code> is optional and enables Job function.</td><td>Verify hierarchy, Organization, and Job function in Viva data quality and the Dashboard after processing.</td></tr>
   <tr><td><strong>Microsoft 365 User Profile</strong></td><td>Microsoft Entra is the default source. Uploaded organizational data can be prioritised and can fill gaps where Entra data is missing or incomplete.</td><td>Record the Profile precedence setting and spot-check profile cards in Outlook or Teams.</td></tr>
   <tr><td><strong>Viva <code>ManagerId</code> and <code>Organization</code></strong></td><td>Parallel ingestion can select Entra as the default for either attribute while uploaded data continues to supply other fields.</td><td>Review <strong>Configure Entra connection</strong>; allow about 24 hours after a change.</td></tr>
   <tr><td><strong>Multiple upload sources</strong></td><td>Microsoft documents merged Dashboard data with the more recent upload taking priority.</td><td>Record source owner, attribute, selected app, import ID, and timestamp; avoid overlapping unowned sources.</td></tr>
 </table>
 
-<p><strong>Sources:</strong> <a href="https://learn.microsoft.com/viva/organizational-data#data-precedence">Organizational Data in Microsoft 365 &mdash; Data precedence</a> (Microsoft Learn, updated 2 December 2025); <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#upload-organizational-data-for-the-copilot-dashboard-and-agent-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, and Viva Insights web app</a> (13 August 2026); and <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Use Microsoft Entra plus .csv files for parallel data uploads</a> (visible date 30 June 2025; content refreshed 7 July 2026).</p>
+<p><strong>Sources:</strong> <a href="https://learn.microsoft.com/microsoft-365-apps/org-data-service/organizational-data#data-precedence">Microsoft 365 Organizational Data Service &mdash; Data precedence</a> (Microsoft Learn, updated 1 September 2026); <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#upload-organizational-data-for-the-copilot-dashboard-and-agent-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, Consumption Dashboard, and Viva Insights web app</a> (13 August 2026); and <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">Use Microsoft Entra plus .csv files for parallel data uploads</a> (Last updated 7 July 2026).</p>
 
 <!-- ═══════════════════════ 3. DATA CLASSIFICATION ═══════════════════════ -->
 <h1 id="data-classification">3. Data Classification</h1>
@@ -179,7 +179,7 @@
   <tr>
     <td><strong>Confidential</strong></td>
     <td>Sensitive well-known attributes for which the uploader chooses the apps that can receive the data.</td>
-    <td><code>HourlyRate</code>, <code>CostCentre</code></td>
+    <td><code>HourlyRate</code>, <code>SupervisorIndicator</code></td>
   </tr>
   <tr>
     <td><strong>Custom</strong></td>
@@ -190,9 +190,9 @@
 
 <div class="callout">
   <div class="callout-title">Best Practice</div>
-  <p>Set <code>HourlyRate</code> and any compensation-related attributes to <strong>Confidential</strong>. Set demographic attributes like <code>Organization</code>, <code>Location</code>, and <code>FunctionType</code> to <strong>Public</strong> so they are available as dashboard filters.</p>
+  <p><code>HourlyRate</code> and <code>SupervisorIndicator</code> are non-public (confidential) attributes: choose which apps can receive them. Public attributes such as <code>Organization</code>, <code>Location</code> and <code>FunctionType</code> (<code>Microsoft_JobDiscipline</code>) are shared with Microsoft 365 apps; the Dashboard filters depend on the attributes being uploaded, not on a Public setting.</p>
 </div>
-<p><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/organizational-data">Organizational Data in Microsoft 365</a> (Microsoft Learn, updated 2 December 2025) defines public, confidential, and custom organizational data and app access controls.</p>
+<p><strong>Source:</strong> <a href="https://learn.microsoft.com/microsoft-365-apps/org-data-service/organizational-data">Microsoft 365 Organizational Data Service</a> (Microsoft Learn, updated 1 September 2026) defines public, confidential, and custom organizational data and app access controls.</p>
 
 <!-- ═══════════════════════ 4. NAMING CONVENTIONS ═══════════════════════ -->
 <h1 id="naming-conventions">4. Naming Conventions</h1>
@@ -209,19 +209,19 @@
   </tr>
   <tr>
     <td>Case sensitivity</td>
-    <td>Attribute names are <strong>case-insensitive</strong> during upload but are stored as provided. Use consistent casing for clarity.</td>
+    <td>Microsoft documents the required <code>Organization</code> header as <strong>case sensitive</strong>. Use consistent casing for all headers.</td>
   </tr>
   <tr>
-    <td>Maximum length</td>
-    <td>Attribute names should not exceed 128 characters.</td>
+    <td>Maximum field size</td>
+    <td>Field values cannot exceed 128 KB.</td>
   </tr>
   <tr>
     <td>Total attribute limit</td>
-    <td>Maximum of <strong>105 total attributes</strong> per upload (reserved system attributes + your custom attributes combined).</td>
+    <td>Maximum of <strong>105 total attributes</strong> allowed in the system, which includes the five required attributes (reserved system attributes + your custom attributes combined).</td>
   </tr>
   <tr>
     <td>Avoid special characters</td>
-    <td>Use only letters, numbers, and underscores. Avoid hyphens, periods, and other special characters in attribute names.</td>
+    <td>Use only ASCII letters, numbers, and underscores in headers. Microsoft&rsquo;s own error table lists a wider set of symbols; follow the stricter rule.</td>
   </tr>
 </table>
 
@@ -243,7 +243,10 @@
   <tr><td><code>HourlyRate</code></td><td><code>Microsoft_HourlyRate</code></td></tr>
   <tr><td><code>Layer</code></td><td><code>Microsoft_Layer</code></td></tr>
   <tr><td><code>SupervisorIndicator</code></td><td><code>Microsoft_SupervisorIndicator</code></td></tr>
+  <tr><td><code>WeeklyBadgeOnsiteDays</code></td><td><code>Microsoft_WeeklyBadgeOnsiteDays</code></td></tr>
 </table>
+
+<p>Custom attribute headers also cannot be Microsoft system fields (<code>PeopleHistoricalId</code>, <code>StartDate</code>, <code>EndDate</code>, <code>Domain</code>, <code>PopulationType</code>, <code>TimeZone</code>, <code>StandardTimeZone</code>, <code>WorkdayStart</code>, <code>WorkDayEnd</code>, <code>WeekendDays</code>, <code>InferredTeamSize</code>, <code>ObjectId</code>, <code>IsActive</code>, <code>MetricDate</code>, <code>PrimaryCollaborator_PersonId</code>, <code>SecondaryCollaborator_PersonId</code>) or start with <code>Microsoft_</code>.</p>
 
 <div class="callout info">
   <div class="callout-title">Important</div>
@@ -253,7 +256,7 @@
 <!-- ═══════════════════════ 6. DATA CHANGES ═══════════════════════ -->
 <h1 id="data-changes">6. Update, Delete, and Historical Correction</h1>
 
-<p>Organizational Data in Microsoft 365 uses incremental merge. Upload only affected users and include attributes you intend to update. An omitted or blank value preserves the existing value; use the documented marker when a value must be deleted.</p>
+<p>Microsoft 365 Organizational Data Service uses incremental merge. Upload only affected users and include attributes you intend to update. An omitted or blank value preserves the existing value; use the documented marker when a value must be deleted.</p>
 
 <table>
   <tr><th scope="col">Data type / operation</th><th scope="col">Supported value or path</th></tr>
@@ -270,7 +273,7 @@
   <p>Do not use a one-row &ldquo;Replace All&rdquo; file as a general rollback. It can create an artificial hierarchy and disrupt filters, partitions, and reports. Use the supported operations above or Microsoft Support for a critical migration rollback.</p>
 </div>
 
-<p><strong>Sources:</strong> <a href="https://learn.microsoft.com/viva/import-orgdata#update-or-make-other-changes-to-your-data">Import and manage your organizational data with a .csv file &mdash; Update or make other changes</a> and <a href="https://learn.microsoft.com/viva/import-orgdata#make-retroactive-updates-to-existing-data">Make retroactive updates</a> (Microsoft Learn, updated 29 July 2026); <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload#faqs">Use Microsoft Entra plus .csv files for parallel data uploads &mdash; FAQs</a> (visible date 30 June 2025; refreshed 7 July 2026).</p>
+<p><strong>Sources:</strong> <a href="https://learn.microsoft.com/microsoft-365-apps/org-data-service/import/import-orgdata#update-or-make-other-changes-to-your-data">Import and manage your organizational data with a .csv file &mdash; Update or make other changes</a> and <a href="https://learn.microsoft.com/microsoft-365-apps/org-data-service/import/import-orgdata#make-retroactive-updates-to-existing-data">Make retroactive updates</a> (Microsoft Learn, updated 27 August 2026); <a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload#faqs">Use Microsoft Entra plus .csv files for parallel data uploads &mdash; FAQs</a> (Last updated 7 July 2026).</p>
 
 <!-- ═══════════════════════ 7. LEARN REFERENCES ═══════════════════════ -->
 <h1 id="learn-references">7. Microsoft Learn References</h1>
@@ -278,19 +281,23 @@
 <table>
   <tr><th scope="col">Topic</th><th scope="col">Link</th></tr>
   <tr>
-    <td>Organizational Data in Microsoft 365</td>
-    <td><a href="https://learn.microsoft.com/viva/organizational-data">learn.microsoft.com/viva/organizational-data</a></td>
+    <td>Microsoft 365 Organizational Data Service</td>
+    <td><a href="https://learn.microsoft.com/microsoft-365-apps/org-data-service/organizational-data">learn.microsoft.com/microsoft-365-apps/org-data-service/organizational-data</a></td>
   </tr>
   <tr>
     <td>CSV import, update, delete, and historical correction</td>
-    <td><a href="https://learn.microsoft.com/viva/import-orgdata">learn.microsoft.com/viva/import-orgdata</a></td>
+    <td><a href="https://learn.microsoft.com/microsoft-365-apps/org-data-service/import/import-orgdata">learn.microsoft.com/microsoft-365-apps/org-data-service/import/import-orgdata</a></td>
   </tr>
   <tr>
     <td>Parallel Entra and uploaded data</td>
     <td><a href="https://learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload">learn.microsoft.com/viva/insights/advanced/admin/entra-plus-csv-upload</a></td>
   </tr>
   <tr>
-    <td>Org Data Attribute Reference</td>
+    <td>Microsoft 365 Organizational Data Service &mdash; Attribute reference</td>
+    <td><a href="https://learn.microsoft.com/microsoft-365-apps/org-data-service/import/orgdata-attributes">learn.microsoft.com/microsoft-365-apps/org-data-service/import/orgdata-attributes</a></td>
+  </tr>
+  <tr>
+    <td>Organizational data in Viva Insights</td>
     <td><a href="https://learn.microsoft.com/viva/insights/advanced/admin/org-data-overview">learn.microsoft.com/viva/insights/advanced/admin/org-data-overview</a></td>
   </tr>
   <tr>
@@ -310,7 +317,7 @@
 <!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
 <hr>
 <p class="u-772845a273">
-  <strong>Disclaimer:</strong> This document is provided for informational purposes only and was last validated on 19 August 2026. Microsoft may change features, interfaces, and availability without notice. Verify Microsoft Learn, Message Center, and the live tenant UI before implementation. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
+  <strong>Disclaimer:</strong> This document is provided for informational purposes only and was last validated on 2 October 2026. Microsoft may change features, interfaces, and availability without notice. Verify Microsoft Learn, Message Center, and the live tenant UI before implementation. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
 </p>
 
 <!-- Back to Top -->

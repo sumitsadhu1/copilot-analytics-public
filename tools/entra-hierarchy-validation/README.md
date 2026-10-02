@@ -15,7 +15,7 @@ Before interpreting the export, record the tenant's source state:
 
 1. In the Viva Insights organizational-data admin experience, review **Configure Entra
   connection** and record whether Entra is selected for `ManagerId` and `Organization`.
-2. Review active **Organizational Data in Microsoft 365** connections and the apps/fields
+2. Review active **Microsoft 365 Organizational Data Service** (formerly Organizational Data in Microsoft 365) connections and the apps/fields
   they supply.
 3. Check the latest tenant-specific Message Center migration notice and the actual controls
   present in both admin surfaces. Current Microsoft Learn pages conflict about whether Viva
@@ -195,8 +195,8 @@ instantly.
   custom person queries in the Viva Insights web app). Confirm the customer's licensing
   before promising that path.
 - **Source precedence is surface- and attribute-specific:**
-  - Microsoft 365 User Profile keeps Entra as the default unless Organizational Data in
-    Microsoft 365 is prioritised; uploaded data can fill Profile gaps.
+  - Microsoft 365 User Profile keeps Entra as the default unless Microsoft 365 Organizational
+    Data Service is prioritised; uploaded data can fill Profile gaps.
   - Copilot Dashboard / Viva Insights use the organizational attributes shared with those
     apps. Microsoft documents merged Dashboard data with the more recent upload taking
     priority when multiple uploads exist.
@@ -209,7 +209,7 @@ instantly.
 
 ## Supported correction and rollback paths
 
-- For Organizational Data in Microsoft 365 updates, upload only affected users and the
+- For Microsoft 365 Organizational Data Service updates, upload only affected users and the
   values to change. Blank or omitted values preserve existing data.
 - Use documented deletion markers when a value must be removed: `''` for a string in CSV
   (three single quotes in Excel), `-1` for an integer, a nonexistent in-tenant address for
@@ -231,7 +231,7 @@ instantly.
   <https://learn.microsoft.com/en-us/viva/insights/org-team-insights/copilot-dashboard#adoption>
 - How automatic access is determined (single reporting line, weekly recompute):
   <https://learn.microsoft.com/en-us/viva/insights/org-team-insights/copilot-dashboard#how-automatic-access-to-the-copilot-dashboard-is-determined>
-- Organizational Data in Microsoft 365 — app requirements and Profile precedence (updated 2 December 2025):
+- Microsoft 365 Organizational Data Service — app requirements and Profile precedence (updated 2 December 2025):
   <https://learn.microsoft.com/en-us/viva/organizational-data>
 - Parallel Entra plus uploaded data — `ManagerId`/`Organization` source control and restoration (visible date 30 June 2025; content refreshed 7 July 2026):
   <https://learn.microsoft.com/en-us/viva/insights/advanced/admin/entra-plus-csv-upload>

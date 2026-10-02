@@ -7,6 +7,10 @@ Runs on every push (via GitHub Actions) or locally. Checks:
 2. Whether our factual claims still match the source content
 3. Whether new pages have appeared in the MS Learn doc tree
 
+Evidence policy (Release 5.2): last_updated mirrors visible_date, the UTC date of
+the calculated Last updated badge. Metadata ms.date and updated_at are retained
+as separate evidence, not assumed to be the reader's date.
+
 Usage:
     python3 scripts/fact-check/check_facts.py [--update-snapshots] [--verbose]
 
@@ -23,9 +27,12 @@ import sys
 import re
 import time
 from pathlib import Path
-from urllib.request import urlopen, Request
-from urllib.error import URLError, HTTPError
 from html.parser import HTMLParser
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from learn_sources import (  # noqa: E402
+    extract_dates, extract_visible_date, fetch_url, normalise_learn_url,
+)
 
 SCRIPT_DIR = Path(__file__).parent
 REPO_DIR = SCRIPT_DIR.parent.parent
@@ -33,10 +40,9 @@ URLS_FILE = SCRIPT_DIR / "ms-learn-urls.json"
 FACTS_FILE = SCRIPT_DIR / "facts.json"
 SNAPSHOTS_DIR = SCRIPT_DIR / "snapshots"
 
-USER_AGENT = "CopilotAnalyticsHub-FactChecker/1.0 (github.com/sumitsadhu1/copilot-analytics-public)"
-FETCH_TIMEOUT = 30
 FETCH_DELAY = 1.5  # seconds between requests to be polite
 FETCH_RETRIES = 3
+FETCHED_PAGES = {}
 
 
 class TextExtractor(HTMLParser):
@@ -81,22 +87,27 @@ class LinkExtractor(HTMLParser):
 
 def fetch_page(url):
     """Fetch a URL and return (status_code, text_content, raw_html)."""
+    key = normalise_learn_url(url)
+    if key in FETCHED_PAGES:
+        return FETCHED_PAGES[key]
     last_status = 0
     for _ in range(FETCH_RETRIES):
-        req = Request(url, headers={"User-Agent": USER_AGENT})
-        try:
-            with urlopen(req, timeout=FETCH_TIMEOUT) as resp:
-                raw = resp.read().decode('utf-8', errors='replace')
-                extractor = TextExtractor()
-                extractor.feed(raw)
-                return resp.status, extractor.get_text(), raw
-        except HTTPError as exc:
-            last_status = exc.code
-            if exc.code not in (408, 429, 500, 502, 503, 504):
-                break
-        except (URLError, OSError):
-            last_status = 0
-    return last_status, "", ""
+        response = fetch_url(url, include_html=True, delay=FETCH_DELAY)
+        last_status = response["code"]
+        if last_status == 200 and response.get("html"):
+            raw = response["html"]
+            extractor = TextExtractor()
+            extractor.feed(raw)
+            result = last_status, extractor.get_text(), raw
+            FETCHED_PAGES[key] = result
+            return result
+        if last_status == 200:
+            last_status = 0  # a non-HTML/interstitial response is not source evidence
+        if last_status not in (0, 408, 429, 500, 502, 503, 504):
+            break
+    result = last_status, "", ""
+    FETCHED_PAGES[key] = result
+    return result
 
 
 def hash_content(text):
@@ -115,14 +126,22 @@ def load_snapshot(page_id):
     return None
 
 
-def save_snapshot(page_id, content_hash, links=None, last_updated=None):
-    """Save the current hash and link set for a page."""
+def save_snapshot(page_id, content_hash, links=None, last_updated=None,
+                  ms_date=None, updated_at=None, visible_date=None):
+    """Save all three dates; the backward-compatible last_updated is visible.
+
+    Called only when --update-snapshots is explicitly supplied.
+    """
     SNAPSHOTS_DIR.mkdir(parents=True, exist_ok=True)
     data = {
         "hash": content_hash,
         "checked": time.strftime("%Y-%m-%d"),
         "links": sorted(links) if links else [],
+        "ms_date": ms_date,
+        "updated_at": updated_at,
+        "visible_date": visible_date,
     }
+    last_updated = visible_date or last_updated
     if last_updated:
         data["last_updated"] = last_updated
     with open(SNAPSHOTS_DIR / f"{page_id}.json", 'w') as f:
@@ -130,17 +149,8 @@ def save_snapshot(page_id, content_hash, links=None, last_updated=None):
 
 
 def extract_last_updated(html):
-    """Extract the 'Last updated on' date from an MS Learn page."""
-    match = re.search(r'<meta\s+name=["\']ms\.date["\']\s+content=["\']([^"\']+)', html, re.IGNORECASE)
-    if match:
-        return match.group(1)
-    match = re.search(r'Last updated on (\d{2}/\d{2}/\d{4})', html)
-    if match:
-        return match.group(1)
-    match = re.search(r'Last updated on (\d{4}-\d{2}-\d{2})', html)
-    if match:
-        return match.group(1)
-    return None
+    """Backward-compatible function name; returns the visible UTC date."""
+    return extract_visible_date(html)
 
 
 def extract_links_from_html(html):
@@ -162,6 +172,7 @@ def check_fact(fact, page_text):
 
 
 def main():
+    FETCHED_PAGES.clear()
     update_snapshots = "--update-snapshots" in sys.argv
     verbose = "--verbose" in sys.argv
 
@@ -182,6 +193,7 @@ def main():
     report = {
         "pages_checked": 0,
         "pages_changed": [],
+        "pages_new_baseline": [],
         "pages_failed": [],
         "fact_discrepancies": [],
         "new_pages_detected": [],
@@ -208,7 +220,6 @@ def main():
             print(f"  Fetching {pid}... ", end="", flush=True)
 
         status, text, html = fetch_page(url)
-        time.sleep(FETCH_DELAY)
 
         if status != 200:
             report["pages_failed"].append({"id": pid, "url": url, "status": status})
@@ -219,15 +230,28 @@ def main():
         page_texts[pid] = text
         page_htmls[pid] = html
         current_hash = hash_content(text)
+        dates = extract_dates(html)
         last_updated = extract_last_updated(html)
         snapshot = load_snapshot(pid)
 
-        if snapshot and snapshot.get("hash") != current_hash:
+        if snapshot is None:
+            report["pages_new_baseline"].append({
+                "id": pid, "url": url, "ms_date": dates["ms_date"],
+                "updated_at": dates["updated_at"],
+                "visible_date": dates["visible_date"], "saved": update_snapshots,
+            })
+            if verbose:
+                action = "saved" if update_snapshots else "not saved"
+                print(f"NEW BASELINE ({action}; last updated: {last_updated})")
+        elif snapshot.get("hash") != current_hash:
             report["pages_changed"].append({
                 "id": pid,
                 "title": page["title"],
                 "url": url,
                 "last_updated": last_updated,
+                "ms_date": dates["ms_date"],
+                "updated_at": dates["updated_at"],
+                "visible_date": dates["visible_date"],
                 "our_files": page["our_files"],
             })
             if verbose:
@@ -238,9 +262,14 @@ def main():
 
         if update_snapshots:
             links = extract_links_from_html(html)
-            save_snapshot(pid, current_hash, links, last_updated)
+            save_snapshot(pid, current_hash, links, last_updated,
+                          ms_date=dates["ms_date"], updated_at=dates["updated_at"],
+                          visible_date=dates["visible_date"])
 
     print(f"  → {report['pages_checked']} pages checked, {len(report['pages_changed'])} changed, {len(report['pages_failed'])} failed")
+    if report["pages_new_baseline"]:
+        print(f"  → {len(report['pages_new_baseline'])} new baseline(s) "
+              f"{'saved' if update_snapshots else 'not saved (no --update-snapshots)'}")
     print()
 
     # ── Phase 2: Verify factual claims ──
@@ -284,28 +313,28 @@ def main():
     # Collect all known URLs from our watched list
     known_urls = set()
     for page in watched:
-        clean = page["url"].split('#')[0].split('?')[0].rstrip('/')
+        clean = normalise_learn_url(page["url"])
         known_urls.add(clean)
 
     # Also load previously seen links from snapshots
     for page in watched:
         snapshot = load_snapshot(page["id"])
         if snapshot and "links" in snapshot:
-            known_urls.update(snapshot["links"])
+            known_urls.update(normalise_learn_url(url) for url in snapshot["links"])
 
     for disc_page in discovery:
         if verbose:
             print(f"  Scanning {disc_page['id']}... ", end="", flush=True)
 
         status, text, html = fetch_page(disc_page["url"])
-        time.sleep(FETCH_DELAY)
 
         if status != 200:
             if verbose:
                 print(f"FAILED (HTTP {status})")
             continue
 
-        current_links = extract_links_from_html(html)
+        current_links = {normalise_learn_url(url)
+                         for url in extract_links_from_html(html)}
         new_links = current_links - known_urls
 
         # Filter to only Viva Insights / Copilot related pages

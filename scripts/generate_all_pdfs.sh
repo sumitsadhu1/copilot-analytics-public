@@ -40,6 +40,7 @@ declare -a DOCS=(
   "3-operate/billing-operations.html|Billing_Operations.pdf"
   "3-operate/collaboration-analysis.html|Collaboration_Analysis.pdf"
   "3-operate/consumption-dashboard.html|Consumption_Dashboard_Operations.pdf"
+  "3-operate/cowork-dashboard.html|Cowork_Dashboard_Operations.pdf"
   "4-reference/troubleshooting.html|Troubleshooting_Guide.pdf"
   "4-reference/scenarios/index.html|scenarios/Troubleshooting_Scenarios_Catalogue.pdf"
   "4-reference/scenarios/upload-org-data-missing.html|scenarios/Scenario_01_Upload_Org_Data_Missing.pdf"

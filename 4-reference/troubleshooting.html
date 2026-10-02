@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Troubleshooting. Last validated 19 August 2026.">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Troubleshooting.">
 <link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/4-reference/troubleshooting.html">
 <title>Troubleshooting — Copilot Analytics</title>
 <link rel="stylesheet" href="../assets/docs-style.css">
@@ -39,9 +39,9 @@
   <tr><th scope="col">Document Property</th><th scope="col">Value</th></tr>
   <tr><td>Section</td><td>Reference</td></tr>
   <tr><td>Audience</td><td>All Roles</td></tr>
-  <tr><td>Version</td><td>4.1</td></tr>
+  <tr><td>Version</td><td>4.2</td></tr>
   <tr><td>Published</td><td>April 2026</td></tr>
-  <tr><td>Last validated</td><td>19 August 2026</td></tr>
+  <tr><td>Last validated</td><td>2 October 2026</td></tr>
 </table>
 
 <div class="callout info">
@@ -70,7 +70,7 @@
 
 <div class="callout warning">
   <div class="callout-title">Validate the service before changing the tenant</div>
-  <p>For a missing page, changed metric, failed export, or sudden data gap, first check Microsoft 365 admin center <strong>Service Health</strong> for active incidents and <strong>Message Center</strong> for rollout, preview, migration, or reporting changes. Record the notice ID, affected cloud, dates, and recovery window. Then confirm the feature is supported in the tenant&rsquo;s exact environment by using <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported Microsoft 365 environments for Viva Insights features</a> (Last updated 30 June 2026). Plan support does not imply feature parity: GCC lacks Agent Dashboard, Copilot metrics export, Copilot Power BI reports, and API/Azure organizational-data imports.</p>
+  <p>For a missing page, changed metric, failed export, or sudden data gap, first check Microsoft 365 admin center <strong>Service Health</strong> for active incidents and <strong>Message Center</strong> for rollout, preview, migration, or reporting changes. Record the notice ID, affected cloud, dates, and recovery window. Then confirm the feature is supported in the tenant&rsquo;s exact environment by using <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported Microsoft 365 environments for Viva Insights features</a> (Last updated 30 September 2026). Plan support does not imply feature parity. Availability varies by feature in GCC Moderate (GCC-M) and GCC High (GCC-H): no Agent Dashboard, Copilot metric export, Consumption Dashboard or Readiness page; of the Copilot Power BI templates, only Copilot business impact. API-based and Azure organizational-data imports are also not available in either. The matrix does not cover DoD or other national or regional clouds.</p>
 </div>
 
 <!-- ═══════════════════════ 1. ADMIN CENTRE ═══════════════════════ -->
@@ -80,8 +80,8 @@
   <tr><th scope="col">Symptom</th><th scope="col">Cause</th><th scope="col">Resolution</th></tr>
   <tr>
     <td>No data displayed</td>
-    <td>Reports take up to 72 hours to populate after initial licence assignment.</td>
-    <td>Wait 72 hours after assigning Copilot licences. Verify licence assignment in <code>admin.microsoft.com</code> &rarr; Users &rarr; Active Users.</td>
+    <td>Reports typically become available within 24 to 72 hours, but can take several days to populate after licence assignment.</td>
+    <td>Wait at least 72 hours after assigning Copilot licences; it can take several days. Verify licence assignment in <code>admin.microsoft.com</code> &rarr; Users &rarr; Active Users.</td>
   </tr>
   <tr>
     <td>No Copilot licences visible</td>
@@ -90,13 +90,13 @@
   </tr>
   <tr>
     <td>Can&rsquo;t export CSV from reports</td>
-    <td>User does not have the Reports Reader role.</td>
-    <td>Assign the <strong>Reports Reader</strong> role in Entra ID to the user who needs to export data.</td>
+    <td>User does not hold a role that can view usage reports.</td>
+    <td>Assign a least-privileged role from the &ldquo;Before you begin&rdquo; list of the <a href="https://learn.microsoft.com/microsoft-365/admin/activity-reports/activity-reports">Microsoft 365 admin center usage reports overview</a> (for example Reports Reader). For the Copilot reports, Microsoft names the <strong>AI Administrator</strong> role. Usage Summary Reports Reader and User Experience Success Manager see no user details.</td>
   </tr>
   <tr>
     <td>User details hidden / only aggregates visible</td>
     <td>Concealed user details is enabled (privacy setting).</td>
-    <td>Navigate to <code>admin.microsoft.com</code> &rarr; Settings &rarr; Org Settings &rarr; Reports &rarr; uncheck &ldquo;Display concealed user, group, and site names in all reports.&rdquo; Allow 72 hours for changes to take effect.</td>
+    <td>Navigate to <code>admin.microsoft.com</code> &rarr; Settings &rarr; Org Settings &rarr; Services tab &rarr; Reports, then uncheck &ldquo;Conceal user, group, and site names in all reports.&rdquo; Only a Global Administrator can change this setting; it takes a few minutes to take effect, and showing identifiable user information is recorded in the Microsoft Purview audit log.</td>
   </tr>
   <tr>
     <td>0 active users despite assigned licences</td>
@@ -104,6 +104,8 @@
     <td>Verify users have actually used a Copilot feature (e.g., prompted Copilot in Word or Teams). Wait 72 hours for data to appear.</td>
   </tr>
 </table>
+
+<p><strong>Cowork:</strong> For missing Cowork data, unexpected Cowork access, or a missing Value tab, use the troubleshooting table in <a href="../3-operate/cowork-dashboard.html">Cowork Dashboard Operations</a>.</p>
 
 <!-- ═══════════════════════ 2. COPILOT DASHBOARD ═══════════════════════ -->
 <h1 id="copilot-dashboard">2. Copilot Dashboard</h1>
@@ -116,17 +118,17 @@
     <td>
       <ol>
         <li>Check Service Health, Message Center, supported environment, and tenant rollout.</li>
-        <li>Identify the access source: Global Administrator; qualified senior leader; explicitly assigned company-wide user; Insights Analyst on the Global partition; eligible delegate; or manager enabled through Manager Settings for &ldquo;Your group.&rdquo;</li>
+        <li>Identify the access source: Global Administrator; qualified senior leader; explicitly assigned company-wide user; Insights Analyst on the Global partition; eligible delegate; or manager enabled through Manager Settings for &ldquo;Your group.&rdquo; In a Privileged Identity Management (PIM) enabled tenant, Global Administrators might not have Dashboard access; add them explicitly.</li>
         <li>If the user is an AI Administrator or Insights Administrator only, assign Dashboard access explicitly; do not add another privileged role merely for viewing.</li>
-        <li>Verify VFAM is enabled: <code>admin.microsoft.com</code> &rarr; Viva &rarr; Feature Access Management &rarr; Viva Insights &rarr; the <strong>Viva Insights web app</strong> control (pre-rollout tenants: <strong>Copilot Dashboard</strong>) must be ON for the user.</li>
+        <li>Verify VFAM is enabled: <code>admin.microsoft.com</code> &rarr; Viva &rarr; Feature Access Management &rarr; Viva Insights &rarr; the <strong>Viva Insights web app</strong> control must be ON for the user. The control turns the web app on or off at tenant, group or user level; turning it off disables the entire web app, including the Copilot Dashboard. Earlier Copilot Dashboard VFAM or PowerShell configurations now apply to the entire Viva Insights web app.</li>
         <li>Confirm the required Viva Insights / Copilot entitlement and sign in again after propagation.</li>
       </ol>
     </td>
   </tr>
   <tr>
-    <td>Impact page missing collaboration data</td>
-    <td>Behavioral Experiences is off, optional diagnostic data is disabled, or data is still processing.</td>
-    <td>Confirm the approved Behavioral Experiences and diagnostic-data policies before changing either. Optional diagnostic data affects Assisted Hours, emails sent using Copilot, Teams meetings and meeting hours summarized or recapped, and Teams chats summarized; required diagnostics provide only a subset. If policy permits, enable the required setting and allow processing time. Source: <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (Last updated 18 August 2026), Impact section.</td>
+    <td>Impact page missing Copilot activity metrics</td>
+    <td>Optional diagnostic data is disabled, or data is still processing.</td>
+    <td>Confirm the approved diagnostic-data policy before changing it. Optional diagnostic data affects Assisted Hours, emails sent using Copilot, Teams meetings and meeting hours summarized or recapped, and Teams chats summarized; required diagnostics provide only a subset. If policy permits, enable the required setting and allow processing time. Source: <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (Last updated 29 September 2026), Impact section.</td>
   </tr>
   <tr>
     <td>Only Readiness page visible (no Adoption or Impact)</td>
@@ -141,10 +143,10 @@
   <tr>
     <td>Impact page shows no data</td>
     <td>Requires at least 7 days of usage data after licence assignment.</td>
-    <td>Wait at least 7 days after licences are assigned and users begin using Copilot. If data still doesn&rsquo;t appear, verify Behavioral Experiences is ON.</td>
+    <td>Wait at least 7 days after licences are assigned and users begin using Copilot. If data still doesn&rsquo;t appear, confirm the Viva Insights web app is enabled for the user in Viva Feature Access Management and check Service Health and Message Center. Behavioral insights do not affect the Copilot Dashboard.</td>
   </tr>
   <tr>
-    <td>Data suppressed / shows &ldquo;N/A&rdquo;</td>
+    <td>Data suppressed / no value shown</td>
     <td>Group is below the minimum group size threshold (default 10).</td>
     <td>Ensure the group being viewed meets the minimum group size requirement. The minimum can be adjusted (lowest is 5) by the AI Administrator or Insights Administrator in Privacy Settings.</td>
   </tr>
@@ -155,13 +157,18 @@
   </tr>
   <tr>
     <td>Sentiment section is empty</td>
-    <td>No Copilot survey has been configured or responses haven&rsquo;t been collected.</td>
-    <td>Configure the Copilot satisfaction survey in Viva Insights Settings. Sentiment data appears once enough responses are collected (subject to minimum group size).</td>
+    <td>Survey data has not been uploaded for the organisation, or the minimum privacy threshold is not met.</td>
+    <td>Set up a Copilot Impact Survey in Viva Glint or a survey in Viva Pulse, or (as a Viva Insights admin) upload group-level survey results as a .csv file in the Viva Insights analyst experience (Survey data &rarr; Data connections &rarr; Manage data sources). Sentiment appears once responses meet the minimum group size.</td>
+  </tr>
+  <tr>
+    <td>Satisfaction rate card shows not enough feedback</td>
+    <td>Fewer than 30 feedback responses from at least five unique users in the rolling 28-day period.</td>
+    <td>No configuration fix is needed; the card appears once the threshold is met. Source: <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a>.</td>
   </tr>
   <tr>
     <td>Exclusion list not taking effect</td>
-    <td>Exclusion list changes take up to 5 days to propagate.</td>
-    <td>Wait 5 days after adding users to the exclusion list. Verify the list was saved correctly in Privacy Settings.</td>
+    <td>The change is still within Microsoft&rsquo;s stated window of up to three days, or the policy is not turned on.</td>
+    <td>Microsoft states: &ldquo;After you remove users with an exclusion list, it will take up to three days for the changes to take effect.&rdquo; Wait up to three days and verify the resulting membership and report behaviour in the tenant. Also confirm the unified exclusion list policy is turned on and the list was saved (created by an AI Administrator in Viva Feature Access Management). Source: <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, Consumption Dashboard, and Viva Insights web app</a>.</td>
   </tr>
   <tr>
     <td>Org data not showing in filters</td>
@@ -177,7 +184,7 @@
   <tr>
     <td>Copilot metrics export missing or disabled</td>
     <td>The preview requires the documented 50-licence threshold, global / &ldquo;Your company&rdquo; access, feature enablement, supported cloud, and tenant rollout. Group-only access is insufficient; export is unavailable in GCC.</td>
-    <td>Verify each prerequisite, then check Message Center and Service Health. If available, remember the export is fixed and non-customizable: Week gives up to six months, Day gives 28 days, rows are anonymized user-level, and Assisted Hours is absent. Source: <a href="https://learn.microsoft.com/viva/insights/org-team-insights/export-copilot-metrics">Export Copilot metrics from the Microsoft Copilot Dashboard</a> (Last updated 15 July 2026).</td>
+    <td>Verify each prerequisite, then check Message Center and Service Health. If available, remember the export is fixed and non-customizable: Week gives up to six months, Day gives 28 days, rows are anonymized user-level by default (personal identifiers are replaced with anonymised IDs; identifiable fields appear only where an administrator has enabled identifiable export for the user, a private-preview Identification capability), and Assisted Hours is absent. Source: <a href="https://learn.microsoft.com/viva/insights/org-team-insights/export-copilot-metrics">Export Copilot metrics from the Microsoft Copilot Dashboard</a> (Last updated 15 July 2026).</td>
   </tr>
 </table>
 
@@ -188,8 +195,8 @@
   <tr><th scope="col">Symptom</th><th scope="col">Cause</th><th scope="col">Resolution</th></tr>
   <tr>
     <td>Agent Dashboard not visible</td>
-    <td>One or more preview prerequisites are missing: conservative 50-Copilot threshold, agent activity, company-wide access, Worldwide cloud, feature enablement, or tenant rollout.</td>
-    <td>Confirm all prerequisites. Managers and &ldquo;Your group&rdquo; delegates cannot access Agent Dashboard. The feature is unavailable in GCC and other national or regional clouds. Microsoft sources conflict on whether 50 Viva Insights alone qualifies; use 50 Copilot licences plus agent activity conservatively, then validate through Message Center and Microsoft Support. Source: <a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">Connect to the Agent Dashboard</a> (Last updated 30 July 2026).</td>
+    <td>One or more preview prerequisites are missing: conservative 50-Copilot threshold, agent activity, company-level access for non-manager users, Worldwide cloud, feature enablement, or tenant rollout.</td>
+    <td>Confirm all prerequisites. Manager access is not settled by Microsoft&rsquo;s sources (the Agent Dashboard article says enabled managers can see agent insights scoped to their teams; the Roles in Viva Insights matrix lists no Manager access). &ldquo;Your group&rdquo; delegates cannot open it: delegates need &ldquo;Your company&rdquo; or &ldquo;Combined access&rdquo;. The feature is not available in GCC-M or GCC-H, or in other national or regional clouds. Microsoft sources conflict on whether 50 Viva Insights alone qualifies; use 50 Copilot licences plus agent activity conservatively, then validate through Message Center and Microsoft Support. Source: <a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">Connect to the Agent Dashboard</a> (Last updated 2 September 2026).</td>
   </tr>
   <tr>
     <td>Agent Dashboard disabled</td>
@@ -200,6 +207,11 @@
     <td>No agent data displayed</td>
     <td>No agents have been deployed in the tenant, or agents have not been used.</td>
     <td>Verify agents are deployed and users are interacting with them. Agent data requires active usage to populate.</td>
+  </tr>
+  <tr>
+    <td>&ldquo;All agents&rdquo; control missing (no Agent 365 Dashboard view)</td>
+    <td>The organisation does not have Agent 365 licensing in addition to the base prerequisite (50 Copilot licences plus agent activity).</td>
+    <td>Confirm Agent 365 licensing. If the <strong>All agents</strong> control is absent, the tenant does not meet the requirement. Agent 365 reporting starts only from the date the organisation accepted the Agent 365 terms of use, so earlier periods cannot be reported.</td>
   </tr>
 </table>
 
@@ -221,7 +233,7 @@
   <tr>
     <td>Query fails with time period error</td>
     <td>Selected time period exceeds available historical data.</td>
-    <td>Reduce the query time period to fall within available data. Viva Insights can retain up to 27 months of collaboration data and <strong>13 months of Copilot metric data</strong> for Advanced Reporting; Dashboard calculation windows, preview export history, and admin-report periods are separate. Source: <a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/microsoft-365-copilot-impact">Microsoft 365 Copilot impact report</a> (Last updated 5 August 2026).</td>
+    <td>Reduce the query time period to fall within available data. Viva Insights can retain up to 27 months of collaboration data and <strong>13 months of Copilot metric data</strong> for Advanced Reporting; Dashboard calculation windows, preview export history, and admin-report periods are separate. Source: <a href="https://learn.microsoft.com/viva/insights/advanced/analyst/templates/microsoft-365-copilot-impact">Microsoft Copilot impact report</a> (Last updated 5 August 2026).</td>
   </tr>
   <tr>
     <td>Power BI won&rsquo;t connect to Viva Insights</td>
@@ -249,13 +261,13 @@
 <table>
   <tr><th scope="col">Error</th><th scope="col">Cause</th><th scope="col">Resolution</th></tr>
   <tr>
-    <td>Blank <code>PersonEmail</code> / <code>PersonId</code></td>
+    <td>Blank <code>PersonId</code> / <code>Microsoft_PersonEmail</code></td>
     <td>One or more rows have an empty email field.</td>
-    <td>Ensure every row has a valid email address in the <code>PersonEmail</code> (or <code>PersonId</code> / <code>Microsoft_PersonEmail</code>) column.</td>
+    <td>Ensure every row has a valid email address in the <code>PersonId</code> (legacy Viva path) or <code>Microsoft_PersonEmail</code> column. Do not name a column <code>PersonEmail</code>: Microsoft&rsquo;s validation-errors article says <code>Microsoft_PersonEmail</code> is a reserved attribute.</td>
   </tr>
   <tr>
     <td>Missing required attributes</td>
-    <td>CSV is missing one or more required columns: <code>PersonEmail</code>, <code>ManagerEmail</code>, <code>Organization</code> (or their <code>Microsoft_*</code> equivalents).</td>
+    <td>CSV is missing one or more required columns: <code>PersonId</code>, <code>ManagerId</code>, <code>Organization</code> (legacy Viva path) or <code>Microsoft_PersonEmail</code>, <code>Microsoft_ManagerEmail</code>, <code>Microsoft_Organization</code> (Microsoft 365 admin center path).</td>
     <td>Add the missing required columns to the CSV header row. See the <a href="attribute-reference.html">Attribute Reference</a> for the full mapping.</td>
   </tr>
   <tr>
@@ -284,25 +296,40 @@
 <table>
   <tr><th scope="col">Status</th><th scope="col">Meaning</th><th scope="col">Resolution</th></tr>
   <tr>
-    <td>Processing failed</td>
+    <td>Processing failed (Viva Insights web-app import)</td>
     <td>Backend error during data ingestion.</td>
     <td>Retry the upload. If the issue persists, contact Microsoft Support with the error details and correlation ID.</td>
   </tr>
   <tr>
+    <td>Validation failed (Microsoft 365 Organizational Data Service)</td>
+    <td>An error occurred while validating your data; multiple types of data or mapping issues can trigger it.</td>
+    <td>Select <strong>Review details</strong> to download the import log, correct the issues, and re-import. Common triggers include blank rows under <code>Microsoft_PersonEmail</code>, missing required attributes, empty data rows, data for apps you are not licensed for, unsupported custom attributes, and attribute names that conflict with <code>Microsoft_</code> reserved names.</td>
+  </tr>
+  <tr>
+    <td>Validation on hold</td>
+    <td>A temporary API error.</td>
+    <td>No action is needed; it should resolve on its own within several minutes.</td>
+  </tr>
+  <tr>
+    <td>Canceled</td>
+    <td>The system terminated the run, perhaps because of a timeout or configuration changes. This does not indicate a data or file issue.</td>
+    <td>No action is needed. Select <strong>Review details</strong> to see whether a validation report is available. Manual .csv, API-based and Azure Blob Storage imports can be retried; Workday and SAP SuccessFactors connectors pull data again on their established refresh schedule.</td>
+  </tr>
+  <tr>
     <td>Suspended</td>
-    <td>Credentials expired or backend system unavailable (common with HRIS connectors).</td>
-    <td>Re-authenticate the connector credentials. Retry the next day. If suspended repeatedly, check service health at <a href="https://status.office.com">status.office.com</a>.</td>
+    <td>Something in the import process went wrong, or the system was unavailable. Microsoft states this is not a user error.</td>
+    <td>For manual .csv, API-based or Azure Blob Storage imports, wait a day and try the import again. For Workday and SAP SuccessFactors connectors, the next scheduled import might fix it. If suspended repeatedly, check service health at <a href="https://status.office.com">status.office.com</a>.</td>
   </tr>
   <tr>
     <td>Partial success</td>
     <td>Some rows failed validation (API, Workday, or SAP connectors only).</td>
-    <td>Download the error report from the upload status page. Fix the failing rows and re-upload. Common causes: duplicate emails, malformed dates, invalid manager references.</td>
+    <td>Select <strong>Review details</strong> to download the import log, correct the failing rows, and re-import. Microsoft lists blank <code>Microsoft_PersonEmail</code> rows and data that does not match the expected data type as likely causes.</td>
   </tr>
 </table>
 
 <div class="callout info">
   <div class="callout-title">Validation Error Reference</div>
-  <p>For the complete list of upload validation errors and error codes, see <a href="https://learn.microsoft.com/viva/insights/advanced/admin/rules-validation-errors">Validation errors for organizational data uploads</a> on Microsoft Learn.</p>
+  <p>For validation errors and warnings on imports through Microsoft 365 Organizational Data Service, see <a href="https://learn.microsoft.com/microsoft-365-apps/org-data-service/import/validation-errors-warnings">How to fix validation errors and warnings when importing data</a>. For uploads through the Viva Insights web app (delete and Replace All, or tenants not yet migrated), see <a href="https://learn.microsoft.com/viva/insights/advanced/admin/rules-validation-errors">File rules and validation errors</a>.</p>
 </div>
 
 <!-- ═══════════════════════ 6. AUDITING ═══════════════════════ -->
@@ -322,7 +349,7 @@
   </tr>
 </table>
 
-<p>To view these logs: <code>compliance.microsoft.com</code> &rarr; Audit &rarr; Search &rarr; filter by Activities: <code>AddDelegates</code> or <code>RemoveDelegates</code> &rarr; filter by Workload: <code>Viva Insights</code>.</p>
+<p>To view these logs: Microsoft Purview portal (<code>purview.microsoft.com</code>) &rarr; Solutions &rarr; Audit &rarr; Search &rarr; filter Activities by <code>AddDelegates</code> or <code>RemoveDelegates</code>.</p>
 
 <!-- ═══════════════════════ 7. ESCALATION ═══════════════════════ -->
 <h1 id="escalation">7. Escalation Path</h1>
@@ -347,7 +374,7 @@
 <!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
 <hr>
 <p class="u-772845a273">
-  <strong>Disclaimer:</strong> This document is provided for informational purposes only and was last validated on 19 August 2026. Microsoft may change features, interfaces, preview behavior, and availability without notice. Verify volatile guidance in Microsoft Learn, Message Center, Service Health, and the tenant UI. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
+  <strong>Disclaimer:</strong> This document is provided for informational purposes only and was last validated on 2 October 2026. Microsoft may change features, interfaces, preview behavior, and availability without notice. Verify volatile guidance in Microsoft Learn, Message Center, Service Health, and the tenant UI. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities or licensing requirements.
 </p>
 
 <!-- Back to Top -->

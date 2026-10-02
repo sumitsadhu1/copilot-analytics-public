@@ -90,7 +90,7 @@
   skipLink.textContent = 'Skip to main content';
 
   // Bump with each release. index.html and browse.html carry their own copy of this date.
-  var VALIDATED = '19 August 2026';
+  var VALIDATED = '2 October 2026';
 
   var bar = doc.createElement('header');
   bar.className = 'app-bar';

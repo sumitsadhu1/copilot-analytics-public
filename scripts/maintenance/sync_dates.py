@@ -13,6 +13,8 @@ Two kinds of date live in this repo and they are deliberately different:
 
 Copies drift silently: shell.js sat five weeks stale because a release bump only
 rewrote HTML. This script is the writer, and --check is the guard.
+Generators reuse current_release_date(); literal release/validation stamps in
+Python and shell scripts are reported, not automatically rewritten.
 
 Usage:
     sync_dates.py            rewrite copies and regenerate the ledger
@@ -22,6 +24,7 @@ Usage:
 from __future__ import annotations
 
 import html
+import ast
 import os
 import re
 import sys
@@ -53,6 +56,66 @@ def release_date(text: str) -> str:
     if not match:
         sys.exit("could not find the 'Current release' row in change-history.html")
     return match.group(1)
+
+
+def current_release_date() -> str:
+    """Read the canonical Current release row using the shared parser."""
+    return release_date(LEDGER_PAGE.read_text(encoding="utf-8"))
+
+
+DATE_LITERAL = r"(?:\d{1,2}\s+[A-Z][a-z]+\s+20\d\d|20\d\d-\d{2}-\d{2})"
+LABELLED_DATE = re.compile(
+    r"\b(?:last\s+validated|validated|(?:current|hub)\s+release|release\s+date)"
+    r"\s*[:=]?\s*(?:on\s+)?(" + DATE_LITERAL + r")", re.I,
+)
+DATE_ONLY = re.compile(DATE_LITERAL, re.I)
+DATE_VARIABLE = re.compile(r"release|validated|validation", re.I)
+SHELL_DATE = re.compile(
+    r"^\s*(\w*(?:release|validated|validation)\w*)\s*=\s*[\"'](" + DATE_LITERAL + r")[\"']",
+    re.I | re.M,
+)
+
+
+def script_date_drift() -> list[str]:
+    """Flag literal publication-date copies, not factual dates/test fixtures."""
+    drift = []
+    for path in sorted((ROOT / "scripts").rglob("*")):
+        relative = path.relative_to(ROOT)
+        if not path.is_file() or path.suffix not in (".py", ".sh") \
+                or path.name.startswith("test_") \
+                or any(part.startswith(".self-test-") for part in relative.parts):
+            continue
+        text = path.read_text(encoding="utf-8")
+        hits = set()
+        if path.suffix == ".py":
+            try:
+                tree = ast.parse(text, filename=str(path))
+            except SyntaxError as exc:
+                drift.append(
+                    f"{relative.as_posix()}:{exc.lineno}: "
+                    f"cannot inspect script dates: {exc.msg}")
+                continue
+            for node in ast.walk(tree):
+                if isinstance(node, ast.Constant) and isinstance(node.value, str):
+                    hits.update((node.lineno, m.group(1))
+                                for m in LABELLED_DATE.finditer(node.value))
+                if isinstance(node, (ast.Assign, ast.AnnAssign)):
+                    targets = node.targets if isinstance(node, ast.Assign) else [node.target]
+                    value = node.value
+                    if isinstance(value, ast.Constant) and isinstance(value.value, str) \
+                            and DATE_ONLY.fullmatch(value.value) \
+                            and any(isinstance(t, ast.Name) and DATE_VARIABLE.search(t.id)
+                                    for t in targets):
+                        hits.add((value.lineno, value.value))
+        else:
+            for pattern, group in ((LABELLED_DATE, 1), (SHELL_DATE, 2)):
+                hits.update((text.count("\n", 0, m.start()) + 1, m.group(group))
+                            for m in pattern.finditer(text))
+        for line, value in sorted(hits):
+            drift.append(
+                f"{relative.as_posix()}:{line}: hard-coded release/validation "
+                f"date {value!r}; use current_release_date() or omit the date")
+    return drift
 
 
 def guides() -> list[tuple[str, str, str]]:
@@ -137,6 +200,9 @@ def analyse() -> tuple[str, int, list[str], list[tuple[Path, str]]]:
                                  lambda _: fresh, ledger_text, flags=re.S))
         )
 
+    # Code copies must be removed/single-sourced, not rewritten to another literal.
+    drift.extend(script_date_drift())
+
     return release, len(rows), drift, writes
 
 
@@ -154,8 +220,12 @@ def main() -> int:
     for item in drift:
         print(f"  DRIFT  {item}")
 
-    if check:
-        print(f"\n{len(drift)} item(s) out of sync. Run sync_dates.py to fix.")
+    script_drift = any(item.startswith("scripts/") for item in drift)
+    if check or script_drift:
+        if script_drift:
+            print("\nRemove or single-source the flagged script dates; no files changed.")
+        else:
+            print(f"\n{len(drift)} item(s) out of sync. Run sync_dates.py to fix.")
         return 1
 
     for path, text in writes:

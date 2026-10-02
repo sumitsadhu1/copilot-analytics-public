@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Privacy Configuration. Last validated 19 August 2026.">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Privacy Configuration.">
 <link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/2-setup/privacy-configuration.html">
 <title>Privacy Configuration — Copilot Analytics</title>
 <link rel="stylesheet" href="../assets/docs-style.css">
@@ -42,8 +42,8 @@
   <tr><th scope="col">Document Property</th><th scope="col">Value</th></tr>
   <tr><td>Section</td><td>Setup</td></tr>
   <tr><td>Audience</td><td>IT Admin / Governance</td></tr>
-  <tr><td>Version</td><td>4.1</td></tr>
-  <tr><td>Last validated</td><td>19 August 2026</td></tr>
+  <tr><td>Version</td><td>4.2</td></tr>
+  <tr><td>Last validated</td><td>2 October 2026</td></tr>
 </table>
 
 <h2>Choose the Action by Intended Outcome</h2>
@@ -73,21 +73,23 @@
 
 <!-- ═══════════════════════ TOC ═══════════════════════ -->
 <h1 id="toc">Table of Contents</h1>
-<ol>
-  <li><a href="#privacy-thresholds">Privacy Thresholds</a></li>
-  <li><a href="#exclusion-lists">Exclusion Lists</a></li>
-  <li><a href="#data-residency">Data Residency</a></li>
-  <li><a href="#purview-dlp">Microsoft Purview DLP for Copilot Prompts</a></li>
-  <li><a href="#gdpr">GDPR and Regional Compliance</a></li>
-  <li><a href="#data-retention">Data Retention</a></li>
-  <li><a href="#supported-environments">Supported Environments</a></li>
-  <li><a href="#next">What to Read Next</a></li>
-</ol>
+<div class="toc">
+<ul>
+  <li><a href="#privacy-thresholds">1. Privacy Thresholds</a></li>
+  <li><a href="#exclusion-lists">2. Exclusion Lists</a></li>
+  <li><a href="#data-residency">3. Data Residency</a></li>
+  <li><a href="#purview-dlp">3B. Microsoft Purview DLP for Copilot Prompts</a></li>
+  <li><a href="#gdpr">4. GDPR and Regional Compliance</a></li>
+  <li><a href="#data-retention">5. Data Retention</a></li>
+  <li><a href="#supported-environments">6. Supported Environments</a></li>
+  <li><a href="#next">7. What to Read Next</a></li>
+</ul>
+</div>
 
 <!-- ═══════════════════════ 1. PRIVACY THRESHOLDS ═══════════════════════ -->
 <h1 id="privacy-thresholds">1. Privacy Thresholds</h1>
 
-<p>Privacy thresholds protect <strong>aggregated organization insights</strong>; they do not turn every Viva Insights output into aggregate-only data. Insights Analysts can receive de-identified row-level employee records in advanced analysis, and uploaded organizational attributes can make a person inferable when combined.</p>
+<p>Privacy thresholds protect <strong>aggregated organization insights</strong>; they do not turn every Viva Insights output into aggregate-only data. Insights Analysts can receive de-identified row-level employee records in advanced analysis, and uploaded organizational attributes can make a person inferable when combined. Identification, a separate capability, lets authorised users see named employees (&ldquo;identified outputs&rdquo;) in Consumption Dashboard insights and exports and in the Copilot Dashboard and Agent Dashboard data exports (listed as private preview; Microsoft&rsquo;s Agent Dashboard export article says public preview, so validate in the tenant).</p>
 
 <table>
   <tr><th scope="col">Setting</th><th scope="col">Default</th><th scope="col">Configurable Range</th></tr>
@@ -96,15 +98,17 @@
 
 <h2>How Thresholds Work</h2>
 <ul>
-  <li><strong>Data suppression:</strong> Results for groups below the threshold are suppressed &mdash; they show as blank or &ldquo;insufficient data&rdquo; rather than displaying potentially identifiable information.</li>
+  <li><strong>Data suppression:</strong> Results for groups below the threshold are not shown, so potentially identifiable information is not displayed.</li>
   <li><strong>Dashboard and manager/leader insights:</strong> These surfaces use protected aggregates, minimum group size, distribution masking, and differential privacy where documented.</li>
   <li><strong>Advanced analysis:</strong> An Insights Analyst can query de-identified individual-level organizational and Microsoft 365 metrics. The encrypted person identifier is not a guarantee of anonymity if title, location, organization, or custom attributes enable inference.</li>
   <li><strong>Access governance:</strong> Treat analyst output as potentially personal data. Use least-privilege partitions, require role-specific privacy/security training, define an approved analysis purpose, and audit authored queries against policy and any data protection impact assessment.</li>
+  <li><strong>Identification:</strong> Copilot Analytics outputs are de-identified by default. Identification lets authorised users see named employees (&ldquo;identified outputs&rdquo;). Microsoft lists it for Consumption Dashboard insights and data export, and lists Copilot Dashboard and Agent Dashboard data exports as private preview. For the Agent Dashboard export, Microsoft&rsquo;s articles disagree: <a href="https://learn.microsoft.com/viva/insights/identification-copilot-analytics">Identification</a> says private preview, while <a href="https://learn.microsoft.com/viva/insights/org-team-insights/export-agent-data">Export data from the Agent Dashboard</a> says identifiable export &ldquo;is for public preview customers only&rdquo;; validate in the tenant. Access is governed by a dedicated Viva feature access management (VFAM) policy, which only a Microsoft 365 Global Administrator or an AI Administrator can create. When identifiable export is enabled for a user, their export includes identifiable fields; otherwise, personal identifiers are replaced with anonymised IDs.</li>
+  <li><strong>GitHub page opt-in (public preview):</strong> Privacy settings in the Viva Insights web app also hold the opt-in for the Consumption Dashboard GitHub page. Microsoft states that this preview feature allows personal data processing.</li>
 </ul>
 
 <p><strong>Sources:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/privacy/privacy#personal-data-de-identified-data-and-calculated-data">Advanced analysis privacy &mdash; Personal data, de-identified data, and calculated data</a> (Microsoft Learn, updated 10 December 2025) documents de-identified row-level output and re-identification risk; <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/user-roles#levels-of-responsibility">Roles in Viva Insights &mdash; Levels of responsibility</a> (7 July 2026) distinguishes analyst row-level access; and <a href="https://learn.microsoft.com/viva/insights/advanced/privacy/privacy#advanced-analysis">Advanced analysis privacy &mdash; Advanced analysis access</a> (10 December 2025) recommends training and states that analyst-authored queries are logged for audit.</p>
 
-<div class="callout warn">
+<div class="callout warning">
   <div class="callout-title">Minimum Team Size vs Minimum Group Size &mdash; They Are Different</div>
   <p>These two settings apply in different contexts and are configured in different places. Both have a minimum of 5.</p>
   <table>
@@ -119,7 +123,7 @@
       <td><strong>Minimum group size</strong></td>
       <td>Viva Insights &rarr; Admin &rarr; <strong>Privacy settings</strong></td>
       <td>Copilot Dashboard aggregated views, Power BI query results</td>
-      <td><strong>Does not</strong> include the viewer in the headcount</td>
+      <td>Counts people in the group; Microsoft does not say whether the viewer is included</td>
     </tr>
   </table>
   <p><strong>Example:</strong> If both are set to 5, a manager with exactly 4 direct reports will see their team data (4 reports + 1 manager = 5, meeting the team size threshold), but an analyst filtering a dashboard to a group of 4 users will see suppressed data (4 &lt; 5, below the group size threshold).</p>
@@ -132,12 +136,17 @@
 
 <h2>What Gets Excluded</h2>
 <ul>
-  <li>Microsoft Copilot Dashboard and Agent Dashboard aggregated insights</li>
+  <li>Microsoft Copilot Dashboard, Agent Dashboard and Consumption Dashboard aggregated insights</li>
   <li>Viva Insights behavioral collaboration reports in advanced analysis</li>
   <li>Microsoft 365 Copilot Chat (web) usage in the Copilot Dashboard, including a Microsoft 365 licensed user who does not have a Copilot or Viva Insights license</li>
 </ul>
 
 <p>Microsoft Learn does <strong>not</strong> describe this list as deleting source data or excluding a person from every query type and processing path. For exclusion from advanced-analysis processing, manage the user&rsquo;s Viva Insights service plan as part of the data-subject-request workflow below.</p>
+
+<div class="callout note">
+  <div class="callout-title">Not the Adoption Score opt-out</div>
+  <p>The unified exclusion list is separate from the Adoption Score People experience opt-out. Microsoft states that when you opt out specific user groups from calculating People experience insights in Adoption Score, the AI adoption category doesn&rsquo;t respect that opt-out in the current release. See <a href="https://learn.microsoft.com/microsoft-365/admin/adoption/ai-adoption-score">AI adoption category in Adoption Score</a>.</p>
+</div>
 
 <h2>How to Upload</h2>
 <table>
@@ -155,13 +164,12 @@
 <h2>Processing Times</h2>
 <table>
   <tr><th scope="col">Action</th><th scope="col">Time to Take Effect</th></tr>
-  <tr><td>Upload and complete an exclusion list</td><td>Could take up to <strong>5 days</strong></td></tr>
-  <tr><td>Documented removal change</td><td>Microsoft separately states that a removal change can take up to <strong>3 days</strong>; verify the resulting membership and report behavior in the tenant.</td></tr>
+  <tr><td>Exclusion list changes</td><td>Microsoft states: &ldquo;After you remove users with an exclusion list, it will take up to three days for the changes to take effect.&rdquo; Verify the resulting membership and report behaviour in the tenant after that window.</td></tr>
 </table>
 
 <div class="callout info">
   <div class="callout-title">Plan Exclusions Before Dashboard Launch</div>
-  <p>Because exclusion-list processing can take up to five days, configure and verify the list before launch. Confirm the policy is on, inspect the resulting membership, and test the affected reports after the processing window.</p>
+  <p>Because Microsoft says exclusion-list changes can take up to three days to take effect, configure and verify the list before launch. Confirm the policy is on, inspect the resulting membership, and test the affected reports after that window.</p>
 </div>
 <p><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard#create-a-unified-exclusion-list-for-the-copilot-dashboard-agent-dashboard-consumption-dashboard-and-viva-insights-hide-users-from-aggregates">Manage settings for the Microsoft Copilot Dashboard, Agent Dashboard, and Viva Insights web app &mdash; unified exclusion list</a> (Microsoft Learn, updated 13 August 2026).</p>
 
@@ -187,7 +195,7 @@
   <li>If either value is unavailable or the result is material to a residency attestation, obtain tenant-specific confirmation through Microsoft Support; do not infer it from a user mailbox or a generic tenant-region label.</li>
   <li>Have legal/compliance approve the documented workload scope and evidence before making a sovereignty statement.</li>
 </ol>
-<p><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/data-residency">Viva Insights data residency for advanced analysis, managers, and leaders</a> (Microsoft Learn, updated 23 June 2025), including its link to <a href="https://learn.microsoft.com/microsoft-365/enterprise/m365-dr-workload-other#static-data-location-information-for-select-workloads">static data location information for select workloads</a>.</p>
+<p><strong>Source:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/data-residency">Viva Insights data residency for advanced analysis, managers, and leaders</a> (Microsoft Learn, updated 17 September 2026), including its link to <a href="https://learn.microsoft.com/microsoft-365/enterprise/m365-dr-service-other#static-data-location-information-for-select-services">static data location information for select services</a>.</p>
 
 <!-- ═══════════════════════ 3B. PURVIEW DLP ═══════════════════════ -->
 <h1 id="purview-dlp">3B. Microsoft Purview DLP for Copilot Prompts</h1>
@@ -198,8 +206,9 @@
 <table>
   <tr><th scope="col">Condition and exact action</th><th scope="col">Status</th><th scope="col">Documented result</th></tr>
   <tr><td><strong>Content contains &gt; Sensitive information types</strong><br><strong>Prevent Copilot from processing content &gt; Performing Web Searches</strong></td><td>Supported action; the article does not label this action preview</td><td>Blocks external web search as a grounding source. Copilot can still respond using permitted internal Microsoft 365 data.</td></tr>
-  <tr><td><strong>Content contains &gt; Sensitive information types</strong><br><strong>Prevent Copilot from processing content &gt; Processing prompts</strong></td><td><strong>Preview</strong>; rolling out to tenants</td><td>Copilot does not respond, and the prompt is not used for internal or web searches. Check whether rollout has reached the tenant. Applies to Microsoft 365 Copilot, Copilot Chat, Word, Excel, PowerPoint, and prebuilt agents.</td></tr>
-  <tr><td><strong>Content contains &gt; Sensitivity labels</strong><br><strong>Prevent Copilot from processing content</strong></td><td><strong>Generally available</strong></td><td>Selected labeled files and emails are not processed or used in the response summary, although an item can still appear in citations. Calendar invites are unsupported; documented email coverage starts 1 January 2025.</td></tr>
+  <tr><td><strong>Content contains &gt; Sensitive information types</strong><br><strong>Prevent Copilot from processing content &gt; Processing prompts</strong></td><td><strong>Preview</strong>; rolling out to tenants</td><td>Copilot does not respond, and the prompt is not used for internal or web searches. Check whether rollout has reached the tenant. Available in Microsoft 365 Copilot, Copilot Chat, and Copilot in Word, Excel and PowerPoint.</td></tr>
+  <tr><td><strong>Content contains &gt; Sensitivity labels</strong><br><strong>Prevent Copilot from processing content</strong></td><td>Supported; the article does not label this action preview</td><td>Selected labeled files and emails are not processed or used in the response summary, although an item can still appear in citations. Calendar invites are unsupported; documented email coverage starts 1 January 2025.</td></tr>
+  <tr><td><strong>Email is received from &gt; External users</strong><br><strong>Prevent Copilot from processing content</strong></td><td><strong>Preview</strong></td><td>Emails from senders outside the organisation&rsquo;s accepted domains are excluded from grounding, summarisation and citation in Microsoft 365 Copilot and Copilot Chat. Only the sender domain is evaluated, not the email body, and the user&rsquo;s own access to the email is unchanged.</td></tr>
 </table>
 
 <div class="callout warning">
@@ -234,7 +243,7 @@
 </ol>
 
 <h2>Configuration Reference</h2>
-<p>DLP for Copilot is configured in the <strong>Microsoft Purview portal</strong>, not in Viva Insights. <strong>Source:</strong> <a href="https://learn.microsoft.com/purview/dlp-microsoft365-copilot-location-learn-about">Microsoft Purview DLP for Microsoft 365 Copilot and Copilot Chat</a> (Microsoft Learn, updated 10 June 2026).</p>
+<p>DLP for Copilot is configured in the <strong>Microsoft Purview portal</strong>, not in Viva Insights. <strong>Source:</strong> <a href="https://learn.microsoft.com/purview/dlp-microsoft365-copilot-location-learn-about">Microsoft Purview DLP for Microsoft 365 Copilot and Copilot Chat</a> (Microsoft Learn, updated 17 September 2026).</p>
 
 <div class="callout info">
   <div class="callout-title">Complementary to Analytics</div>
@@ -248,7 +257,7 @@
 
 <ul>
   <li><strong>End-user opt-out:</strong> When enabled, this removes the user&rsquo;s behavioral metrics from future row-level outputs. It does not apply to aggregated organization insights, meeting-query results, or row-level Copilot usage data.</li>
-  <li><strong>Data minimisation:</strong> Dashboards and manager/leader insights use protected aggregates; advanced-analysis queries can contain de-identified individual rows. Limit attributes, rows, retention, and query purpose to what the approved analysis requires.</li>
+  <li><strong>Data minimisation:</strong> Dashboards and manager/leader insights use protected aggregates; advanced-analysis queries can contain de-identified individual rows; identified outputs, where an administrator enables Identification, can name employees. Limit attributes, rows, retention, and query purpose to what the approved analysis requires.</li>
   <li><strong>Org data handling:</strong> If you upload organisational data (CSV with attributes like Department, Agency, Location), ensure the upload process follows your organisation&rsquo;s data handling policies. Do not include sensitive personal data in org data attributes.</li>
 </ul>
 
@@ -304,15 +313,15 @@
 <h1 id="supported-environments">6. Supported Environments</h1>
 
 <table>
-  <tr><th scope="col">Feature</th><th scope="col">Worldwide</th><th scope="col">GCC</th></tr>
-  <tr><td>Manage privacy settings</td><td>Yes</td><td>Yes</td></tr>
-  <tr><td>Unified exclusion list for Copilot Dashboard</td><td>Yes</td><td>Yes</td></tr>
-  <tr><td>Custom advanced-analysis queries</td><td>Yes</td><td>Yes</td></tr>
-  <tr><td>Copilot Power BI reports</td><td>Yes</td><td>No</td></tr>
-  <tr><td>Behavioral Power BI reports</td><td>Yes</td><td>Only Business resilience, Impact explorer, Meeting effectiveness, Recurring meeting audit, Ways of working, and Wellbeing &ndash; Balance and flexibility</td></tr>
-  <tr><td>Agent Dashboard / Copilot metrics export</td><td>Public Preview</td><td>No</td></tr>
+  <tr><th scope="col">Feature</th><th scope="col">Worldwide</th><th scope="col">GCC Moderate</th><th scope="col">GCC High</th></tr>
+  <tr><td>Manage privacy settings</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+  <tr><td>Unified exclusion list for Copilot Dashboard</td><td>Yes (Manage settings article)</td><td>Not listed in the matrix</td><td>Not listed in the matrix; the VFAM article says its access controls are unavailable in GCC High and DoD</td></tr>
+  <tr><td>Custom advanced-analysis queries</td><td>Yes</td><td>Yes (person, meeting and cross-collaboration queries)</td><td>Yes (same queries); the Consumption query is Worldwide only</td></tr>
+  <tr><td>Copilot Power BI reports</td><td>Yes (latest usage snapshot and headlines reports are Public Preview)</td><td>Copilot business impact report only; the other Copilot templates are unavailable</td><td>Copilot business impact report (partial); the other Copilot templates are unavailable</td></tr>
+  <tr><td>Behavioral Power BI reports</td><td>Yes</td><td>All except the Skills landscape report</td><td>Supported: Business resilience, Impact explorer, Meeting effectiveness, Recurring meeting audit, Ways of working, and Wellbeing &ndash; Balance and flexibility. Partial: Growth, inclusion and engagement, Hybrid workforce experience, Manager effectiveness, and Onboarding and development. Unavailable: Change management, Learning culture and Skills landscape</td></tr>
+  <tr><td>Agent Dashboard / Copilot metrics export</td><td>Copilot Agent view and exports: Public Preview. Agent 365 view: Yes</td><td>No</td><td>No</td></tr>
 </table>
-<p>The reviewed feature matrix covers Worldwide and GCC. Do not infer GCC High or DoD feature parity from plan-level support; validate the exact cloud, Message Center, and tenant UI before committing to a control or report. <strong>Source:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported Microsoft 365 environments for Viva Insights features</a> (Microsoft Learn, updated 30 June 2026).</p>
+<p>The current Microsoft matrix covers Worldwide, GCC Moderate and GCC High. DoD is not covered: do not infer DoD feature parity from plan-level support, and validate the exact cloud, Message Center, and tenant UI before committing to a control or report. <strong>Source:</strong> <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported Microsoft 365 environments for Viva Insights features</a> (Microsoft Learn, updated 30 September 2026).</p>
 
 <!-- ═══════════════════════ 7. WHAT TO READ NEXT ═══════════════════════ -->
 <h1 id="next">7. What to Read Next</h1>
@@ -328,7 +337,7 @@
 <!-- ═══════════════════════ DISCLAIMER ═══════════════════════ -->
 <hr>
 <p class="u-772845a273">
-  <strong>Disclaimer:</strong> This document is provided for informational purposes only and was last validated on 19 August 2026. Microsoft may change features, interfaces, previews, and availability without notice. Verify Microsoft Learn, Message Center, Service Health, and the live tenant UI before implementation. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities, compliance, or licensing requirements.
+  <strong>Disclaimer:</strong> This document is provided for informational purposes only and was last validated on 2 October 2026. Microsoft may change features, interfaces, previews, and availability without notice. Verify Microsoft Learn, Message Center, Service Health, and the live tenant UI before implementation. This document is not official Microsoft documentation and should not be treated as a definitive source for product capabilities, compliance, or licensing requirements.
 </p>
 
 <!-- Back to Top -->

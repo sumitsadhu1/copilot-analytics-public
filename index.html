@@ -162,7 +162,7 @@
     border-right: 1px solid var(--border); padding: 10px 12px 24px;
     overflow-y: auto; overflow-x: hidden; transition: width .2s ease; z-index: 40;
   }
-  .nav-label { padding: 14px 12px 6px; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); font-weight: 700; white-space: nowrap; }
+  .nav-label { padding: 14px 12px 6px; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-secondary); font-weight: 700; white-space: nowrap; }
   .nav-item {
     display: flex; align-items: center; gap: 12px; padding: 9px 12px;
     border-radius: 8px; color: var(--text-secondary); text-decoration: none;
@@ -258,11 +258,11 @@
   .card-info:hover { background: var(--accent-bg); color: var(--accent); }
   .chip { font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 3px 9px; border-radius: 6px; width: fit-content; margin-bottom: 10px; }
   .c-setup { background: rgba(66,42,251,0.10); color: #422AFB; }
-  .c-arch { background: rgba(117,81,255,0.12); color: #7551FF; }
-  .c-operate { background: rgba(1,181,116,0.12); color: #01A76C; }
-  .c-ref { background: rgba(57,101,255,0.12); color: #3965FF; }
+  .c-arch { background: rgba(117,81,255,0.12); color: #5E3BEF; }
+  .c-operate { background: rgba(1,181,116,0.12); color: #087A55; }
+  .c-ref { background: rgba(57,101,255,0.12); color: #2B55E0; }
   .c-strategy { background: rgba(255,181,71,0.18); color: #B45309; }
-  .c-tools { background: rgba(117,81,255,0.12); color: #7551FF; }
+  .c-tools { background: rgba(117,81,255,0.12); color: #5E3BEF; }
   .dash-card h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 7px; letter-spacing: -0.01em; line-height: 1.35; }
   .dash-card p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.55; flex: 1 1 auto; margin-bottom: 16px; }
   .dash-card-meta { font-size: 0.74rem; color: var(--muted); margin-bottom: 12px; }
@@ -287,9 +287,10 @@
     position: fixed; top: 0; right: 0; height: 100vh; width: 440px; max-width: 92vw;
     background: #fff; box-shadow: var(--depth-64); z-index: 201;
     display: flex; flex-direction: column;
-    transform: translateX(100%); transition: transform .3s cubic-bezier(.16,.8,.24,1);
+    visibility: hidden;
+    transform: translateX(100%); transition: transform .3s cubic-bezier(.16,.8,.24,1), visibility 0s linear .3s;
   }
-  .flyout.open { transform: translateX(0); }
+  .flyout.open { transform: translateX(0); visibility: visible; transition: transform .3s cubic-bezier(.16,.8,.24,1), visibility 0s; }
   .flyout:focus { outline: none; }
   .flyout-header { display: flex; align-items: flex-start; gap: 14px; padding: 22px 24px 18px; border-bottom: 1px solid var(--border); }
   .flyout-header .tile { flex: 0 0 44px; width: 44px; height: 44px; }
@@ -310,9 +311,9 @@
   @media (max-width: 860px) {
     .nav-rail {
       position: fixed; top: var(--app-bar-h); bottom: 0; left: 0; width: var(--nav-w);
-      transform: translateX(-100%); box-shadow: var(--depth-16); transition: transform .24s ease;
+      transform: translateX(-100%); visibility: hidden; box-shadow: var(--depth-16); transition: transform .24s ease, visibility 0s linear .24s;
     }
-    body.nav-open .nav-rail { transform: translateX(0); }
+    body.nav-open .nav-rail { transform: translateX(0); visibility: visible; transition: transform .24s ease, visibility 0s; }
     body.nav-collapsed .nav-rail { width: var(--nav-w); padding: 10px 12px 24px; }
     body.nav-collapsed .nav-item { justify-content: flex-start; gap: 12px; }
     body.nav-collapsed .nav-item .nav-txt { display: inline; }
@@ -378,7 +379,7 @@
             aria-label="Publication status and provenance" title="Publication status">i</button>
     <div class="provenance-panel" id="provenance-panel" popover role="note" aria-label="Publication status">
       <p class="provenance-title">Independent publication</p>
-      <p>Last validated 19 August 2026</p>
+      <p>Last validated 2 October 2026</p>
       <p>Owner: Sumit Sadhu</p>
       <p class="provenance-links">
         <a href="4-reference/change-history.html">Change history</a>
@@ -448,8 +449,8 @@
             <div class="dash-card-actions"><a class="btn btn-primary btn-sm" href="decide/architecture.html">Open guide <svg class="ic"><use href="#i-arrow"/></svg></a></div>
           </article>
 
-          <article class="dash-card" data-search="upload refresh HR org data CSV onboarding methods" data-eyebrow="Setup" data-tile="t-setup" data-icon="i-doc" data-title="Upload or refresh HR data" data-desc="Read the Data Onboarding Guide for all six upload methods and verification steps." data-href="2-setup/data-onboarding.html" data-roles="IT Admin,Analyst" data-persona="admin analyst">
-            <div class="dash-card-top"><span class="tile t-setup"><svg class="ic"><use href="#i-doc"/></svg></span><button class="card-info" aria-label="View details"><svg class="ic"><use href="#i-info"/></svg></button></div>
+          <article class="dash-card" data-search="upload refresh HR org data CSV onboarding methods" data-eyebrow="Setup" data-tile="t-setup" data-icon="i-book" data-title="Upload or refresh HR data" data-desc="Read the Data Onboarding Guide for all six upload methods and verification steps." data-href="2-setup/data-onboarding.html" data-roles="IT Admin,Analyst" data-persona="admin analyst">
+            <div class="dash-card-top"><span class="tile t-setup"><svg class="ic"><use href="#i-book"/></svg></span><button class="card-info" aria-label="View details"><svg class="ic"><use href="#i-info"/></svg></button></div>
             <span class="chip c-setup">Setup</span>
             <h3>Upload or refresh HR data</h3>
             <p>All six upload methods and their verification steps.</p>
@@ -488,12 +489,20 @@
             <div class="dash-card-actions"><a class="btn btn-primary btn-sm" href="3-operate/analyst-playbook.html">Open guide <svg class="ic"><use href="#i-arrow"/></svg></a></div>
           </article>
 
-          <article class="dash-card" data-search="consumption dashboard Copilot Credits GitHub AI Credits Cowork Work IQ spending policy usage intensity cost FinOps" data-eyebrow="Operate" data-tile="t-operate" data-icon="i-chart" data-title="Monitor Copilot Credit consumption" data-desc="Use the Consumption Dashboard Operations guide for role scope, current Cowork and Work IQ coverage, usage intensity, spending-policy limits, export, and billing reconciliation." data-href="3-operate/consumption-dashboard.html" data-roles="FinOps,Analyst,Manager,Global Admin" data-persona="admin leader analyst">
+          <article class="dash-card" data-search="consumption dashboard Copilot Credits GitHub AI Credits Cowork Work IQ spending policy usage intensity cost FinOps" data-eyebrow="Operate" data-tile="t-operate" data-icon="i-chart" data-title="Monitor Copilot Credit consumption" data-desc="Use the Consumption Dashboard Operations guide for role scope, current Cowork and Work IQ coverage, the GitHub page (preview), Identification, usage intensity, spending-policy limits, export, and billing reconciliation." data-href="3-operate/consumption-dashboard.html" data-roles="FinOps,Analyst,Manager,Global Admin" data-persona="admin leader analyst">
             <div class="dash-card-top"><span class="tile t-operate"><svg class="ic"><use href="#i-chart"/></svg></span><button class="card-info" aria-label="View details"><svg class="ic"><use href="#i-info"/></svg></button></div>
             <span class="chip c-operate">Operate</span>
             <h3>Monitor Copilot Credit consumption</h3>
             <p>Track covered services, usage concentration, policy limits, exports, and billing reconciliation.</p>
             <div class="dash-card-actions"><a class="btn btn-primary btn-sm" href="3-operate/consumption-dashboard.html">Open guide <svg class="ic"><use href="#i-arrow"/></svg></a></div>
+          </article>
+
+          <article class="dash-card" data-search="cowork dashboard Copilot Cowork admin center Cowork usage Value tab assisted hours Frontier Consumption Dashboard spending policy grace period credits tasks sessions export reconciliation" data-eyebrow="Operate" data-tile="t-operate" data-icon="i-chart" data-title="Monitor Cowork usage and assisted hours" data-desc="Use the Cowork Dashboard Operations guide for admin center and Consumption Dashboard roles, prerequisites, the Frontier Value tab, assisted-hours caveats, export, and reconciliation." data-href="3-operate/cowork-dashboard.html" data-roles="IT Admin,FinOps,Analyst,Manager,Global Admin" data-persona="admin leader analyst">
+            <div class="dash-card-top"><span class="tile t-operate"><svg class="ic"><use href="#i-chart"/></svg></span><button class="card-info" aria-label="View details"><svg class="ic"><use href="#i-info"/></svg></button></div>
+            <span class="chip c-operate">Operate</span>
+            <h3>Monitor Cowork usage and assisted hours</h3>
+            <p>Track Cowork adoption, tasks, assisted hours, credits, and reconciliation across the admin center and Viva Insights.</p>
+            <div class="dash-card-actions"><a class="btn btn-primary btn-sm" href="3-operate/cowork-dashboard.html">Open guide <svg class="ic"><use href="#i-arrow"/></svg></a></div>
           </article>
 
           <article class="dash-card" data-search="Copilot Chat reporting unlicensed admin report licensed users export Microsoft Graph API Reports.Read.All Purview audit Management Activity D7 D30 D90 D180 ALL programmatic" data-eyebrow="Operate" data-tile="t-operate" data-icon="i-chart" data-title="Choose an export or reporting API" data-desc="Compare Dashboard export, Advanced queries, Microsoft Graph v1.0, the unlicensed Copilot Chat admin report, and Purview audit sources." data-href="3-operate/analyst-playbook.html#programmatic-reporting" data-roles="Analyst,Data Engineer,Compliance" data-persona="analyst governance admin">
@@ -504,11 +513,11 @@
             <div class="dash-card-actions"><a class="btn btn-primary btn-sm" href="3-operate/analyst-playbook.html#programmatic-reporting">Compare options <svg class="ic"><use href="#i-arrow"/></svg></a></div>
           </article>
 
-          <article class="dash-card" data-search="tools utilities org data validation prompt Entra hierarchy PowerShell download reporting options Consumption Chat export API" data-eyebrow="Tools" data-tile="t-tools" data-icon="i-tools" data-title="Open tools and reporting options" data-desc="Find the org-data validation prompt, Entra hierarchy PowerShell download and README, Consumption Dashboard, Chat reporting, exports, APIs, and audit options." data-href="tools/index.html" data-roles="IT Admin,Analyst,Data Engineer,FinOps" data-persona="admin analyst governance">
+          <article class="dash-card" data-search="tools utilities org data validation prompt Entra hierarchy PowerShell download reporting options Consumption Chat export API" data-eyebrow="Tools" data-tile="t-tools" data-icon="i-tools" data-title="Open tools and reporting options" data-desc="Find the org-data validation prompt, Entra hierarchy PowerShell download and README, Consumption Dashboard, Chat reporting, exports, APIs, audit options, and links to Microsoft's open-source Power BI templates (outside this project's evidence process)." data-href="tools/index.html" data-roles="IT Admin,Analyst,Data Engineer,FinOps" data-persona="admin analyst governance">
             <div class="dash-card-top"><span class="tile t-tools"><svg class="ic"><use href="#i-tools"/></svg></span><button class="card-info" aria-label="View details"><svg class="ic"><use href="#i-info"/></svg></button></div>
             <span class="chip c-tools">Tools</span>
             <h3>Open tools and reporting options</h3>
-            <p>Reusable data utilities and a current reporting-path decision guide.</p>
+            <p>Reusable data utilities, a current reporting-path decision guide, and pointers to Microsoft's open-source Power BI templates (outside this project's evidence process).</p>
             <div class="dash-card-actions"><a class="btn btn-primary btn-sm" href="tools/index.html">Open tools <svg class="ic"><use href="#i-arrow"/></svg></a></div>
           </article>
 
@@ -528,8 +537,8 @@
       </div>
 
       <footer class="footer">
-        <p><strong>Disclaimer:</strong> These guides are procedural references and may not reflect the latest product changes. Always refer to the official <a href="https://learn.microsoft.com/viva/insights/">Viva Insights</a> and <a href="https://learn.microsoft.com/copilot/microsoft-365/">Microsoft 365 Copilot</a> documentation on Microsoft Learn.</p>
-        <p class="u-4b40d8a315">Independent Copilot Analytics guidance &middot; Last validated 19 August 2026 &middot; <a href="4-reference/accessibility.html">Accessibility</a></p>
+        <p><strong>Disclaimer:</strong> These guides are procedural references and may not reflect the latest product changes. Always refer to the official <a href="https://learn.microsoft.com/viva/insights/introduction">Viva Insights</a> and <a href="https://learn.microsoft.com/microsoft-365/copilot/">Microsoft 365 Copilot</a> documentation on Microsoft Learn.</p>
+        <p class="u-4b40d8a315">Independent Copilot Analytics guidance &middot; Last validated 2 October 2026 &middot; <a href="4-reference/accessibility.html">Accessibility</a></p>
       </footer>
     </div>
   </main>

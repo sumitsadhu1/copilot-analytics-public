@@ -29,6 +29,7 @@ DESCRIPTIONS = {
     "index.html": "Independent, role-based implementation guidance for Microsoft 365 Copilot Analytics, Viva Insights reporting, privacy, and operations.",
     "browse.html": "Browse Microsoft 365 Copilot Analytics guides by role, task, and reporting capability.",
     "3-operate/consumption-dashboard.html": "Operate the Consumption Dashboard for Copilot Credits, covered services, usage concentration, and spending-policy limits.",
+    "3-operate/cowork-dashboard.html": "Operate Copilot Cowork reporting in the Microsoft 365 admin center and Viva Insights: roles, prerequisites, assisted hours, export, and reconciliation.",
     "tools/index.html": "Choose Copilot Analytics reporting paths and open organizational-data and Entra hierarchy utilities.",
     "4-reference/change-history.html": "Change history, evidence snapshot, ownership, and review cadence for the Copilot Analytics documentation hub.",
     "404.html": "The requested Copilot Analytics documentation page could not be found.",
@@ -59,7 +60,7 @@ def upsert_head(text, relative):
     canonical = SITE + canonical_relative
     description = DESCRIPTIONS.get(
         relative,
-        f"Independent Microsoft 365 Copilot Analytics guidance: {plain_title(text)}. Last validated 16 July 2026.",
+        f"Independent Microsoft 365 Copilot Analytics guidance: {plain_title(text)}.",
     )
     additions = (
         '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n'
@@ -86,6 +87,8 @@ def main():
     for path in public_pages():
         relative = path.relative_to(REPO).as_posix()
         original = path.read_text(encoding="utf-8")
+        if re.search(r"http-equiv\s*=\s*[\"']?\s*refresh", original, re.I):
+            continue
         updated = add_table_scopes(upsert_head(original, relative))
         if updated != original:
             path.write_text(updated, encoding="utf-8")

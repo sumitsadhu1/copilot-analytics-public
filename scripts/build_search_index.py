@@ -28,6 +28,7 @@ FILES = [
     ("3-operate/billing-operations.html", "Billing Operations"),
     ("3-operate/collaboration-analysis.html", "Collaboration Analysis"),
     ("3-operate/consumption-dashboard.html", "Consumption Dashboard Operations"),
+    ("3-operate/cowork-dashboard.html", "Cowork Dashboard Operations"),
     ("4-reference/troubleshooting.html", "Troubleshooting Guide"),
     ("4-reference/scenarios/index.html", "Troubleshooting Scenarios"),
     ("4-reference/scenarios/upload-org-data-missing.html", "Scenario 01: Upload Org Data Missing"),

@@ -1,15 +1,15 @@
 %% Multi-Agency Isolation — where "Enable Partitions" vs "Create partition" fit
 %% Source diagram. Regenerate the SVG with:
-%%   printf '{"theme":"default"}' > /tmp/mmd-config.json
-%%   printf '{"executablePath":"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome","args":["--no-sandbox"]}' > /tmp/puppeteer-config.json
+%% Set CONFIG_DIR to the session's files/scratch-debugger directory first.
+%%   printf '{"theme":"default"}' > "$CONFIG_DIR/mmd-config.json"
+%%   printf '{"executablePath":"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome","args":["--no-sandbox"],"userDataDir":"scripts/fact-check/.self-test-phase4a/chrome-profile"}' > "$CONFIG_DIR/puppeteer-config.json"
 %%   PUPPETEER_SKIP_DOWNLOAD=1 npx -y @mermaid-js/mermaid-cli \
 %%     -i assets/images/partition-isolation-flow.mmd \
 %%     -o assets/images/partition-isolation-flow.svg \
-%%     -c /tmp/mmd-config.json -p /tmp/puppeteer-config.json -b transparent
+%%     -c "$CONFIG_DIR/mmd-config.json" -p "$CONFIG_DIR/puppeteer-config.json" -b transparent
 %% Then regenerate PDFs: ./scripts/generate_all_pdfs.sh
-%% The two /tmp configs do not persist across reboots — recreate them as above.
 flowchart TD
-    subgraph P1["Phase 1 · Lockdown — Global Admin"]
+    subgraph P1["Phase 1 · Lockdown — AI Admin or Global Admin"]
         direction TB
         A1["VFAM-restrict the Viva Insights web app ①<br/>one control — removes Dashboard, Reports,<br/>Agent Dashboard and analyst tools together ②"]
         A1b["Set the separate Agent Dashboard<br/>VFAM control explicitly ①"]
@@ -20,7 +20,7 @@ flowchart TD
     end
     subgraph P3["Phase 3 · Partitions — Insights Admin"]
         direction TB
-        B1{{"STEP A — Enable Partitions ④<br/>ONE-TIME tenant switch · irreversible"}}
+        B1{{"STEP A — Enable Partitions ④<br/>ONE-TIME tenant switch · undo only via Microsoft Support"}}
         B2["STEP B — New partition: Agency A ⑤<br/>filter Agency=A / Domain=a.gov.au"]
         B3["STEP B — New partition: Agency B ⑤<br/>filter Agency=B / Domain=b.gov.au"]
         B4["Global partition (auto-created)<br/>Central IT analysts ONLY"]
@@ -31,7 +31,7 @@ flowchart TD
         B1 --> B4
     end
     subgraph P4["Phase 4 · Reporting — Per-Agency Analyst"]
-        C1["Analyst signs in — sees ONLY<br/>their own partition in the switcher"]
+        C1["Analyst signs in — sees only assigned<br/>partitions (remove pre-existing global access first)"]
         C2["Run Copilot adoption query<br/>auto-scoped to the partition ⑦"]
         C3["Download PBI template +<br/>partition ID + query ID ⑦"]
         C4["Publish .pbix to the agency's<br/>Power BI workspace ⑧"]
@@ -45,16 +45,16 @@ flowchart TD
     B6 --> C1
     C1 --> C2 --> C3 --> C4 --> D1 --> D2
 
-    click A1 "https://learn.microsoft.com/en-us/viva/feature-access-management" "Viva feature access management (VFAM)"
+    click A1 "https://learn.microsoft.com/viva/feature-access-management" "Viva feature access management (VFAM)"
     click A1b "https://learn.microsoft.com/viva/insights/advanced/admin/manage-settings-copilot-dashboard" "Enable or disable the Agent Dashboard"
-    click A2 "https://learn.microsoft.com/en-us/viva/organizational-data" "Upload organizational data"
+    click A2 "https://learn.microsoft.com/microsoft-365-apps/org-data-service/organizational-data" "Upload organizational data"
     click B1 "https://learn.microsoft.com/viva/insights/advanced/setup-maint/privacy-settings" "Turn on partitions (Privacy settings)"
     click B2 "https://learn.microsoft.com/viva/insights/advanced/admin/partitions#how-to-create-a-partition-and-assign-analysts-access" "Create a partition and assign analysts"
     click B3 "https://learn.microsoft.com/viva/insights/advanced/admin/partitions#how-to-create-a-partition-and-assign-analysts-access" "Create a partition and assign analysts"
     click B5 "https://learn.microsoft.com/viva/insights/advanced/setup-maint/assign-user-roles" "Assign Insights Analyst role"
     click B6 "https://learn.microsoft.com/viva/insights/advanced/setup-maint/assign-user-roles" "Assign Insights Analyst role"
-    click C2 "https://learn.microsoft.com/en-us/viva/insights/advanced/analyst/templates/microsoft-365-copilot-adoption" "Microsoft 365 Copilot adoption report"
-    click C3 "https://learn.microsoft.com/en-us/viva/insights/advanced/analyst/templates/microsoft-365-copilot-adoption" "Microsoft 365 Copilot adoption report"
+    click C2 "https://learn.microsoft.com/viva/insights/advanced/analyst/templates/microsoft-365-copilot-adoption" "Microsoft 365 Copilot adoption report"
+    click C3 "https://learn.microsoft.com/viva/insights/advanced/analyst/templates/microsoft-365-copilot-adoption" "Microsoft 365 Copilot adoption report"
     click C4 "https://learn.microsoft.com/power-bi/collaborate-share/service-create-distribute-apps" "Publish and distribute a Power BI app"
     click D1 "https://learn.microsoft.com/power-bi/collaborate-share/service-roles-new-workspaces" "Roles in Power BI workspaces"
     click D2 "https://learn.microsoft.com/fabric/security/service-admin-row-level-security" "Row-level security (RLS) in Power BI"

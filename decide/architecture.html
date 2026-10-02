@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Multi-Agency Architecture Decision. Last validated 19 August 2026.">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Multi-Agency Architecture Decision.">
 <link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/decide/architecture.html">
 <title>Multi-Agency Architecture Decision — Copilot Analytics</title>
 <link rel="stylesheet" href="../assets/docs-style.css">
@@ -197,14 +197,14 @@
 
 <div class="callout warning u-8869d25c4c">
   <div class="callout-title">Supported Environment and Licensing Gate</div>
-  <p>Check the exact cloud, assigned service plans, tenant UI, Message Center, and every required surface before choosing a path. Microsoft&rsquo;s current matrix says GCC does not support Agent Dashboard, Copilot metrics export, or Copilot Power BI reports; the Agent Dashboard is preview and unavailable in national/regional clouds. For advanced access, Microsoft Learn describes the 50-plan threshold differently: the environment article explicitly gives <strong>30 Copilot + 20 Viva Insights</strong> as 50 qualifying Viva Insights service plans, while the Dashboard article describes 50 Copilot or 50 Viva Insights. Do not claim mixed licences fail. For Agent Dashboard, use the conservative feature-specific prerequisite of 50 Microsoft Copilot licences plus agent activity and validate in the tenant. Escalate a documented mismatch to Microsoft Support.</p>
+  <p>Check the exact cloud, assigned service plans, tenant UI, Message Center, and every required surface before choosing a path. Microsoft&rsquo;s current <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported environments</a> matrix lists availability feature by feature for GCC Moderate (GCC-M) and GCC High (GCC-H). The Agent Dashboard, Copilot Dashboard metric export, the Consumption Dashboard and the Copilot Dashboard Readiness page are not available in either. Delegate access to dashboards is not available in GCC-M and is partial in GCC-H. Of the Copilot Power BI templates, only the Copilot business impact report is supported (GCC-M: yes; GCC-H: partial). Check the matrix for each feature before planning a government-cloud rollout. Microsoft&rsquo;s <a href="https://learn.microsoft.com/viva/feature-access-management">feature access management</a> article states that its access controls aren&rsquo;t available in GCC High or DoD. For GCC, check the documentation for the specific app. The Agent Dashboard is preview and unavailable in national/regional clouds. For advanced access, Microsoft Learn describes the 50-plan threshold differently: the environment article explicitly gives <strong>30 Copilot + 20 Viva Insights</strong> as 50 qualifying Viva Insights service plans, while the Dashboard article describes 50 Copilot or 50 Viva Insights. Do not claim mixed licences fail. For Agent Dashboard, use the conservative feature-specific prerequisite of 50 Microsoft Copilot licences plus agent activity and validate in the tenant. Escalate a documented mismatch to Microsoft Support.</p>
 </div>
 
 <table class="u-8b7a4f3b71">
   <tr><th scope="col">Risk checkpoint</th><th scope="col">Decision implication</th></tr>
   <tr><td>Shared executive or cross-agency manager hierarchy</td><td>Their manager scope can span agencies. Restricted Reporting requires an explicit exception decision or removal from agency-facing surfaces.</td></tr>
   <tr><td>Global Administrator, globally assigned user, global-partition analyst, or multi-partition analyst</td><td>Tenant-wide or multi-agency visibility can remain by design. Record least-privilege justification and conflict-of-interest review.</td></tr>
-  <tr><td>Delegate, Agent Dashboard, or metrics export</td><td>Partitions do not scope these surfaces. Apply and test each separate access control.</td></tr>
+  <tr><td>Delegate, Agent Dashboard, Consumption Dashboard (including identified outputs), or metrics export</td><td>Partitions do not scope these surfaces. Apply and test each separate access control, including the separate Identification policy for named-employee outputs.</td></tr>
   <tr><td>Power BI viewer, Member/Contributor, export, Build, Analyze in Excel, or resharing</td><td>Power BI permissions are independent of Viva partitions. Design and negatively test the delivery boundary separately.</td></tr>
 </table>
 
@@ -276,7 +276,7 @@
 
 <div class="callout info u-e1626e40ab">
   <div class="callout-title">Dated Microsoft Source Basis</div>
-  <p>Validated 19 August 2026 against: <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (last updated 18 August 2026); <a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">Connect to the Agent Dashboard</a> (30 July 2026); <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/environment-requirements">Environment requirements for Viva Insights</a> (12 May 2026); <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported Microsoft 365 environments for Viva Insights features</a> (30 June 2026); <a href="https://learn.microsoft.com/viva/insights/advanced/admin/partitions">Partitions in Viva Insights</a> (23 June 2025); and <a href="https://learn.microsoft.com/viva/organizational-data">Use your organizational data in Microsoft 365 and Microsoft Viva</a> (2 December 2025). Recheck Learn, Message Center, tenant UI, and Service Health before implementation.</p>
+  <p>Validated 2 October 2026 against: <a href="https://learn.microsoft.com/viva/insights/org-team-insights/copilot-dashboard">Connect to the Microsoft Copilot Dashboard for Microsoft 365 customers</a> (last updated 29 September 2026); <a href="https://learn.microsoft.com/viva/insights/org-team-insights/agent-dashboard">Connect to the Agent Dashboard</a> (2 September 2026); <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/environment-requirements">Environment requirements for Viva Insights</a> (12 May 2026); <a href="https://learn.microsoft.com/viva/insights/advanced/setup-maint/supported-environments">Supported Microsoft 365 environments for Viva Insights features</a> (30 September 2026); <a href="https://learn.microsoft.com/viva/insights/advanced/admin/partitions">Partitions in Viva Insights</a> (14 September 2026); and <a href="https://learn.microsoft.com/microsoft-365-apps/org-data-service/organizational-data">Use your organizational data in Microsoft 365 and Microsoft Viva</a> (1 September 2026). Recheck Learn, Message Center, tenant UI, and Service Health before implementation.</p>
 </div>
 
 <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">&#8593;</button>
@@ -368,7 +368,7 @@ function showResult(arch, needsCustomAttrs) {
       '<div class="result-arch">Default Priority</div>' +
       '<div class="result-detail">' +
         '<strong>Setup effort:</strong> 2\u20134 hours<br>' +
-        '<strong>How it works:</strong> Each agency CEO sees their team\u2019s data by default via the \u201CYour group\u201D scope on the Copilot Dashboard. Cross-agency visibility is possible but acceptable.<br>' +
+        '<strong>How it works:</strong> Each agency CEO can see their team\u2019s data through the \u201CYour group\u201D scope on the Copilot Dashboard (Microsoft does not state which scope opens by default; confirm it in the tenant). Cross-agency visibility is possible but acceptable.<br>' +
         '<strong>Org data:</strong> Optional enrichment \u2014 not required for the architecture to function.' +
       '</div>' +
       '<div class="result-links">' +
@@ -377,7 +377,7 @@ function showResult(arch, needsCustomAttrs) {
         '<a href="../2-setup/data-onboarding.html" class="secondary">Data Onboarding (optional)</a>' +
         '<a href="../3-operate/analyst-playbook.html" class="secondary">Analyst Playbook (optional — for Power BI reports)</a>' +
       '</div>' +
-      '<ul class="step-notes"><li><strong>Multi-Agency Setup:</strong> enable agency-default scoping (AutoCxO, delegation) so each leader sees their team first.</li><li><strong>Data Onboarding:</strong> upload org data to enrich filters (optional).</li><li><strong>Analyst Playbook:</strong> only if you want Power BI reports beyond the dashboard.</li></ul>' +
+      '<ul class="step-notes"><li><strong>Multi-Agency Setup:</strong> enable agency-default scoping (AutoCxO, delegation) so each leader can open their own team view (confirm the landing scope in the tenant).</li><li><strong>Data Onboarding:</strong> upload org data to enrich filters (optional).</li><li><strong>Analyst Playbook:</strong> only if you want Power BI reports beyond the dashboard.</li></ul>' +
       '<p class="u-33c959aad5"><strong>Skip:</strong> You do not need the Restricted Reporting guide or partition configuration unless an analyst query workspace needs agency scoping.</p>' +
       '<details class="why-detail"><summary>Why this recommendation?</summary>' +
         '<p>You indicated cross-agency data visibility is acceptable. Default Priority uses the native Entra ID manager hierarchy and AutoCxO identification to scope each agency CEO\u2019s dashboard view. No partitions, no Viva feature access management (VFAM) lockdown, no monthly CSV re-uploads for partitioning.</p>' +
@@ -410,7 +410,7 @@ function showResult(arch, needsCustomAttrs) {
   } else if (arch === 'pathB') {
     var csvNote = needsCustomAttrs
       ? '<strong>Org data:</strong> CSV required for custom attributes (Job Function, Location, etc.) but <strong>not</strong> for partitioning \u2014 that uses the system Domain attribute.'
-      : '<strong>Org data:</strong> Not required. Partitioning uses the system-generated Domain attribute from Entra ID.';
+      : '<strong>Org data:</strong> Not required. Partitioning uses the system-generated Domain attribute (derived from each user\u2019s primary SMTP address).';
     html = '<div class="result-card">' +
       '<h2>Recommended solution</h2>' +
       '<div class="result-arch">Restricted Reporting \u2014 Path B (Domain attribute, ' + (needsCustomAttrs ? 'organizational data for enrichment' : 'no CSV for partition filter') + ')</div>' +

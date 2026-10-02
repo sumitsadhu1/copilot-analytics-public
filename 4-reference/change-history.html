@@ -31,7 +31,7 @@
   <tr><td>Publication</td><td>Independent implementation guidance; not official Microsoft documentation</td></tr>
   <tr><td>Content owner</td><td>Sumit Sadhu</td></tr>
   <tr><td>Repository</td><td><a href="https://github.com/sumitsadhu1/copilot-analytics-public">github.com/sumitsadhu1/copilot-analytics-public</a></td></tr>
-  <tr><td>Current release</td><td>5.1 — 19 August 2026</td></tr>
+  <tr><td>Current release</td><td>5.2 — 2 October 2026</td></tr>
   <tr><td>Next scheduled full review</td><td>16 October 2026; monthly source-drift checks continue between full reviews</td></tr>
   <tr><td>Per-guide validation</td><td>Each guide carries its own <strong>Last validated</strong> date in its document-property table. See the <a href="#guide-ledger">Guide Update Ledger</a> below.</td></tr>
   <tr><td>Canonical format</td><td>HTML. PDFs are generated snapshots and must carry the same release date.</td></tr>
@@ -50,6 +50,33 @@
 <h1 id="release-history">Release History</h1>
 <table>
   <tr><th scope="col">Release</th><th scope="col">Date</th><th scope="col">Material changes</th><th scope="col">Evidence and validation</th></tr>
+  <tr>
+    <td><strong>5.2</strong></td>
+    <td>2 October 2026</td>
+    <td>Full Microsoft Learn drift review and a new Cowork guide.
+      <ul>
+        <li><strong>New guide &mdash; <a href="../3-operate/cowork-dashboard.html">Cowork Dashboard Operations</a>:</strong> the Microsoft&nbsp;365 admin center Copilot &gt; Cowork dashboard (Overview, Usage, Value in Frontier preview, Settings) and the Consumption Dashboard Cowork page; spending-policy access, assisted-hours caveats, export, reconciliation, and the Microsoft articles that disagree. Linked from the hub, Browse, Tools, the Consumption, Dashboard and Billing guides, the glossary, FAQ and troubleshooting.</li>
+        <li><strong>Government clouds:</strong> replaced the single GCC sentence with Microsoft&rsquo;s per-feature Supported environments matrix (GCC Moderate and GCC High), which now lists Copilot Power BI templates individually.</li>
+        <li><strong>Delegation:</strong> documented the three delegate scopes (Your group, Your company, Combined access), the automatic move of existing company-scope delegates to Combined access, and that delegates cannot delegate. The two Microsoft articles that disagree on delegating the Consumption Dashboard are both cited; neither is preferred.</li>
+        <li><strong>Privacy:</strong> qualified every &ldquo;de-identified&rdquo; and &ldquo;aggregated only&rdquo; statement for Identification and identifiable export, which are governed by a dedicated feature access management policy. Microsoft&rsquo;s articles disagree on whether Agent Dashboard identifiable export is private or public preview; both are cited. The admin center usage-reports concealment setting is now noted for the Cowork usage details table.</li>
+        <li><strong>Access controls:</strong> dashboard auto-enablement is tenant-level only, so the Restricted Reporting playbook now matches the Setup guide; documented the Viva Insights web app control and that feature access management controls are unavailable in GCC High and DoD.</li>
+        <li><strong>Behavioural insights:</strong> off by default for new customers and not required for the Copilot Dashboard; setup and troubleshooting steps that required it were corrected.</li>
+        <li><strong>Billing and analysis:</strong> Copilot Studio enforcement at 125% of prepaid capacity; classic answers billed at one Copilot Credit unless the user holds a Microsoft&nbsp;365 Copilot licence; the &ldquo;Is Active&rdquo; filter cannot be used with Copilot metrics; corrected the Business Impact template row. Cost management and Consumption dashboards are described as operational views, not invoices, and Microsoft&rsquo;s inconsistent License Administrator permissions are shown rather than resolved.</li>
+        <li><strong>Organizational data:</strong> adopted the Microsoft&nbsp;365 Organizational Data Service name and moved Learn URLs; an unreviewed import is cancelled after 48 hours rather than approved; corrected the multi-agency CSV template headers; surfaced the 25&nbsp;MB versus 2&nbsp;GB upload-limit disagreement.</li>
+        <li><strong>Multi-agency patterns:</strong> the global partition is created automatically and analysts assigned before partitions keep global access; corrected Default Priority statements about trendlines, group comparison and Agent Dashboard scope; marked the senior-leader landing scope as not stated by Microsoft. Recommendations are unchanged.</li>
+        <li><strong>Content hygiene:</strong> removed a reference to a private project and engagement-specific framing; aligned playbook naming with the Restricted Reporting title.</li>
+        <li><strong>Citation dates:</strong> printed &ldquo;Last updated&rdquo; dates now follow the date Learn displays on each page, including reference tables that print the date before the link.</li>
+        <li><strong>Tools page:</strong> published version 1.1 with the reporting-estate map and related open-source tooling.</li>
+      </ul></td>
+    <td>
+      <ul>
+        <li><strong>Source monitoring:</strong> every cited Microsoft Learn page is now watched (94 watched pages). Fact check: 33 facts verified, 0 discrepancies, 0 fetch failures; snapshots re-baselined on 2 October 2026 with the displayed date recorded alongside the metadata dates.</li>
+        <li><strong>Citation dates:</strong> 261 dated citations verified against the date each Learn page displays; 0 stale.</li>
+        <li><strong>Links:</strong> internal links and anchors 0 broken; external links 0 broken (five authentication-gated portal links unverifiable by design). Redirect detection now uses full page requests, and links to moved Learn articles were updated.</li>
+        <li><strong>Independent review:</strong> four claim-by-claim audits covered every page (450 findings, each with its Microsoft evidence quote re-checked against the live page); a separate technical document review verified 150 claims and its 15 findings were applied; a UI and accessibility review fixed PDF table clipping, contrast and keyboard-focus defects (Lighthouse accessibility 100 on the new guide). Where Microsoft articles disagree, both are cited and neither is preferred.</li>
+        <li><strong>Artefacts:</strong> all 29 PDFs regenerated from the corrected HTML, including the new Cowork guide; structural preflight passed.</li>
+      </ul></td>
+  </tr>
   <tr>
     <td><strong>5.1</strong></td>
     <td>19 August 2026</td>
@@ -95,30 +122,31 @@
 <!-- LEDGER:START -->
 <table>
   <tr><th scope="col">Guide</th><th scope="col">Section</th><th scope="col">Last validated</th></tr>
-  <tr><td><a href="../1-strategy/data-strategy.html">Data Strategy</a></td><td>Strategy</td><td>19 August 2026</td></tr>
-  <tr><td><a href="../1-strategy/executive-briefing.html">Executive Briefing</a></td><td>Strategy</td><td>19 August 2026</td></tr>
-  <tr><td><a href="../2-setup/admin-setup.html">Admin Setup</a></td><td>Setup</td><td>19 August 2026</td></tr>
-  <tr><td><a href="../2-setup/data-onboarding.html">Data Onboarding</a></td><td>Setup</td><td>19 August 2026</td></tr>
-  <tr><td><a href="../2-setup/multi-agency-setup.html">Multi-Agency Setup</a></td><td>Setup</td><td>19 August 2026</td></tr>
-  <tr><td><a href="../2-setup/privacy-configuration.html">Privacy Configuration</a></td><td>Setup</td><td>19 August 2026</td></tr>
-  <tr><td><a href="../3-operate/analyst-playbook.html">Analyst Playbook</a></td><td>Operate</td><td>19 August 2026</td></tr>
-  <tr><td><a href="../3-operate/consumption-dashboard.html">Consumption Dashboard Operations</a></td><td>Operate</td><td>19 August 2026</td></tr>
-  <tr><td><a href="../3-operate/dashboard-guide.html">Dashboard &amp; Reports Guide</a></td><td>Operate</td><td>19 August 2026</td></tr>
-  <tr><td><a href="attribute-reference.html">Attribute Reference</a></td><td>Reference</td><td>19 August 2026</td></tr>
-  <tr><td><a href="faq.html">FAQ</a></td><td>Reference</td><td>19 August 2026</td></tr>
-  <tr><td><a href="glossary.html">Glossary &amp; Resources</a></td><td>Reference</td><td>19 August 2026</td></tr>
-  <tr><td><a href="scenarios/index.html">Troubleshooting Scenarios</a></td><td>Reference</td><td>19 August 2026</td></tr>
-  <tr><td><a href="troubleshooting.html">Troubleshooting</a></td><td>Reference</td><td>19 August 2026</td></tr>
-  <tr><td><a href="../artifacts/Org_Data_Validation_Prompt.html">Org Data Validation Prompt</a></td><td>Artifacts</td><td>19 August 2026</td></tr>
-  <tr><td><a href="../explain/why-multi-agency-is-hard.html">Why Multi-Agency Analytics Is Hard</a></td><td>Explain</td><td>19 August 2026</td></tr>
-  <tr><td><a href="../tools/index.html">Tools &amp; Reporting Options</a></td><td>Tools</td><td>19 August 2026</td></tr>
+  <tr><td><a href="../1-strategy/data-strategy.html">Data Strategy</a></td><td>Strategy</td><td>2 October 2026</td></tr>
+  <tr><td><a href="../1-strategy/executive-briefing.html">Executive Briefing</a></td><td>Strategy</td><td>2 October 2026</td></tr>
+  <tr><td><a href="../2-setup/admin-setup.html">Admin Setup</a></td><td>Setup</td><td>2 October 2026</td></tr>
+  <tr><td><a href="../2-setup/data-onboarding.html">Data Onboarding</a></td><td>Setup</td><td>2 October 2026</td></tr>
+  <tr><td><a href="../2-setup/multi-agency-setup.html">Multi-Agency Setup</a></td><td>Setup</td><td>2 October 2026</td></tr>
+  <tr><td><a href="../2-setup/privacy-configuration.html">Privacy Configuration</a></td><td>Setup</td><td>2 October 2026</td></tr>
+  <tr><td><a href="../3-operate/analyst-playbook.html">Analyst Playbook</a></td><td>Operate</td><td>2 October 2026</td></tr>
+  <tr><td><a href="../3-operate/consumption-dashboard.html">Consumption Dashboard Operations</a></td><td>Operate</td><td>2 October 2026</td></tr>
+  <tr><td><a href="../3-operate/cowork-dashboard.html">Cowork Dashboard Operations</a></td><td>Operate</td><td>2 October 2026</td></tr>
+  <tr><td><a href="../3-operate/dashboard-guide.html">Dashboard &amp; Reports Guide</a></td><td>Operate</td><td>2 October 2026</td></tr>
+  <tr><td><a href="attribute-reference.html">Attribute Reference</a></td><td>Reference</td><td>2 October 2026</td></tr>
+  <tr><td><a href="faq.html">FAQ</a></td><td>Reference</td><td>2 October 2026</td></tr>
+  <tr><td><a href="glossary.html">Glossary &amp; Resources</a></td><td>Reference</td><td>2 October 2026</td></tr>
+  <tr><td><a href="scenarios/index.html">Troubleshooting Scenarios</a></td><td>Reference</td><td>2 October 2026</td></tr>
+  <tr><td><a href="troubleshooting.html">Troubleshooting</a></td><td>Reference</td><td>2 October 2026</td></tr>
+  <tr><td><a href="../artifacts/Org_Data_Validation_Prompt.html">Org Data Validation Prompt</a></td><td>Artifacts</td><td>2 October 2026</td></tr>
+  <tr><td><a href="../explain/why-multi-agency-is-hard.html">Why Multi-Agency Analytics Is Hard</a></td><td>Explain</td><td>2 October 2026</td></tr>
+  <tr><td><a href="../tools/index.html">Tools &amp; Reporting Options</a></td><td>Tools</td><td>2 October 2026</td></tr>
 </table>
 <!-- LEDGER:END -->
 
 <h1 id="evidence">Evidence Policy</h1>
 <ol>
   <li>Use current Microsoft Learn pages and official documentation linked from Learn as technical authority.</li>
-  <li>Record the exact article title, URL, last-updated date, supporting section, and retrieval/validation date for volatile claims.</li>
+  <li>Record the exact article title, URL, last-updated date, supporting section, and retrieval/validation date for volatile claims. The last-updated date is the &ldquo;Last updated on&rdquo; date Learn displays on the page, recorded as a UTC calendar date.</li>
   <li>Surface conflicts between official pages; do not silently choose one. Use conservative wording and require tenant validation or Microsoft Support where needed.</li>
   <li>Label author frameworks, recommendations, tenant observations, previews, and temporary limitations separately from Microsoft-documented behavior.</li>
   <li>Validate exact product, role, setting, condition, action, portal, and field names before publication.</li>

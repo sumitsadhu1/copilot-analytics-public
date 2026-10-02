@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Copilot Analytics — Quick-Start Cheat Sheet. Last validated 19 August 2026.">
+<meta name="description" content="Independent Microsoft 365 Copilot Analytics guidance: Copilot Analytics — Quick-Start Cheat Sheet.">
 <link rel="canonical" href="https://sumitsadhu1.github.io/copilot-analytics-public/artifacts/Copilot_Analytics_QuickStart_CheatSheet.html">
 <title>Copilot Analytics — Quick-Start Cheat Sheet</title>
 <link rel="stylesheet" href="../assets/docs-style.css">
@@ -50,14 +50,14 @@
 </nav>
 
 <h1>Microsoft 365 Copilot Analytics — Quick-Start Cheat Sheet</h1>
-<div class="subtitle">Implementation Checklist &bull; Six Copilot Analytics Areas &bull; Validated 19 August 2026</div>
+<div class="subtitle">Implementation Checklist &bull; Six Copilot Analytics Areas &bull; Validated 2 October 2026</div>
 
 <div class="cols">
 <div class="col">
 
 <h2>Admin Center Reports (Day 1)</h2>
 <ul>
-  <li>Verify Reports Reader role</li>
+  <li>Verify the admin holds a role that can view usage reports (Microsoft names the AI Administrator role for the Copilot reports)</li>
   <li>Reports → Usage → Microsoft 365 Copilot</li>
   <li>Review licensed Copilot and unlicensed Copilot Chat reports separately</li>
   <li>Wait for report processing → export CSV if needed</li>
@@ -69,8 +69,8 @@
   <li>50-plan capabilities: count the Viva service plan included with Copilot; verify conflicting Learn wording in the tenant</li>
   <li>Verify Entra ID manager hierarchy populated</li>
   <li>AI Admin: add self + users to access</li>
-  <li>Insights Admin: enable Manager Settings (toggle on "Grant managers scoped access")</li>
-  <li>Use Organizational Data in Microsoft 365 unless Message Center and tenant UI show another supported path</li>
+  <li>Insights Admin or AI Admin: enable Manager Settings (toggle on "Grant managers scoped access to Copilot insights"; optionally also to Consumption insights)</li>
+  <li>Use Microsoft 365 Organizational Data Service unless Message Center and tenant UI show another supported path</li>
   <li>Configure minimum group size (default 10, min 5)</li>
   <li>Enable optional diagnostics for comprehensive Assisted Hours inputs</li>
   <li>Document the $72/h estimate and reapply custom rate/currency each session</li>
@@ -88,13 +88,13 @@
 <ul>
   <li>Conservative prerequisite: 50 Copilot licences + agent activity</li>
   <li>Not available in GCC/national-regional clouds</li>
-  <li>Delegates need "Your company" scope (not "Your group")</li>
+  <li>Delegates need "Your company" or "Combined access" scope (not "Your group")</li>
   <li>Validate feature presence and preview data handling in the tenant</li>
 </ul>
 
 <h2>Advanced Reporting (Week 2+)</h2>
 <ul>
-  <li>Assign Insights Analyst role → wait 1–2 hours</li>
+  <li>Assign Insights Analyst role → allow time for access to propagate (verify in the tenant)</li>
   <li>Grant partition access</li>
   <li>Insights Admin and Insights Analyst roles are independent</li>
   <li>Install a current Power BI Desktop version</li>
@@ -106,7 +106,8 @@
 <h2>Consumption Dashboard</h2>
 <ul>
   <li>Global-partition analyst or Global Admin: company scope</li>
-  <li>Enabled manager: group scope; no delegation</li>
+  <li>Enabled manager: group scope</li>
+  <li>Delegation: Microsoft's articles disagree. The Consumption Dashboard article says access can't currently be delegated; Delegate access describes a Combined access scope that includes it. Test in the tenant before relying on either, and review existing delegates' scopes</li>
   <li>Current M365 service data: Cowork and Work IQ API</li>
   <li>Reconcile official charges in Microsoft 365 admin center/GitHub</li>
 </ul>
@@ -126,20 +127,19 @@
 <h2>Key Wait Times</h2>
 <table>
   <tr><th scope="col">Action</th><th scope="col">Wait</th></tr>
-  <tr><td>Admin Center data</td><td>~72 hours</td></tr>
+  <tr><td>Admin Center data</td><td>Typically 24–72 hours; can take several days</td></tr>
   <tr><td>Dashboard initial data</td><td>Up to 7 days</td></tr>
   <tr><td>Manager settings change</td><td>1 hour</td></tr>
   <tr><td>Access changes</td><td>24 hours</td></tr>
   <tr><td>Min group size change</td><td>24 hours</td></tr>
   <tr><td>Org data upload</td><td>Up to 7 days</td></tr>
-  <tr><td>Exclusion list apply</td><td>Up to 5 days</td></tr>
-  <tr><td>Exclusion list remove</td><td>Up to 3 days</td></tr>
+  <tr><td>Exclusion list changes</td><td>Up to 3 days (Microsoft); verify in tenant</td></tr>
 </table>
 
 <h2>Org Data — Sources &amp; Required Fields</h2>
 
 <div class="warn">
-  <strong>Tenant-state gate:</strong> Microsoft pages conflict on legacy Viva upload availability. Check Message Center and the live tenant UI. Use Organizational Data in Microsoft 365 for new/edited uploads unless the tenant explicitly shows another supported path.
+  <strong>Tenant-state gate:</strong> Microsoft pages conflict on legacy Viva upload availability. Check Message Center and the live tenant UI. Use Microsoft 365 Organizational Data Service for new/edited uploads unless the tenant explicitly shows another supported path.
 </div>
 
 <table>
@@ -168,7 +168,7 @@
   <tr><td>Global Admin</td><td>Assign licences &amp; roles</td></tr>
   <tr><td>AI Admin</td><td>Dashboard access, Viva feature access management (VFAM), exclusion lists</td></tr>
   <tr><td>Insights Admin</td><td>Privacy, partitions, manager settings; no analyst capability</td></tr>
-  <tr><td>Org Data Source Admin</td><td>Organizational Data in Microsoft 365 imports</td></tr>
+  <tr><td>Org Data Source Admin</td><td>Microsoft 365 Organizational Data Service imports</td></tr>
   <tr><td>Insights Analyst</td><td>Queries, Power BI, advanced analysis</td></tr>
 </table>
 
@@ -193,7 +193,7 @@
 </div>
 
 <div class="footer">
-  Independent Microsoft 365 Copilot Analytics guidance &bull; Release 5.0 &bull; Validated 19 August 2026 &bull; HTML is canonical
+  Independent Microsoft 365 Copilot Analytics guidance &bull; Release 5.2 &bull; Validated 2 October 2026 &bull; HTML is canonical
 </div>
 
 </body>
