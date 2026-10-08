@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "MS Learn pages our documentation depends on. Checked on every push.",
-    "last_verified": "2026-10-02",
+    "last_verified": "2026-10-08",
     "categories": {
       "copilot-dashboard": "Copilot Dashboard features, licensing, access",
       "admin-settings": "Admin configuration, VFAM, manager settings",
@@ -1105,6 +1105,16 @@
       "title": "Overview of licensing",
       "category": "licensing-billing",
       "our_files": []
+    },
+    {
+      "id": "usage-based-billing-copilot-credits-setup",
+      "url": "https://learn.microsoft.com/microsoft-365/copilot/usage-based-billing-copilot-credits-setup",
+      "title": "Set up usage-based billing for Copilot Credits",
+      "category": "licensing-billing",
+      "our_files": [
+        "3-operate/billing-operations.html",
+        "3-operate/cowork-dashboard.html"
+      ]
     }
   ],
   "discovery_pages": [
